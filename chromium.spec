@@ -108,7 +108,6 @@ EOF
 install -d %{buildroot}%{_datadir}/applications
 cat > %{buildroot}%{_datadir}/applications/mandriva-%{name}.desktop << EOF
 [Desktop Entry]
-Encoding=UTF-8
 Name=Chromium
 Comment=OpenGL shoot them up
 Exec=soundwrapper %{_gamesbindir}/%{name}
@@ -120,7 +119,6 @@ EOF
 
 cat > %{buildroot}%{_datadir}/applications/mandriva-%{name}-setup.desktop << EOF
 [Desktop Entry]
-Encoding=UTF-8
 Name=Chromium Setup
 Comment=Graphical Setup of Chromium
 Exec=%{_gamesbindir}/%{name}-setup
