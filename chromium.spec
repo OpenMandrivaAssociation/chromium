@@ -24,6 +24,14 @@ Patch8: chromium-0.9.12-fix-qt3.patch
 Patch9: chromium-0.9.12-pthread.patch
 Patch10: chromium-0.9.12-system-png.patch
 
+Patch100: 10_buildfixes.dpatch
+Patch101: 15_soundfix.dpatch
+Patch102: 20_badcode.dpatch
+Patch103: 25_gcc4.dpatch
+Patch104: 30_new_openAL.dpatch
+Patch105: 35_powerup_crash.diff
+Patch106: 40_sdl_quit.diff
+
 BuildRequires:	SDL-devel
 BuildRequires:	XFree86-devel
 BuildRequires:	alsa-lib-devel
@@ -36,6 +44,8 @@ BuildRequires:	qt3-devel
 BuildRequires:	texinfo
 BuildRequires:	png-devel
 BuildRequires:	zlib-devel
+BuildRequires:	openal-devel
+BuildRequires:	freealut-devel
 
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root
 
@@ -66,6 +76,13 @@ of Chromium, especially for its playlist features.
 %patch8 -p0
 %patch9 -p0
 %patch10 -p1 -b .png
+%patch100 -p1
+%patch101 -p1
+%patch102 -p1
+%patch103 -p1
+%patch104 -p1
+%patch105 -p1
+%patch106 -p1
 
 # Nuke references to -L/usr/lib and -L/usr/local/lib
 find . -name Makefile | xargs \
@@ -78,11 +95,10 @@ find . -name Makefile -or -name configure | xargs \
 %build
 export CFLAGS="$RPM_OPT_FLAGS -fno-omit-frame-pointer"
 export CXXFLAGS="$RPM_OPT_FLAGS -fno-omit-frame-pointer"
-export DEFS="-DGAMESBINDIR=\\\"%{_gamesbindir}\\\" -DPKGDATADIR=\\\"%{_gamesdatadir}/Chromium-0.9\\\" -DUSE_SDL `sdl-config --cflags` -DOLD_OPENAL -DAUDIO_OPENAL -D_REENTRANT -I../../include -I../support/openal/linux/include -I../support/openal/include"
-export OPENAL_CONFIG_OPTS="./configure %{_target_platform}"
+export DEFS="-DGAMESBINDIR=\\\"%{_gamesbindir}\\\" -DPKGDATADIR=\\\"%{_gamesdatadir}/Chromium-0.9/data\\\" -DUSE_SDL `sdl-config --cflags` -DAUDIO_OPENAL -D_REENTRANT -I../../include"
 # QTDIR will alway be in /usr/lib whatever the platform may it be
 export QTDIR=%{_prefix}/lib/qt3
-./configure --enable-vorbis
+./configure --enable-vorbis --disable-setup
 make
 
 %install
@@ -104,16 +120,16 @@ Type=Application
 Categories=Game;ArcadeGame;
 EOF
 
-cat > %{buildroot}%{_datadir}/applications/mandriva-%{name}-setup.desktop << EOF
-[Desktop Entry]
-Name=Chromium setup
-Comment=Graphical setup tool for Chromium
-Exec=%{_gamesbindir}/%{name}-setup
-Icon=%{name}
-Terminal=false
-Type=Application
-Categories=Game;ArcadeGame;
-EOF
+#cat > %{buildroot}%{_datadir}/applications/mandriva-%{name}-setup.desktop << EOF
+#[Desktop Entry]
+#Name=Chromium setup
+#Comment=Graphical setup tool for Chromium
+#Exec=%{_gamesbindir}/%{name}-setup
+#Icon=%{name}
+#Terminal=false
+#Type=Application
+#Categories=Game;ArcadeGame;
+#EOF
 
 mkdir -p $RPM_BUILD_ROOT%{_iconsdir}/hicolor/{16x16,32x32,48x48}/apps
 
@@ -148,9 +164,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/applications/mandriva-%{name}.desktop
 %{_iconsdir}/hicolor/*/apps/%{name}.png
 
-%files setup
-%defattr(-, root, root)
-%doc README
-%{_gamesbindir}/chromium-setup
-%{_datadir}/applications/mandriva-%{name}-setup.desktop
+#%files setup
+#%defattr(-, root, root)
+#%doc README
+#%{_gamesbindir}/chromium-setup
+#%{_datadir}/applications/mandriva-%{name}-setup.desktop
 
