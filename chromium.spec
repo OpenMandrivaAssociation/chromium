@@ -24,6 +24,11 @@ Patch8: chromium-0.9.12-fix-qt3.patch
 Patch9: chromium-0.9.12-pthread.patch
 Patch10: chromium-0.9.12-system-png.patch
 
+# Debian patches. 10_buildfixes.dpatch is modified from the Debian
+# version in several ways - some changes that are Debian-specific are
+# left out, and in our version, internal libglpng is still used
+# (Debian uses a system copy, but we don't have one). Other patches
+# are unmodified from the Debian versions. - AdamW 2007/09
 Patch100: 10_buildfixes.dpatch
 Patch101: 15_soundfix.dpatch
 Patch102: 20_badcode.dpatch
