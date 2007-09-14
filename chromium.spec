@@ -1,6 +1,6 @@
 %define name chromium
 %define version 0.9.12
-%define release %mkrel 28
+%define release %mkrel 29
 
 Summary: Fast paced, arcade-style, top-scrolling space shooter
 Name: %{name}
@@ -44,7 +44,7 @@ You are captain of the cargo ship Chromium B.S.U., responsible for delivering
 supplies to our troops on the front line. Your ship has a small fleet of
 robotic fighters which you control from the relative safety of the Chromium
 vessel.
-This is an OpenGL-based shoot them up game with fine graphics.
+This is an OpenGL-based shoot 'em up game with fine graphics.
 
 %package setup
 Summary: Setup frontend for Chromium
@@ -92,55 +92,44 @@ cp bin/* $RPM_BUILD_ROOT/%{_gamesbindir}
 mkdir -p $RPM_BUILD_ROOT/%{_gamesdatadir}
 tar jxvf %{SOURCE1} -C $RPM_BUILD_ROOT/%{_gamesdatadir}
 
-mkdir -p $RPM_BUILD_ROOT/%{_menudir}
-cat << EOF > $RPM_BUILD_ROOT/%{_menudir}/%{name}
-?package(%{name}):command="%{_gamesbindir}/%{name}" icon="%{name}.png" \
-  needs="x11" section="Amusement/Arcade" title="Chromium" \
-  longtitle="OpenGL shoot them up"
-EOF
-
-cat << EOF > $RPM_BUILD_ROOT/%{_menudir}/chromium-setup
-?package(chromium-setup):command="%{_gamesbindir}/chromium-setup" icon="%{name}.png" \
-  needs="x11" section="Amusement/Arcade" title="Chromium Setup" \
-  longtitle="Graphical Setup of Chromium"
-EOF
-
 install -d %{buildroot}%{_datadir}/applications
 cat > %{buildroot}%{_datadir}/applications/mandriva-%{name}.desktop << EOF
 [Desktop Entry]
 Name=Chromium
-Comment=OpenGL shoot them up
+Comment=Shoot 'em up game
 Exec=soundwrapper %{_gamesbindir}/%{name}
 Icon=%{name}
 Terminal=false
 Type=Application
-Categories=Game;ArcadeGame;X-MandrivaLinux-MoreApplications-Games-Arcade;
+Categories=Game;ArcadeGame;
 EOF
 
 cat > %{buildroot}%{_datadir}/applications/mandriva-%{name}-setup.desktop << EOF
 [Desktop Entry]
-Name=Chromium Setup
-Comment=Graphical Setup of Chromium
+Name=Chromium setup
+Comment=Graphical setup tool for Chromium
 Exec=%{_gamesbindir}/%{name}-setup
 Icon=%{name}
 Terminal=false
 Type=Application
-Categories=Game;ArcadeGame;X-MandrivaLinux-MoreApplications-Games-Arcade;
+Categories=Game;ArcadeGame;
 EOF
 
-mkdir -p $RPM_BUILD_ROOT%{_miconsdir}
-mkdir -p $RPM_BUILD_ROOT%{_liconsdir}
-install %{SOURCE10} $RPM_BUILD_ROOT%{_miconsdir}/%{name}.png
-install %{SOURCE11} $RPM_BUILD_ROOT%{_iconsdir}/%{name}.png
-install %{SOURCE12} $RPM_BUILD_ROOT%{_liconsdir}/%{name}.png
+mkdir -p $RPM_BUILD_ROOT%{_iconsdir}/hicolor/{16x16,32x32,48x48}/apps
+
+install %{SOURCE10} $RPM_BUILD_ROOT%{_iconsdir}/hicolor/16x16/apps/%{name}.png
+install %{SOURCE11} $RPM_BUILD_ROOT%{_iconsdir}/hicolor/32x32/apps/%{name}.png
+install %{SOURCE12} $RPM_BUILD_ROOT%{_iconsdir}/hicolor/48x48/apps/%{name}.png
 
 rm -rf `find $RPM_BUILD_ROOT -type d -name .xvpics`
 
 %post
 %{update_menus}
+%{update_icon_cache hicolor}
 
 %postun
 %{clean_menus}
+%{clean_icon_cache hicolor}
 
 %post setup
 %{update_menus}
@@ -156,17 +145,12 @@ rm -rf $RPM_BUILD_ROOT
 %doc README LICENSE CHANGES
 %{_gamesbindir}/chromium
 %{_gamesdatadir}/*
-%{_menudir}/%{name}
 %{_datadir}/applications/mandriva-%{name}.desktop
-%{_miconsdir}/%{name}.png
-%{_iconsdir}/%{name}.png
-%{_liconsdir}/%{name}.png
+%{_iconsdir}/hicolor/*/apps/%{name}.png
 
 %files setup
 %defattr(-, root, root)
 %doc README
 %{_gamesbindir}/chromium-setup
-%{_menudir}/chromium-setup
 %{_datadir}/applications/mandriva-%{name}-setup.desktop
-
 
