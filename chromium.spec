@@ -38,7 +38,7 @@ Patch105: 35_powerup_crash.diff
 Patch106: 40_sdl_quit.diff
 
 BuildRequires:	SDL-devel
-BuildRequires:	XFree86-devel
+BuildRequires:	X11-devel
 BuildRequires:	alsa-lib-devel
 BuildRequires:	esound-devel
 BuildRequires:	libMesaGLU-devel
