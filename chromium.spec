@@ -52,7 +52,6 @@ BuildRequires:	zlib-devel
 BuildRequires:	openal-devel
 BuildRequires:	freealut-devel
 
-BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root
 
 %description
 You are captain of the cargo ship Chromium B.S.U., responsible for delivering
