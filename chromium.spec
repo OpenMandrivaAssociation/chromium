@@ -41,7 +41,7 @@ BuildRequires:	SDL-devel
 BuildRequires:	X11-devel
 BuildRequires:	alsa-lib-devel
 BuildRequires:	esound-devel
-BuildRequires:	libMesaGLU-devel
+BuildRequires:	mesaglu-devel
 BuildRequires:	libogg-devel
 BuildRequires:	libsmpeg-devel
 BuildRequires:	libvorbis-devel
