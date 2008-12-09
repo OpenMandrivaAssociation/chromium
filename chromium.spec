@@ -5,7 +5,7 @@ Release:	%{mkrel 1}
 License:	Artistic
 Group:		Games/Arcade
 Source0:	http://downloads.sourceforge.net/%{name}-bsu/%{name}-%{version}.tar.gz
-URL:		http://www.reptilelabour.com/software/chromium/
+URL:		http://sourceforge.net/projects/%{name}-bsu
 BuildRequires:	SDL-devel
 BuildRequires:	X11-devel
 BuildRequires:	alsa-lib-devel
@@ -20,6 +20,7 @@ BuildRequires:	zlib-devel
 BuildRequires:	openal-devel
 BuildRequires:	freealut-devel
 BuildRequires:	libglpng-devel
+BuildRequires:	ftgl-devel
 BuildRequires:	ImageMagick
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root
 
