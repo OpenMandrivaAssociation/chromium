@@ -21,7 +21,7 @@ BuildRequires:	openal-devel
 BuildRequires:	freealut-devel
 BuildRequires:	libglpng-devel
 BuildRequires:	ftgl-devel
-BuildRequires:	ImageMagick
+BuildRequires:	imagemagick
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root
 
 %description
