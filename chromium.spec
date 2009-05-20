@@ -1,10 +1,11 @@
 Summary:	Fast paced, arcade-style, top-scrolling space shooter
 Name:		chromium
 Version:	0.9.13.3
-Release:	%{mkrel 1}
+Release:	%mkrel 2
 License:	Artistic
 Group:		Games/Arcade
 Source0:	http://downloads.sourceforge.net/%{name}-bsu/%{name}-%{version}.tar.gz
+Patch0:		chromium-0.9.13.3-fix-str-fmt.patch
 URL:		http://sourceforge.net/projects/%{name}-bsu
 BuildRequires:	SDL-devel
 BuildRequires:	X11-devel
@@ -33,25 +34,15 @@ This is an OpenGL-based shoot 'em up game with fine graphics.
 
 %prep
 %setup -q
+%patch0 -p0
 
 %build
 %configure2_5x --bindir=%{_gamesbindir} --datadir=%{_gamesdatadir}
 %make
 
 %install
+rm -fr %buildroot
 %makeinstall_std
-
-#install -d %{buildroot}%{_datadir}/applications
-#cat > %{buildroot}%{_datadir}/applications/mandriva-%{name}.desktop << EOF
-#[Desktop Entry]
-#Name=Chromium
-#Comment=Shoot 'em up game
-#Exec=soundwrapper %{_gamesbindir}/%{name}
-#Icon=%{name}
-#Terminal=false
-#Type=Application
-#Categories=Game;ArcadeGame;
-#EOF
 
 mkdir -p %{buildroot}%{_iconsdir}/hicolor/{16x16,32x32,48x48,64x64}/apps
 install -m0644 misc/chromium.png %{buildroot}%{_iconsdir}/hicolor/64x64/apps/%{name}.png
@@ -83,4 +74,3 @@ rm -rf %{buildroot}
 %{_datadir}/applications/%{name}.desktop
 %{_iconsdir}/hicolor/*/apps/%{name}.png
 %{_mandir}/man6/*.6*
-
