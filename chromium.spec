@@ -1,10 +1,10 @@
 Summary:	Fast paced, arcade-style, top-scrolling space shooter
 Name:		chromium
-Version:	0.9.13.3
-Release:	%mkrel 2
+Version:	0.9.14
+Release:	%mkrel 1
 License:	Artistic
 Group:		Games/Arcade
-Source0:	http://downloads.sourceforge.net/%{name}-bsu/%{name}-%{version}.tar.gz
+Source0:	http://downloads.sourceforge.net/%{name}-bsu/%{name}-bsu-%{version}.tar.gz
 Patch0:		chromium-0.9.13.3-fix-str-fmt.patch
 URL:		http://sourceforge.net/projects/%{name}-bsu
 BuildRequires:	SDL-devel
@@ -22,6 +22,7 @@ BuildRequires:	openal-devel
 BuildRequires:	freealut-devel
 BuildRequires:	libglpng-devel
 BuildRequires:	ftgl-devel
+BuildRequires:	quesoglc-devel
 BuildRequires:	imagemagick
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root
 
@@ -33,7 +34,7 @@ vessel.
 This is an OpenGL-based shoot 'em up game with fine graphics.
 
 %prep
-%setup -q
+%setup -q -n %{name}-bsu-%{version}
 %patch0 -p0
 
 %build
@@ -45,10 +46,10 @@ rm -fr %buildroot
 %makeinstall_std
 
 mkdir -p %{buildroot}%{_iconsdir}/hicolor/{16x16,32x32,48x48,64x64}/apps
-install -m0644 misc/chromium.png %{buildroot}%{_iconsdir}/hicolor/64x64/apps/%{name}.png
-convert -scale 48x48 misc/chromium.png %{buildroot}%{_iconsdir}/hicolor/48x48/apps/%{name}.png
-convert -scale 32x32 misc/chromium.png %{buildroot}%{_iconsdir}/hicolor/32x32/apps/%{name}.png
-convert -scale 16x16 misc/chromium.png %{buildroot}%{_iconsdir}/hicolor/16x16/apps/%{name}.png
+install -m0644 misc/chromium-bsu.png %{buildroot}%{_iconsdir}/hicolor/64x64/apps/%{name}.png
+convert -scale 48x48 misc/chromium-bsu.png %{buildroot}%{_iconsdir}/hicolor/48x48/apps/%{name}.png
+convert -scale 32x32 misc/chromium-bsu.png %{buildroot}%{_iconsdir}/hicolor/32x32/apps/%{name}.png
+convert -scale 16x16 misc/chromium-bsu.png %{buildroot}%{_iconsdir}/hicolor/16x16/apps/%{name}.png
 
 %if %mdkversion < 200900
 %post
@@ -62,15 +63,18 @@ convert -scale 16x16 misc/chromium.png %{buildroot}%{_iconsdir}/hicolor/16x16/ap
 %{clean_icon_cache hicolor}
 %endif
 
+%find_lang %{name}-bsu
+
 %clean
 rm -rf %{buildroot}
 
-%files
+%files -f %{name}-bsu.lang
 %defattr(-, root, root)
 %doc AUTHORS README COPYING NEWS TODO
-%{_gamesbindir}/chromium
+%{_gamesbindir}/chromium-bsu
 %{_gamesdatadir}/*
-%{_datadir}/pixmaps/%{name}.png
-%{_datadir}/applications/%{name}.desktop
+%{_datadir}/pixmaps/%{name}-bsu.png
+%{_datadir}/applications/%{name}-bsu.desktop
+%{_docdir}/%{name}-bsu/*
 %{_iconsdir}/hicolor/*/apps/%{name}.png
 %{_mandir}/man6/*.6*
