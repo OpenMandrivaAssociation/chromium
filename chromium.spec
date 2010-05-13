@@ -1,11 +1,12 @@
 Summary:	Fast paced, arcade-style, top-scrolling space shooter
 Name:		chromium
 Version:	0.9.14
-Release:	%mkrel 1
+Release:	%mkrel 2
 License:	Artistic
 Group:		Games/Arcade
 Source0:	http://downloads.sourceforge.net/%{name}-bsu/%{name}-bsu-%{version}.tar.gz
 Patch0:		chromium-0.9.13.3-fix-str-fmt.patch
+Patch1:		chromium-0.9.14-openal-fix.patch
 URL:		http://sourceforge.net/projects/%{name}-bsu
 BuildRequires:	SDL-devel
 BuildRequires:	X11-devel
@@ -36,6 +37,7 @@ This is an OpenGL-based shoot 'em up game with fine graphics.
 %prep
 %setup -q -n %{name}-bsu-%{version}
 %patch0 -p0
+%patch1 -p1
 
 %build
 %configure2_5x --bindir=%{_gamesbindir} --datadir=%{_gamesdatadir}
