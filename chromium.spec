@@ -7,22 +7,13 @@ Group:		Games/Arcade
 Source0:	http://downloads.sourceforge.net/%{name}-bsu/%{name}-bsu-%{version}.tar.gz
 Patch0:		chromium-0.9.13.3-fix-str-fmt.patch
 URL:		http://sourceforge.net/projects/%{name}-bsu
-BuildRequires:	SDL-devel
-BuildRequires:	X11-devel
-BuildRequires:	alsa-lib-devel
-BuildRequires:	esound-devel
+BuildRequires:	quesoglc-devel
 BuildRequires:	mesaglu-devel
-BuildRequires:	libogg-devel
-BuildRequires:	libsmpeg-devel
-BuildRequires:	libvorbis-devel
-BuildRequires:	texinfo
-BuildRequires:	png-devel
-BuildRequires:	zlib-devel
+BuildRequires:	SDL-devel
+Buildrequires:	SDL_image-devel
 BuildRequires:	openal-devel
 BuildRequires:	freealut-devel
 BuildRequires:	libglpng-devel
-BuildRequires:	ftgl-devel
-BuildRequires:	quesoglc-devel
 BuildRequires:	imagemagick
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root
 
