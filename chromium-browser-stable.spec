@@ -4,7 +4,7 @@
 
 Name: chromium-browser-stable
 Version: 9.0.597.94
-Release: %mkrel 1
+Release: %mkrel 2
 Summary: A fast webkit-based web browser
 Group: Networking/WWW
 License: BSD, LGPL
@@ -14,6 +14,7 @@ Source2: chromium-browser.desktop
 Patch0: chromium-9.0.597.94-skip-builder-tests.patch
 Provides: %{crname}
 Conflicts: chromium-browser-unstable
+Obsoletes: chromium-browser < 1:9.0.597.94
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-buildroot
 BuildRequires: bison, flex, gtk2-devel, atk-devel, libexpat-devel, gperf
 BuildRequires: libnspr-devel, libnss-devel, libalsa-devel
