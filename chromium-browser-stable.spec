@@ -1,19 +1,23 @@
 %define channel stable
 %define crname chromium-browser
 %define _crdir %{_libdir}/%{crname}
+%define basever 9.0.597.94
+%define patchver() (xz -dc %{_sourcedir}/patch-%1-%2.diff.xz|patch -p1)
 
 Name: chromium-browser-stable
-Version: 9.0.597.94
-Release: %mkrel 2
+Version: 9.0.597.98
+Release: %mkrel 1
 Summary: A fast webkit-based web browser
 Group: Networking/WWW
 License: BSD, LGPL
-Source0: chromium-%{version}.tar.xz
+Source0: chromium-%{basever}.tar.xz
 Source1: chromium-wrapper
 Source2: chromium-browser.desktop
+Source1000: patch-9.0.597.94-9.0.597.98.diff.xz
 Patch0: chromium-9.0.597.94-skip-builder-tests.patch
 Provides: %{crname}
 Conflicts: chromium-browser-unstable
+Conflicts: chromium-browser-beta
 Obsoletes: chromium-browser < 1:9.0.597.94
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-buildroot
 BuildRequires: bison, flex, gtk2-devel, atk-devel, libexpat-devel, gperf
@@ -55,8 +59,11 @@ chromium-browser-unstable package instead.
 
 
 %prep
-%setup -q -n chromium-%{version}
+%setup -q -n chromium-%{basever}
+%patchver 9.0.597.94 9.0.597.98
+
 %patch0 -p1 -b .skip-builder-tests
+
 echo "%{channel}" > build/LASTCHANGE.in
 
 # Hard code extra version
