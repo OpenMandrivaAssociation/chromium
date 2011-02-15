@@ -1,7 +1,7 @@
 Summary:	Fast paced, arcade-style, top-scrolling space shooter
 Name:		chromium
-Version:	0.9.14.1
-Release:	%mkrel 2
+Version:	0.9.15
+Release:	%mkrel 1
 License:	Artistic
 Group:		Games/Arcade
 Source0:	http://downloads.sourceforge.net/%{name}-bsu/%{name}-bsu-%{version}.tar.gz
