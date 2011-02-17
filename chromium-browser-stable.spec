@@ -38,7 +38,7 @@ browser which is updated with features and fixes once they have been
 thoroughly tested. If you want the latest features, install the
 chromium-browser-unstable package instead.
 
-Note: If you are reverting from unstable to stable channel, you may
+Note: If you are reverting from unstable to stable or beta channel, you may
 experience tab crashes on startup. This crash only affects tabs restored
 during the first launch due to a change in how tab state is stored.
 See http://bugs.chromium.org/34688. It's always a good idea to back up
