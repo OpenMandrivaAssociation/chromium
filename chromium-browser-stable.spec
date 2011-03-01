@@ -5,7 +5,7 @@
 %define patchver() (xz -dc %{_sourcedir}/patch-%1-%2.diff.xz|patch -p1)
 
 Name: chromium-browser-stable
-Version: 9.0.597.98
+Version: 9.0.597.107
 Release: %mkrel 1
 Summary: A fast webkit-based web browser
 Group: Networking/WWW
@@ -61,6 +61,8 @@ chromium-browser-unstable package instead.
 %prep
 %setup -q -n chromium-%{basever}
 %patchver 9.0.597.94 9.0.597.98
+
+%patchver 9.0.597.98 9.0.597.107
 
 %patch0 -p1 -b .skip-builder-tests
 
