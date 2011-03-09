@@ -1,11 +1,11 @@
 %define channel stable
 %define crname chromium-browser
 %define _crdir %{_libdir}/%{crname}
-%define basever 9.0.597.94
+%define basever 10.0.648.45
 %define patchver() (xz -dc %{_sourcedir}/patch-%1-%2.diff.xz|patch -p1)
 
 Name: chromium-browser-stable
-Version: 9.0.597.107
+Version: 10.0.648.127
 Release: %mkrel 1
 Summary: A fast webkit-based web browser
 Group: Networking/WWW
@@ -13,8 +13,10 @@ License: BSD, LGPL
 Source0: chromium-%{basever}.tar.xz
 Source1: chromium-wrapper
 Source2: chromium-browser.desktop
-Source1000: patch-9.0.597.94-9.0.597.98.diff.xz
-Patch0: chromium-9.0.597.94-skip-builder-tests.patch
+Source1000: patch-10.0.648.45-10.0.648.82.diff.xz
+Source1001: patch-10.0.648.82-10.0.648.114.diff.xz
+Patch0: chromium-10.0.648.45-skip-builder-tests.patch
+Patch1: chromium-10.0.648.45-webkit-svn-revision.patch
 Provides: %{crname}
 Conflicts: chromium-browser-unstable
 Conflicts: chromium-browser-beta
@@ -60,11 +62,16 @@ chromium-browser-unstable package instead.
 
 %prep
 %setup -q -n chromium-%{basever}
-%patchver 9.0.597.94 9.0.597.98
+%patchver 10.0.648.45 10.0.648.82
 
-%patchver 9.0.597.98 9.0.597.107
+%patchver 10.0.648.82 10.0.648.114
+
+%patchver 10.0.648.114 10.0.648.126
+
+%patchver 10.0.648.126 10.0.648.127
 
 %patch0 -p1 -b .skip-builder-tests
+%patch1 -p1 -b .webkit-svn-revision
 
 echo "%{channel}" > build/LASTCHANGE.in
 
@@ -109,7 +116,7 @@ install -m 4755 out/Release/chrome_sandbox %{buildroot}%{_crdir}/chrome-sandbox
 install -m 644 out/Release/chrome.1 %{buildroot}%{_mandir}/man1/%{crname}.1
 install -m 644 out/Release/chrome.pak %{buildroot}%{_crdir}/
 install -m 755 out/Release/libffmpegsumo.so %{buildroot}%{_crdir}/
-#install -m 755 out/Release/libppGoogleNaClPluginChrome.so %{buildroot}%{_crdir}/
+install -m 755 out/Release/libppGoogleNaClPluginChrome.so %{buildroot}%{_crdir}/
 install -m 644 out/Release/locales/*.pak %{buildroot}%{_crdir}/locales/
 install -m 644 out/Release/xdg-settings %{buildroot}%{_crdir}/
 install -m 644 out/Release/resources.pak %{buildroot}%{_crdir}/
@@ -142,7 +149,7 @@ rm -rf %{buildroot}
 %{_crdir}/chrome-sandbox
 %{_crdir}/chrome.pak
 %{_crdir}/libffmpegsumo.so
-#%{_crdir}/libppGoogleNaClPluginChrome.so
+%{_crdir}/libppGoogleNaClPluginChrome.so
 %{_crdir}/locales
 %{_crdir}/resources.pak
 %{_crdir}/resources
