@@ -6,7 +6,7 @@
 
 Name: chromium-browser-stable
 Version: 10.0.648.127
-Release: %mkrel 1
+Release: %mkrel 2
 Summary: A fast webkit-based web browser
 Group: Networking/WWW
 License: BSD, LGPL
@@ -15,6 +15,8 @@ Source1: chromium-wrapper
 Source2: chromium-browser.desktop
 Source1000: patch-10.0.648.45-10.0.648.82.diff.xz
 Source1001: patch-10.0.648.82-10.0.648.114.diff.xz
+Source1002: patch-10.0.648.114-10.0.648.126.diff.xz
+Source1003: patch-10.0.648.126-10.0.648.127.diff.xz
 Patch0: chromium-10.0.648.45-skip-builder-tests.patch
 Patch1: chromium-10.0.648.45-webkit-svn-revision.patch
 Provides: %{crname}
