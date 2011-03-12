@@ -2,7 +2,7 @@
 %define crname chromium-browser
 %define _crdir %{_libdir}/%{crname}
 %define basever 10.0.648.45
-%define patchver() (xz -dc %{_sourcedir}/patch-%1-%2.diff.xz|patch -p1)
+%define patchver() ([ -f %{_sourcedir}/patch-%1-%2.diff.xz ] || exit 1; xz -dc %{_sourcedir}/patch-%1-%2.diff.xz|patch -p1);
 
 Name: chromium-browser-stable
 Version: 10.0.648.127
@@ -17,6 +17,7 @@ Source1000: patch-10.0.648.45-10.0.648.82.diff.xz
 Source1001: patch-10.0.648.82-10.0.648.114.diff.xz
 Source1002: patch-10.0.648.114-10.0.648.126.diff.xz
 Source1003: patch-10.0.648.126-10.0.648.127.diff.xz
+Source1004: patch-10.0.648.127-10.0.648.133.diff.xz
 Patch0: chromium-10.0.648.45-skip-builder-tests.patch
 Patch1: chromium-10.0.648.45-webkit-svn-revision.patch
 Provides: %{crname}
@@ -65,12 +66,10 @@ chromium-browser-unstable package instead.
 %prep
 %setup -q -n chromium-%{basever}
 %patchver 10.0.648.45 10.0.648.82
-
 %patchver 10.0.648.82 10.0.648.114
-
 %patchver 10.0.648.114 10.0.648.126
-
 %patchver 10.0.648.126 10.0.648.127
+%patchver 10.0.648.127 10.0.648.133
 
 %patch0 -p1 -b .skip-builder-tests
 %patch1 -p1 -b .webkit-svn-revision
