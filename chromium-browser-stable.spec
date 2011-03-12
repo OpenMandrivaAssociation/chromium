@@ -6,7 +6,7 @@
 
 Name: chromium-browser-stable
 Version: 10.0.648.127
-Release: %mkrel 2
+Release: %mkrel 1
 Summary: A fast webkit-based web browser
 Group: Networking/WWW
 License: BSD, LGPL
