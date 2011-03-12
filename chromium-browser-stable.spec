@@ -5,7 +5,7 @@
 %define patchver() ([ -f %{_sourcedir}/patch-%1-%2.diff.xz ] || exit 1; xz -dc %{_sourcedir}/patch-%1-%2.diff.xz|patch -p1);
 
 Name: chromium-browser-stable
-Version: 10.0.648.127
+Version: 10.0.648.133
 Release: %mkrel 1
 Summary: A fast webkit-based web browser
 Group: Networking/WWW
