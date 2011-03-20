@@ -33,6 +33,7 @@ BuildRequires: libjpeg-devel, libmesagl-devel, libmesaglu-devel
 BuildRequires: libxscrnsaver-devel, libdbus-glib-devel, libcups-devel
 BuildRequires: libgnome-keyring-devel libvpx-devel libxtst-devel
 BuildRequires: libxslt-devel libxml2-devel libxt-devel
+BuildRequires: BuildRequires: libevent-devel icu-devel speex-devel
 ExclusiveArch: i586 x86_64 armel
 
 %description
@@ -98,6 +99,9 @@ build/gyp_chromium --depth=. \
 	-D use_system_bzip2=1 \
 	-D use_system_libpng=1 \
 	-D use_system_libjpeg=1 \
+	-D use_system_speex=1 \
+	-D use_system_vpx=1 \
+	-D use_system_icu=1 \
 %ifarch i586
 	-D disable_sse2=1 \
 	-D release_extra_cflags="-march=i586"
