@@ -33,7 +33,7 @@ BuildRequires: libjpeg-devel, libmesagl-devel, libmesaglu-devel
 BuildRequires: libxscrnsaver-devel, libdbus-glib-devel, libcups-devel
 BuildRequires: libgnome-keyring-devel libvpx-devel libxtst-devel
 BuildRequires: libxslt-devel libxml2-devel libxt-devel
-BuildRequires: BuildRequires: libevent-devel icu-devel speex-devel
+BuildRequires: libevent-devel icu-devel speex-devel
 ExclusiveArch: i586 x86_64 armel
 
 %description
