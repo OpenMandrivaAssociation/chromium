@@ -55,6 +55,7 @@ your profile before changing channels.
 %package -n chromium-browser
 Summary: A fast webkit-based web browser (transition package)
 Epoch: 1
+Group: Networking/WWW
 Requires: %{name} = %{version}-%{release}
 
 %description -n chromium-browser
