@@ -5,8 +5,8 @@
 %define patchver() ([ -f %{_sourcedir}/patch-%1-%2.diff.xz ] || exit 1; xz -dc %{_sourcedir}/patch-%1-%2.diff.xz|patch -p1);
 
 Name: chromium-browser-stable
-Version: 10.0.648.204
-Release: %mkrel 2
+Version: 10.0.648.205
+Release: %mkrel 1
 Summary: A fast webkit-based web browser
 Group: Networking/WWW
 License: BSD, LGPL
@@ -20,8 +20,10 @@ Source1003: patch-10.0.648.126-10.0.648.127.diff.xz
 Source1004: patch-10.0.648.127-10.0.648.133.diff.xz
 Source1005: patch-10.0.648.133-10.0.648.151.diff.xz
 Source1006: patch-10.0.648.151-10.0.648.204.diff.xz
+Source1007: patch-10.0.648.204-10.0.648.205.diff.xz
 Patch0: chromium-10.0.648.45-skip-builder-tests.patch
 Patch1: chromium-10.0.648.45-webkit-svn-revision.patch
+Patch2: chromium-gcc46.patch
 Provides: %{crname}
 Conflicts: chromium-browser-unstable
 Conflicts: chromium-browser-beta
@@ -76,9 +78,11 @@ chromium-browser-unstable package instead.
 %patchver 10.0.648.127 10.0.648.133
 %patchver 10.0.648.133 10.0.648.151
 %patchver 10.0.648.151 10.0.648.204
+%patchver 10.0.648.204 10.0.648.205
 
 %patch0 -p1 -b .skip-builder-tests
 %patch1 -p1 -b .webkit-svn-revision
+%patch2 -p1 -b .gcc46
 
 echo "%{channel}" > build/LASTCHANGE.in
 
