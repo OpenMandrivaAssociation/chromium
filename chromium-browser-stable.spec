@@ -1,11 +1,11 @@
 %define channel stable
 %define crname chromium-browser
 %define _crdir %{_libdir}/%{crname}
-%define basever 10.0.648.45
+%define basever 11.0.696.1
 %define patchver() ([ -f %{_sourcedir}/patch-%1-%2.diff.xz ] || exit 1; xz -dc %{_sourcedir}/patch-%1-%2.diff.xz|patch -p1);
 
 Name: chromium-browser-stable
-Version: 10.0.648.205
+Version: 11.0.696.57
 Release: %mkrel 1
 Summary: A fast webkit-based web browser
 Group: Networking/WWW
@@ -13,17 +13,23 @@ License: BSD, LGPL
 Source0: chromium-%{basever}.tar.xz
 Source1: chromium-wrapper
 Source2: chromium-browser.desktop
-Source1000: patch-10.0.648.45-10.0.648.82.diff.xz
-Source1001: patch-10.0.648.82-10.0.648.114.diff.xz
-Source1002: patch-10.0.648.114-10.0.648.126.diff.xz
-Source1003: patch-10.0.648.126-10.0.648.127.diff.xz
-Source1004: patch-10.0.648.127-10.0.648.133.diff.xz
-Source1005: patch-10.0.648.133-10.0.648.151.diff.xz
-Source1006: patch-10.0.648.151-10.0.648.204.diff.xz
-Source1007: patch-10.0.648.204-10.0.648.205.diff.xz
-Patch0: chromium-10.0.648.45-skip-builder-tests.patch
-Patch1: chromium-10.0.648.45-webkit-svn-revision.patch
-Patch2: chromium-gcc46.patch
+Source1000: patch-11.0.696.1-11.0.696.3.diff.xz
+Source1001: patch-11.0.696.3-11.0.696.12.diff.xz
+Source1002: chromium-11.0.696.12-theme-chromium.tar.xz
+Source1003: patch-11.0.696.12-11.0.696.14.diff.xz
+Source1004: input_speech_recording.png
+Source1005: patch-11.0.696.14-11.0.696.16.diff.xz
+Source1006: patch-11.0.696.16-11.0.696.25.diff.xz
+Source1007: patch-11.0.696.25-11.0.696.28.diff.xz
+Source1008: patch-11.0.696.28-11.0.696.34.diff.xz
+Source1009: patch-11.0.696.34-11.0.696.43.diff.xz
+Source1010: binary-11.0.696.34-11.0.696.43.tar.xz
+Source1011: patch-11.0.696.43-11.0.696.48.diff.xz
+Source1012: patch-11.0.696.48-11.0.696.50.diff.xz
+Source1013: patch-11.0.696.50-11.0.696.57.diff.xz
+Patch0: chromium-11.0.672.2-skip-builder-tests.patch
+Patch1: chromium-gcc46.patch
+Patch2: chromium-11.0.696.57-cpp46.patch
 Provides: %{crname}
 Conflicts: chromium-browser-unstable
 Conflicts: chromium-browser-beta
@@ -35,8 +41,8 @@ BuildRequires: libglib2-devel, libbzip2-devel, libz-devel, libpng-devel
 BuildRequires: libjpeg-devel, libmesagl-devel, libmesaglu-devel
 BuildRequires: libxscrnsaver-devel, libdbus-glib-devel, libcups-devel
 BuildRequires: libgnome-keyring-devel libvpx-devel libxtst-devel
-BuildRequires: libxslt-devel libxml2-devel libxt-devel
-BuildRequires: libevent-devel speex-devel
+BuildRequires: libxslt-devel libxml2-devel libxt-devel libpam-devel
+BuildRequires: libevent-devel libflac-devel
 ExclusiveArch: i586 x86_64 armel
 
 %description
@@ -71,20 +77,30 @@ chromium-browser-unstable package instead.
 
 %prep
 %setup -q -n chromium-%{basever}
-%patchver 10.0.648.45 10.0.648.82
-%patchver 10.0.648.82 10.0.648.114
-%patchver 10.0.648.114 10.0.648.126
-%patchver 10.0.648.126 10.0.648.127
-%patchver 10.0.648.127 10.0.648.133
-%patchver 10.0.648.133 10.0.648.151
-%patchver 10.0.648.151 10.0.648.204
-%patchver 10.0.648.204 10.0.648.205
+%patchver 11.0.696.1 11.0.696.3
+%patchver 11.0.696.3 11.0.696.12
+%patchver 11.0.696.12 11.0.696.14
+%patchver 11.0.696.14 11.0.696.16
+%patchver 11.0.696.16 11.0.696.25
+%patchver 11.0.696.25 11.0.696.28
+%patchver 11.0.696.28 11.0.696.34
+%patchver 11.0.696.34 11.0.696.43
+tar xvf %{_sourcedir}/binary-11.0.696.34-11.0.696.43.tar.xz
+%patchver 11.0.696.43 11.0.696.48
+%patchver 11.0.696.48 11.0.696.50
+%patchver 11.0.696.50 11.0.696.57
 
 %patch0 -p1 -b .skip-builder-tests
-%patch1 -p1 -b .webkit-svn-revision
-%patch2 -p1 -b .gcc46
+%patch1 -p1 -b .gcc46
+%patch2 -p1 -b .cpp46
 
 echo "%{channel}" > build/LASTCHANGE.in
+
+# Update theme
+tar xJf %{_sourcedir}/chromium-11.0.696.12-theme-chromium.tar.xz
+
+# Update other binaries
+cp %{_sourcedir}/input_speech_recording.png webkit/glue/resources/
 
 # Hard code extra version
 FILE=chrome/browser/platform_util_common_linux.cc
@@ -107,7 +123,7 @@ build/gyp_chromium --depth=. \
 	-D use_system_libpng=1 \
 	-D use_system_libjpeg=1 \
 	-D use_system_libevent=1 \
-	-D use_system_speex=1 \
+	-D use_system_flac=1 \
 	-D use_system_vpx=0 \
 	-D use_system_icu=0 \
 %ifarch i586
