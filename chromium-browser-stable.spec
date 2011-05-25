@@ -5,7 +5,7 @@
 %define patchver() ([ -f %{_sourcedir}/patch-%1-%2.diff.xz ] || exit 1; xz -dc %{_sourcedir}/patch-%1-%2.diff.xz|patch -p1);
 
 Name: chromium-browser-stable
-Version: 11.0.696.68
+Version: 11.0.696.71
 Release: %mkrel 1
 Summary: A fast webkit-based web browser
 Group: Networking/WWW
@@ -29,6 +29,7 @@ Source1012: patch-11.0.696.48-11.0.696.50.diff.xz
 Source1013: patch-11.0.696.50-11.0.696.57.diff.xz
 Source1014: patch-11.0.696.57-11.0.696.65.diff.xz
 Source1015: patch-11.0.696.65-11.0.696.68.diff.xz
+Source1016: patch-11.0.696.68-11.0.696.71.diff.xz
 Patch0: chromium-11.0.672.2-skip-builder-tests.patch
 Patch1: chromium-gcc46.patch
 Patch2: chromium-11.0.696.57-cpp46.patch
@@ -93,6 +94,7 @@ tar xvf %{_sourcedir}/binary-11.0.696.34-11.0.696.43.tar.xz
 %patchver 11.0.696.50 11.0.696.57
 %patchver 11.0.696.57 11.0.696.65
 %patchver 11.0.696.65 11.0.696.68
+%patchver 11.0.696.68 11.0.696.71
 
 %patch0 -p1 -b .skip-builder-tests
 %patch1 -p1 -b .gcc46
