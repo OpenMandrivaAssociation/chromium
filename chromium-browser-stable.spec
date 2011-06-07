@@ -1,11 +1,11 @@
 %define channel stable
 %define crname chromium-browser
 %define _crdir %{_libdir}/%{crname}
-%define basever 11.0.696.1
+%define basever 12.0.742.30
 %define patchver() ([ -f %{_sourcedir}/patch-%1-%2.diff.xz ] || exit 1; xz -dc %{_sourcedir}/patch-%1-%2.diff.xz|patch -p1);
 
 Name: chromium-browser-stable
-Version: 11.0.696.71
+Version: 12.0.742.91
 Release: %mkrel 1
 Summary: A fast webkit-based web browser
 Group: Networking/WWW
@@ -13,26 +13,17 @@ License: BSD, LGPL
 Source0: chromium-%{basever}.tar.xz
 Source1: chromium-wrapper
 Source2: chromium-browser.desktop
-Source1000: patch-11.0.696.1-11.0.696.3.diff.xz
-Source1001: patch-11.0.696.3-11.0.696.12.diff.xz
-Source1002: chromium-11.0.696.12-theme-chromium.tar.xz
-Source1003: patch-11.0.696.12-11.0.696.14.diff.xz
-Source1004: input_speech_recording.png
-Source1005: patch-11.0.696.14-11.0.696.16.diff.xz
-Source1006: patch-11.0.696.16-11.0.696.25.diff.xz
-Source1007: patch-11.0.696.25-11.0.696.28.diff.xz
-Source1008: patch-11.0.696.28-11.0.696.34.diff.xz
-Source1009: patch-11.0.696.34-11.0.696.43.diff.xz
-Source1010: binary-11.0.696.34-11.0.696.43.tar.xz
-Source1011: patch-11.0.696.43-11.0.696.48.diff.xz
-Source1012: patch-11.0.696.48-11.0.696.50.diff.xz
-Source1013: patch-11.0.696.50-11.0.696.57.diff.xz
-Source1014: patch-11.0.696.57-11.0.696.65.diff.xz
-Source1015: patch-11.0.696.65-11.0.696.68.diff.xz
-Source1016: patch-11.0.696.68-11.0.696.71.diff.xz
-Patch0: chromium-11.0.672.2-skip-builder-tests.patch
+Source1000: patch-12.0.742.30-12.0.742.53.diff.xz
+Source1001: binary-12.0.742.30-12.0.742.53.tar.xz
+Source1002: patch-12.0.742.53-12.0.742.60.diff.xz
+Source1003: binary-12.0.742.53-12.0.742.60.tar.xz
+Source1004: patch-12.0.742.60-12.0.742.68.diff.xz
+Source1005: binary-12.0.742.60-12.0.742.68.tar.xz
+Source1006: patch-12.0.742.68-12.0.742.77.diff.xz
+Source1007: patch-12.0.742.77-12.0.742.91.diff.xz
+Patch0: chromium-12.0.742.0-skip-builder-tests.patch
 Patch1: chromium-gcc46.patch
-Patch2: chromium-11.0.696.57-cpp46.patch
+Patch2: chromium-12.0.742.9-exclude-chromeos-options.patch
 Provides: %{crname}
 Conflicts: chromium-browser-unstable
 Conflicts: chromium-browser-beta
@@ -80,33 +71,19 @@ chromium-browser-unstable package instead.
 
 %prep
 %setup -q -n chromium-%{basever}
-%patchver 11.0.696.1 11.0.696.3
-%patchver 11.0.696.3 11.0.696.12
-%patchver 11.0.696.12 11.0.696.14
-%patchver 11.0.696.14 11.0.696.16
-%patchver 11.0.696.16 11.0.696.25
-%patchver 11.0.696.25 11.0.696.28
-%patchver 11.0.696.28 11.0.696.34
-%patchver 11.0.696.34 11.0.696.43
-tar xvf %{_sourcedir}/binary-11.0.696.34-11.0.696.43.tar.xz
-%patchver 11.0.696.43 11.0.696.48
-%patchver 11.0.696.48 11.0.696.50
-%patchver 11.0.696.50 11.0.696.57
-%patchver 11.0.696.57 11.0.696.65
-%patchver 11.0.696.65 11.0.696.68
-%patchver 11.0.696.68 11.0.696.71
+%patchver 12.0.742.30 12.0.742.53
+tar xvf %{_sourcedir}/binary-12.0.742.30-12.0.742.53.tar.xz
+%patchver 12.0.742.53 12.0.742.60
+tar xvf %{_sourcedir}/binary-12.0.742.53-12.0.742.60.tar.xz
+%patchver 12.0.742.60 12.0.742.68
+tar xvf %{_sourcedir}/binary-12.0.742.60-12.0.742.68.tar.xz
+%patchver 12.0.742.68 12.0.742.77
+%patchver 12.0.742.77 12.0.742.91
 
 %patch0 -p1 -b .skip-builder-tests
 %patch1 -p1 -b .gcc46
-%patch2 -p1 -b .cpp46
-
+%patch2 -p1 -b .exclude-chromeos-options
 echo "%{channel}" > build/LASTCHANGE.in
-
-# Update theme
-tar xJf %{_sourcedir}/chromium-11.0.696.12-theme-chromium.tar.xz
-
-# Update other binaries
-cp %{_sourcedir}/input_speech_recording.png webkit/glue/resources/
 
 # Hard code extra version
 FILE=chrome/browser/platform_util_common_linux.cc
