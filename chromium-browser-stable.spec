@@ -1,11 +1,11 @@
-%define channel stable
+%define revision 90785
 %define crname chromium-browser
 %define _crdir %{_libdir}/%{crname}
 %define basever 12.0.742.30
 %define patchver() ([ -f %{_sourcedir}/patch-%1-%2.diff.xz ] || exit 1; xz -dc %{_sourcedir}/patch-%1-%2.diff.xz|patch -p1);
 
 Name: chromium-browser-stable
-Version: 12.0.742.91
+Version: 12.0.742.112
 Release: %mkrel 1
 Summary: A fast webkit-based web browser
 Group: Networking/WWW
@@ -21,6 +21,7 @@ Source1004: patch-12.0.742.60-12.0.742.68.diff.xz
 Source1005: binary-12.0.742.60-12.0.742.68.tar.xz
 Source1006: patch-12.0.742.68-12.0.742.77.diff.xz
 Source1007: patch-12.0.742.77-12.0.742.91.diff.xz
+Source1008: patch-12.0.742.91-12.0.742.112.diff.xz
 Patch0: chromium-12.0.742.0-skip-builder-tests.patch
 Patch1: chromium-gcc46.patch
 Patch2: chromium-12.0.742.9-exclude-chromeos-options.patch
@@ -79,11 +80,12 @@ tar xvf %{_sourcedir}/binary-12.0.742.53-12.0.742.60.tar.xz
 tar xvf %{_sourcedir}/binary-12.0.742.60-12.0.742.68.tar.xz
 %patchver 12.0.742.68 12.0.742.77
 %patchver 12.0.742.77 12.0.742.91
+%patchver 12.0.742.91 12.0.742.112
 
 %patch0 -p1 -b .skip-builder-tests
 %patch1 -p1 -b .gcc46
 %patch2 -p1 -b .exclude-chromeos-options
-echo "%{channel}" > build/LASTCHANGE.in
+echo "%{revision}" > build/LASTCHANGE.in
 
 # Hard code extra version
 FILE=chrome/browser/platform_util_common_linux.cc
