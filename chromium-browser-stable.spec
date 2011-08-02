@@ -1,11 +1,11 @@
-%define revision 92024
+%define revision 94237
 %define crname chromium-browser
 %define _crdir %{_libdir}/%{crname}
-%define basever 12.0.742.30
+%define basever 13.0.761.0
 %define patchver() ([ -f %{_sourcedir}/patch-%1-%2.diff.xz ] || exit 1; xz -dc %{_sourcedir}/patch-%1-%2.diff.xz|patch -p1);
 
 Name: chromium-browser-stable
-Version: 12.0.742.124
+Version: 13.0.782.107
 Release: %mkrel 1
 Summary: A fast webkit-based web browser
 Group: Networking/WWW
@@ -13,19 +13,25 @@ License: BSD, LGPL
 Source0: chromium-%{basever}.tar.xz
 Source1: chromium-wrapper
 Source2: chromium-browser.desktop
-Source1000: patch-12.0.742.30-12.0.742.53.diff.xz
-Source1001: binary-12.0.742.30-12.0.742.53.tar.xz
-Source1002: patch-12.0.742.53-12.0.742.60.diff.xz
-Source1003: binary-12.0.742.53-12.0.742.60.tar.xz
-Source1004: patch-12.0.742.60-12.0.742.68.diff.xz
-Source1005: binary-12.0.742.60-12.0.742.68.tar.xz
-Source1006: patch-12.0.742.68-12.0.742.77.diff.xz
-Source1007: patch-12.0.742.77-12.0.742.91.diff.xz
-Source1008: patch-12.0.742.91-12.0.742.112.diff.xz
-Source1009: patch-12.0.742.112-12.0.742.124.diff.xz
-Patch0: chromium-12.0.742.0-skip-builder-tests.patch
-Patch1: chromium-gcc46.patch
-Patch2: chromium-12.0.742.9-exclude-chromeos-options.patch
+Source1000: patch-13.0.761.0-13.0.767.1.diff.xz
+Source1001: binary-13.0.761.0-13.0.767.1.tar.xz
+Source1002: patch-13.0.767.1-13.0.772.0.diff.xz
+Source1003: binary-13.0.767.1-13.0.772.0.tar.xz
+Source1004: patch-13.0.772.0-13.0.782.1.diff.xz
+Source1005: binary-13.0.772.0-13.0.782.1.tar.xz
+Source1006: script-13.0.772.0-13.0.782.1.sh
+Source1007: patch-13.0.782.1-13.0.782.11.diff.xz
+Source1008: patch-13.0.782.11-13.0.782.13.diff.xz
+Source1009: patch-13.0.782.13-13.0.782.15.diff.xz
+Source1010: patch-13.0.782.15-13.0.782.20.diff.xz
+Source1011: patch-13.0.782.20-13.0.782.24.diff.xz
+Source1012: patch-13.0.782.24-13.0.782.32.diff.xz
+Source1013: patch-13.0.782.32-13.0.782.41.diff.xz
+Source1014: patch-13.0.782.41-13.0.782.99.diff.xz
+Source1015: patch-13.0.782.99-13.0.782.107.diff.xz
+Patch0: chromium-13.0.782.1-skip-builder-tests.patch
+Patch1: chromium-13.0.767.1-gcc46.patch
+Patch2: chromium-13.0.782.1-exclude-chromeos-options.patch
 Provides: %{crname}
 Conflicts: chromium-browser-unstable
 Conflicts: chromium-browser-beta
@@ -73,21 +79,31 @@ chromium-browser-unstable package instead.
 
 %prep
 %setup -q -n chromium-%{basever}
-%patchver 12.0.742.30 12.0.742.53
-tar xvf %{_sourcedir}/binary-12.0.742.30-12.0.742.53.tar.xz
-%patchver 12.0.742.53 12.0.742.60
-tar xvf %{_sourcedir}/binary-12.0.742.53-12.0.742.60.tar.xz
-%patchver 12.0.742.60 12.0.742.68
-tar xvf %{_sourcedir}/binary-12.0.742.60-12.0.742.68.tar.xz
-%patchver 12.0.742.68 12.0.742.77
-%patchver 12.0.742.77 12.0.742.91
-%patchver 12.0.742.91 12.0.742.112
-%patchver 12.0.742.112 12.0.742.124
+%patchver 13.0.761.0 13.0.767.1
+tar xvf %{_sourcedir}/binary-13.0.761.0-13.0.767.1.tar.xz
+%patchver 13.0.767.1 13.0.772.0
+tar xvf %{_sourcedir}/binary-13.0.767.1-13.0.772.0.tar.xz
+rm third_party/libsrtp/src/doc/libsrtp.pdf
+%patchver 13.0.772.0 13.0.782.1
+tar xvf %{_sourcedir}/binary-13.0.772.0-13.0.782.1.tar.xz
+sh %{_sourcedir}/script-13.0.772.0-13.0.782.1.sh
+%patchver 13.0.782.1 13.0.782.11
+%patchver 13.0.782.11 13.0.782.13
+%patchver 13.0.782.13 13.0.782.15
+%patchver 13.0.782.15 13.0.782.20
+%patchver 13.0.782.20 13.0.782.24
+%patchver 13.0.782.24 13.0.782.32
+%patchver 13.0.782.32 13.0.782.41
+%patchver 13.0.782.41 13.0.782.99
+%patchver 13.0.782.99 13.0.782.107
 
 %patch0 -p1 -b .skip-builder-tests
 %patch1 -p1 -b .gcc46
 %patch2 -p1 -b .exclude-chromeos-options
 echo "%{revision}" > build/LASTCHANGE.in
+
+sed -i -e '/test_support_common/s/^/#/' \
+	chrome/browser/sync/tools/sync_tools.gyp
 
 # Hard code extra version
 FILE=chrome/browser/platform_util_common_linux.cc
