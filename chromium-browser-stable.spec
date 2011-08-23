@@ -34,7 +34,7 @@ Source1017: patch-13.0.782.112-13.0.782.215.diff.xz
 Patch0: chromium-13.0.782.1-skip-builder-tests.patch
 Patch1: chromium-13.0.767.1-gcc46.patch
 Patch2: chromium-13.0.782.1-exclude-chromeos-options.patch
-Patch3: chromium-13.0.782.215-tcmalloc-malloc-hook.patch
+Patch3: chromium-13.0.782.215-tcmalloc-volatile-hook.patch
 Provides: %{crname}
 Conflicts: chromium-browser-unstable
 Conflicts: chromium-browser-beta
