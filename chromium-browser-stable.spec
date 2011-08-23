@@ -106,7 +106,7 @@ sh %{_sourcedir}/script-13.0.772.0-13.0.782.1.sh
 %patch1 -p1 -b .gcc46
 %patch2 -p1 -b .exclude-chromeos-options
 %if %mdkversion >= 201200
-%patch3 -p1 -b .tcmalloc-malloc-hook
+%patch3 -p1 -b .tcmalloc-volatile-hook
 %endif
 echo "%{revision}" > build/LASTCHANGE.in
 
