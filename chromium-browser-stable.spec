@@ -31,7 +31,7 @@ Source1014: patch-13.0.782.41-13.0.782.99.diff.xz
 Source1015: patch-13.0.782.99-13.0.782.107.diff.xz
 Source1016: patch-13.0.782.107-13.0.782.112.diff.xz
 Source1017: patch-13.0.782.112-13.0.782.215.diff.xz
-Source1018: patch-13.0.782.115-13.0.782.220.diff.xz
+Source1018: patch-13.0.782.215-13.0.782.220.diff.xz
 Patch0: chromium-13.0.782.1-skip-builder-tests.patch
 Patch1: chromium-13.0.767.1-gcc46.patch
 Patch2: chromium-13.0.782.1-exclude-chromeos-options.patch
@@ -102,7 +102,7 @@ sh %{_sourcedir}/script-13.0.772.0-13.0.782.1.sh
 %patchver 13.0.782.99 13.0.782.107
 %patchver 13.0.782.107 13.0.782.112
 %patchver 13.0.782.112 13.0.782.215
-%patchver 13.0.782.115 13.0.782.220
+%patchver 13.0.782.215 13.0.782.220
 
 %patch0 -p1 -b .skip-builder-tests
 %patch1 -p1 -b .gcc46
