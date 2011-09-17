@@ -1,11 +1,11 @@
-%define revision 99552
+%define revision 101024
 %define crname chromium-browser
 %define _crdir %{_libdir}/%{crname}
-%define basever 13.0.761.0
+%define basever 14.0.794.0
 %define patchver() ([ -f %{_sourcedir}/patch-%1-%2.diff.xz ] || exit 1; xz -dc %{_sourcedir}/patch-%1-%2.diff.xz|patch -p1);
 
 Name: chromium-browser-stable
-Version: 13.0.782.220
+Version: 14.0.835.163
 Release: %mkrel 1
 Summary: A fast webkit-based web browser
 Group: Networking/WWW
@@ -13,29 +13,34 @@ License: BSD, LGPL
 Source0: chromium-%{basever}.tar.xz
 Source1: chromium-wrapper
 Source2: chromium-browser.desktop
-Source1000: patch-13.0.761.0-13.0.767.1.diff.xz
-Source1001: binary-13.0.761.0-13.0.767.1.tar.xz
-Source1002: patch-13.0.767.1-13.0.772.0.diff.xz
-Source1003: binary-13.0.767.1-13.0.772.0.tar.xz
-Source1004: patch-13.0.772.0-13.0.782.1.diff.xz
-Source1005: binary-13.0.772.0-13.0.782.1.tar.xz
-Source1006: script-13.0.772.0-13.0.782.1.sh
-Source1007: patch-13.0.782.1-13.0.782.11.diff.xz
-Source1008: patch-13.0.782.11-13.0.782.13.diff.xz
-Source1009: patch-13.0.782.13-13.0.782.15.diff.xz
-Source1010: patch-13.0.782.15-13.0.782.20.diff.xz
-Source1011: patch-13.0.782.20-13.0.782.24.diff.xz
-Source1012: patch-13.0.782.24-13.0.782.32.diff.xz
-Source1013: patch-13.0.782.32-13.0.782.41.diff.xz
-Source1014: patch-13.0.782.41-13.0.782.99.diff.xz
-Source1015: patch-13.0.782.99-13.0.782.107.diff.xz
-Source1016: patch-13.0.782.107-13.0.782.112.diff.xz
-Source1017: patch-13.0.782.112-13.0.782.215.diff.xz
-Source1018: patch-13.0.782.215-13.0.782.220.diff.xz
-Patch0: chromium-13.0.782.1-skip-builder-tests.patch
-Patch1: chromium-13.0.767.1-gcc46.patch
-Patch2: chromium-13.0.782.1-exclude-chromeos-options.patch
-Patch3: chromium-13.0.782.215-tcmalloc-volatile-hook.patch
+Source1000: patch-14.0.794.0-14.0.797.0.diff.xz
+Source1001: binary-14.0.794.0-14.0.797.0.tar.xz
+Source1002: patch-14.0.797.0-14.0.803.0.diff.xz
+Source1003: binary-14.0.797.0-14.0.803.0.tar.xz
+Source1004: patch-14.0.803.0-14.0.825.0.diff.xz
+Source1005: binary-14.0.803.0-14.0.825.0.tar.xz
+Source1006: script-14.0.803.0-14.0.825.0.sh
+Source1007: patch-14.0.825.0-14.0.835.0.diff.xz
+Source1008: binary-14.0.825.0-14.0.835.0.tar.xz
+Source1009: script-14.0.825.0-14.0.835.0.sh
+Source1010: patch-14.0.835.0-14.0.835.8.diff.xz
+Source1011: patch-14.0.835.8-14.0.835.15.diff.xz
+Source1012: patch-14.0.835.15-14.0.835.18.diff.xz
+Source1013: patch-14.0.835.18-14.0.835.29.diff.xz
+Source1014: binary-14.0.835.18-14.0.835.29.tar.xz
+Source1015: patch-14.0.835.29-14.0.835.35.diff.xz
+Source1016: binary-14.0.835.29-14.0.835.35.tar.xz
+Source1017: patch-14.0.835.35-14.0.835.94.diff.xz
+Source1018: patch-14.0.835.94-14.0.835.122.diff.xz
+Source1019: binary-14.0.835.94-14.0.835.122.tar.xz
+Source1020: patch-14.0.835.122-14.0.835.124.diff.xz
+Source1021: patch-14.0.835.124-14.0.835.126.diff.xz
+Source1022: patch-14.0.835.126-14.0.835.157.diff.xz
+Source1023: patch-14.0.835.157-14.0.835.162.diff.xz
+Source1024: patch-14.0.835.162-14.0.835.163.diff.xz
+Patch0: chromium-14.0.825.0-skip-builder-tests.patch
+Patch1: chromium-14.0.835.0-gcc46.patch
+Patch2: chromium-14.0.835.0-exclude-chromeos-options.patch
 Provides: %{crname}
 Conflicts: chromium-browser-unstable
 Conflicts: chromium-browser-beta
@@ -48,7 +53,7 @@ BuildRequires: libjpeg-devel, libmesagl-devel, libmesaglu-devel
 BuildRequires: libxscrnsaver-devel, libdbus-glib-devel, libcups-devel
 BuildRequires: libgnome-keyring-devel libvpx-devel libxtst-devel
 BuildRequires: libxslt-devel libxml2-devel libxt-devel libpam-devel
-BuildRequires: libevent-devel libflac-devel
+BuildRequires: libevent-devel libflac-devel libpulseaudio-devel
 ExclusiveArch: i586 x86_64 armel
 
 %description
@@ -83,43 +88,45 @@ chromium-browser-unstable package instead.
 
 %prep
 %setup -q -n chromium-%{basever}
-%patchver 13.0.761.0 13.0.767.1
-tar xvf %{_sourcedir}/binary-13.0.761.0-13.0.767.1.tar.xz
-%patchver 13.0.767.1 13.0.772.0
-tar xvf %{_sourcedir}/binary-13.0.767.1-13.0.772.0.tar.xz
-rm third_party/libsrtp/src/doc/libsrtp.pdf
-%patchver 13.0.772.0 13.0.782.1
-tar xvf %{_sourcedir}/binary-13.0.772.0-13.0.782.1.tar.xz
-sh %{_sourcedir}/script-13.0.772.0-13.0.782.1.sh
-%patchver 13.0.782.1 13.0.782.11
-%patchver 13.0.782.11 13.0.782.13
-%patchver 13.0.782.13 13.0.782.15
-%patchver 13.0.782.15 13.0.782.20
-%patchver 13.0.782.20 13.0.782.24
-%patchver 13.0.782.24 13.0.782.32
-%patchver 13.0.782.32 13.0.782.41
-%patchver 13.0.782.41 13.0.782.99
-%patchver 13.0.782.99 13.0.782.107
-%patchver 13.0.782.107 13.0.782.112
-%patchver 13.0.782.112 13.0.782.215
-%patchver 13.0.782.215 13.0.782.220
+%patchver 14.0.794.0 14.0.797.0
+tar xvf %{_sourcedir}/binary-14.0.794.0-14.0.797.0.tar.xz
+%patchver 14.0.797.0 14.0.803.0
+tar xvf %{_sourcedir}/binary-14.0.797.0-14.0.803.0.tar.xz
+rm chrome/app/theme/pageinfo_internal.png
+%patchver 14.0.803.0 14.0.825.0
+tar xvf %{_sourcedir}/binary-14.0.803.0-14.0.825.0.tar.xz
+sh -x %{_sourcedir}/script-14.0.803.0-14.0.825.0.sh
+%patchver 14.0.825.0 14.0.835.0
+tar xvf %{_sourcedir}/binary-14.0.825.0-14.0.835.0.tar.xz
+sh -x %{_sourcedir}/script-14.0.825.0-14.0.835.0.sh
+%patchver 14.0.835.0 14.0.835.8
+%patchver 14.0.835.8 14.0.835.15
+%patchver 14.0.835.15 14.0.835.18
+%patchver 14.0.835.18 14.0.835.29
+tar xvf %{_sourcedir}/binary-14.0.835.18-14.0.835.29.tar.xz
+%patchver 14.0.835.29 14.0.835.35
+tar xvf %{_sourcedir}/binary-14.0.835.29-14.0.835.35.tar.xz
+%patchver 14.0.835.35 14.0.835.94
+%patchver 14.0.835.94 14.0.835.122
+tar xvf %{_sourcedir}/binary-14.0.835.94-14.0.835.122.tar.xz
+%patchver 14.0.835.122 14.0.835.124
+%patchver 14.0.835.124 14.0.835.126
+%patchver 14.0.835.126 14.0.835.157
+%patchver 14.0.835.157 14.0.835.162
+%patchver 14.0.835.162 14.0.835.163
 
 %patch0 -p1 -b .skip-builder-tests
 %patch1 -p1 -b .gcc46
 %patch2 -p1 -b .exclude-chromeos-options
-%if %mdkversion >= 201200
-%patch3 -p1 -b .tcmalloc-volatile-hook
-%endif
 echo "%{revision}" > build/LASTCHANGE.in
 
 sed -i -e '/test_support_common/s/^/#/' \
 	chrome/browser/sync/tools/sync_tools.gyp
 
 # Hard code extra version
-FILE=chrome/browser/platform_util_common_linux.cc
+FILE=chrome/common/chrome_version_info_linux.cc
 sed -i.orig -e 's/getenv("CHROME_VERSION_EXTRA")/"%{product_vendor} %{product_version}"/' $FILE
 cmp $FILE $FILE.orig && exit 1
-
 
 %build
 export GYP_GENERATORS=make
