@@ -1,4 +1,4 @@
-%define revision 101024
+%define revision 101821
 %define crname chromium-browser
 %define _crdir %{_libdir}/%{crname}
 %define basever 14.0.794.0
@@ -38,6 +38,7 @@ Source1021: patch-14.0.835.124-14.0.835.126.diff.xz
 Source1022: patch-14.0.835.126-14.0.835.157.diff.xz
 Source1023: patch-14.0.835.157-14.0.835.162.diff.xz
 Source1024: patch-14.0.835.162-14.0.835.163.diff.xz
+Source1025: patch-14.0.835.163-14.0.835.186.diff.xz
 Patch0: chromium-14.0.825.0-skip-builder-tests.patch
 Patch1: chromium-14.0.835.0-gcc46.patch
 Patch2: chromium-14.0.835.0-exclude-chromeos-options.patch
@@ -114,6 +115,7 @@ tar xvf %{_sourcedir}/binary-14.0.835.94-14.0.835.122.tar.xz
 %patchver 14.0.835.126 14.0.835.157
 %patchver 14.0.835.157 14.0.835.162
 %patchver 14.0.835.162 14.0.835.163
+%patchver 14.0.835.163 14.0.835.186
 
 %patch0 -p1 -b .skip-builder-tests
 %patch1 -p1 -b .gcc46
