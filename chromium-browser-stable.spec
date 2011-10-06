@@ -56,7 +56,7 @@ BuildRequires: libxscrnsaver-devel, libdbus-glib-devel, libcups-devel
 BuildRequires: libgnome-keyring-devel libvpx-devel libxtst-devel
 BuildRequires: libxslt-devel libxml2-devel libxt-devel libpam-devel
 BuildRequires: libevent-devel libflac-devel libpulseaudio-devel
-ExclusiveArch: i586 x86_64 armel
+ExclusiveArch: i586 x86_64 armv7l
 
 %description
 Chromium is a browser that combines a minimal design with sophisticated
@@ -154,6 +154,13 @@ build/gyp_chromium --depth=. \
 	-D disable_sse2=1 \
 	-D release_extra_cflags="-march=i586"
 %endif
+%ifarch armv7l
+	-D target_arch=arm \
+	-D disable_nacl=1 \
+	-D linux_use_tcmalloc=0 \
+	-D armv7=1 \
+	-D release_extra_cflags="-marm"
+%endif
 
 # Note: DON'T use system sqlite (3.7.3) -- it breaks history search
 
@@ -171,7 +178,9 @@ install -m 4755 out/Release/chrome_sandbox %{buildroot}%{_crdir}/chrome-sandbox
 install -m 644 out/Release/chrome.1 %{buildroot}%{_mandir}/man1/%{crname}.1
 install -m 644 out/Release/chrome.pak %{buildroot}%{_crdir}/
 install -m 755 out/Release/libffmpegsumo.so %{buildroot}%{_crdir}/
+%ifnarch armv7l
 install -m 755 out/Release/libppGoogleNaClPluginChrome.so %{buildroot}%{_crdir}/
+%endif
 install -m 644 out/Release/locales/*.pak %{buildroot}%{_crdir}/locales/
 install -m 644 out/Release/xdg-settings %{buildroot}%{_crdir}/
 install -m 644 out/Release/resources.pak %{buildroot}%{_crdir}/
@@ -204,7 +213,9 @@ rm -rf %{buildroot}
 %{_crdir}/chrome-sandbox
 %{_crdir}/chrome.pak
 %{_crdir}/libffmpegsumo.so
+%ifnarch armv7l
 %{_crdir}/libppGoogleNaClPluginChrome.so
+%endif
 %{_crdir}/locales
 %{_crdir}/resources.pak
 %{_crdir}/resources
