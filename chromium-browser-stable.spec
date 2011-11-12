@@ -1,11 +1,11 @@
-%define revision 107270
+%define revision 108895
 %define crname chromium-browser
 %define _crdir %{_libdir}/%{crname}
 %define basever 15.0.865.0
 %define patchver() ([ -f %{_sourcedir}/patch-%1-%2.diff.xz ] || exit 1; xz -dc %{_sourcedir}/patch-%1-%2.diff.xz|patch -p1);
 
 Name: chromium-browser-stable
-Version: 15.0.874.106
+Version: 15.0.874.120
 Release: %mkrel 1
 Summary: A fast webkit-based web browser
 Group: Networking/WWW
@@ -29,8 +29,10 @@ Source1011: patch-15.0.874.81-15.0.874.92.diff.xz
 Source1012: patch-15.0.874.92-15.0.874.100.diff.xz
 Source1013: patch-15.0.874.100-15.0.874.102.diff.xz
 Source1014: patch-15.0.874.102-15.0.874.106.diff.xz
+Source1015: patch-15.0.874.106-15.0.874.120.diff.xz
 Patch0: chromium-15.0.874.1-skip-builder-tests.patch
 Patch1: chromium-14.0.835.0-gcc46.patch
+Patch2: chromium-15.0.874.106-include-glib.patch
 Provides: %{crname}
 Conflicts: chromium-browser-unstable
 Conflicts: chromium-browser-beta
@@ -97,9 +99,11 @@ tar xvf %{_sourcedir}/binary-15.0.874.54-15.0.874.81.tar.xz
 %patchver 15.0.874.92 15.0.874.100
 %patchver 15.0.874.100 15.0.874.102
 %patchver 15.0.874.102 15.0.874.106
+%patchver 15.0.874.106 15.0.874.120
 
 %patch0 -p1 -b .skip-builder-tests
 %patch1 -p1 -b .gcc46
+%patch2 -p1 -b .include-glib
 echo "%{revision}" > build/LASTCHANGE.in
 
 sed -i -e '/test_support_common/s/^/#/' \
