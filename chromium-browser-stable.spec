@@ -1,11 +1,11 @@
-%define revision 108895
+%define revision 113337
 %define crname chromium-browser
 %define _crdir %{_libdir}/%{crname}
-%define basever 15.0.865.0
+%define basever 16.0.904.0
 %define patchver() ([ -f %{_sourcedir}/patch-%1-%2.diff.xz ] || exit 1; xz -dc %{_sourcedir}/patch-%1-%2.diff.xz|patch -p1);
 
 Name: chromium-browser-stable
-Version: 15.0.874.120
+Version: 16.0.912.63
 Release: %mkrel 1
 Summary: A fast webkit-based web browser
 Group: Networking/WWW
@@ -13,26 +13,21 @@ License: BSD, LGPL
 Source0: chromium-%{basever}.tar.xz
 Source1: chromium-wrapper
 Source2: chromium-browser.desktop
-Source3: attributed_string_coder.h
-Source1000: patch-15.0.865.0-15.0.874.1.diff.xz
-Source1001: binary-15.0.865.0-15.0.874.1.tar.xz
-Source1002: script-15.0.865.0-15.0.874.1.sh
-Source1003: patch-15.0.874.1-15.0.874.12.diff.xz
-Source1004: patch-15.0.874.12-15.0.874.15.diff.xz
-Source1005: patch-15.0.874.15-15.0.874.21.diff.xz
-Source1006: patch-15.0.874.21-15.0.874.51.diff.xz
-Source1007: binary-15.0.874.21-15.0.874.51.tar.xz
-Source1008: patch-15.0.874.51-15.0.874.54.diff.xz
-Source1009: patch-15.0.874.54-15.0.874.81.diff.xz
-Source1010: binary-15.0.874.54-15.0.874.81.tar.xz
-Source1011: patch-15.0.874.81-15.0.874.92.diff.xz
-Source1012: patch-15.0.874.92-15.0.874.100.diff.xz
-Source1013: patch-15.0.874.100-15.0.874.102.diff.xz
-Source1014: patch-15.0.874.102-15.0.874.106.diff.xz
-Source1015: patch-15.0.874.106-15.0.874.120.diff.xz
-Patch0: chromium-15.0.874.1-skip-builder-tests.patch
-Patch1: chromium-14.0.835.0-gcc46.patch
-Patch2: chromium-15.0.874.106-include-glib.patch
+Source1000: patch-16.0.904.0-16.0.912.0.diff.xz
+Source1001: binary-16.0.904.0-16.0.912.0.tar.xz
+Source1002: patch-16.0.912.0-16.0.912.4.diff.xz
+Source1003: binary-16.0.912.4-16.0.912.12.tar.xz
+Source1004: patch-16.0.912.4-16.0.912.12.diff.xz
+Source1005: patch-16.0.912.12-16.0.912.15.diff.xz
+Source1006: binary-16.0.912.12-16.0.912.15.tar.xz
+Source1007: patch-16.0.912.15-16.0.912.21.diff.xz
+Source1008: patch-16.0.912.21-16.0.912.32.diff.xz
+Source1009: binary-16.0.912.21-16.0.912.32.tar.xz
+Source1010: patch-16.0.912.32-16.0.912.36.diff.xz
+Source1011: patch-16.0.912.36-16.0.912.59.diff.xz
+Source1012: binary-16.0.912.36-16.0.912.59.tar.xz
+Source1013: patch-16.0.912.59-16.0.912.63.diff.xz
+Patch0: chromium-16.0.912.32-include-glib.patch
 Provides: %{crname}
 Conflicts: chromium-browser-unstable
 Conflicts: chromium-browser-beta
@@ -42,7 +37,7 @@ BuildRequires: bison, flex, gtk2-devel, atk-devel, libexpat-devel, gperf
 BuildRequires: libnspr-devel, libnss-devel, libalsa-devel
 BuildRequires: libglib2-devel, libbzip2-devel, libz-devel, libpng-devel
 BuildRequires: libjpeg-devel, libmesagl-devel, libmesaglu-devel
-BuildRequires: libxscrnsaver-devel, libdbus-glib-devel, libcups-devel
+BuildRequires: libxscrnsaver-devel, libdbus-glib-devel, cups-devel
 BuildRequires: libgnome-keyring-devel libvpx-devel libxtst-devel
 BuildRequires: libxslt-devel libxml2-devel libxt-devel libpam-devel
 BuildRequires: libevent-devel libflac-devel libpulseaudio-devel
@@ -81,33 +76,24 @@ chromium-browser-unstable package instead.
 
 %prep
 %setup -q -n chromium-%{basever}
-install -D %{_sourcedir}/attributed_string_coder.h \
-	chrome/common/mac/attributed_string_coder.h
-%patchver 15.0.865.0 15.0.874.1
-tar xvf %{_sourcedir}/binary-15.0.865.0-15.0.874.1.tar.xz
-sh -x %{_sourcedir}/script-15.0.865.0-15.0.874.1.sh
-%patchver 15.0.874.1 15.0.874.12
-rm net/data/ssl/certificates/unosoft_hu_cert.der
-%patchver 15.0.874.12 15.0.874.15
-%patchver 15.0.874.15 15.0.874.21
-%patchver 15.0.874.21 15.0.874.51
-tar xvf %{_sourcedir}/binary-15.0.874.21-15.0.874.51.tar.xz
-%patchver 15.0.874.51 15.0.874.54
-%patchver 15.0.874.54 15.0.874.81
-tar xvf %{_sourcedir}/binary-15.0.874.54-15.0.874.81.tar.xz
-%patchver 15.0.874.81 15.0.874.92
-%patchver 15.0.874.92 15.0.874.100
-%patchver 15.0.874.100 15.0.874.102
-%patchver 15.0.874.102 15.0.874.106
-%patchver 15.0.874.106 15.0.874.120
+%patch0 -p1 -b .include-glib
+%patchver 16.0.904.0 16.0.912.0
+tar xvf %{_sourcedir}/binary-16.0.904.0-16.0.912.0.tar.xz
+rm ui/resources/aura/chromium-48.png
+%patchver 16.0.912.0 16.0.912.4
+%patchver 16.0.912.4 16.0.912.12
+tar xvf %{_sourcedir}/binary-16.0.912.4-16.0.912.12.tar.xz
+%patchver 16.0.912.12 16.0.912.15
+tar xvf %{_sourcedir}/binary-16.0.912.12-16.0.912.15.tar.xz
+%patchver 16.0.912.15 16.0.912.21
+%patchver 16.0.912.21 16.0.912.32
+tar xvf %{_sourcedir}/binary-16.0.912.21-16.0.912.32.tar.xz
+%patchver 16.0.912.32 16.0.912.36
+%patchver 16.0.912.36 16.0.912.59
+tar xvf %{_sourcedir}/binary-16.0.912.36-16.0.912.59.tar.xz
+%patchver 16.0.912.59 16.0.912.63
 
-%patch0 -p1 -b .skip-builder-tests
-%patch1 -p1 -b .gcc46
-%patch2 -p1 -b .include-glib
 echo "%{revision}" > build/LASTCHANGE.in
-
-sed -i -e '/test_support_common/s/^/#/' \
-	chrome/browser/sync/tools/sync_tools.gyp
 
 # Hard code extra version
 FILE=chrome/common/chrome_version_info_linux.cc
@@ -153,6 +139,7 @@ rm -rf %{buildroot}
 mkdir -p %{buildroot}%{_bindir}
 mkdir -p %{buildroot}%{_crdir}/locales
 mkdir -p %{buildroot}%{_crdir}/themes
+mkdir -p %{buildroot}%{_crdir}/default_apps
 mkdir -p %{buildroot}%{_mandir}/man1
 install -m 755 %{_sourcedir}/chromium-wrapper %{buildroot}%{_crdir}/
 install -m 755 out/Release/chrome %{buildroot}%{_crdir}/
@@ -170,6 +157,7 @@ install -m 644 out/Release/locales/*.pak %{buildroot}%{_crdir}/locales/
 install -m 755 out/Release/xdg-mime %{buildroot}%{_crdir}/
 install -m 755 out/Release/xdg-settings %{buildroot}%{_crdir}/
 install -m 644 out/Release/resources.pak %{buildroot}%{_crdir}/
+install -m 644 chrome/browser/resources/default_apps/* %{buildroot}%{_crdir}/default_apps/
 ln -s %{_crdir}/chromium-wrapper %{buildroot}%{_bindir}/%{crname}
 
 find out/Release/resources/ -name "*.d" -exec rm {} \;
@@ -180,7 +168,7 @@ mkdir -p %{buildroot}%{_datadir}/applications
 install -m 644 %{_sourcedir}/%{crname}.desktop %{buildroot}%{_datadir}/applications/
 
 # icon
-for i in 16 22 24 32 48 64 128 256; do
+for i in 16 22 24 26 32 48 64 128 256; do
 	mkdir -p %{buildroot}%{_iconsdir}/hicolor/${i}x${i}/apps
 	install -m 644 chrome/app/theme/chromium/product_logo_$i.png \
 		%{buildroot}%{_iconsdir}/hicolor/${i}x${i}/apps/%{crname}.png
@@ -209,6 +197,7 @@ rm -rf %{buildroot}
 %{_crdir}/resources.pak
 %{_crdir}/resources
 %{_crdir}/themes
+%{_crdir}/default_apps
 %{_crdir}/xdg-mime
 %{_crdir}/xdg-settings
 %{_mandir}/man1/%{crname}*
