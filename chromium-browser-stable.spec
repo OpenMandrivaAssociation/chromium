@@ -1,11 +1,12 @@
-%define revision 116452
+%define revision 118311
 %define crname chromium-browser
 %define _crdir %{_libdir}/%{crname}
+%define _src %{_topdir}/SOURCES
 %define basever 16.0.904.0
-%define patchver() ([ -f %{_sourcedir}/patch-%1-%2.diff.xz ] || exit 1; xz -dc %{_sourcedir}/patch-%1-%2.diff.xz|patch -p1);
+%define patchver() ([ -f %{_src}/patch-%1-%2.diff.xz ] || exit 1; xz -dc %{_src}/patch-%1-%2.diff.xz|patch -p1);
 
 Name: chromium-browser-stable
-Version: 16.0.912.75
+Version: 16.0.912.77
 Release: %mkrel 1
 Summary: A fast webkit-based web browser
 Group: Networking/WWW
@@ -29,6 +30,7 @@ Source1012: binary-16.0.912.36-16.0.912.59.tar.xz
 Source1013: patch-16.0.912.59-16.0.912.63.diff.xz
 Source1014: patch-16.0.912.63-16.0.912.75.diff.xz
 Source1015: binary-16.0.912.63-16.0.912.75.tar.xz
+Source1016: patch-16.0.912.75-16.0.912.77.diff.xz
 Patch0: chromium-16.0.912.32-include-glib.patch
 Provides: %{crname}
 Conflicts: chromium-browser-unstable
@@ -80,22 +82,23 @@ chromium-browser-unstable package instead.
 %setup -q -n chromium-%{basever}
 %patch0 -p1 -b .include-glib
 %patchver 16.0.904.0 16.0.912.0
-tar xvf %{_sourcedir}/binary-16.0.904.0-16.0.912.0.tar.xz
+tar xvf %{_src}/binary-16.0.904.0-16.0.912.0.tar.xz
 rm ui/resources/aura/chromium-48.png
 %patchver 16.0.912.0 16.0.912.4
 %patchver 16.0.912.4 16.0.912.12
-tar xvf %{_sourcedir}/binary-16.0.912.4-16.0.912.12.tar.xz
+tar xvf %{_src}/binary-16.0.912.4-16.0.912.12.tar.xz
 %patchver 16.0.912.12 16.0.912.15
-tar xvf %{_sourcedir}/binary-16.0.912.12-16.0.912.15.tar.xz
+tar xvf %{_src}/binary-16.0.912.12-16.0.912.15.tar.xz
 %patchver 16.0.912.15 16.0.912.21
 %patchver 16.0.912.21 16.0.912.32
-tar xvf %{_sourcedir}/binary-16.0.912.21-16.0.912.32.tar.xz
+tar xvf %{_src}/binary-16.0.912.21-16.0.912.32.tar.xz
 %patchver 16.0.912.32 16.0.912.36
 %patchver 16.0.912.36 16.0.912.59
-tar xvf %{_sourcedir}/binary-16.0.912.36-16.0.912.59.tar.xz
+tar xvf %{_src}/binary-16.0.912.36-16.0.912.59.tar.xz
 %patchver 16.0.912.59 16.0.912.63
 %patchver 16.0.912.63 16.0.912.75
-tar xvf %{_sourcedir}/binary-16.0.912.63-16.0.912.75.tar.xz
+tar xvf %{_src}/binary-16.0.912.63-16.0.912.75.tar.xz
+%patchver 16.0.912.75 16.0.912.77
 
 echo "%{revision}" > build/LASTCHANGE.in
 
@@ -145,7 +148,7 @@ mkdir -p %{buildroot}%{_crdir}/locales
 mkdir -p %{buildroot}%{_crdir}/themes
 mkdir -p %{buildroot}%{_crdir}/default_apps
 mkdir -p %{buildroot}%{_mandir}/man1
-install -m 755 %{_sourcedir}/chromium-wrapper %{buildroot}%{_crdir}/
+install -m 755 %{_src}/chromium-wrapper %{buildroot}%{_crdir}/
 install -m 755 out/Release/chrome %{buildroot}%{_crdir}/
 install -m 4755 out/Release/chrome_sandbox %{buildroot}%{_crdir}/chrome-sandbox
 install -m 644 out/Release/chrome.1 %{buildroot}%{_mandir}/man1/%{crname}.1
@@ -169,7 +172,7 @@ cp -r out/Release/resources %{buildroot}%{_crdir}
 
 # desktop file
 mkdir -p %{buildroot}%{_datadir}/applications
-install -m 644 %{_sourcedir}/%{crname}.desktop %{buildroot}%{_datadir}/applications/
+install -m 644 %{_src}/%{crname}.desktop %{buildroot}%{_datadir}/applications/
 
 # icon
 for i in 16 22 24 26 32 48 64 128 256; do
