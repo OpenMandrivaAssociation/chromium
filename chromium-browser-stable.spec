@@ -1,12 +1,12 @@
-%define revision 118311
+%define revision 124586
 %define crname chromium-browser
 %define _crdir %{_libdir}/%{crname}
 %define _src %{_topdir}/SOURCES
-%define basever 16.0.904.0
+%define basever 17.0.963.0
 %define patchver() ([ -f %{_src}/patch-%1-%2.diff.xz ] || exit 1; xz -dc %{_src}/patch-%1-%2.diff.xz|patch -p1);
 
 Name: chromium-browser-stable
-Version: 16.0.912.77
+Version: 17.0.963.65
 Release: %mkrel 1
 Summary: A fast webkit-based web browser
 Group: Networking/WWW
@@ -14,24 +14,17 @@ License: BSD, LGPL
 Source0: chromium-%{basever}.tar.xz
 Source1: chromium-wrapper
 Source2: chromium-browser.desktop
-Source1000: patch-16.0.904.0-16.0.912.0.diff.xz
-Source1001: binary-16.0.904.0-16.0.912.0.tar.xz
-Source1002: patch-16.0.912.0-16.0.912.4.diff.xz
-Source1003: binary-16.0.912.4-16.0.912.12.tar.xz
-Source1004: patch-16.0.912.4-16.0.912.12.diff.xz
-Source1005: patch-16.0.912.12-16.0.912.15.diff.xz
-Source1006: binary-16.0.912.12-16.0.912.15.tar.xz
-Source1007: patch-16.0.912.15-16.0.912.21.diff.xz
-Source1008: patch-16.0.912.21-16.0.912.32.diff.xz
-Source1009: binary-16.0.912.21-16.0.912.32.tar.xz
-Source1010: patch-16.0.912.32-16.0.912.36.diff.xz
-Source1011: patch-16.0.912.36-16.0.912.59.diff.xz
-Source1012: binary-16.0.912.36-16.0.912.59.tar.xz
-Source1013: patch-16.0.912.59-16.0.912.63.diff.xz
-Source1014: patch-16.0.912.63-16.0.912.75.diff.xz
-Source1015: binary-16.0.912.63-16.0.912.75.tar.xz
-Source1016: patch-16.0.912.75-16.0.912.77.diff.xz
+Source1000: patch-17.0.963.0-17.0.963.2.diff.xz
+Source1001: patch-17.0.963.2-17.0.963.12.diff.xz
+Source1002: binary-17.0.963.2-17.0.963.12.tar.xz
+Source1003: patch-17.0.963.12-17.0.963.26.diff.xz
+Source1004: binary-17.0.963.12-17.0.963.26.tar.xz
+Source1005: patch-17.0.963.26-17.0.963.33.diff.xz
+Source1006: patch-17.0.963.33-17.0.963.38.diff.xz
+Source1007: patch-17.0.963.38-17.0.963.56.diff.xz
+Source1008: patch-17.0.963.56-17.0.963.65.diff.xz
 Patch0: chromium-16.0.912.32-include-glib.patch
+Patch1: chromium-17.0.963.12-remove-inline.patch
 Provides: %{crname}
 Conflicts: chromium-browser-unstable
 Conflicts: chromium-browser-beta
@@ -81,24 +74,17 @@ chromium-browser-unstable package instead.
 %prep
 %setup -q -n chromium-%{basever}
 %patch0 -p1 -b .include-glib
-%patchver 16.0.904.0 16.0.912.0
-tar xvf %{_src}/binary-16.0.904.0-16.0.912.0.tar.xz
-rm ui/resources/aura/chromium-48.png
-%patchver 16.0.912.0 16.0.912.4
-%patchver 16.0.912.4 16.0.912.12
-tar xvf %{_src}/binary-16.0.912.4-16.0.912.12.tar.xz
-%patchver 16.0.912.12 16.0.912.15
-tar xvf %{_src}/binary-16.0.912.12-16.0.912.15.tar.xz
-%patchver 16.0.912.15 16.0.912.21
-%patchver 16.0.912.21 16.0.912.32
-tar xvf %{_src}/binary-16.0.912.21-16.0.912.32.tar.xz
-%patchver 16.0.912.32 16.0.912.36
-%patchver 16.0.912.36 16.0.912.59
-tar xvf %{_src}/binary-16.0.912.36-16.0.912.59.tar.xz
-%patchver 16.0.912.59 16.0.912.63
-%patchver 16.0.912.63 16.0.912.75
-tar xvf %{_src}/binary-16.0.912.63-16.0.912.75.tar.xz
-%patchver 16.0.912.75 16.0.912.77
+# for 2010.1
+%patch1 -p1 -b .remove-inline
+%patchver 17.0.963.0 17.0.963.2
+%patchver 17.0.963.2 17.0.963.12
+tar xvf %{_src}/binary-17.0.963.2-17.0.963.12.tar.xz
+%patchver 17.0.963.12 17.0.963.26
+tar xvf %{_src}/binary-17.0.963.12-17.0.963.26.tar.xz
+%patchver 17.0.963.26 17.0.963.33
+%patchver 17.0.963.33 17.0.963.38
+%patchver 17.0.963.38 17.0.963.56
+%patchver 17.0.963.56 17.0.963.65
 
 echo "%{revision}" > build/LASTCHANGE.in
 
@@ -120,7 +106,7 @@ build/gyp_chromium --depth=. \
 	-D use_system_zlib=1 \
 	-D use_system_bzip2=1 \
 	-D use_system_libpng=1 \
-	-D use_system_libjpeg=1 \
+	-D use_system_libjpeg=0 \
 	-D use_system_libevent=1 \
 	-D use_system_flac=1 \
 	-D use_system_vpx=0 \
