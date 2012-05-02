@@ -1,4 +1,4 @@
-%define revision 130497
+%define revision 131933
 %define crname chromium-browser
 %define _crdir %{_libdir}/%{crname}
 %define _src %{_topdir}/SOURCES
@@ -6,7 +6,7 @@
 %define patchver() ([ -f %{_src}/patch-%1-%2.diff.xz ] || exit 1; xz -dc %{_src}/patch-%1-%2.diff.xz|patch -p1);
 
 Name: chromium-browser-stable
-Version: 18.0.1025.151
+Version: 18.0.1025.162
 Release: %mkrel 1
 Summary: A fast webkit-based web browser
 Group: Networking/WWW
@@ -16,6 +16,7 @@ Source1: chromium-wrapper
 Source2: chromium-browser.desktop
 Source1000: patch-18.0.1025.113-18.0.1025.142.diff.xz
 Source1001: patch-18.0.1025.142-18.0.1025.151.diff.xz
+Source1002: patch-18.0.1025.151-18.0.1025.162.diff.xz
 Patch0: chromium-16.0.912.32-include-glib.patch
 Patch1: chromium-17.0.963.12-remove-inline.patch
 Provides: %{crname}
@@ -71,6 +72,7 @@ chromium-browser-unstable package instead.
 %patch1 -p1 -b .remove-inline
 %patchver 18.0.1025.113 18.0.1025.142
 %patchver 18.0.1025.142 18.0.1025.151
+%patchver 18.0.1025.151 18.0.1025.162
 
 echo "%{revision}" > build/LASTCHANGE.in
 
