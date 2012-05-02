@@ -33,7 +33,7 @@ BuildRequires: libxscrnsaver-devel, libdbus-glib-devel, cups-devel
 BuildRequires: libgnome-keyring-devel libvpx-devel libxtst-devel
 BuildRequires: libxslt-devel libxml2-devel libxt-devel pam-devel
 BuildRequires: libevent-devel libflac-devel libpulseaudio-devel
-BuildRequires: elfutils-devel
+BuildRequires: elfutils-devel udev-devel
 ExclusiveArch: i586 x86_64 armv7l
 
 %description
