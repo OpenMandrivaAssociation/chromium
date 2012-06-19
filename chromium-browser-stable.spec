@@ -1,4 +1,4 @@
-%define revision 134854
+%define revision 138391
 %define crname chromium-browser
 %define _crdir %{_libdir}/%{crname}
 %define _src %{_topdir}/SOURCES
@@ -6,7 +6,7 @@
 %define patchver() ([ -f %{_src}/patch-%1-%2.diff.xz ] || exit 1; xz -dc %{_src}/patch-%1-%2.diff.xz|patch -p1);
 
 Name: chromium-browser-stable
-Version: 19.0.1084.41
+Version: 19.0.1084.52
 Release: %mkrel 1
 Summary: A fast webkit-based web browser
 Group: Networking/WWW
@@ -26,6 +26,7 @@ Source1008: patch-19.0.1084.24-19.0.1084.30.diff.xz
 Source1009: patch-19.0.1084.30-19.0.1084.36.diff.xz
 Source1010: patch-19.0.1084.36-19.0.1084.41.diff.xz
 Source1011: binary-19.0.1084.36-19.0.1084.41.tar.xz
+Source1012: patch-19.0.1084.41-19.0.1084.52.diff.xz
 Provides: %{crname}
 Conflicts: chromium-browser-unstable
 Conflicts: chromium-browser-beta
