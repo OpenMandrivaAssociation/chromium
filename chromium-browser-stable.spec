@@ -1,4 +1,4 @@
-%define revision 138391
+%define revision 140965
 %define crname chromium-browser
 %define _crdir %{_libdir}/%{crname}
 %define _src %{_topdir}/SOURCES
@@ -6,7 +6,7 @@
 %define patchver() ([ -f %{_src}/patch-%1-%2.diff.xz ] || exit 1; xz -dc %{_src}/patch-%1-%2.diff.xz|patch -p1);
 
 Name: chromium-browser-stable
-Version: 19.0.1084.52
+Version: 19.0.1084.56
 Release: %mkrel 1
 Summary: A fast webkit-based web browser
 Group: Networking/WWW
@@ -27,6 +27,7 @@ Source1009: patch-19.0.1084.30-19.0.1084.36.diff.xz
 Source1010: patch-19.0.1084.36-19.0.1084.41.diff.xz
 Source1011: binary-19.0.1084.36-19.0.1084.41.tar.xz
 Source1012: patch-19.0.1084.41-19.0.1084.52.diff.xz
+Source1013: patch-19.0.1084.52-19.0.1084.56.diff.xz
 Provides: %{crname}
 Conflicts: chromium-browser-unstable
 Conflicts: chromium-browser-beta
@@ -87,6 +88,8 @@ tar xvf %{_src}/binary-19.0.1084.15-19.0.1084.24.tar.xz
 %patchver 19.0.1084.30 19.0.1084.36
 %patchver 19.0.1084.36 19.0.1084.41
 tar xvf %{_src}/binary-19.0.1084.36-19.0.1084.41.tar.xz
+%patchver 19.0.1084.41 19.0.1084.52
+%patchver 19.0.1084.52 19.0.1084.56
 
 echo "%{revision}" > build/LASTCHANGE.in
 
@@ -107,6 +110,7 @@ build/gyp_chromium --depth=. \
 	-D use_system_libxml=1 \
 	-D use_system_zlib=1 \
 	-D use_system_bzip2=1 \
+	-D use_system_xdg_utils=1 \
 	-D use_system_libpng=1 \
 	-D use_system_libjpeg=1 \
 	-D use_system_libevent=1 \
@@ -149,14 +153,18 @@ install -m 755 out/Release/nacl_helper %{buildroot}%{_crdir}/
 install -m 644 out/Release/nacl_irt_*.nexe %{buildroot}%{_crdir}/
 %endif
 install -m 644 out/Release/locales/*.pak %{buildroot}%{_crdir}/locales/
-install -m 755 out/Release/xdg-mime %{buildroot}%{_crdir}/
-install -m 755 out/Release/xdg-settings %{buildroot}%{_crdir}/
+#install -m 755 out/Release/xdg-mime %{buildroot}%{_crdir}/
+#install -m 755 out/Release/xdg-settings %{buildroot}%{_crdir}/
 install -m 644 out/Release/resources.pak %{buildroot}%{_crdir}/
 install -m 644 chrome/browser/resources/default_apps/* %{buildroot}%{_crdir}/default_apps/
 ln -s %{_crdir}/chromium-wrapper %{buildroot}%{_bindir}/%{crname}
 
 find out/Release/resources/ -name "*.d" -exec rm {} \;
 cp -r out/Release/resources %{buildroot}%{_crdir}
+
+# Strip NaCl IRT
+./native_client/toolchain/linux_x86_newlib/bin/x86_64-nacl-strip --strip-debug %{buildroot}%{_crdir}/nacl_irt_x86_64.nexe
+./native_client/toolchain/linux_x86_newlib/bin/i686-nacl-strip --strip-debug %{buildroot}%{_crdir}/nacl_irt_x86_32.nexe
 
 # desktop file
 mkdir -p %{buildroot}%{_datadir}/applications
@@ -193,8 +201,8 @@ rm -rf %{buildroot}
 %{_crdir}/resources
 %{_crdir}/themes
 %{_crdir}/default_apps
-%{_crdir}/xdg-mime
-%{_crdir}/xdg-settings
+#%{_crdir}/xdg-mime
+#%{_crdir}/xdg-settings
 %{_mandir}/man1/%{crname}*
 %{_datadir}/applications/*.desktop
 %{_iconsdir}/hicolor/*/apps/%{crname}.png
