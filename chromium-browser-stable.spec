@@ -14,6 +14,7 @@ License: BSD, LGPL
 Source0: chromium-%{basever}.tar.xz
 Source1: chromium-wrapper
 Source2: chromium-browser.desktop
+Patch0: chromium-19.0.1077.3-remove-inline.patch
 Source1000: patch-19.0.1077.3-19.0.1081.2.diff.xz
 Source1001: binary-19.0.1077.3-19.0.1081.2.tar.xz
 Source1002: script-19.0.1077.3-19.0.1081.2.sh
@@ -91,6 +92,8 @@ tar xvf %{_src}/binary-19.0.1084.36-19.0.1084.41.tar.xz
 %patchver 19.0.1084.41 19.0.1084.52
 %patchver 19.0.1084.52 19.0.1084.56
 
+%patch0 -p1 -b .remove-inline
+
 echo "%{revision}" > build/LASTCHANGE.in
 
 # Hard code extra version
@@ -163,8 +166,12 @@ find out/Release/resources/ -name "*.d" -exec rm {} \;
 cp -r out/Release/resources %{buildroot}%{_crdir}
 
 # Strip NaCl IRT
+%ifarch x86_64
 ./native_client/toolchain/linux_x86_newlib/bin/x86_64-nacl-strip --strip-debug %{buildroot}%{_crdir}/nacl_irt_x86_64.nexe
+%endif
+%ifarch i586
 ./native_client/toolchain/linux_x86_newlib/bin/i686-nacl-strip --strip-debug %{buildroot}%{_crdir}/nacl_irt_x86_32.nexe
+%endif
 
 # desktop file
 mkdir -p %{buildroot}%{_datadir}/applications
