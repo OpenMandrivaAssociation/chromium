@@ -1,12 +1,12 @@
-%define revision 134367
+%define revision 134854
 %define crname chromium-browser
 %define _crdir %{_libdir}/%{crname}
 %define _src %{_topdir}/SOURCES
-%define basever 18.0.1025.113
+%define basever 19.0.1077.3
 %define patchver() ([ -f %{_src}/patch-%1-%2.diff.xz ] || exit 1; xz -dc %{_src}/patch-%1-%2.diff.xz|patch -p1);
 
 Name: chromium-browser-stable
-Version: 18.0.1025.168
+Version: 19.0.1084.41
 Release: %mkrel 1
 Summary: A fast webkit-based web browser
 Group: Networking/WWW
@@ -14,12 +14,18 @@ License: BSD, LGPL
 Source0: chromium-%{basever}.tar.xz
 Source1: chromium-wrapper
 Source2: chromium-browser.desktop
-Source1000: patch-18.0.1025.113-18.0.1025.142.diff.xz
-Source1001: patch-18.0.1025.142-18.0.1025.151.diff.xz
-Source1002: patch-18.0.1025.151-18.0.1025.162.diff.xz
-Source1003: patch-18.0.1025.162-18.0.1025.168.diff.xz
-Patch0: chromium-16.0.912.32-include-glib.patch
-Patch1: chromium-17.0.963.12-remove-inline.patch
+Source1000: patch-19.0.1077.3-19.0.1081.2.diff.xz
+Source1001: binary-19.0.1077.3-19.0.1081.2.tar.xz
+Source1002: script-19.0.1077.3-19.0.1081.2.sh
+Source1003: patch-19.0.1081.2-19.0.1084.15.diff.xz
+Source1004: binary-19.0.1081.2-19.0.1084.15.tar.xz
+Source1005: script-19.0.1081.2-19.0.1084.15.sh
+Source1006: patch-19.0.1084.15-19.0.1084.24.diff.xz
+Source1007: binary-19.0.1084.15-19.0.1084.24.tar.xz
+Source1008: patch-19.0.1084.24-19.0.1084.30.diff.xz
+Source1009: patch-19.0.1084.30-19.0.1084.36.diff.xz
+Source1010: patch-19.0.1084.36-19.0.1084.41.diff.xz
+Source1011: binary-19.0.1084.36-19.0.1084.41.tar.xz
 Provides: %{crname}
 Conflicts: chromium-browser-unstable
 Conflicts: chromium-browser-beta
@@ -27,9 +33,9 @@ Obsoletes: chromium-browser < 1:9.0.597.94
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-buildroot
 BuildRequires: bison, flex, gtk2-devel, atk-devel, libexpat-devel, gperf
 BuildRequires: nspr-devel, nss-devel, libalsa-devel
-BuildRequires: libglib2-devel, libbzip2-devel, zlib-devel, libpng-devel
-BuildRequires: libjpeg-devel, libmesagl-devel, libmesaglu-devel
-BuildRequires: libxscrnsaver-devel, libdbus-glib-devel, cups-devel
+BuildRequires: glib2-devel, bzip2-devel, zlib-devel, png-devel
+BuildRequires: jpeg-devel, mesagl-devel, mesaglu-devel
+BuildRequires: libxscrnsaver-devel, dbus-glib-devel, cups-devel
 BuildRequires: libgnome-keyring-devel libvpx-devel libxtst-devel
 BuildRequires: libxslt-devel libxml2-devel libxt-devel pam-devel
 BuildRequires: libevent-devel libflac-devel pulseaudio-devel
@@ -68,18 +74,23 @@ chromium-browser-unstable package instead.
 
 %prep
 %setup -q -n chromium-%{basever}
-%patch0 -p1 -b .include-glib
-# for 2010.1
-%patch1 -p1 -b .remove-inline
-%patchver 18.0.1025.113 18.0.1025.142
-%patchver 18.0.1025.142 18.0.1025.151
-%patchver 18.0.1025.151 18.0.1025.162
-%patchver 18.0.1025.162 18.0.1025.168
+%patchver 19.0.1077.3 19.0.1081.2
+tar xvf %{_src}/binary-19.0.1077.3-19.0.1081.2.tar.xz
+sh -x %{_src}/script-19.0.1077.3-19.0.1081.2.sh
+%patchver 19.0.1081.2 19.0.1084.15
+tar xvf %{_src}/binary-19.0.1081.2-19.0.1084.15.tar.xz
+sh -x %{_src}/script-19.0.1081.2-19.0.1084.15.sh
+%patchver 19.0.1084.15 19.0.1084.24
+tar xvf %{_src}/binary-19.0.1084.15-19.0.1084.24.tar.xz
+%patchver 19.0.1084.24 19.0.1084.30
+%patchver 19.0.1084.30 19.0.1084.36
+%patchver 19.0.1084.36 19.0.1084.41
+tar xvf %{_src}/binary-19.0.1084.36-19.0.1084.41.tar.xz
 
 echo "%{revision}" > build/LASTCHANGE.in
 
 # Hard code extra version
-FILE=chrome/common/chrome_version_info_linux.cc
+FILE=chrome/common/chrome_version_info_posix.cc
 sed -i.orig -e 's/getenv("CHROME_VERSION_EXTRA")/"%{product_vendor} %{product_version}"/' $FILE
 cmp $FILE $FILE.orig && exit 1
 
