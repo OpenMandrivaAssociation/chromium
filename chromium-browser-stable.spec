@@ -167,10 +167,10 @@ cp -r out/Release/resources %{buildroot}%{_crdir}
 
 # Strip NaCl IRT
 %ifarch x86_64
-./native_client/toolchain/linux_x86_newlib/bin/x86_64-nacl-strip --strip-debug %{buildroot}%{_crdir}/nacl_irt_x86_64.nexe
+./native_client/toolchain/linux_x86_newlib/bin/x86_64-nacl-strip %{buildroot}%{_crdir}/nacl_irt_x86_64.nexe
 %endif
 %ifarch i586
-./native_client/toolchain/linux_x86_newlib/bin/i686-nacl-strip --strip-debug %{buildroot}%{_crdir}/nacl_irt_x86_32.nexe
+./native_client/toolchain/linux_x86_newlib/bin/i686-nacl-strip %{buildroot}%{_crdir}/nacl_irt_x86_32.nexe
 %endif
 
 # desktop file
