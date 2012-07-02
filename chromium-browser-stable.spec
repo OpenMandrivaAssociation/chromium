@@ -1,12 +1,12 @@
-%define revision 140965
+%define revision 135598
 %define crname chromium-browser
 %define _crdir %{_libdir}/%{crname}
 %define _src %{_topdir}/SOURCES
-%define basever 19.0.1077.3
+%define basever 20.0.1132.43
 %define patchver() ([ -f %{_src}/patch-%1-%2.diff.xz ] || exit 1; xz -dc %{_src}/patch-%1-%2.diff.xz|patch -p1);
 
 Name: chromium-browser-stable
-Version: 19.0.1084.56
+Version: 20.0.1132.43
 Release: %mkrel 1
 Summary: A fast webkit-based web browser
 Group: Networking/WWW
@@ -15,20 +15,9 @@ Source0: chromium-%{basever}.tar.xz
 Source1: chromium-wrapper
 Source2: chromium-browser.desktop
 Patch0: chromium-19.0.1077.3-remove-inline.patch
-Source1000: patch-19.0.1077.3-19.0.1081.2.diff.xz
-Source1001: binary-19.0.1077.3-19.0.1081.2.tar.xz
-Source1002: script-19.0.1077.3-19.0.1081.2.sh
-Source1003: patch-19.0.1081.2-19.0.1084.15.diff.xz
-Source1004: binary-19.0.1081.2-19.0.1084.15.tar.xz
-Source1005: script-19.0.1081.2-19.0.1084.15.sh
-Source1006: patch-19.0.1084.15-19.0.1084.24.diff.xz
-Source1007: binary-19.0.1084.15-19.0.1084.24.tar.xz
-Source1008: patch-19.0.1084.24-19.0.1084.30.diff.xz
-Source1009: patch-19.0.1084.30-19.0.1084.36.diff.xz
-Source1010: patch-19.0.1084.36-19.0.1084.41.diff.xz
-Source1011: binary-19.0.1084.36-19.0.1084.41.tar.xz
-Source1012: patch-19.0.1084.41-19.0.1084.52.diff.xz
-Source1013: patch-19.0.1084.52-19.0.1084.56.diff.xz
+#Source1000: patch-19.0.1077.3-19.0.1081.2.diff.xz
+#Source1001: binary-19.0.1077.3-19.0.1081.2.tar.xz
+#Source1002: script-19.0.1077.3-19.0.1081.2.sh
 Provides: %{crname}
 Conflicts: chromium-browser-unstable
 Conflicts: chromium-browser-beta
@@ -77,20 +66,9 @@ chromium-browser-unstable package instead.
 
 %prep
 %setup -q -n chromium-%{basever}
-%patchver 19.0.1077.3 19.0.1081.2
-tar xvf %{_src}/binary-19.0.1077.3-19.0.1081.2.tar.xz
-sh -x %{_src}/script-19.0.1077.3-19.0.1081.2.sh
-%patchver 19.0.1081.2 19.0.1084.15
-tar xvf %{_src}/binary-19.0.1081.2-19.0.1084.15.tar.xz
-sh -x %{_src}/script-19.0.1081.2-19.0.1084.15.sh
-%patchver 19.0.1084.15 19.0.1084.24
-tar xvf %{_src}/binary-19.0.1084.15-19.0.1084.24.tar.xz
-%patchver 19.0.1084.24 19.0.1084.30
-%patchver 19.0.1084.30 19.0.1084.36
-%patchver 19.0.1084.36 19.0.1084.41
-tar xvf %{_src}/binary-19.0.1084.36-19.0.1084.41.tar.xz
-%patchver 19.0.1084.41 19.0.1084.52
-%patchver 19.0.1084.52 19.0.1084.56
+#%patchver 19.0.1077.3 19.0.1081.2
+#tar xvf %{_src}/binary-19.0.1077.3-19.0.1081.2.tar.xz
+#sh -x %{_src}/script-19.0.1077.3-19.0.1081.2.sh
 
 %patch0 -p1 -b .remove-inline
 
