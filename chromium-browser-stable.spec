@@ -16,7 +16,7 @@ Source1: chromium-wrapper
 Source2: chromium-browser.desktop
 Patch0: chromium-19.0.1077.3-remove-inline.patch
 Patch1: chromium-20.0.1132.43-svnversion.patch
-Source1000: patch-20.0.1132.43-20.0.1132.47.diff.xz
+#Source1000: patch-20.0.1132.43-20.0.1132.47.diff.xz
 #Source1001: binary-19.0.1077.3-19.0.1081.2.tar.xz
 #Source1002: script-19.0.1077.3-19.0.1081.2.sh
 Provides: %{crname}
@@ -70,7 +70,7 @@ chromium-browser-unstable package instead.
 %patch0 -p1 -b .remove-inline
 %patch1 -p1 -b .svnversion
 
-%patchver 20.0.1132.43 20.0.1132.47
+#%patchver 20.0.1132.43 20.0.1132.47
 #tar xvf %{_src}/binary-19.0.1077.3-19.0.1081.2.tar.xz
 #sh -x %{_src}/script-19.0.1077.3-19.0.1081.2.sh
 
