@@ -1,4 +1,4 @@
-%define revision 144678
+%define revision 145807
 %define crname chromium-browser
 %define _crdir %{_libdir}/%{crname}
 %define _src %{_topdir}/SOURCES
@@ -6,8 +6,8 @@
 %define patchver() ([ -f %{_src}/patch-%1-%2.diff.xz ] || exit 1; xz -dc %{_src}/patch-%1-%2.diff.xz|patch -p1);
 
 Name: chromium-browser-stable
-Version: 20.0.1132.47
-Release: %mkrel 2
+Version: 20.0.1132.57
+Release: %mkrel 1
 Summary: A fast webkit-based web browser
 Group: Networking/WWW
 License: BSD, LGPL
@@ -17,6 +17,7 @@ Source2: chromium-browser.desktop
 Patch0: chromium-19.0.1077.3-remove-inline.patch
 Patch1: chromium-20.0.1132.43-svnversion.patch
 Source1000: patch-20.0.1132.43-20.0.1132.47.diff.xz
+Source1001: patch-20.0.1132.47-20.0.1132.57.diff.xz
 #Source1001: binary-19.0.1077.3-19.0.1081.2.tar.xz
 #Source1002: script-19.0.1077.3-19.0.1081.2.sh
 Provides: %{crname}
@@ -32,7 +33,7 @@ BuildRequires: libxscrnsaver-devel, dbus-glib-devel, cups-devel
 BuildRequires: libgnome-keyring-devel libvpx-devel libxtst-devel
 BuildRequires: libxslt-devel libxml2-devel libxt-devel pam-devel
 BuildRequires: libevent-devel libflac-devel pulseaudio-devel
-BuildRequires: elfutils-devel udev-devel
+BuildRequires: elfutils-devel udev-devel speex-devel yasm
 ExclusiveArch: i586 x86_64 armv7l
 
 %description
@@ -71,6 +72,7 @@ chromium-browser-unstable package instead.
 %patch1 -p1 -b .svnversion
 
 %patchver 20.0.1132.43 20.0.1132.47
+%patchver 20.0.1132.47 20.0.1132.57
 #tar xvf %{_src}/binary-19.0.1077.3-19.0.1081.2.tar.xz
 #sh -x %{_src}/script-19.0.1077.3-19.0.1081.2.sh
 
@@ -94,10 +96,12 @@ build/gyp_chromium --depth=. \
 	-D use_system_zlib=1 \
 	-D use_system_bzip2=1 \
 	-D use_system_xdg_utils=1 \
+	-D use_system_yasm=1 \
 	-D use_system_libpng=1 \
 	-D use_system_libjpeg=1 \
 	-D use_system_libevent=1 \
-	-D use_system_flac=0 \
+	-D use_system_speex=1 \
+	-D use_system_flac=1 \
 	-D use_system_vpx=0 \
 	-D use_system_icu=0 \
 %ifarch i586
