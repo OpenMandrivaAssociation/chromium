@@ -7,7 +7,7 @@
 
 Name: chromium-browser-stable
 Version: 20.0.1132.57
-Release: %mkrel 1
+Release: %mkrel 2
 Summary: A fast webkit-based web browser
 Group: Networking/WWW
 License: BSD, LGPL
@@ -132,6 +132,8 @@ install -m 755 out/Release/chrome %{buildroot}%{_crdir}/
 install -m 4755 out/Release/chrome_sandbox %{buildroot}%{_crdir}/chrome-sandbox
 install -m 644 out/Release/chrome.1 %{buildroot}%{_mandir}/man1/%{crname}.1
 install -m 644 out/Release/chrome.pak %{buildroot}%{_crdir}/
+install -m 644 out/Release/ui_resources_standard.pak %{buildroot}%{_crdir}/
+install -m 644 out/Release/theme_resources_standard.pak %{buildroot}%{_crdir}/
 install -m 755 out/Release/libffmpegsumo.so %{buildroot}%{_crdir}/
 %ifnarch armv7l
 install -m 755 out/Release/libppGoogleNaClPluginChrome.so %{buildroot}%{_crdir}/
@@ -190,6 +192,8 @@ rm -rf %{buildroot}
 %{_crdir}/locales
 %{_crdir}/resources.pak
 %{_crdir}/resources
+%{_crdir}/ui_resources_standard.pak
+%{_crdir}/theme_resources_standard.pak
 %{_crdir}/themes
 %{_crdir}/default_apps
 #%{_crdir}/xdg-mime
