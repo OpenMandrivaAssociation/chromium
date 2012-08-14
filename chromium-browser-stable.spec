@@ -1,31 +1,45 @@
-%define revision 145807
+%define revision 148591
 %define crname chromium-browser
 %define _crdir %{_libdir}/%{crname}
 %define _src %{_topdir}/SOURCES
-%define basever 20.0.1132.43
+%define basever 21.0.1171.0
 %define patchver() ([ -f %{_src}/patch-%1-%2.diff.xz ] || exit 1; xz -dc %{_src}/patch-%1-%2.diff.xz|patch -p1);
 
 Name: chromium-browser-stable
-Version: 20.0.1132.57
-Release: %mkrel 2
+Version: 21.0.1180.57
+Release: %mkrel 1
 Summary: A fast webkit-based web browser
 Group: Networking/WWW
 License: BSD, LGPL
 Source0: chromium-%{basever}.tar.xz
 Source1: chromium-wrapper
 Source2: chromium-browser.desktop
-Patch0: chromium-19.0.1077.3-remove-inline.patch
-Patch1: chromium-20.0.1132.43-svnversion.patch
-Source1000: patch-20.0.1132.43-20.0.1132.47.diff.xz
-Source1001: patch-20.0.1132.47-20.0.1132.57.diff.xz
-#Source1001: binary-19.0.1077.3-19.0.1081.2.tar.xz
-#Source1002: script-19.0.1077.3-19.0.1081.2.sh
+Source1000: patch-21.0.1171.0-21.0.1180.0.diff.xz
+Source1001: binary-21.0.1171.0-21.0.1180.0.tar.xz
+Source1002: script-21.0.1171.0-21.0.1180.0.sh
+Source1003: patch-21.0.1180.0-21.0.1180.4.diff.xz
+Source1004: binary-21.0.1180.0-21.0.1180.4.tar.xz
+Source1005: script-21.0.1180.0-21.0.1180.4.sh
+Source1006: patch-21.0.1180.4-21.0.1180.11.diff.xz
+Source1007: binary-21.0.1180.4-21.0.1180.11.tar.xz
+Source1008: script-21.0.1180.4-21.0.1180.11.sh
+Source1009: patch-21.0.1180.11-21.0.1180.15.diff.xz
+Source1010: binary-21.0.1180.11-21.0.1180.15.tar.xz
+Source1011: script-21.0.1180.11-21.0.1180.15.sh
+Source1012: patch-21.0.1180.15-21.0.1180.41.diff.xz
+Source1013: binary-21.0.1180.15-21.0.1180.41.tar.xz
+Source1014: script-21.0.1180.15-21.0.1180.41.sh
+Source1015: patch-21.0.1180.41-21.0.1180.49.diff.xz
+Source1016: patch-21.0.1180.49-21.0.1180.57.diff.xz
+Source1017: binary-21.0.1180.49-21.0.1180.57.tar.xz
+Source1018: script-21.0.1180.49-21.0.1180.57.sh
+Patch0: chromium-21.0.1171.0-remove-inline.patch
 Provides: %{crname}
 Conflicts: chromium-browser-unstable
 Conflicts: chromium-browser-beta
 Obsoletes: chromium-browser < 1:9.0.597.94
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-buildroot
-BuildRequires: bison, flex, gtk2-devel, atk-devel, libexpat-devel, gperf
+BuildRequires: bison, flex, gtk2-devel, atk-devel, expat-devel, gperf
 BuildRequires: nspr-devel, nss-devel, libalsa-devel
 BuildRequires: glib2-devel, bzip2-devel, zlib-devel, png-devel
 BuildRequires: jpeg-devel, mesagl-devel, mesaglu-devel
@@ -34,6 +48,7 @@ BuildRequires: libgnome-keyring-devel libvpx-devel libxtst-devel
 BuildRequires: libxslt-devel libxml2-devel libxt-devel pam-devel
 BuildRequires: libevent-devel libflac-devel pulseaudio-devel
 BuildRequires: elfutils-devel udev-devel speex-devel yasm
+BuildRequires: pkgconfig(libusb-1.0)
 ExclusiveArch: i586 x86_64 armv7l
 
 %description
@@ -69,12 +84,24 @@ chromium-browser-unstable package instead.
 %prep
 %setup -q -n chromium-%{basever}
 %patch0 -p1 -b .remove-inline
-%patch1 -p1 -b .svnversion
-
-%patchver 20.0.1132.43 20.0.1132.47
-%patchver 20.0.1132.47 20.0.1132.57
-#tar xvf %{_src}/binary-19.0.1077.3-19.0.1081.2.tar.xz
-#sh -x %{_src}/script-19.0.1077.3-19.0.1081.2.sh
+%patchver 21.0.1171.0 21.0.1180.0
+tar xvf %{_src}/binary-21.0.1171.0-21.0.1180.0.tar.xz
+sh -x %{_src}/script-21.0.1171.0-21.0.1180.0.sh
+%patchver 21.0.1180.0 21.0.1180.4
+tar xvf %{_src}/binary-21.0.1180.0-21.0.1180.4.tar.xz
+sh -x %{_src}/script-21.0.1180.0-21.0.1180.4.sh
+%patchver 21.0.1180.4 21.0.1180.11
+tar xvf %{_src}/binary-21.0.1180.4-21.0.1180.11.tar.xz
+sh -x %{_src}/script-21.0.1180.4-21.0.1180.11.sh
+%patchver 21.0.1180.11 21.0.1180.15
+sh -x %{_src}/script-21.0.1180.11-21.0.1180.15.sh
+%patchver 21.0.1180.15 21.0.1180.41
+tar xvf %{_src}/binary-21.0.1180.15-21.0.1180.41.tar.xz
+sh -x %{_src}/script-21.0.1180.15-21.0.1180.41.sh
+%patchver 21.0.1180.41 21.0.1180.49
+%patchver 21.0.1180.49 21.0.1180.57
+tar xvf %{_src}/binary-21.0.1180.49-21.0.1180.57.tar.xz
+sh -x %{_src}/script-21.0.1180.49-21.0.1180.57.sh
 
 echo "%{revision}" > build/LASTCHANGE.in
 
@@ -91,17 +118,19 @@ build/gyp_chromium --depth=. \
 	-D linux_link_gnome_keyring=0 \
 	-D use_gconf=0 \
 	-D werror='' \
+	-D use_system_v8=0 \
 	-D use_system_sqlite=0 \
 	-D use_system_libxml=1 \
 	-D use_system_zlib=1 \
 	-D use_system_bzip2=1 \
 	-D use_system_xdg_utils=1 \
 	-D use_system_yasm=1 \
+	-D use_system_libusb=1 \
 	-D use_system_libpng=1 \
 	-D use_system_libjpeg=1 \
 	-D use_system_libevent=1 \
-	-D use_system_speex=1 \
 	-D use_system_flac=1 \
+	-D use_system_speex=1 \
 	-D use_system_vpx=0 \
 	-D use_system_icu=0 \
 %ifarch i586
@@ -152,21 +181,22 @@ find out/Release/resources/ -name "*.d" -exec rm {} \;
 cp -r out/Release/resources %{buildroot}%{_crdir}
 
 # Strip NaCl IRT
-%ifarch x86_64
-./native_client/toolchain/linux_x86_newlib/bin/x86_64-nacl-strip %{buildroot}%{_crdir}/nacl_irt_x86_64.nexe
-%endif
-%ifarch i586
-./native_client/toolchain/linux_x86_newlib/bin/i686-nacl-strip %{buildroot}%{_crdir}/nacl_irt_x86_32.nexe
-%endif
+./native_client/toolchain/linux_x86_newlib/bin/x86_64-nacl-strip --strip-debug %{buildroot}%{_crdir}/nacl_irt_x86_64.nexe
+./native_client/toolchain/linux_x86_newlib/bin/i686-nacl-strip --strip-debug %{buildroot}%{_crdir}/nacl_irt_x86_32.nexe
 
 # desktop file
 mkdir -p %{buildroot}%{_datadir}/applications
 install -m 644 %{_src}/%{crname}.desktop %{buildroot}%{_datadir}/applications/
 
 # icon
-for i in 16 22 24 26 32 48 64 128 256; do
+for i in 22 24 48 64 128 256; do
 	mkdir -p %{buildroot}%{_iconsdir}/hicolor/${i}x${i}/apps
 	install -m 644 chrome/app/theme/chromium/product_logo_$i.png \
+		%{buildroot}%{_iconsdir}/hicolor/${i}x${i}/apps/%{crname}.png
+done
+for i in 16 26 32; do
+	mkdir -p %{buildroot}%{_iconsdir}/hicolor/${i}x${i}/apps
+	install -m 644 chrome/app/theme/default_100_percent/chromium/product_logo_$i.png \
 		%{buildroot}%{_iconsdir}/hicolor/${i}x${i}/apps/%{crname}.png
 done
 
