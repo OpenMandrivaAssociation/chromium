@@ -1,0 +1,11 @@
+--- src/MenuGL.cpp.str	2009-05-20 03:52:11.000000000 +0200
++++ src/MenuGL.cpp	2009-05-20 03:52:25.000000000 +0200
+@@ -462,7 +462,7 @@
+ 		case SkillLevel: 
+ 			level = config->gameSkillBase();
+ 			tmp = (int)((level+0.05)*10.0);
+-			sprintf(buf, skillString(tmp));
++			sprintf(buf, "%s", skillString(tmp));
+ 			break;
+ 		case Graphics: 
+ 			level = config->gfxLevel()/2.0;
