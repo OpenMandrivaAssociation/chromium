@@ -77,6 +77,9 @@ sed -i.orig -e 's/getenv("CHROME_VERSION_EXTRA")/"%{product_vendor} %{product_ve
 cmp $FILE $FILE.orig && exit 1
 
 %build
+%ifarch armv7l
+%global optflags -marm %{optflags}
+%endif
 export GYP_GENERATORS=make
 build/gyp_chromium --depth=. \
 	-D linux_sandbox_path=%{_crdir}/chrome-sandbox \
@@ -97,16 +100,15 @@ build/gyp_chromium --depth=. \
 	-D use_system_flac=1 \
 	-D use_system_vpx=0 \
 	-D use_system_icu=0 \
+	-D release_extra_cflags="%{optflags}" \
 %ifarch i586
 	-D disable_sse2=1 \
-	-D release_extra_cflags="-march=i586"
 %endif
 %ifarch armv7l
 	-D target_arch=arm \
 	-D disable_nacl=1 \
 	-D linux_use_tcmalloc=0 \
-	-D armv7=1 \
-	-D release_extra_cflags="-marm"
+	-D armv7=1
 %endif
 
 # Note: DON'T use system sqlite (3.7.3) -- it breaks history search
