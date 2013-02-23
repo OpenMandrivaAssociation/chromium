@@ -32,7 +32,7 @@ BuildRequires: libxscrnsaver-devel, dbus-glib-devel, cups-devel
 BuildRequires: libgnome-keyring-devel libvpx-devel libxtst-devel
 BuildRequires: libxslt-devel libxml2-devel libxt-devel pam-devel
 BuildRequires: libevent-devel libflac-devel pulseaudio-devel
-BuildRequires: elfutils-devel udev-devel speex-devel yasm
+BuildRequires: elfutils-devel udev-devel speex-devel yasm pkgconfig(libpci)
 ExclusiveArch: i586 x86_64 armv7l
 
 %description
