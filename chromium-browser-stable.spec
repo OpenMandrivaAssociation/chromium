@@ -69,7 +69,7 @@ chromium-browser-unstable package instead.
 %setup -q -n chromium-%{version}
 %patch0 -p1 -b .remove-inline
 %patch4 -p1 -b .prefs
-%patch5 -p1 -b .siginfo~
+%patch5 -p0 -b .siginfo~
 
 # Hard code extra version
 FILE=chrome/common/chrome_version_info_posix.cc
