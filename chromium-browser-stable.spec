@@ -1,10 +1,9 @@
-%define revision 169807
 %define crname chromium-browser
 %define _crdir %{_libdir}/%{crname}
 %define _src %{_topdir}/SOURCES
 
 Name: chromium-browser-stable
-Version: 23.0.1271.95
+Version: 25.0.1364.97
 Release:  1
 Summary: A fast webkit-based web browser
 Group: Networking/WWW
@@ -18,13 +17,14 @@ Source2: chromium-browser.desktop
 Source100: icons.tar.bz2
 Patch0: chromium-21.0.1171.0-remove-inline.patch
 Patch4: chromium-20.0.1132.47-master-prefs-path.patch
+Patch5:	chromium-26.0.1368.0-glib-2.16-use-siginfo_t.patch
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-buildroot
 
 Provides: %{crname}
 Conflicts: chromium-browser-unstable
 Conflicts: chromium-browser-beta
 Obsoletes: chromium-browser < 1:9.0.597.94
-BuildRequires: bison, flex, gtk2-devel, atk-devel, libexpat-devel, gperf
+BuildRequires: bison, flex, gtk2-devel, atk-devel, pkgconfig(expat), gperf
 BuildRequires: nspr-devel, nss-devel, libalsa-devel, util-linux
 BuildRequires: glib2-devel, bzip2-devel, zlib-devel, png-devel
 BuildRequires: jpeg-devel, mesagl-devel, mesaglu-devel
@@ -69,8 +69,7 @@ chromium-browser-unstable package instead.
 %setup -q -n chromium-%{version}
 %patch0 -p1 -b .remove-inline
 %patch4 -p1 -b .prefs
-
-echo "%{revision}" > build/LASTCHANGE.in
+%patch5 -p1 -b .siginfo~
 
 # Hard code extra version
 FILE=chrome/common/chrome_version_info_posix.cc
