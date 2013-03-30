@@ -1,0 +1,12 @@
+--- chromium-26.0.1411.1/chrome/browser/first_run/first_run_linux.cc.prefs~	2013-03-30 20:25:28.076455901 +0100
++++ chromium-26.0.1411.1/chrome/browser/first_run/first_run_linux.cc	2013-03-30 20:27:30.638543682 +0100
+@@ -71,8 +71,7 @@ namespace first_run {
+ base::FilePath MasterPrefsPath() {
+   // The standard location of the master prefs is next to the chrome binary.
+   base::FilePath master_prefs;
+-  if (!PathService::Get(base::DIR_EXE, &master_prefs))
+-    return base::FilePath();
++  master_prefs = FilePath("/etc/chromium-browser");
+   return master_prefs.AppendASCII(installer::kDefaultMasterPrefs);
+ }
+ 

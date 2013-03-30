@@ -3,7 +3,7 @@
 %define _src %{_topdir}/SOURCES
 
 Name: chromium-browser-stable
-Version: 25.0.1364.97
+Version: 26.0.1411.1
 Release:  1
 Summary: A fast webkit-based web browser
 Group: Networking/WWW
@@ -16,7 +16,7 @@ Source31: default_bookmarks.html
 Source2: chromium-browser.desktop
 Source100: icons.tar.bz2
 Patch0: chromium-21.0.1171.0-remove-inline.patch
-Patch4: chromium-20.0.1132.47-master-prefs-path.patch
+Patch4: chromium-26.0.1411.1-master-prefs-path.patch
 Patch5:	chromium-26.0.1368.0-glib-2.16-use-siginfo_t.patch
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-buildroot
 
@@ -33,6 +33,7 @@ BuildRequires: libgnome-keyring-devel libvpx-devel libxtst-devel
 BuildRequires: libxslt-devel libxml2-devel libxt-devel pam-devel
 BuildRequires: libevent-devel libflac-devel pulseaudio-devel
 BuildRequires: elfutils-devel udev-devel speex-devel yasm pkgconfig(libpci)
+BuildRequires:	speech-dispatcher-devel
 ExclusiveArch: i586 x86_64 armv7l
 
 %description
