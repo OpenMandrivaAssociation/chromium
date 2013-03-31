@@ -4,7 +4,7 @@
 
 Name: chromium-browser-stable
 Version: 26.0.1411.1
-Release:  1
+Release:  2
 Summary: A fast webkit-based web browser
 Group: Networking/WWW
 License: BSD, LGPL
@@ -12,7 +12,6 @@ License: BSD, LGPL
 Source0: http://download.rfremix.ru/storage/chromium/%{version}/chromium-%{version}.tar.xz
 Source1: chromium-wrapper
 Source30: master_preferences
-Source31: default_bookmarks.html
 Source2: chromium-browser.desktop
 Source100: icons.tar.bz2
 Patch0: chromium-21.0.1171.0-remove-inline.patch
@@ -172,7 +171,7 @@ tar xjf %{SOURCE100} -C %{buildroot}%{_iconsdir}/hicolor/
 
 mkdir -p %{buildroot}%{_sysconfdir}/%{crname}
 install -m 0644 %{SOURCE30} %{buildroot}%{_sysconfdir}/%{crname}/
-install -m 0644 %{SOURCE31} %{buildroot}%{_sysconfdir}/%{crname}/
+ln -s %{_datadir}/mdk/bookmarks/mozilla/mozilla-download.html %{buildroot}%{_sysconfdir}/%{crname}/default_bookmarks.html
 
 find %{buildroot} -name "*.nexe" -exec strip {} \;
 
