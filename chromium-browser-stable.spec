@@ -78,6 +78,12 @@ sed -i.orig -e 's/getenv("CHROME_VERSION_EXTRA")/"%{product_vendor} %{product_ve
 cmp $FILE $FILE.orig && exit 1
 
 %build
+%ifarch %{ix86}
+mkdir -p BFD
+ln -sf /usr/bin/ld.bfd BFD/ld
+export PATH=$PWD/BFD$PATH
+%endif
+
 %ifarch armv7l
 %global optflags -marm %{optflags}
 %endif
