@@ -34,7 +34,7 @@ BuildRequires:	pkgconfig(libpulse) pkgconfig(libpng) pkgconfig(libpulse)
 BuildRequires:	pkgconfig(libxslt) pkgconfig(libxml-2.0)
 BuildRequires:	pkgconfig(libxslt) pkgconfig(xt) pkgconfig(xtst)
 BuildRequires:	pkgconfig(speex) pkgconfig(vpx)
-BuildRequires:	pkgconfig(xscrnsaver) pkconfig(zlib)
+BuildRequires:	pkgconfig(xscrnsaver) pkgconfig(zlib)
 ExclusiveArch:	%{ix86} x86_64 %{arm}
 
 %description
