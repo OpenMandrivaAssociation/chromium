@@ -1,13 +1,12 @@
 %define crname chromium-browser
 %define _crdir %{_libdir}/%{crname}
 
+Summary:	A fast webkit-based web browser
 Name:		chromium-browser-stable
 Version:	26.0.1411.1
-Release:	2
-Summary:	A fast webkit-based web browser
+Release:	3
 Group:		Networking/WWW
 License:	BSD, LGPL
-
 Source0:	http://download.rfremix.ru/storage/chromium/%{version}/chromium-%{version}.tar.xz
 Source1:	chromium-wrapper
 Source30:	master_preferences
@@ -16,26 +15,47 @@ Source100:	icons.tar.bz2
 Patch0:		chromium-21.0.1171.0-remove-inline.patch
 Patch4:		chromium-26.0.1411.1-master-prefs-path.patch
 Patch5:		chromium-26.0.1368.0-glib-2.16-use-siginfo_t.patch
+ExclusiveArch:	%{ix86} x86_64 %{arm}
 
+BuildRequires:	bison
+BuildRequires:	flex
+BuildRequires:	gperf
+BuildRequires:	yasm
+BuildRequires:	bzip2-devel
+BuildRequires:	cups-devel
+BuildRequires:	elfutils-devel
+BuildRequires:	jpeg-devel
+BuildRequires:	pam-devel
+BuildRequires:	speech-dispatcher-devel
+BuildRequires:	pkgconfig(alsa)
+BuildRequires:	pkgconfig(atk)
+BuildRequires:	pkgconfig(dbus-glib-1)
+BuildRequires:	pkgconfig(expat)
+BuildRequires:	pkgconfig(flac)
+BuildRequires:	pkgconfig(gl)
+BuildRequires:	pkgconfig(glu)
+BuildRequires:	pkgconfig(glib-2.0)
+BuildRequires:	pkgconfig(gnome-keyring-1)
+BuildRequires:	pkgconfig(gtk+-2.0)
+BuildRequires:	pkgconfig(libevent)
+BuildRequires:	pkgconfig(libpci)
+BuildRequires:	pkgconfig(libpng15)
+BuildRequires:	pkgconfig(libpulse)
+BuildRequires:	pkgconfig(libudev)
+BuildRequires:	pkgconfig(libxml-2.0)
+BuildRequires:	pkgconfig(libxslt)
+BuildRequires:	pkgconfig(nspr)
+BuildRequires:	pkgconfig(nss)
+BuildRequires:	pkgconfig(speex)
+BuildRequires:	pkgconfig(vpx)
+BuildRequires:	pkgconfig(xt)
+BuildRequires:	pkgconfig(xtst)
+BuildRequires:	pkgconfig(xscrnsaver)
+BuildRequires:	pkgconfig(zlib)
 Provides:	%{crname}
 Conflicts:	chromium-browser-unstable
 Conflicts:	chromium-browser-beta
 Obsoletes:	chromium-browser < 1:9.0.597.94
-BuildRequires:	bison flex gperf yasm
-BuildRequires:	bzip2-devel cups-devel elfutils-devel jpeg-devel
-BuildRequires:	pam-devel speech-dispatcher-devel
-BuildRequires:	pkgconfig(alsa) pkgconfig(atk)
-BuildRequires:	pkgconfig(dbus-glib-1) pkgconfig(expat) pkgconfig(flac)
-BuildRequires:	pkgconfig(gl) pkgconfig(glu)
-BuildRequires:	pkgconfig(glib-2.0) pkgconfig(gtk+-2.0) pkgconfig(gnome-keyring-1)
-BuildRequires:	pkgconfig(nspr) pkgconfig(nss)
-BuildRequires:	pkgconfig(libevent) pkgconfig(libudev) pkgconfig(libpci)
-BuildRequires:	pkgconfig(libpulse) pkgconfig(libpng) pkgconfig(libpulse)
-BuildRequires:	pkgconfig(libxslt) pkgconfig(libxml-2.0)
-BuildRequires:	pkgconfig(libxslt) pkgconfig(xt) pkgconfig(xtst)
-BuildRequires:	pkgconfig(speex) pkgconfig(vpx)
-BuildRequires:	pkgconfig(xscrnsaver) pkgconfig(zlib)
-ExclusiveArch:	%{ix86} x86_64 %{arm}
 
 %description
 Chromium is a browser that combines a minimal design with sophisticated
@@ -66,12 +86,9 @@ This is a transition package that installs the stable channel Chromium
 browser. If you prefer the dev channel browser, install the
 chromium-browser-unstable package instead.
 
-
 %prep
-%setup -q -n chromium-%{version}
-%patch0 -p1 -b .remove-inline
-%patch4 -p1 -b .prefs
-%patch5 -p0 -b .siginfo~
+%setup -qn chromium-%{version}
+%apply_patches
 
 # Hard code extra version
 FILE=chrome/common/chrome_version_info_posix.cc
@@ -204,3 +221,4 @@ find %{buildroot} -name "*.nexe" -exec strip {} \;
 %{_mandir}/man1/%{crname}*
 %{_datadir}/applications/*.desktop
 %{_iconsdir}/hicolor/*/apps/%{crname}.*
+
