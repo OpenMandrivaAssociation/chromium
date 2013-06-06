@@ -54,6 +54,7 @@ BuildRequires:	pkgconfig(xscrnsaver)
 BuildRequires:	pkgconfig(zlib)
 BuildRequires:  pkgconfig(opus)
 BuildRequires:  pkgconfig(libusb-1.0)
+BuildRequires:  pkgconfig(libmtp)
 BuildRequires:  v8-devel
 Provides:	%{crname}
 Conflicts:	chromium-browser-unstable
