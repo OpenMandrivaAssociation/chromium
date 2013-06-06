@@ -3,8 +3,8 @@
 
 Summary:	A fast webkit-based web browser
 Name:		chromium-browser-stable
-Version:	26.0.1411.1
-Release:	3
+Version:	27.0.1453.93
+Release:	1
 Group:		Networking/WWW
 License:	BSD, LGPL
 Source0:	http://download.rfremix.ru/storage/chromium/%{version}/chromium-%{version}.tar.xz
@@ -14,7 +14,6 @@ Source2:	chromium-browser.desktop
 Source100:	icons.tar.bz2
 Patch0:		chromium-21.0.1171.0-remove-inline.patch
 Patch4:		chromium-26.0.1411.1-master-prefs-path.patch
-Patch5:		chromium-26.0.1368.0-glib-2.16-use-siginfo_t.patch
 ExclusiveArch:	%{ix86} x86_64 %{arm}
 
 BuildRequires:	bison
@@ -26,6 +25,7 @@ BuildRequires:	cups-devel
 BuildRequires:	elfutils-devel
 BuildRequires:	jpeg-devel
 BuildRequires:	pam-devel
+BuildRequires:	icu-devel
 BuildRequires:	speech-dispatcher-devel
 BuildRequires:	pkgconfig(alsa)
 BuildRequires:	pkgconfig(atk)
@@ -52,6 +52,7 @@ BuildRequires:	pkgconfig(xt)
 BuildRequires:	pkgconfig(xtst)
 BuildRequires:	pkgconfig(xscrnsaver)
 BuildRequires:	pkgconfig(zlib)
+BuildRequires:  pkgconfig(opus)
 Provides:	%{crname}
 Conflicts:	chromium-browser-unstable
 Conflicts:	chromium-browser-beta
@@ -110,33 +111,52 @@ export PATH=$PWD/BFD:$PATH
 %endif
 export GYP_GENERATORS=make
 build/gyp_chromium --depth=. \
-	-D linux_sandbox_path=%{_crdir}/chrome-sandbox \
-	-D linux_sandbox_chrome_path=%{_crdir}/chrome \
-	-D linux_link_gnome_keyring=0 \
-	-D use_gconf=0 \
-	-D werror='' \
-	-D use_system_sqlite=0 \
-	-D use_system_libxml=0 \
-	-D use_system_zlib=0 \
-	-D use_system_bzip2=1 \
-	-D use_system_xdg_utils=1 \
-	-D use_system_yasm=1 \
-	-D use_system_libpng=1 \
-	-D use_system_libjpeg=1 \
-	-D use_system_libevent=1 \
-	-D use_system_speex=1 \
-	-D use_system_flac=1 \
-	-D use_system_vpx=0 \
-	-D use_system_icu=0 \
-	-D release_extra_cflags="%{optflags}" \
-%ifarch %{ix86}
-	-D disable_sse2=1 \
+        -D linux_sandbox_path=%{_libdir}/%{name}/chrome-sandbox \
+        -D linux_sandbox_chrome_path=%{_libdir}/%{name}/chrome \
+        -D linux_link_gnome_keyring=0 \
+        -D use_gconf=0 \
+        -D werror='' \
+        -D use_system_sqlite=0 \
+        -D use_system_libxml=0 \
+        -D use_system_zlib=0 \
+        -D use_system_bzip2=1 \
+        -D use_system_libbz2=1 \
+        -D use_system_libpng=0 \
+        -D use_system_libjpeg=1 \
+        -D use_system_libevent=1 \
+        -D use_system_flac=1 \
+        -D use_system_vpx=1 \
+        -D use_system_speex=1 \
+        -D use_system_libusb=1 \
+        -D use_system_libexif=1 \
+        -D use_system_libsrtp=1 \
+        -D use_system_libmtp=1 \
+        -D use_system_opus=1 \
+        -D use_system_libwebp=1 \
+        -D use_system_harfbuzz=1 \
+        -D use_system_minizip=1 \
+        -D use_system_yasm=1 \
+        -D use_system_xdg_utils=1 \
+        -D build_ffmpegsumo=1 \
+        -D use_system_ffmpeg=0 \
+        -D use_pulseaudio=1 \
+        -D use_system_v8=1 \
+        -D linux_link_libpci=1 \
+        -D linux_link_gsettings=1 \
+        -D linux_link_libspeechd=1 \
+        -D linux_link_kerberos=1 \
+        -D linux_link_libgps=1 \
+        -D use_system_icu=1 \
+%ifarch i686
+        -D disable_sse2=1 \
+        -D release_extra_cflags="-march=i686"
 %endif
-%ifarch %{arm}
-	-D target_arch=arm \
-	-D disable_nacl=1 \
-	-D linux_use_tcmalloc=0 \
-	-D armv7=1
+%ifarch armv7l
+        -D target_arch=arm \
+        -D linux_use_tcmalloc=0 \
+        -D disable_nacl=1 \
+        -D armv7=1 \
+        -D release_extra_cflags="-marm"
 %endif
 
 # Note: DON'T use system sqlite (3.7.3) -- it breaks history search
