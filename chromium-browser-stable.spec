@@ -56,6 +56,7 @@ BuildRequires:	pkgconfig(zlib)
 BuildRequires:  pkgconfig(opus)
 BuildRequires:  pkgconfig(libusb-1.0)
 BuildRequires:  pkgconfig(libmtp)
+BuildRequires:  pkgconfig(libwebp)
 BuildRequires:  v8-devel
 Provides:	%{crname}
 Conflicts:	chromium-browser-unstable
