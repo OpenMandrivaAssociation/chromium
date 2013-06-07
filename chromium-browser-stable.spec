@@ -100,6 +100,8 @@ chromium-browser-unstable package instead.
 FILE=chrome/common/chrome_version_info_posix.cc
 sed -i.orig -e 's/getenv("CHROME_VERSION_EXTRA")/"%{product_vendor} %{product_version}"/' $FILE
 cmp $FILE $FILE.orig && exit 1
+# bundled v8 go away
+find v8 -type f \! -iname '*.gyp*' -delete || die
 
 %build
 %ifarch %{ix86}
