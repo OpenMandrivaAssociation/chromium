@@ -13,6 +13,7 @@ Source30:	master_preferences
 Source2:	chromium-browser.desktop
 Source100:	icons.tar.bz2
 Patch0:		chromium-21.0.1171.0-remove-inline.patch
+Patch1:		chromium-system-v8-r0.patch
 Patch4:		chromium-26.0.1411.1-master-prefs-path.patch
 ExclusiveArch:	%{ix86} x86_64 %{arm}
 
