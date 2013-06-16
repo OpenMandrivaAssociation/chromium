@@ -4,7 +4,7 @@
 Summary:	A fast webkit-based web browser
 Name:		chromium-browser-stable
 Version:	27.0.1453.93
-Release:	1
+Release:	2
 Group:		Networking/WWW
 License:	BSD, LGPL
 Source0:	http://download.rfremix.ru/storage/chromium/%{version}/chromium-%{version}.tar.xz
@@ -40,7 +40,7 @@ BuildRequires:	pkgconfig(gnome-keyring-1)
 BuildRequires:	pkgconfig(gtk+-2.0)
 BuildRequires:	pkgconfig(libevent)
 BuildRequires:	pkgconfig(libpci)
-BuildRequires:	pkgconfig(libpng15)
+BuildRequires:	pkgconfig(libpng)
 BuildRequires:	pkgconfig(libpulse)
 BuildRequires:	pkgconfig(libudev)
 BuildRequires:	pkgconfig(libxml-2.0)
