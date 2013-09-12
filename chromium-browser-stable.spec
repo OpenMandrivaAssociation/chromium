@@ -4,10 +4,9 @@
 %define _crdir %{_libdir}/%{crname}
 %define _src %{_topdir}/SOURCES
 %define basever 29.0.1547.65
-%define patchver() ([ -f %{_sourcedir}/patch-%1-%2.diff.xz ] || exit 1; xz -dc %{_sourcedir}/patch-%1-%2.diff.xz|patch -p1);
 
 # Set up Google API keys, see http://www.chromium.org/developers/how-tos/api-keys
-# OpenMandriva keys
+# OpenMandriva key, id and secret
 # For your own builds, please get your own set of keys.
 %define    google_api_key AIzaSyAwh8uqAFaEtP0j3J6OP0Z3fhVCYUBcyxM
 %define    google_default_client_id 487576112834.apps.googleusercontent.com
@@ -164,7 +163,7 @@ mkdir -p %{buildroot}%{_crdir}/locales
 mkdir -p %{buildroot}%{_crdir}/themes
 mkdir -p %{buildroot}%{_crdir}/default_apps
 mkdir -p %{buildroot}%{_mandir}/man1
-install -m 755 %{_sourcedir}/chromium-wrapper %{buildroot}%{_crdir}/
+install -m 755 %{_SOURCE1} %{buildroot}%{_crdir}/
 install -m 755 out/Release/chrome %{buildroot}%{_crdir}/
 install -m 4755 out/Release/chrome_sandbox %{buildroot}%{_crdir}/chrome-sandbox
 install -m 644 out/Release/chrome.1 %{buildroot}%{_mandir}/man1/%{crname}.1
@@ -194,7 +193,7 @@ cp -r out/Release/resources %{buildroot}%{_crdir}
 
 # desktop file
 mkdir -p %{buildroot}%{_datadir}/applications
-install -m 644 %{_sourcedir}/%{crname}.desktop %{buildroot}%{_datadir}/applications/
+install -m644 %{SOURCE2} %{buildroot}%{_datadir}/applications/
 install -m644 %{SOURCE3} -D %{buildroot}%{_sysconfdir}/%{crname}/master_preferences
 
 # icon
