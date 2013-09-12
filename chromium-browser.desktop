@@ -186,5 +186,5 @@ Icon=chromium-browser
 Terminal=false
 Type=Application
 StartupWMClass=Chromium-browser
-MimeType=text/html;text/xml;application/xhtml+xml;application/xml;application/rss+xml;application/rdf+xml;
+MimeType=text/html;text/xml;application/xhtml+xml;application/xml;application/rss+xml;application/rdf+xml;x-scheme-handler/http;x-scheme-handler/https;x-scheme-handler/ftp;
 Categories=GTK;Network;WebBrowser;X-MandrivaLinux-Internet-WebBrowsers;X-MandrivaLinux-CrossDesktop;
