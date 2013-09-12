@@ -7,11 +7,11 @@
 %define patchver() ([ -f %{_sourcedir}/patch-%1-%2.diff.xz ] || exit 1; xz -dc %{_sourcedir}/patch-%1-%2.diff.xz|patch -p1);
 
 # Set up Google API keys, see http://www.chromium.org/developers/how-tos/api-keys
-# Note: these are for Mageia use ONLY.
+# OpenMandriva keys
 # For your own builds, please get your own set of keys.
-%define    google_api_key AIzaSyCV9AOzytWwWCtNE8f7ZV56fP1u9yWwhVU
-%define    google_default_client_id 1039996407057.apps.googleusercontent.com
-%define    google_default_client_secret mLT8XooDODav1OJG5G3bY61d
+%define    google_api_key AIzaSyAwh8uqAFaEtP0j3J6OP0Z3fhVCYUBcyxM
+%define    google_default_client_id 487576112834.apps.googleusercontent.com
+%define    google_default_client_secret G5nOV_TkIemhoYAZ8mchGpTi
 
 %bcond_with	plf
 
