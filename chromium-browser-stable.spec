@@ -4,7 +4,7 @@
 %define _crdir %{_libdir}/%{crname}
 %define _src %{_topdir}/SOURCES
 %define basever 29.0.1547.65
-%define	debug_package %nil
+#define	debug_package %nil
 
 # Set up Google API keys, see http://www.chromium.org/developers/how-tos/api-keys
 # OpenMandriva key, id and secret
@@ -143,6 +143,9 @@ build/gyp_chromium --depth=. \
 	-Duse_system_minizip=1 \
 	-Duse_system_protobuf=1 \
 	-Ddisable_nacl=1 \
+        -Ddisable_sse2=1 \
+	-Dlinux_use_gold_binary=0 \
+	-Dlinux_use_gold_flags=0 \
 %if %{with plf}
 	-Dproprietary_codecs=1 \
 	-Dffmpeg_branding=Chrome \
@@ -151,13 +154,15 @@ build/gyp_chromium --depth=. \
 %endif
         -Duse_system_speex=1 \
 %ifarch i586
-        -Ddisable_sse2=1 \
-        -Drelease_extra_cflags="-march=i586" \
+        -Drelease_extra_cflags="%optflags -march=i586" \
+%endif
+%ifarch x86_64 armv7l
+        -Drelease_extra_cflags="%optflags" \
 %endif
 %ifarch armv7hl
 	-Darm_float_abi=hard \
 	-Dv8_use_arm_eabi_hardfloat=true \
-        -Drelease_extra_cflags="-DUSE_EABI_HARDFLOAT" \
+        -Drelease_extra_cflags="%optflags -DUSE_EABI_HARDFLOAT" \
 %endif
 %ifarch %arm
 	-Darm_fpu=vfpv3-d16 \
