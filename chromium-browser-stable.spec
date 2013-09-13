@@ -104,7 +104,6 @@ sed -i.orig -e 's/getenv("CHROME_VERSION_EXTRA")/"%{product_vendor} %{product_ve
 cmp $FILE $FILE.orig && exit 1
 
 %build
-%setup_compile_flags
 #
 # We need to find why even if building w -Duse_system_libpng=0, this is built with third party libpng.
 # We able bundle one in stable release for now and will work on beta with system libpng
@@ -164,7 +163,7 @@ mkdir -p %{buildroot}%{_crdir}/locales
 mkdir -p %{buildroot}%{_crdir}/themes
 mkdir -p %{buildroot}%{_crdir}/default_apps
 mkdir -p %{buildroot}%{_mandir}/man1
-install -m 755 %{_SOURCE1} %{buildroot}%{_crdir}/
+install -m 755 %{SOURCE1} %{buildroot}%{_crdir}/
 install -m 755 out/Release/chrome %{buildroot}%{_crdir}/
 install -m 4755 out/Release/chrome_sandbox %{buildroot}%{_crdir}/chrome-sandbox
 install -m 644 out/Release/chrome.1 %{buildroot}%{_mandir}/man1/%{crname}.1
