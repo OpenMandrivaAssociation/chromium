@@ -35,6 +35,7 @@ BuildRequires: 	bison
 BuildRequires: 	flex
 BuildRequires: 	alsa-oss-devel
 BuildRequires: 	icu-devel
+BuildRequires: 	harfbuzz-devel
 BuildRequires: 	pkgconfig(expat)
 BuildRequires: 	pkgconfig(glib-2.0)
 BuildRequires: 	pkgconfig(nss)
@@ -62,6 +63,7 @@ BuildRequires: 	pkgconfig(gnutls)
 BuildRequires: 	pkgconfig(libevent)
 BuildRequires: 	pkgconfig(udev)
 BuildRequires: 	pkgconfig(flac)
+BuildRequires: 	pkgconfig(opus)
 BuildRequires: 	pkgconfig(speex)
 BuildRequires: 	pkgconfig(minizip)
 BuildRequires:  pkgconfig(protobuf)
@@ -122,7 +124,11 @@ build/gyp_chromium --depth=. \
         -Duse_system_xdg_utils=1 \
         -Duse_system_libpng=1 \
         -Duse_system_libjpeg=1 \
+	-Duse_system_harfbuzz=1 \
         -Duse_system_libevent=1 \
+	-Ddisable_newlib_untar=1 \
+	-Duse_system_yasm=1
+	-Duse_system_opus=1 \
         -Duse_system_flac=1 \
         -Duse_system_vpx=1 \
         -Duse_system_icu=1 \
@@ -144,6 +150,7 @@ build/gyp_chromium --depth=. \
 %endif
 %ifarch armv7hl
 	-Darm_float_abi=hard \
+	-Dv8_use_arm_eabi_hardfloat=true \
         -Drelease_extra_cflags="%optflags -DUSE_EABI_HARDFLOAT" \
 %endif
 %ifarch %arm
@@ -154,7 +161,7 @@ build/gyp_chromium --depth=. \
         -Dgoogle_default_client_id=%{google_default_client_id} \
         -Dgoogle_default_client_secret=%{google_default_client_secret} \
 # Note: DON'T use system sqlite (3.7.3) -- it breaks history search
-%make chrome chrome_sandbox BUILDTYPE=Release
+%make chrome chrome_sandbox chromedriver BUILDTYPE=Release
 
 %install
 ls out/Release
