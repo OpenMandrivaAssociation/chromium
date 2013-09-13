@@ -36,6 +36,7 @@ BuildRequires: 	bison
 BuildRequires: 	flex
 BuildRequires: 	alsa-oss-devel
 BuildRequires: 	icu-devel
+BuildRequires: 	jsoncpp-devel
 BuildRequires: 	harfbuzz-devel
 BuildRequires: 	pkgconfig(expat)
 BuildRequires: 	pkgconfig(glib-2.0)
@@ -116,12 +117,16 @@ build/gyp_chromium --depth=. \
         -Dlinux_sandbox_path=%{_crdir}/chrome-sandbox \
         -Dlinux_sandbox_chrome_path=%{_crdir}/chrome \
         -Dlinux_link_gnome_keyring=0 \
+	-Dlinux_link_gsettings=1 \
+	-Dlinux_link_libpci=1 \
+	-Dlinux_link_libspeechd=1 \
         -Duse_gconf=0 \
         -Dwerror='' \
         -Duse_system_sqlite=0 \
         -Duse_system_libxml=1 \
         -Duse_system_zlib=1 \
         -Duse_system_bzip2=1 \
+	-Duse_system_jsoncpp=1 \
         -Duse_system_xdg_utils=1 \
         -Duse_system_libpng=1 \
         -Duse_system_libjpeg=1 \
