@@ -38,6 +38,7 @@ BuildRequires: 	alsa-oss-devel
 BuildRequires: 	icu-devel
 BuildRequires: 	jsoncpp-devel
 BuildRequires: 	harfbuzz-devel
+BuildRequires: 	v8-devel
 BuildRequires: 	pkgconfig(expat)
 BuildRequires: 	pkgconfig(glib-2.0)
 BuildRequires: 	pkgconfig(nss)
@@ -66,6 +67,7 @@ BuildRequires: 	pkgconfig(libevent)
 BuildRequires: 	pkgconfig(udev)
 BuildRequires: 	pkgconfig(flac)
 BuildRequires: 	pkgconfig(opus)
+BuildRequires: 	pkgconfig(libwebp)
 BuildRequires: 	pkgconfig(speex)
 BuildRequires: 	pkgconfig(minizip)
 BuildRequires:  pkgconfig(protobuf)
@@ -134,16 +136,19 @@ build/gyp_chromium --depth=. \
         -Duse_system_libevent=1 \
 	-Ddisable_newlib_untar=1 \
 	-Duse_system_yasm=1 \
+	-Duse_system_libwebp=1 \
 	-Duse_system_opus=1 \
         -Duse_system_flac=1 \
         -Duse_system_vpx=1 \
         -Duse_system_icu=1 \
+	-Duse_system_nspr=1 \
         -Duse_system_libusb=1 \
         -Dlinux_use_tcmalloc=0 \
 	-Duse_system_minizip=1 \
 	-Duse_system_protobuf=1 \
 	-Ddisable_nacl=1 \
         -Ddisable_sse2=1 \
+        -Duse_system_v8=1 \
 	-Dlinux_use_gold_binary=0 \
 	-Dlinux_use_gold_flags=0 \
 %if %{with plf}
@@ -154,9 +159,11 @@ build/gyp_chromium --depth=. \
 %endif
         -Duse_system_speex=1 \
 %ifarch i586
+	-Dtarget_arch=ia32 \
         -Drelease_extra_cflags="%optflags -march=i586" \
 %endif
-%ifarch x86_64 armv7l
+%ifarch x86_64
+	-Dtarget_arch=x64 \
         -Drelease_extra_cflags="%optflags" \
 %endif
 %ifarch armv7hl
