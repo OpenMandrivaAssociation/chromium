@@ -14,6 +14,8 @@
 %define    google_default_client_secret G5nOV_TkIemhoYAZ8mchGpTi
 
 %bcond_with	plf
+# Always support proprietary codecs
+# or html5 does not work
 
 
 Name: 		chromium-browser-stable
@@ -155,7 +157,7 @@ build/gyp_chromium --depth=. \
 	-Dproprietary_codecs=1 \
 	-Dffmpeg_branding=Chrome \
 %else
-	-Dproprietary_codecs=0 \
+	-Dproprietary_codecs=1 \
 %endif
         -Duse_system_speex=1 \
 %ifarch i586
