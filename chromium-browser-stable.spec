@@ -150,6 +150,7 @@ build/gyp_chromium --depth=. \
 	-Duse_system_protobuf=1 \
 	-Ddisable_nacl=1 \
         -Ddisable_sse2=1 \
+	-Duse_pulseaudio=1 \
         -Duse_system_v8=1 \
 	-Dlinux_use_gold_binary=0 \
 	-Dlinux_use_gold_flags=0 \
