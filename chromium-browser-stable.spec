@@ -20,7 +20,7 @@
 
 Name: 		chromium-browser-stable
 Version: 	%basever
-Release: 	%mkrel 2
+Release: 	3
 Summary: 	A fast webkit-based web browser
 Group: 		Networking/WWW
 License: 	BSD, LGPL
