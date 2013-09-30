@@ -163,7 +163,7 @@ build/gyp_chromium --depth=. \
         -Duse_system_speex=1 \
 %ifarch i586
 	-Dtarget_arch=ia32 \
-        -Drelease_extra_cflags="%optflags -march=i586" \
+        -Drelease_extra_cflags="echo %{optflags} | sed 's/-g//' -march=i586" \
 %endif
 %ifarch x86_64
 	-Dtarget_arch=x64 \
