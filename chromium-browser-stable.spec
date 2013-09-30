@@ -112,6 +112,9 @@ sed -i.orig -e 's/getenv("CHROME_VERSION_EXTRA")/"%{product_vendor} %{product_ve
 cmp $FILE $FILE.orig && exit 1
 
 %build
+%ifarch %{ix86}
+%define optflags %(echo %{optflags} | sed 's/-g//')
+%endif
 #
 # We need to find why even if building w -Duse_system_libpng=0, this is built with third party libpng.
 # We able bundle one in stable release for now and will work on beta with system libpng
@@ -163,7 +166,7 @@ build/gyp_chromium --depth=. \
         -Duse_system_speex=1 \
 %ifarch i586
 	-Dtarget_arch=ia32 \
-        -Drelease_extra_cflags="echo %{optflags} | sed 's/-g//' -march=i586" \
+        -Drelease_extra_cflags="%optflags -march=i586" \
 %endif
 %ifarch x86_64
 	-Dtarget_arch=x64 \
