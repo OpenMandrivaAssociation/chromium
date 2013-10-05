@@ -3,7 +3,7 @@
 %define crname chromium-browser
 %define _crdir %{_libdir}/%{crname}
 %define _src %{_topdir}/SOURCES
-%define basever 29.0.1547.65
+%define basever 30.0.1599.66
 #define	debug_package %nil
 
 # Set up Google API keys, see http://www.chromium.org/developers/how-tos/api-keys
@@ -16,11 +16,14 @@
 %bcond_with	plf
 # Always support proprietary codecs
 # or html5 does not work
+%ifarch %{ix86}
+%define optflags %(echo %{optflags} | sed 's/-g//')
+%endif
 
 
 Name: 		chromium-browser-stable
 Version: 	%basever
-Release: 	3
+Release: 	1
 Summary: 	A fast webkit-based web browser
 Group: 		Networking/WWW
 License: 	BSD, LGPL
@@ -111,10 +114,11 @@ FILE=chrome/common/chrome_version_info_posix.cc
 sed -i.orig -e 's/getenv("CHROME_VERSION_EXTRA")/"%{product_vendor} %{product_version}"/' $FILE
 cmp $FILE $FILE.orig && exit 1
 
+# remove bundle v8
+find v8 -type f \! -iname '*.gyp*' -delete
+build/linux/unbundle/replace_gyp_files.py -Duse_system_v8=1
+
 %build
-%ifarch %{ix86}
-%define optflags %(echo %{optflags} | sed 's/-g//')
-%endif
 #
 # We need to find why even if building w -Duse_system_libpng=0, this is built with third party libpng.
 # We able bundle one in stable release for now and will work on beta with system libpng
