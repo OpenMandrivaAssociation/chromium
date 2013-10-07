@@ -28,7 +28,7 @@ Summary: 	A fast webkit-based web browser
 Group: 		Networking/WWW
 License: 	BSD, LGPL
 # From : http://gsdview.appspot.com/chromium-browser-official/
-Source0: 	chromium-%{basever}.tar.xz
+Source0: 	https://commondatastorage.googleapis.com/chromium-browser-official/chromium-%{basever}.tar.xz
 Source1: 	chromium-wrapper
 Source2: 	chromium-browser.desktop
 Source3:	master_preferences
