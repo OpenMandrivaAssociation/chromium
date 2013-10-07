@@ -17,7 +17,7 @@
 # Always support proprietary codecs
 # or html5 does not work
 %ifarch %{ix86}
-%define optflags %(echo %{optflags} | sed 's/-g//')
+export CFLAGS="`echo %{optflags} | sed -e 's/-gdwarf-4// -e 's/-g//'`"
 %endif
 
 
