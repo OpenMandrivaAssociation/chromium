@@ -16,11 +16,6 @@
 %bcond_with	plf
 # Always support proprietary codecs
 # or html5 does not work
-%ifarch %{ix86}
-export CFLAGS="`echo %{optflags} | sed -e 's/-gdwarf-4// -e 's/-g//'`"
-%endif
-
-
 Name: 		chromium-browser-stable
 Version: 	%basever
 Release: 	1
@@ -119,6 +114,10 @@ find v8 -type f \! -iname '*.gyp*' -delete
 build/linux/unbundle/replace_gyp_files.py -Duse_system_v8=1
 
 %build
+%ifarch %{ix86}
+export CFLAGS="`echo %{optflags} | sed -e 's/-gdwarf-4//' -e 's/-fvar-tracking-assignments//' -e 's/-frecord-gcc-switches//'`"
+export CXXFLAGS="$CFLAGS"
+%endif
 #
 # We need to find why even if building w -Duse_system_libpng=0, this is built with third party libpng.
 # We able bundle one in stable release for now and will work on beta with system libpng
