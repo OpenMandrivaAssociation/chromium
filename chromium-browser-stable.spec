@@ -131,17 +131,60 @@ members of the Chromium and WebDriver teams.
 %patch14 -p1
 %patch15 -p1
 
-
-echo "%{revision}" > build/LASTCHANGE.in
-
 # Hard code extra version
 FILE=chrome/common/chrome_version_info_posix.cc
 sed -i.orig -e 's/getenv("CHROME_VERSION_EXTRA")/"%{product_vendor} %{product_version}"/' $FILE
 cmp $FILE $FILE.orig && exit 1
 
-# remove bundle v8
+find third_party -type f \! -iname '*.gyp*' \
+        \! -path 'third_party/WebKit/*' \
+        \! -path 'third_party/angle_dx11/*' \
+        \! -path 'third_party/cacheinvalidation/*' \
+        \! -path 'third_party/cld/*' \
+        \! -path 'third_party/cros_system_api/*' \
+        \! -path 'third_party/ffmpeg/*' \
+        \! -path 'third_party/flot/*' \
+        \! -path 'third_party/hunspell/*' \
+        \! -path 'third_party/iccjpeg/*' \
+        \! -path 'third_party/jstemplate/*' \
+        \! -path 'third_party/khronos/*' \
+        \! -path 'third_party/leveldatabase/*' \
+        \! -path 'third_party/libjingle/*' \
+        \! -path 'third_party/libphonenumber/*' \
+        \! -path 'third_party/libsrtp/*' \
+        \! -path 'third_party/libusb/*' \
+        \! -path 'third_party/libxml/chromium/*' \
+        \! -path 'third_party/libXNVCtrl/*' \
+        \! -path 'third_party/libyuv/*' \
+        \! -path 'third_party/lss/*' \
+        \! -path 'third_party/lzma_sdk/*' \
+        \! -path 'third_party/mesa/*' \
+        \! -path 'third_party/modp_b64/*' \
+        \! -path 'third_party/mongoose/*' \
+        \! -path 'third_party/mt19937ar/*' \
+        \! -path 'third_party/npapi/*' \
+        \! -path 'third_party/openssl/*' \
+        \! -path 'third_party/ots/*' \
+        \! -path 'third_party/pywebsocket/*' \
+        \! -path 'third_party/qcms/*' \
+        \! -path 'third_party/sfntly/*' \
+        \! -path 'third_party/skia/*' \
+        \! -path 'third_party/smhasher/*' \
+        \! -path 'third_party/sqlite/*' \
+        \! -path 'third_party/tcmalloc/*' \
+        \! -path 'third_party/tlslite/*' \
+        \! -path 'third_party/trace-viewer/*' \
+        \! -path 'third_party/undoview/*' \
+        \! -path 'third_party/usrsctp/*' \
+        \! -path 'third_party/webdriver/*' \
+        \! -path 'third_party/webrtc/*' \
+        \! -path 'third_party/widevine/*' \
+        \! -path 'third_party/x86inc/*' \
+        \! -path 'third_party/zlib/google/*' \
+        -delete
+
+# remove bundled v8
 find v8 -type f \! -iname '*.gyp*' -delete
-build/linux/unbundle/replace_gyp_files.py -Duse_system_v8=1
 
 %build
 %ifarch %{ix86}
@@ -152,9 +195,7 @@ export CXXFLAGS="$CFLAGS"
 # We need to find why even if building w -Duse_system_libpng=0, this is built with third party libpng.
 # We able bundle one in stable release for now and will work on beta with system libpng
 #
-export GYP_GENERATORS=make
-build/gyp_chromium --depth=. \
-        -Dlinux_sandbox_path=%{_crdir}/chrome-sandbox \
+conf="` -Dlinux_sandbox_path=%{_crdir}/chrome-sandbox \
         -Dlinux_sandbox_chrome_path=%{_crdir}/chrome \
         -Dlinux_link_gnome_keyring=0 \
 	-Dlinux_link_gsettings=1 \
@@ -216,9 +257,12 @@ build/gyp_chromium --depth=. \
 %endif
         -Dgoogle_api_key=%{google_api_key} \
         -Dgoogle_default_client_id=%{google_default_client_id} \
-        -Dgoogle_default_client_secret=%{google_default_client_secret} \
+        -Dgoogle_default_client_secret=%{google_default_client_secret}`"
 # Note: DON'T use system sqlite (3.7.3) -- it breaks history search
-%make chrome chrome_sandbox chromedriver BUILDTYPE=Release
+build/linux/unbundle/replace_gyp_files.py $conf
+egyp_chromium $conf
+ninja -C out/Release -v -j10
+#% make chrome chrome_sandbox chromedriver BUILDTYPE=Release
 
 %install
 mkdir -p %{buildroot}%{_bindir}
