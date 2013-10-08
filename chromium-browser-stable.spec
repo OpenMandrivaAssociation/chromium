@@ -1,4 +1,3 @@
-%define revision 213526
 #define v8_ver 3.12.8
 %define crname chromium-browser
 %define _crdir %{_libdir}/%{crname}
@@ -27,6 +26,16 @@ Source0: 	https://commondatastorage.googleapis.com/chromium-browser-official/chr
 Source1: 	chromium-wrapper
 Source2: 	chromium-browser.desktop
 Source3:	master_preferences
+
+Patch0:         chromium-30.0.1599.66-master-prefs-path.patch
+
+# PATCH-FIX-OPENSUSE patches in system glew library
+Patch13:        chromium-25.0.1364.172-system-glew.patch
+# PATCH-FIX-OPENSUSE removes build part for courgette
+Patch14:        chromium-25.0.1364.172-no-courgette.patch
+# PATCH-FIX-OPENSUSE Compile the sandbox with -fPIE settings
+Patch15:        chromium-25.0.1364.172-sandbox-pie.patch
+
 Provides: 	%{crname}
 Obsoletes: 	chromium-browser-unstable < 26.0.1410.51
 Obsoletes: 	chromium-browser-beta < 26.0.1410.51
@@ -99,8 +108,29 @@ This is a transition package that installs the stable channel Chromium
 browser. If you prefer the dev channel browser, install the
 chromium-browser-unstable package instead.
 
+%package -n chromedriver
+Summary:        WebDriver for Google Chrome/Chromium
+Group:          Development/Other
+Requires:       %{name} = %{version}-%{release}
+
+
+%description -n chromedriver
+WebDriver is an open source tool for automated testing of webapps across many
+browsers. It provides capabilities for navigating to web pages, user input,
+JavaScript execution, and more. ChromeDriver is a standalone server which
+implements WebDriver's wire protocol for Chromium. It is being developed by
+members of the Chromium and WebDriver teams.
+
+
 %prep
 %setup -q -n chromium-%{basever}
+%patch0 -p1 -b .master-prefs
+
+# openSUSE patches
+%patch13 -p1
+%patch14 -p1
+%patch15 -p1
+
 
 echo "%{revision}" > build/LASTCHANGE.in
 
@@ -191,84 +221,71 @@ build/gyp_chromium --depth=. \
 %make chrome chrome_sandbox chromedriver BUILDTYPE=Release
 
 %install
-ls out/Release
 mkdir -p %{buildroot}%{_bindir}
-mkdir -p %{buildroot}%{_crdir}/locales
-mkdir -p %{buildroot}%{_crdir}/themes
-mkdir -p %{buildroot}%{_crdir}/default_apps
+mkdir -p %{buildroot}%{_libdir}/%{name}/locales
+mkdir -p %{buildroot}%{_libdir}/%{name}/themes
+mkdir -p %{buildroot}%{_libdir}/%{name}/default_apps
 mkdir -p %{buildroot}%{_mandir}/man1
-install -m 755 %{SOURCE1} %{buildroot}%{_crdir}/
-install -m 755 out/Release/chrome %{buildroot}%{_crdir}/
-install -m 4755 out/Release/chrome_sandbox %{buildroot}%{_crdir}/chrome-sandbox
-install -m 644 out/Release/chrome.1 %{buildroot}%{_mandir}/man1/%{crname}.1
-install -m 644 out/Release/chrome.pak %{buildroot}%{_crdir}/
-install -m 755 out/Release/libffmpegsumo.so %{buildroot}%{_crdir}/
-#install -m 755 out/Release/libppGoogleNaClPluginChrome.so %{buildroot}%{_crdir}/
-#install -m 755 out/Release/nacl_helper_bootstrap %{buildroot}%{_crdir}/
-#install -m 755 out/Release/nacl_helper %{buildroot}%{_crdir}/
-#install -m 644 out/Release/nacl_irt_*.nexe %{buildroot}%{_crdir}/
-install -m 644 out/Release/locales/*.pak %{buildroot}%{_crdir}/locales/
-install -m 644 out/Release/resources.pak %{buildroot}%{_crdir}/
-install -m 644 out/Release/content_resources.pak %{buildroot}%{_crdir}/
-#install -m 644 out/Release/theme_resources_standard.pak %{buildroot}%{_crdir}/
-#install -m 644 out/Release/ui_resources_standard.pak %{buildroot}%{_crdir}/
-install -m 644 out/Release/chrome_100_percent.pak %{buildroot}%{_crdir}/
-install -m 644 out/Release/chrome_remote_desktop.pak %{buildroot}%{_crdir}/
-install -m 644 chrome/browser/resources/default_apps/* %{buildroot}%{_crdir}/default_apps/
-
-ln -s %{_crdir}/chromium-wrapper %{buildroot}%{_bindir}/%{crname}
+install -m 755 %{SOURCE1} %{buildroot}%{_libdir}/%{name}/
+install -m 755 out/Release/chrome %{buildroot}%{_libdir}/%{name}/
+install -m 4755 out/Release/chrome_sandbox %{buildroot}%{_libdir}/%{name}/chrome-sandbox
+cp -a out/Release/chromedriver %{buildroot}%{_libdir}/%{name}/chromedriver
+install -m 644 out/Release/chrome.1 %{buildroot}%{_mandir}/man1/%{name}.1
+install -m 644 out/Release/chrome.pak %{buildroot}%{_libdir}/%{name}/
+install -m 755 out/Release/libffmpegsumo.so %{buildroot}%{_libdir}/%{name}/
+install -m 644 out/Release/locales/*.pak %{buildroot}%{_libdir}/%{name}/locales/
+install -m 644 out/Release/chrome_100_percent.pak %{buildroot}%{_libdir}/%{name}/
+install -m 644 out/Release/content_resources.pak %{buildroot}%{_libdir}/%{name}/
+install -m 644 out/Release/resources.pak %{buildroot}%{_libdir}/%{name}/
+install -m 644 chrome/browser/resources/default_apps/* %{buildroot}%{_libdir}/%{name}/default_apps/
+ln -s %{_libdir}/%{name}/chromium-wrapper %{buildroot}%{_bindir}/%{name}
+ln -s %{_libdir}/%{name}/chromedriver %{buildroot}%{_bindir}/chromedriver
 
 find out/Release/resources/ -name "*.d" -exec rm {} \;
-cp -r out/Release/resources %{buildroot}%{_crdir}
-
-# Strip NaCl IRT
-#./native_client/toolchain/linux_x86_newlib/bin/x86_64-nacl-strip --strip-debug %{buildroot}%{_crdir}/nacl_irt_x86_64.nexe
-#./native_client/toolchain/linux_x86_newlib/bin/i686-nacl-strip --strip-debug %{buildroot}%{_crdir}/nacl_irt_x86_32.nexe
+cp -r out/Release/resources %{buildroot}%{_libdir}/%{name}
 
 # desktop file
 mkdir -p %{buildroot}%{_datadir}/applications
-install -m644 %{SOURCE2} %{buildroot}%{_datadir}/applications/
-install -m644 %{SOURCE3} -D %{buildroot}%{_sysconfdir}/%{crname}/master_preferences
+install -m 644 %{SOURCE2} %{buildroot}%{_datadir}/applications/
 
 # icon
 for i in 22 24 48 64 128 256; do
-	mkdir -p %{buildroot}%{_iconsdir}/hicolor/${i}x${i}/apps
-	install -m 644 chrome/app/theme/chromium/product_logo_$i.png \
-		%{buildroot}%{_iconsdir}/hicolor/${i}x${i}/apps/%{crname}.png
+        mkdir -p %{buildroot}%{_datadir}/icons/hicolor/${i}x${i}/apps
+        install -m 644 chrome/app/theme/chromium/product_logo_$i.png \
+                %{buildroot}%{_datadir}/icons/hicolor/${i}x${i}/apps/%{name}.png
 done
 
-for i in 16 26 32; do
-	mkdir -p %{buildroot}%{_iconsdir}/hicolor/${i}x${i}/apps
-	install -m 644 chrome/app/theme/default_100_percent/chromium/product_logo_$i.png \
-		%{buildroot}%{_iconsdir}/hicolor/${i}x${i}/apps/%{crname}.png
-done
+# Install the master_preferences file
+mkdir -p %{buildroot}%{_sysconfdir}/%{name}
+install -m 0644 %{SOURCE3} %{buildroot}%{_sysconfdir}/%{name}/
+
 
 find %{buildroot} -name "*.nexe" -exec strip {} \;
 
 %files -n chromium-browser
 
 %files
-%config %{_sysconfdir}/%{crname}
-%{_bindir}/%{crname}
-%{_crdir}/chromium-wrapper
-%{_crdir}/chrome
-%{_crdir}/chrome-sandbox
-%{_crdir}/chrome.pak
-%{_crdir}/libffmpegsumo.so
-#%{_crdir}/libppGoogleNaClPluginChrome.so
-#%{_crdir}/nacl_helper_bootstrap
-#%{_crdir}/nacl_helper
-#%{_crdir}/nacl_irt_*.nexe
-%{_crdir}/locales
-%{_crdir}/content_resources.pak
-#%{_crdir}/theme_resources_standard.pak
-#%{_crdir}/ui_resources_standard.pak
-%{_crdir}/chrome_remote_desktop.pak
-%{_crdir}/chrome_100_percent.pak
-%{_crdir}/resources.pak
-%{_crdir}/resources
-%{_crdir}/themes
-%{_crdir}/default_apps
-%{_mandir}/man1/%{crname}*
+%doc LICENSE AUTHORS
+%config %{_sysconfdir}/%{name}
+%{_bindir}/%{name}
+%{_libdir}/%{name}/chromium-wrapper
+%{_libdir}/%{name}/chrome
+%{_libdir}/%{name}/chrome-sandbox
+%{_libdir}/%{name}/chrome.pak
+%{_libdir}/%{name}/libffmpegsumo.so
+%{_libdir}/%{name}/locales
+%{_libdir}/%{name}/chrome_100_percent.pak
+%{_libdir}/%{name}/content_resources.pak
+%{_libdir}/%{name}/resources.pak
+%{_libdir}/%{name}/resources
+%{_libdir}/%{name}/themes
+%{_libdir}/%{name}/default_apps
+%{_mandir}/man1/%{name}*
 %{_datadir}/applications/*.desktop
-%{_iconsdir}/hicolor/*/apps/%{crname}.png
+%{_datadir}/icons/hicolor/*/apps/%{name}.png
+
+
+%files -n chromedriver
+%doc LICENSE AUTHORS
+%{_bindir}/chromedriver
+%{_libdir}/%{name}/chromedriver
