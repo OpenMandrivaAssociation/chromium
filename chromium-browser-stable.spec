@@ -147,6 +147,15 @@ build/linux/unbundle/replace_gyp_files.py -Duse_system_v8=1
 %ifarch %{ix86}
 export CFLAGS="`echo %{optflags} | sed -e 's/-gdwarf-4//' -e 's/-fvar-tracking-assignments//' -e 's/-frecord-gcc-switches//'`"
 export CXXFLAGS="$CFLAGS"
+
+# try build without gold on 586 as we run out of memory otherwise
+export CC="%{__cc} -fuse-ld=bfd"
+export CXX="%{__cxx} -fuse-ld=bfd"
+mkdir -p BFD
+ln -sf /usr/bin/ld.bfd BFD/ld
+export PATH=$PWD/BFD:$PATH
+export LIBPATH_LIB="%{_lib}"
+
 %endif
 #
 # We need to find why even if building w -Duse_system_libpng=0, this is built with third party libpng.
