@@ -3,7 +3,9 @@
 %define _crdir %{_libdir}/%{crname}
 %define _src %{_topdir}/SOURCES
 %define basever 30.0.1599.66
-#define	debug_package %nil
+%ifarch %{ix86}
+%define	debug_package %nil
+%endif
 
 # Set up Google API keys, see http://www.chromium.org/developers/how-tos/api-keys
 # OpenMandriva key, id and secret
