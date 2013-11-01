@@ -1,4 +1,3 @@
-#define v8_ver 3.12.8
 %define crname chromium-browser
 %define _crdir %{_libdir}/%{crname}
 %define _src %{_topdir}/SOURCES
@@ -49,7 +48,6 @@ BuildRequires: 	alsa-oss-devel
 BuildRequires: 	icu-devel
 BuildRequires: 	jsoncpp-devel
 BuildRequires: 	harfbuzz-devel
-BuildRequires: 	v8-devel
 BuildRequires: 	pkgconfig(expat)
 BuildRequires: 	pkgconfig(glib-2.0)
 BuildRequires: 	pkgconfig(nss)
@@ -141,10 +139,6 @@ FILE=chrome/common/chrome_version_info_posix.cc
 sed -i.orig -e 's/getenv("CHROME_VERSION_EXTRA")/"%{product_vendor} %{product_version}"/' $FILE
 cmp $FILE $FILE.orig && exit 1
 
-# remove bundle v8
-find v8 -type f \! -iname '*.gyp*' -delete
-build/linux/unbundle/replace_gyp_files.py -Duse_system_v8=1
-
 %build
 %ifarch %{ix86}
 export CFLAGS="`echo %{optflags} | sed -e 's/-gdwarf-4//' -e 's/-fvar-tracking-assignments//' -e 's/-frecord-gcc-switches//'`"
@@ -190,7 +184,6 @@ build/gyp_chromium --depth=. \
 	-Ddisable_nacl=1 \
         -Ddisable_sse2=1 \
 	-Duse_pulseaudio=1 \
-        -Duse_system_v8=1 \
 	-Dlinux_use_gold_binary=0 \
 	-Dlinux_use_gold_flags=0 \
 %if %{with plf}
