@@ -1,7 +1,7 @@
 %define crname chromium-browser
 %define _crdir %{_libdir}/%{crname}
 %define _src %{_topdir}/SOURCES
-%define basever 30.0.1599.66
+%define basever 30.0.1599.114
 %ifarch %{ix86}
 %define	debug_package %nil
 %endif
@@ -18,7 +18,7 @@
 # or html5 does not work
 Name: 		chromium-browser-stable
 Version: 	%basever
-Release: 	2
+Release: 	1
 Summary: 	A fast webkit-based web browser
 Group: 		Networking/WWW
 License: 	BSD, LGPL
@@ -252,8 +252,8 @@ for i in 22 24 48 64 128 256; do
 done
 
 # Install the master_preferences file
-mkdir -p %{buildroot}%{_sysconfdir}/%{name}
-install -m 0644 %{SOURCE3} %{buildroot}%{_sysconfdir}/%{name}/
+mkdir -p %{buildroot}%{_sysconfdir}/chromium
+install -m 0644 %{SOURCE3} %{buildroot}%{_sysconfdir}/chromium
 
 
 find %{buildroot} -name "*.nexe" -exec strip {} \;
@@ -262,7 +262,7 @@ find %{buildroot} -name "*.nexe" -exec strip {} \;
 
 %files
 %doc LICENSE AUTHORS
-%config %{_sysconfdir}/%{name}
+%config %{_sysconfdir}/chromium
 %{_bindir}/%{name}
 %{_libdir}/%{name}/chromium-wrapper
 %{_libdir}/%{name}/chrome
