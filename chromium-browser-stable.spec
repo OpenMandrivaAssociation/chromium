@@ -2,10 +2,8 @@
 %define crname chromium-browser
 %define _crdir %{_libdir}/%{crname}
 %define _src %{_topdir}/SOURCES
-%define basever 30.0.1599.114
-%ifarch %{ix86}
+%define basever 30.0.1599.116
 %define	debug_package %nil
-%endif
 
 # Set up Google API keys, see http://www.chromium.org/developers/how-tos/api-keys
 # OpenMandriva key, id and secret
@@ -19,7 +17,7 @@
 # or html5 does not work
 Name: 		chromium-browser-stable
 Version: 	%basever
-Release: 	2
+Release: 	1
 Summary: 	A fast webkit-based web browser
 Group: 		Networking/WWW
 License: 	BSD, LGPL
@@ -49,7 +47,6 @@ BuildRequires: 	alsa-oss-devel
 BuildRequires: 	icu-devel
 BuildRequires: 	jsoncpp-devel
 BuildRequires: 	harfbuzz-devel
-BuildRequires: 	v8-devel
 BuildRequires: 	pkgconfig(expat)
 BuildRequires: 	pkgconfig(glib-2.0)
 BuildRequires: 	pkgconfig(nss)
@@ -142,15 +139,10 @@ sed -i.orig -e 's/getenv("CHROME_VERSION_EXTRA")/"%{product_vendor} %{product_ve
 cmp $FILE $FILE.orig && exit 1
 
 # remove bundle v8
-find v8 -type f \! -iname '*.gyp*' -delete
-build/linux/unbundle/replace_gyp_files.py -Duse_system_v8=1
+#find v8 -type f \! -iname '*.gyp*' -delete
+#build/linux/unbundle/replace_gyp_files.py -Duse_system_v8=1
 
 %build
-%ifarch %{ix86}
-export CFLAGS="`echo %{optflags} | sed -e 's/-gdwarf-4//' -e 's/-fvar-tracking-assignments//' -e 's/-frecord-gcc-switches//'`"
-export CXXFLAGS="$CFLAGS"
-
-%endif
 #
 # We need to find why even if building w -Duse_system_libpng=0, this is built with third party libpng.
 # We able bundle one in stable release for now and will work on beta with system libpng
@@ -190,7 +182,6 @@ build/gyp_chromium --depth=. \
 	-Ddisable_nacl=1 \
         -Ddisable_sse2=1 \
 	-Duse_pulseaudio=1 \
-        -Duse_system_v8=1 \
 	-Dlinux_use_gold_binary=0 \
 	-Dlinux_use_gold_flags=0 \
 %if %{with plf}
@@ -202,11 +193,9 @@ build/gyp_chromium --depth=. \
         -Duse_system_speex=1 \
 %ifarch i586
 	-Dtarget_arch=ia32 \
-        -Drelease_extra_cflags="$CFLAGS -march=i586" \
 %endif
 %ifarch x86_64
 	-Dtarget_arch=x64 \
-        -Drelease_extra_cflags="%optflags" \
 %endif
 %ifarch armv7hl
 	-Darm_float_abi=hard \
