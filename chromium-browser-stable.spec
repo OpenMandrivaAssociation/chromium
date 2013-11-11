@@ -43,6 +43,7 @@ Obsoletes: 	chromium-browser < 1:9.0.597.94
 BuildRequires: 	gperf
 BuildRequires: 	bison
 BuildRequires: 	flex
+BuildRequires: 	v8-devel
 BuildRequires: 	alsa-oss-devel
 BuildRequires: 	icu-devel
 BuildRequires: 	jsoncpp-devel
@@ -139,8 +140,8 @@ sed -i.orig -e 's/getenv("CHROME_VERSION_EXTRA")/"%{product_vendor} %{product_ve
 cmp $FILE $FILE.orig && exit 1
 
 # remove bundle v8
-#find v8 -type f \! -iname '*.gyp*' -delete
-#build/linux/unbundle/replace_gyp_files.py -Duse_system_v8=1
+find v8 -type f \! -iname '*.gyp*' -delete
+build/linux/unbundle/replace_gyp_files.py -Duse_system_v8=1
 
 %build
 #
@@ -174,6 +175,7 @@ build/gyp_chromium --depth=. \
         -Duse_system_flac=1 \
         -Duse_system_vpx=1 \
         -Duse_system_icu=1 \
+        -Duse_system_v8=1 \
 	-Duse_system_nspr=1 \
         -Duse_system_libusb=1 \
         -Dlinux_use_tcmalloc=0 \
