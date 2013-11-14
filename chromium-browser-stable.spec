@@ -2,7 +2,7 @@
 %define crname chromium-browser
 %define _crdir %{_libdir}/%{crname}
 %define _src %{_topdir}/SOURCES
-%define basever 30.0.1599.116
+%define basever 31.0.1650.48
 %define	debug_package %nil
 
 # Set up Google API keys, see http://www.chromium.org/developers/how-tos/api-keys
@@ -17,7 +17,7 @@
 # or html5 does not work
 Name: 		chromium-browser-stable
 Version: 	%basever
-Release: 	2
+Release: 	1
 Summary: 	A fast webkit-based web browser
 Group: 		Networking/WWW
 License: 	BSD, LGPL
@@ -43,7 +43,7 @@ Obsoletes: 	chromium-browser < 1:9.0.597.94
 BuildRequires: 	gperf
 BuildRequires: 	bison
 BuildRequires: 	flex
-BuildRequires: 	v8-devel
+#BuildRequires: 	v8-devel
 BuildRequires: 	alsa-oss-devel
 BuildRequires: 	icu-devel
 BuildRequires: 	jsoncpp-devel
@@ -140,8 +140,9 @@ sed -i.orig -e 's/getenv("CHROME_VERSION_EXTRA")/"%{product_vendor} %{product_ve
 cmp $FILE $FILE.orig && exit 1
 
 # remove bundle v8
-find v8 -type f \! -iname '*.gyp*' -delete
-build/linux/unbundle/replace_gyp_files.py -Duse_system_v8=1
+#find v8 -type f \! -iname '*.gyp*' -delete
+#build/linux/unbundle/replace_gyp_files.py
+#-Duse_system_v8=1 \
 
 %build
 #
@@ -175,7 +176,6 @@ build/gyp_chromium --depth=. \
         -Duse_system_flac=1 \
         -Duse_system_vpx=1 \
         -Duse_system_icu=1 \
-        -Duse_system_v8=1 \
 	-Duse_system_nspr=1 \
         -Duse_system_libusb=1 \
         -Dlinux_use_tcmalloc=0 \
