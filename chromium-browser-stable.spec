@@ -17,7 +17,7 @@
 # or html5 does not work
 Name: 		chromium-browser-stable
 Version: 	%basever
-Release: 	3
+Release: 	4
 Summary: 	A fast webkit-based web browser
 Group: 		Networking/WWW
 License: 	BSD, LGPL
