@@ -2,7 +2,7 @@
 %define crname chromium-browser
 %define _crdir %{_libdir}/%{crname}
 %define _src %{_topdir}/SOURCES
-%define basever 31.0.1650.48
+%define basever 33.0.1750.152
 %define	debug_package %nil
 
 # Set up Google API keys, see http://www.chromium.org/developers/how-tos/api-keys
@@ -28,6 +28,7 @@ Source2: 	chromium-browser.desktop
 Source3:	master_preferences
 
 Patch0:         chromium-30.0.1599.66-master-prefs-path.patch
+Patch1:		chromium-gn-r0.patch
 
 # PATCH-FIX-OPENSUSE patches in system glew library
 Patch13:        chromium-25.0.1364.172-system-glew.patch
@@ -70,6 +71,7 @@ BuildRequires: 	pkgconfig(libxslt)
 BuildRequires: 	pkgconfig(libxml-2.0)
 BuildRequires: 	pkgconfig(libpulse)
 BuildRequires: 	pkgconfig(xt)
+BuildRequires: 	cap-devel
 BuildRequires: 	elfutils-devel
 BuildRequires: 	pkgconfig(gnutls)
 BuildRequires: 	pkgconfig(libevent)
@@ -125,6 +127,7 @@ members of the Chromium and WebDriver teams.
 %prep
 %setup -q -n chromium-%{basever}
 %patch0 -p1 -b .master-prefs
+%patch1 -p0
 
 # openSUSE patches
 %patch13 -p1
@@ -159,6 +162,8 @@ build/gyp_chromium --depth=. \
 	-Dlinux_link_libspeechd=1 \
         -Duse_gconf=0 \
         -Dwerror='' \
+	-Dsystem_libdir=%{_lib} \
+	-Dpython_ver=%{python_version} \
         -Duse_system_sqlite=0 \
         -Duse_system_libxml=1 \
         -Duse_system_zlib=1 \
