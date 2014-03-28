@@ -215,6 +215,7 @@ build/gyp_chromium --depth=. \
 %endif
 %ifarch %arm
 	-Darm_fpu=vfpv3-d16 \
+	-Darm_neon=1 \
 	-Darmv7=1 \
 %endif
         -Dgoogle_api_key=%{google_api_key} \
