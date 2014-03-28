@@ -29,6 +29,7 @@ Source3:	master_preferences
 
 Patch0:         chromium-30.0.1599.66-master-prefs-path.patch
 Patch1:		chromium-gn-r0.patch
+Patch2:		chromium-fix-arm-sysroot.patch
 
 # PATCH-FIX-OPENSUSE patches in system glew library
 Patch13:        chromium-25.0.1364.172-system-glew.patch
@@ -128,6 +129,7 @@ members of the Chromium and WebDriver teams.
 %setup -q -n chromium-%{basever}
 %patch0 -p1 -b .master-prefs
 %patch1 -p0
+%patch2 -p0
 
 # openSUSE patches
 %patch13 -p1
