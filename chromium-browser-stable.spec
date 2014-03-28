@@ -39,6 +39,11 @@ Patch14:        chromium-25.0.1364.172-no-courgette.patch
 # PATCH-FIX-OPENSUSE Compile the sandbox with -fPIE settings
 Patch15:        chromium-25.0.1364.172-sandbox-pie.patch
 
+# Debian Patches
+Patch16:	arm-neon.patch
+Patch17:	arm.patch
+Patch18:	chromium_useragent.patch
+
 Provides: 	%{crname}
 Obsoletes: 	chromium-browser-unstable < 26.0.1410.51
 Obsoletes: 	chromium-browser-beta < 26.0.1410.51
@@ -137,6 +142,9 @@ members of the Chromium and WebDriver teams.
 %patch13 -p1
 %patch14 -p1
 %patch15 -p1
+%patch16 -p1
+%patch17 -p1
+%patch18 -p1
 
 
 echo "%{revision}" > build/LASTCHANGE.in
@@ -215,7 +223,8 @@ build/gyp_chromium --depth=. \
 %endif
 %ifarch %arm
 	-Darm_fpu=vfpv3-d16 \
-	-Darm_neon=1 \
+	-Darm_thumb=1 \
+	-Darm_neon_optional=0 \
 	-Darmv7=1 \
 %endif
         -Dgoogle_api_key=%{google_api_key} \
