@@ -219,12 +219,13 @@ build/gyp_chromium --depth=. \
 %ifarch armv7hl
 	-Darm_float_abi=hard \
 	-Dv8_use_arm_eabi_hardfloat=true \
-        -Drelease_extra_cflags="%optflags -DUSE_EABI_HARDFLOAT" \
+    -Drelease_extra_cflags="%optflags -DUSE_EABI_HARDFLOAT" \
 %endif
 %ifarch %arm
 	-Darm_fpu=vfpv3-d16 \
 	-Darm_thumb=1 \
 	-Darm_neon_optional=0 \
+    -Darm_neon=0 \
 	-Darmv7=1 \
 %endif
         -Dgoogle_api_key=%{google_api_key} \
