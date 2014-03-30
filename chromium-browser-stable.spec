@@ -2,7 +2,7 @@
 %define crname chromium-browser
 %define _crdir %{_libdir}/%{crname}
 %define _src %{_topdir}/SOURCES
-%define basever 31.0.1650.48
+%define basever 33.0.1750.152
 %define	debug_package %nil
 
 # Set up Google API keys, see http://www.chromium.org/developers/how-tos/api-keys
@@ -28,6 +28,9 @@ Source2: 	chromium-browser.desktop
 Source3:	master_preferences
 
 Patch0:         chromium-30.0.1599.66-master-prefs-path.patch
+Patch1:		chromium-gn-r0.patch
+Patch2:		chromium-fix-arm-sysroot.patch
+Patch3:		chromium-fix-arm-icu.patch
 
 # PATCH-FIX-OPENSUSE patches in system glew library
 Patch13:        chromium-25.0.1364.172-system-glew.patch
@@ -35,6 +38,11 @@ Patch13:        chromium-25.0.1364.172-system-glew.patch
 Patch14:        chromium-25.0.1364.172-no-courgette.patch
 # PATCH-FIX-OPENSUSE Compile the sandbox with -fPIE settings
 Patch15:        chromium-25.0.1364.172-sandbox-pie.patch
+
+# Debian Patches
+Patch16:	arm-neon.patch
+Patch17:	arm.patch
+Patch18:	chromium_useragent.patch
 
 Provides: 	%{crname}
 Obsoletes: 	chromium-browser-unstable < 26.0.1410.51
@@ -70,6 +78,7 @@ BuildRequires: 	pkgconfig(libxslt)
 BuildRequires: 	pkgconfig(libxml-2.0)
 BuildRequires: 	pkgconfig(libpulse)
 BuildRequires: 	pkgconfig(xt)
+BuildRequires: 	cap-devel
 BuildRequires: 	elfutils-devel
 BuildRequires: 	pkgconfig(gnutls)
 BuildRequires: 	pkgconfig(libevent)
@@ -125,11 +134,17 @@ members of the Chromium and WebDriver teams.
 %prep
 %setup -q -n chromium-%{basever}
 %patch0 -p1 -b .master-prefs
+%patch1 -p0
+%patch2 -p0
+%patch3 -p0
 
 # openSUSE patches
 %patch13 -p1
 %patch14 -p1
 %patch15 -p1
+%patch16 -p1
+%patch17 -p1
+%patch18 -p1
 
 
 echo "%{revision}" > build/LASTCHANGE.in
@@ -159,6 +174,8 @@ build/gyp_chromium --depth=. \
 	-Dlinux_link_libspeechd=1 \
         -Duse_gconf=0 \
         -Dwerror='' \
+	-Dsystem_libdir=%{_lib} \
+	-Dpython_ver=%{python_version} \
         -Duse_system_sqlite=0 \
         -Duse_system_libxml=1 \
         -Duse_system_zlib=1 \
@@ -202,10 +219,13 @@ build/gyp_chromium --depth=. \
 %ifarch armv7hl
 	-Darm_float_abi=hard \
 	-Dv8_use_arm_eabi_hardfloat=true \
-        -Drelease_extra_cflags="%optflags -DUSE_EABI_HARDFLOAT" \
+    -Drelease_extra_cflags="%optflags -DUSE_EABI_HARDFLOAT" \
 %endif
 %ifarch %arm
 	-Darm_fpu=vfpv3-d16 \
+	-Darm_thumb=1 \
+	-Darm_neon_optional=0 \
+    -Darm_neon=0 \
 	-Darmv7=1 \
 %endif
         -Dgoogle_api_key=%{google_api_key} \

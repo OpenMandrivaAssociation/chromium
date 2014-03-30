@@ -9,6 +9,14 @@ export CHROME_WRAPPER="`readlink -f "$0"`"
 
 PROGDIR="`dirname "$CHROME_WRAPPER"`"
 
+# Allow users to override command-line options
+# Based on Gentoo's chromium package (and by extension, Debian's)
+if [[ -f /etc/chromium/default ]]; then
+        . /etc/chromium/default
+fi
+
+CHROMIUM_FLAGS=${CHROMIUM_USER_FLAGS:-$CHROMIUM_FLAGS}
+
 case ":$PATH:" in
   *:$PROGDIR:*)
     # $PATH already contains $PROGDIR
@@ -24,4 +32,4 @@ esac
 LD_LIBRARY_PATH="$PROGDIR:$PROGDIR/lib:$LD_LIBRARY_PATH"
 export LD_LIBRARY_PATH
 
-exec -a "$0" "$PROGDIR/chrome" "$@"
+exec -a "$0" "$PROGDIR/chrome" $CHROMIUM_FLAGS "$@"
