@@ -43,6 +43,7 @@ Patch15:        chromium-25.0.1364.172-sandbox-pie.patch
 Patch16:	arm-neon.patch
 Patch17:	arm.patch
 Patch18:	chromium_useragent.patch
+Patch19:	fix-ld-on-arm.patch
 
 Provides: 	%{crname}
 Obsoletes: 	chromium-browser-unstable < 26.0.1410.51
@@ -145,6 +146,7 @@ members of the Chromium and WebDriver teams.
 %patch16 -p1
 %patch17 -p1
 %patch18 -p1
+%patch19 -p1
 
 
 echo "%{revision}" > build/LASTCHANGE.in

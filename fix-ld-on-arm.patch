@@ -1,0 +1,12 @@
+diff --git a/build/common.gypi b/build/common.gypi
+index eb0609a..ba0b80f 100644
+--- a/build/common.gypi
++++ b/build/common.gypi
+@@ -3225,6 +3225,7 @@
+                     'ldflags': [
+                         '-Wl,-z,relro',
+                         '-Wl,-z,now',
++                        '-Wl,--no-keep-memory',
+                         '-fuse-ld=gold',
+                     ],
+                     'conditions': [
