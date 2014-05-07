@@ -1,0 +1,11 @@
+--- chromium-34.0.1847.116/build/gyp_chromium~	2014-04-02 19:03:54.000000000 +0000
++++ chromium-34.0.1847.116/build/gyp_chromium	2014-04-10 22:26:47.490160733 +0000
+@@ -39,7 +39,7 @@
+ sys.path.insert(1, os.path.join(chrome_src, 'third_party', 'WebKit',
+     'Source', 'build', 'scripts'))
+ 
+-import find_depot_tools
++#import find_depot_tools
+ 
+ # On Windows, Psyco shortens warm runs of build/gyp_chromium by about
+ # 20 seconds on a z600 machine with 12 GB of RAM, from 90 down to 70
