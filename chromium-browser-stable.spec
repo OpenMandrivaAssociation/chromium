@@ -2,7 +2,7 @@
 %define crname chromium-browser
 %define _crdir %{_libdir}/%{crname}
 %define _src %{_topdir}/SOURCES
-%define basever 33.0.1750.152
+%define basever 34.0.1847.134
 %define	debug_package %nil
 
 # Set up Google API keys, see http://www.chromium.org/developers/how-tos/api-keys
@@ -31,6 +31,7 @@ Patch0:         chromium-30.0.1599.66-master-prefs-path.patch
 Patch1:		chromium-gn-r0.patch
 Patch2:		chromium-fix-arm-sysroot.patch
 Patch3:		chromium-fix-arm-icu.patch
+Patch4:		chromium-34.0.1847-no_depot_tools.patch
 
 # PATCH-FIX-OPENSUSE patches in system glew library
 Patch13:        chromium-25.0.1364.172-system-glew.patch
@@ -134,9 +135,10 @@ members of the Chromium and WebDriver teams.
 %prep
 %setup -q -n chromium-%{basever}
 %patch0 -p1 -b .master-prefs
-%patch1 -p0
+%patch1 -p1
 %patch2 -p0
 %patch3 -p0
+%patch4 -p1
 
 # openSUSE patches
 %patch13 -p1
@@ -197,7 +199,7 @@ build/gyp_chromium --depth=. \
         -Duse_system_libusb=1 \
         -Dlinux_use_tcmalloc=0 \
 	-Duse_system_minizip=1 \
-	-Duse_system_protobuf=1 \
+	-Duse_system_protobuf=0 \
 	-Ddisable_nacl=1 \
         -Ddisable_sse2=1 \
 	-Duse_pulseaudio=1 \
@@ -245,12 +247,12 @@ install -m 755 out/Release/chrome %{buildroot}%{_libdir}/%{name}/
 install -m 4755 out/Release/chrome_sandbox %{buildroot}%{_libdir}/%{name}/chrome-sandbox
 cp -a out/Release/chromedriver %{buildroot}%{_libdir}/%{name}/chromedriver
 install -m 644 out/Release/chrome.1 %{buildroot}%{_mandir}/man1/%{name}.1
-install -m 644 out/Release/chrome.pak %{buildroot}%{_libdir}/%{name}/
 install -m 755 out/Release/libffmpegsumo.so %{buildroot}%{_libdir}/%{name}/
 install -m 644 out/Release/locales/*.pak %{buildroot}%{_libdir}/%{name}/locales/
 install -m 644 out/Release/chrome_100_percent.pak %{buildroot}%{_libdir}/%{name}/
 install -m 644 out/Release/content_resources.pak %{buildroot}%{_libdir}/%{name}/
 install -m 644 out/Release/resources.pak %{buildroot}%{_libdir}/%{name}/
+install -m 644 out/Release/icudtl.dat %{buildroot}%{_libdir}/%{name}/
 install -m 644 chrome/browser/resources/default_apps/* %{buildroot}%{_libdir}/%{name}/default_apps/
 ln -s %{_libdir}/%{name}/chromium-wrapper %{buildroot}%{_bindir}/%{name}
 ln -s %{_libdir}/%{name}/chromedriver %{buildroot}%{_bindir}/chromedriver
@@ -285,7 +287,7 @@ find %{buildroot} -name "*.nexe" -exec strip {} \;
 %{_libdir}/%{name}/chromium-wrapper
 %{_libdir}/%{name}/chrome
 %{_libdir}/%{name}/chrome-sandbox
-%{_libdir}/%{name}/chrome.pak
+%{_libdir}/%{name}/icudtl.dat
 %{_libdir}/%{name}/libffmpegsumo.so
 %{_libdir}/%{name}/locales
 %{_libdir}/%{name}/chrome_100_percent.pak
