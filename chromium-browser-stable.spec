@@ -97,6 +97,7 @@ BuildRequires: 	yasm
 BuildRequires: 	pkgconfig(libusb-1.0)
 BuildRequires:  speech-dispatcher-devel
 BuildRequires:  pkgconfig(libpci)
+BuildRequires:	python2
 
 %description
 Chromium is a browser that combines a minimal design with sophisticated
@@ -152,7 +153,6 @@ members of the Chromium and WebDriver teams.
 %patch18 -p1
 %patch19 -p1
 
-
 echo "%{revision}" > build/LASTCHANGE.in
 
 # Hard code extra version
@@ -165,8 +165,15 @@ cmp $FILE $FILE.orig && exit 1
 #build/linux/unbundle/replace_gyp_files.py
 #-Duse_system_v8=1 \
 
+# gyp is rather convoluted and not python3 friendly -- let's make
+# sure it sees python2 when it calls python
+ln -s %{_bindir}/python2 python
+
 %build
-#
+# gyp is rather convoluted and not python3 friendly -- let's make
+# sure it sees python2 when it calls python
+export PATH=`pwd`:$PATH
+
 # We need to find why even if building w -Duse_system_libpng=0, this is built with third party libpng.
 # We able bundle one in stable release for now and will work on beta with system libpng
 #
