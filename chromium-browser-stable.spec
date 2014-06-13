@@ -4,7 +4,7 @@
 %define _src %{_topdir}/SOURCES
 # Valid current basever numbers can be found at
 # http://omahaproxy.appspot.com/
-%define basever 34.0.1847.134
+%define basever 35.0.1916.153
 %define	debug_package %nil
 
 # Set up Google API keys, see http://www.chromium.org/developers/how-tos/api-keys
@@ -30,10 +30,8 @@ Source2: 	chromium-browser.desktop
 Source3:	master_preferences
 
 Patch0:         chromium-30.0.1599.66-master-prefs-path.patch
-Patch1:		chromium-gn-r0.patch
 Patch2:		chromium-fix-arm-sysroot.patch
 Patch3:		chromium-fix-arm-icu.patch
-Patch4:		chromium-34.0.1847-no_depot_tools.patch
 
 # PATCH-FIX-OPENSUSE patches in system glew library
 Patch13:        chromium-25.0.1364.172-system-glew.patch
@@ -45,7 +43,6 @@ Patch15:        chromium-25.0.1364.172-sandbox-pie.patch
 # Debian Patches
 Patch16:	arm-neon.patch
 Patch17:	arm.patch
-Patch18:	chromium_useragent.patch
 Patch19:	fix-ld-on-arm.patch
 
 Provides: 	%{crname}
@@ -98,6 +95,7 @@ BuildRequires: 	pkgconfig(libusb-1.0)
 BuildRequires:  speech-dispatcher-devel
 BuildRequires:  pkgconfig(libpci)
 BuildRequires:	python2
+BuildRequires:	ninja
 
 %description
 Chromium is a browser that combines a minimal design with sophisticated
@@ -138,20 +136,7 @@ members of the Chromium and WebDriver teams.
 
 %prep
 %setup -q -n chromium-%{basever}
-%patch0 -p1 -b .master-prefs
-%patch1 -p1
-%patch2 -p0
-%patch3 -p0
-%patch4 -p1
-
-# openSUSE patches
-%patch13 -p1
-%patch14 -p1
-%patch15 -p1
-%patch16 -p1
-%patch17 -p1
-%patch18 -p1
-%patch19 -p1
+%apply_patches
 
 echo "%{revision}" > build/LASTCHANGE.in
 
@@ -177,7 +162,7 @@ export PATH=`pwd`:$PATH
 # We need to find why even if building w -Duse_system_libpng=0, this is built with third party libpng.
 # We able bundle one in stable release for now and will work on beta with system libpng
 #
-export GYP_GENERATORS=make
+export GYP_GENERATORS=ninja
 build/gyp_chromium --depth=. \
         -Dlinux_sandbox_path=%{_crdir}/chrome-sandbox \
         -Dlinux_sandbox_chrome_path=%{_crdir}/chrome \
@@ -246,7 +231,7 @@ build/gyp_chromium --depth=. \
         -Dgoogle_default_client_id=%{google_default_client_id} \
         -Dgoogle_default_client_secret=%{google_default_client_secret} \
 # Note: DON'T use system sqlite (3.7.3) -- it breaks history search
-%make chrome chrome_sandbox chromedriver BUILDTYPE=Release
+ninja chrome chrome_sandbox chromedriver BUILDTYPE=Release
 
 %install
 mkdir -p %{buildroot}%{_bindir}

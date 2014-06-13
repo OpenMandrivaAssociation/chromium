@@ -1,10 +1,10 @@
-diff -urN chromium-25.0.1364.172.orig/build/linux/system.gyp chromium-25.0.1364.172/build/linux/system.gyp
---- chromium-25.0.1364.172.orig/build/linux/system.gyp	2013-03-25 00:02:19.000000000 +0400
-+++ chromium-25.0.1364.172/build/linux/system.gyp	2013-03-25 00:03:46.757371517 +0400
-@@ -383,6 +383,42 @@
+--- chromium-35.0.1916.153/build/linux/system.gyp.0013~	2014-06-13 17:45:54.284344191 +0200
++++ chromium-35.0.1916.153/build/linux/system.gyp	2014-06-13 17:51:00.946641566 +0200
+@@ -1011,5 +1011,41 @@
+         }],
        ],
      },
-     {
++    {
 +      'target_name': 'icu',
 +      'type': 'none',
 +      'conditions': [
@@ -40,7 +40,5 @@ diff -urN chromium-25.0.1364.172.orig/build/linux/system.gyp chromium-25.0.1364.
 +          },
 +      }]]
 +    },
-+    {
-       'target_name': 'x11',
-       'type': 'none',
-       'toolsets': ['host', 'target'],
+   ],
+ }

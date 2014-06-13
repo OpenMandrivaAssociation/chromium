@@ -1,18 +1,6 @@
---- third_party/icu/icu.gyp	2013-09-22 19:17:03.283692753 +0200
-+++ third_party/icu/icu.gyp	2013-09-22 19:17:03.283692753 +0200
-@@ -27,7 +27,7 @@
-       }],
-       ['(OS=="linux" or OS=="freebsd" or OS=="openbsd" or OS=="solaris" \
-          or OS=="netbsd" or OS=="mac" or OS=="android") and \
--        (target_arch=="arm" or target_arch=="ia32" or \
-+        (target_arch=="ia32" or \
-          target_arch=="mipsel")', {
-         'target_conditions': [
-           ['_toolset=="host"', {
-
---- native_client/src/trusted/service_runtime/linux/nacl_bootstrap.gyp  2013-10-11 19:35:11.000000000 +0200
-+++ native_client/src/trusted/service_runtime/linux/nacl_bootstrap.gyp  2013-10-11 19:35:11.000000000 +0200
-@@ -36,6 +36,7 @@
+--- chromium-35.0.1916.153/native_client/src/trusted/service_runtime/linux/nacl_bootstrap.gyp.p3~	2014-06-10 22:30:50.000000000 +0200
++++ chromium-35.0.1916.153/native_client/src/trusted/service_runtime/linux/nacl_bootstrap.gyp	2014-06-13 17:42:19.666064772 +0200
+@@ -42,6 +42,7 @@
        ],
        'libraries': [
          '-lelf',
@@ -20,4 +8,14 @@
        ],
        # This is an ugly kludge because gyp doesn't actually treat
        # host_arch=x64 target_arch=ia32 as proper cross compilation.
-
+--- chromium-35.0.1916.153/third_party/icu/icu.gyp.p3~	2014-06-13 17:42:19.666064772 +0200
++++ chromium-35.0.1916.153/third_party/icu/icu.gyp	2014-06-13 17:44:09.233555362 +0200
+@@ -30,7 +30,7 @@
+       }],
+       ['(OS=="linux" or OS=="freebsd" or OS=="openbsd" or OS=="solaris" \
+          or OS=="netbsd" or OS=="mac" or OS=="android" or OS=="qnx") and \
+-        (target_arch=="arm" or target_arch=="ia32" or \
++        (target_arch=="ia32" or \
+          target_arch=="mipsel")', {
+         'target_conditions': [
+           ['_toolset=="host"', {
