@@ -2,6 +2,8 @@
 %define crname chromium-browser
 %define _crdir %{_libdir}/%{crname}
 %define _src %{_topdir}/SOURCES
+# Valid current basever numbers can be found at
+# http://omahaproxy.appspot.com/
 %define basever 34.0.1847.134
 %define	debug_package %nil
 
