@@ -30,6 +30,7 @@ Source2: 	chromium-browser.desktop
 Source3:	master_preferences
 
 Patch0:         chromium-30.0.1599.66-master-prefs-path.patch
+Patch1:		chromium-36.0.1985.143-compile.patch
 #Patch2:		chromium-fix-arm-sysroot.patch
 Patch3:		chromium-fix-arm-icu.patch
 # Don't use clang's integrated as while trying to check the version of gas
@@ -174,6 +175,7 @@ build/gyp_chromium --depth=. \
 	-Dlinux_link_libspeechd=1 \
         -Duse_gconf=0 \
         -Dwerror='' \
+	-Ddisable_fatal_linker_warnings=1 \
 	-Dsystem_libdir=%{_lib} \
 	-Dpython_ver=%{python_version} \
         -Duse_system_sqlite=0 \
