@@ -236,7 +236,7 @@ build/gyp_chromium --depth=. \
 # As of 36.0.1985.143, use_system_icu breaks the build.
 # gyp: Duplicate target definitions for /home/bero/abf/chromium-browser-stable/BUILD/chromium-36.0.1985.143/third_party/icu/icu.gyp:icudata#target
 # This should be enabled again once the gyp files are fixed.
-ninja chrome chrome_sandbox chromedriver BUILDTYPE=Release
+ninja -C out/Release chrome chrome_sandbox chromedriver
 
 %install
 mkdir -p %{buildroot}%{_bindir}
