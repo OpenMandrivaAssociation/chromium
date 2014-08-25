@@ -4,7 +4,7 @@
 %define _src %{_topdir}/SOURCES
 # Valid current basever numbers can be found at
 # http://omahaproxy.appspot.com/
-%define basever 35.0.1916.153
+%define basever 36.0.1985.143
 %define	debug_package %nil
 
 # Set up Google API keys, see http://www.chromium.org/developers/how-tos/api-keys
@@ -30,8 +30,10 @@ Source2: 	chromium-browser.desktop
 Source3:	master_preferences
 
 Patch0:         chromium-30.0.1599.66-master-prefs-path.patch
-Patch2:		chromium-fix-arm-sysroot.patch
+#Patch2:		chromium-fix-arm-sysroot.patch
 Patch3:		chromium-fix-arm-icu.patch
+# Don't use clang's integrated as while trying to check the version of gas
+Patch4:		chromium-36.0.1985.143-clang-no-integrated-as.patch
 
 # PATCH-FIX-OPENSUSE patches in system glew library
 Patch13:        chromium-25.0.1364.172-system-glew.patch
@@ -190,17 +192,17 @@ build/gyp_chromium --depth=. \
 	-Duse_system_opus=1 \
         -Duse_system_flac=1 \
         -Duse_system_vpx=1 \
-        -Duse_system_icu=1 \
+        -Duse_system_icu=0 \
 	-Duse_system_nspr=1 \
         -Duse_system_libusb=1 \
-        -Dlinux_use_tcmalloc=0 \
+        -Duse_allocator=system \
 	-Duse_system_minizip=1 \
 	-Duse_system_protobuf=0 \
 	-Ddisable_nacl=1 \
         -Ddisable_sse2=1 \
 	-Duse_pulseaudio=1 \
-	-Dlinux_use_gold_binary=0 \
-	-Dlinux_use_gold_flags=0 \
+	-Dlinux_use_gold_binary=1 \
+	-Dlinux_use_gold_flags=1 \
 %if %{with plf}
 	-Dproprietary_codecs=1 \
 	-Dffmpeg_branding=Chrome \
@@ -229,8 +231,11 @@ build/gyp_chromium --depth=. \
 %endif
         -Dgoogle_api_key=%{google_api_key} \
         -Dgoogle_default_client_id=%{google_default_client_id} \
-        -Dgoogle_default_client_secret=%{google_default_client_secret} \
+        -Dgoogle_default_client_secret=%{google_default_client_secret}
 # Note: DON'T use system sqlite (3.7.3) -- it breaks history search
+# As of 36.0.1985.143, use_system_icu breaks the build.
+# gyp: Duplicate target definitions for /home/bero/abf/chromium-browser-stable/BUILD/chromium-36.0.1985.143/third_party/icu/icu.gyp:icudata#target
+# This should be enabled again once the gyp files are fixed.
 ninja chrome chrome_sandbox chromedriver BUILDTYPE=Release
 
 %install
