@@ -99,6 +99,7 @@ BuildRequires: 	yasm
 BuildRequires: 	pkgconfig(libusb-1.0)
 BuildRequires:  speech-dispatcher-devel
 BuildRequires:  pkgconfig(libpci)
+BuildRequires:	pkgconfig(libexif)
 %if %mdvver >= 201500
 BuildRequires:	python2
 %else
