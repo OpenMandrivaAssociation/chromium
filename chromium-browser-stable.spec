@@ -4,7 +4,7 @@
 %define _src %{_topdir}/SOURCES
 # Valid current basever numbers can be found at
 # http://omahaproxy.appspot.com/
-%define basever 36.0.1985.143
+%define basever 37.0.2062.120
 %define	debug_package %nil
 
 # Set up Google API keys, see http://www.chromium.org/developers/how-tos/api-keys
@@ -33,8 +33,10 @@ Patch0:         chromium-30.0.1599.66-master-prefs-path.patch
 Patch1:		chromium-36.0.1985.143-compile.patch
 #Patch2:		chromium-fix-arm-sysroot.patch
 Patch3:		chromium-fix-arm-icu.patch
+%if %mdvver >= 201500
 # Don't use clang's integrated as while trying to check the version of gas
 Patch4:		chromium-36.0.1985.143-clang-no-integrated-as.patch
+%endif
 
 # PATCH-FIX-OPENSUSE patches in system glew library
 Patch13:        chromium-25.0.1364.172-system-glew.patch
@@ -97,7 +99,11 @@ BuildRequires: 	yasm
 BuildRequires: 	pkgconfig(libusb-1.0)
 BuildRequires:  speech-dispatcher-devel
 BuildRequires:  pkgconfig(libpci)
+%if %mdvver >= 201500
 BuildRequires:	python2
+%else
+BuildRequires:	python
+%endif
 BuildRequires:	ninja
 
 %description
@@ -197,7 +203,7 @@ build/gyp_chromium --depth=. \
         -Duse_system_icu=0 \
 	-Duse_system_nspr=1 \
         -Duse_system_libusb=1 \
-        -Duse_allocator=system \
+        -Duse_allocator=none \
 	-Duse_system_minizip=1 \
 	-Duse_system_protobuf=0 \
 	-Ddisable_nacl=1 \
