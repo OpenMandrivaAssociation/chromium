@@ -35,7 +35,7 @@ Patch1:		chromium-36.0.1985.143-compile.patch
 Patch3:		chromium-fix-arm-icu.patch
 %if %mdvver >= 201500
 # Don't use clang's integrated as while trying to check the version of gas
-Patch4:		chromium-36.0.1985.143-clang-no-integrated-as.patch
+#Patch4:		chromium-36.0.1985.143-clang-no-integrated-as.patch
 %endif
 
 # PATCH-FIX-OPENSUSE patches in system glew library
@@ -165,6 +165,9 @@ cmp $FILE $FILE.orig && exit 1
 ln -s %{_bindir}/python2 python
 
 %build
+export CC=gcc
+export CXX=g++
+
 # gyp is rather convoluted and not python3 friendly -- let's make
 # sure it sees python2 when it calls python
 export PATH=`pwd`:$PATH
