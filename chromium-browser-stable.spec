@@ -4,7 +4,7 @@
 %define _src %{_topdir}/SOURCES
 # Valid current basever numbers can be found at
 # http://omahaproxy.appspot.com/
-%define basever 37.0.2062.120
+%define basever 38.0.2125.101
 %define	debug_package %nil
 
 # Set up Google API keys, see http://www.chromium.org/developers/how-tos/api-keys
@@ -30,9 +30,9 @@ Source2: 	chromium-browser.desktop
 Source3:	master_preferences
 
 Patch0:         chromium-30.0.1599.66-master-prefs-path.patch
-Patch1:		chromium-36.0.1985.143-compile.patch
+#Patch1:		chromium-36.0.1985.143-compile.patch
 #Patch2:		chromium-fix-arm-sysroot.patch
-Patch3:		chromium-fix-arm-icu.patch
+#Patch3:		chromium-fix-arm-icu.patch
 %if %mdvver >= 201500
 # Don't use clang's integrated as while trying to check the version of gas
 #Patch4:		chromium-36.0.1985.143-clang-no-integrated-as.patch
@@ -46,7 +46,6 @@ Patch14:        chromium-25.0.1364.172-no-courgette.patch
 Patch15:        chromium-25.0.1364.172-sandbox-pie.patch
 
 # Debian Patches
-Patch16:	arm-neon.patch
 Patch17:	arm.patch
 Patch19:	fix-ld-on-arm.patch
 
@@ -165,8 +164,6 @@ cmp $FILE $FILE.orig && exit 1
 ln -s %{_bindir}/python2 python
 
 %build
-export CC=gcc
-export CXX=g++
 
 # gyp is rather convoluted and not python3 friendly -- let's make
 # sure it sees python2 when it calls python
@@ -184,6 +181,8 @@ build/gyp_chromium --depth=. \
 	-Dlinux_link_libpci=1 \
 	-Dlinux_link_libspeechd=1 \
         -Duse_gconf=0 \
+	-Dclang=0 \
+	-Dhost_clang=0 \
         -Dwerror='' \
 	-Ddisable_fatal_linker_warnings=1 \
 	-Dsystem_libdir=%{_lib} \
