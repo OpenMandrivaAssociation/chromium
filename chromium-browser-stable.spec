@@ -165,6 +165,9 @@ ln -s %{_bindir}/python2 python
 
 %build
 
+export CC=gcc
+export CXX=g++
+
 # gyp is rather convoluted and not python3 friendly -- let's make
 # sure it sees python2 when it calls python
 export PATH=`pwd`:$PATH
@@ -187,6 +190,9 @@ build/gyp_chromium --depth=. \
 	-Ddisable_fatal_linker_warnings=1 \
 	-Dsystem_libdir=%{_lib} \
 	-Dpython_ver=%{python_version} \
+%if %mdvver >= 201500
+        -Dlibspeechd_h_prefix=speech-dispatcher/ \
+%endif
         -Duse_system_sqlite=0 \
         -Duse_system_libxml=1 \
         -Duse_system_zlib=1 \
