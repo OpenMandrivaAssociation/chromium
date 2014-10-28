@@ -17,9 +17,14 @@
 %bcond_with	plf
 # Always support proprietary codecs
 # or html5 does not work
+%if %{with plf}
+%define extrarelsuffix plf
+%define distsuffix plf
+%endif
+
 Name: 		chromium-browser-stable
 Version: 	%basever
-Release: 	1
+Release: 	1%{?extrarelsuffix}
 Summary: 	A fast webkit-based web browser
 Group: 		Networking/WWW
 License: 	BSD, LGPL
