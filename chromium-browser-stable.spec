@@ -10,9 +10,9 @@
 # Set up Google API keys, see http://www.chromium.org/developers/how-tos/api-keys
 # OpenMandriva key, id and secret
 # For your own builds, please get your own set of keys.
-%define    google_api_key AIzaSyAwh8uqAFaEtP0j3J6OP0Z3fhVCYUBcyxM
-%define    google_default_client_id 487576112834.apps.googleusercontent.com
-%define    google_default_client_secret G5nOV_TkIemhoYAZ8mchGpTi
+%define    google_api_key AIzaSyAraWnKIFrlXznuwvd3gI-gqTozL-H-8MU
+%define    google_default_client_id 1089316189405-m0ropn3qa4p1phesfvi2urs7qps1d79o.apps.googleusercontent.com
+%define    google_default_client_secret RDdr-pHq2gStY4uw0m-zxXeo
 
 %bcond_with	plf
 # Always support proprietary codecs
@@ -24,7 +24,7 @@
 
 Name: 		chromium-browser-stable
 Version: 	%basever
-Release: 	1%{?extrarelsuffix}
+Release: 	2%{?extrarelsuffix}
 Summary: 	A fast webkit-based web browser
 Group: 		Networking/WWW
 License: 	BSD, LGPL
