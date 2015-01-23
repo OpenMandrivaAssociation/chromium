@@ -4,7 +4,7 @@
 %define _src %{_topdir}/SOURCES
 # Valid current basever numbers can be found at
 # http://omahaproxy.appspot.com/
-%define basever 39.0.2171.65
+%define basever 41.0.2272.12
 %define	debug_package %nil
 
 # Set up Google API keys, see http://www.chromium.org/developers/how-tos/api-keys
@@ -168,6 +168,16 @@ cmp $FILE $FILE.orig && exit 1
 # sure it sees python2 when it calls python
 ln -s %{_bindir}/python2 python
 
+# Remove most bundled libraries. Some are still needed.
+#build/linux/unbundle/remove_bundled_libraries.py \
+#	third_party/libwebp \
+#	third_party/libjpeg \
+#	third_party/libusb \
+#	third_party/libudev \
+#	third_party/opus \
+#	third_party/webrtc \
+#	--do-remove
+
 %build
 
 export CC=gcc
@@ -180,6 +190,13 @@ export PATH=`pwd`:$PATH
 # We need to find why even if building w -Duse_system_libpng=0, this is built with third party libpng.
 # We able bundle one in stable release for now and will work on beta with system libpng
 #
+#export GYP_DEFINES=sysroot=
+# get resources for high dpi and touch
+export GYP_DEFINES=use_aura=1
+export GYP_DEFINES=enable_hidpi=1
+export GYP_DEFINES=enable_touch_ui=1
+
+
 export GYP_GENERATORS=ninja
 build/gyp_chromium --depth=. \
         -Dlinux_sandbox_path=%{_crdir}/chrome-sandbox \
@@ -188,7 +205,9 @@ build/gyp_chromium --depth=. \
 	-Dlinux_link_gsettings=1 \
 	-Dlinux_link_libpci=1 \
 	-Dlinux_link_libspeechd=1 \
+	-Dlogging_like_official_build=1 \
         -Duse_gconf=0 \
+        -Dsysroot= \
 	-Dclang=0 \
 	-Dhost_clang=0 \
         -Dwerror='' \
@@ -199,6 +218,7 @@ build/gyp_chromium --depth=. \
         -Dlibspeechd_h_prefix=speech-dispatcher/ \
 %endif
         -Duse_system_sqlite=0 \
+        -Duse_system_nss=1 \
         -Duse_system_libxml=1 \
         -Duse_system_zlib=1 \
         -Duse_system_bzip2=1 \
@@ -238,17 +258,17 @@ build/gyp_chromium --depth=. \
 %ifarch x86_64
 	-Dtarget_arch=x64 \
 %endif
-%ifarch armv7hl
+%ifarch %arm
 	-Darm_float_abi=hard \
 	-Dv8_use_arm_eabi_hardfloat=true \
 	-Drelease_extra_cflags="%optflags -DUSE_EABI_HARDFLOAT" \
-%endif
-%ifarch %arm
+	-Dtarget_arch=arm \
 	-Darm_fpu=vfpv3-d16 \
 	-Darm_thumb=1 \
-	-Darm_neon_optional=0 \
 	-Dremove_webcore_debug_symbols=1 \
 	-Darm_neon=0 \
+	-Darm_neon_optional=0 \
+	-Darm_version=7 \
 	-Darmv7=1 \
 %endif
         -Dgoogle_api_key=%{google_api_key} \
