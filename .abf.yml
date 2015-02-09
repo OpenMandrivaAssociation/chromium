@@ -3,5 +3,6 @@ removed_sources:
   chromium-37.0.2062.120.tar.xz: 23795ec3bd1a5d090e3b46a2bf77a701124756c6
   chromium-38.0.2125.101.tar.xz: 2e25563afe153a0598fcfed8f83286d3eabea530
   chromium-38.0.2125.104.tar.xz: 728c61ad2b4b6bc436fcef99efe913f6f9af7fcf
-sources:
   chromium-40.0.2214.91.tar.xz: b51e1b817b8273891a3e82057f714a839d46e124
+sources:
+  chromium-40.0.2214.111.tar.xz: 49142c01558a66014a6202a79f627b428fde29a6
