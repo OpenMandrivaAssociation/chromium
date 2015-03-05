@@ -24,7 +24,7 @@
 
 Name: 		chromium-browser-stable
 Version: 	%basever
-Release: 	1%{?extrarelsuffix}
+Release: 	2%{?extrarelsuffix}
 Summary: 	A fast webkit-based web browser
 Group: 		Networking/WWW
 License: 	BSD, LGPL
@@ -297,6 +297,7 @@ install -m 644 out/Release/chrome_100_percent.pak %{buildroot}%{_libdir}/%{name}
 install -m 644 out/Release/content_resources.pak %{buildroot}%{_libdir}/%{name}/
 install -m 644 out/Release/resources.pak %{buildroot}%{_libdir}/%{name}/
 install -m 644 out/Release/icudtl.dat %{buildroot}%{_libdir}/%{name}/
+install -m 644 out/Release/*.bin %{buildroot}%{_libdir}/%{name}/
 install -m 644 chrome/browser/resources/default_apps/* %{buildroot}%{_libdir}/%{name}/default_apps/
 ln -s %{_libdir}/%{name}/chromium-wrapper %{buildroot}%{_bindir}/%{name}
 ln -s %{_libdir}/%{name}/chromedriver %{buildroot}%{_bindir}/chromedriver
@@ -328,6 +329,7 @@ find %{buildroot} -name "*.nexe" -exec strip {} \;
 %doc LICENSE AUTHORS
 %config %{_sysconfdir}/chromium
 %{_bindir}/%{name}
+%{_libdir}/%{name}/*.bin
 %{_libdir}/%{name}/chromium-wrapper
 %{_libdir}/%{name}/chrome
 %{_libdir}/%{name}/chrome-sandbox
