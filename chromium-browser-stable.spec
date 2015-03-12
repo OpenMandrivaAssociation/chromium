@@ -52,6 +52,7 @@ Patch15:        chromium-25.0.1364.172-sandbox-pie.patch
 
 # Debian Patches
 Patch17:	arm.patch
+Patch18:	arm-neon.patch
 Patch19:	fix-ld-on-arm.patch
 
 Provides: 	%{crname}
