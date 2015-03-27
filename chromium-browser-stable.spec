@@ -180,6 +180,15 @@ ln -s %{_bindir}/python2 python
 #	--do-remove
 
 %build
+%ifarch %{arm}
+# Use linker flags to reduce memory consumption on low-mem architectures
+%global optflags %(echo %{optflags} | sed -e 's/-g /-g0 /' -e 's/-gdwarf-4//')
+mkdir -p bfd
+ln -s %{_bindir}/ld.bfd bfd/ld
+export PATH=$PWD/bfd:$PATH
+# Use linker flags to reduce memory consumption
+%global ldflags %{ldflags} -fuse-ld=bfd -Wl,--no-keep-memory -Wl,--reduce-memory-overheads
+%endif
 
 export CC=gcc
 export CXX=g++
