@@ -4,7 +4,7 @@
 %define _src %{_topdir}/SOURCES
 # Valid current basever numbers can be found at
 # http://omahaproxy.appspot.com/
-%define basever 41.0.2272.76
+%define basever 41.0.2272.118
 %define	debug_package %nil
 
 # Set up Google API keys, see http://www.chromium.org/developers/how-tos/api-keys
@@ -52,6 +52,7 @@ Patch15:        chromium-25.0.1364.172-sandbox-pie.patch
 
 # Debian Patches
 Patch17:	arm.patch
+Patch18:	arm-neon.patch
 Patch19:	fix-ld-on-arm.patch
 
 Provides: 	%{crname}
@@ -179,6 +180,15 @@ ln -s %{_bindir}/python2 python
 #	--do-remove
 
 %build
+%ifarch %{arm}
+# Use linker flags to reduce memory consumption on low-mem architectures
+%global optflags %(echo %{optflags} | sed -e 's/-g /-g0 /' -e 's/-gdwarf-4//')
+mkdir -p bfd
+ln -s %{_bindir}/ld.bfd bfd/ld
+export PATH=$PWD/bfd:$PATH
+# Use linker flags to reduce memory consumption
+%global ldflags %{ldflags} -fuse-ld=bfd -Wl,--no-keep-memory -Wl,--reduce-memory-overheads
+%endif
 
 export CC=gcc
 export CXX=g++
