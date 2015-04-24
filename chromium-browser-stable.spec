@@ -24,7 +24,7 @@
 
 Name: 		chromium-browser-stable
 Version: 	%basever
-Release: 	1%{?extrarelsuffix}
+Release: 	2%{?extrarelsuffix}
 Summary: 	A fast webkit-based web browser
 Group: 		Networking/WWW
 License: 	BSD, LGPL
@@ -190,8 +190,8 @@ export PATH=$PWD/bfd:$PATH
 %global ldflags %{ldflags} -fuse-ld=bfd -Wl,--no-keep-memory -Wl,--reduce-memory-overheads
 %endif
 
-export CC=gcc
-export CXX=g++
+export CC=clang
+export CXX=clang++
 
 # gyp is rather convoluted and not python3 friendly -- let's make
 # sure it sees python2 when it calls python
@@ -202,9 +202,7 @@ export PATH=`pwd`:$PATH
 #
 #export GYP_DEFINES=sysroot=
 # get resources for high dpi and touch
-export GYP_DEFINES=use_aura=1
-export GYP_DEFINES=enable_hidpi=1
-export GYP_DEFINES=enable_touch_ui=1
+export GYP_DEFINES="use_aura=1 enable_hidpi=1 enable_touch_ui=1 clang_use_plugins=0"
 
 
 export GYP_GENERATORS=ninja
@@ -218,8 +216,9 @@ build/gyp_chromium --depth=. \
 	-Dlogging_like_official_build=1 \
         -Duse_gconf=0 \
         -Dsysroot= \
-	-Dclang=0 \
-	-Dhost_clang=0 \
+	-Dclang=1 \
+	-Dhost_clang=1 \
+	-Dclang_use_chrome_plugins=0 \
         -Dwerror='' \
 	-Ddisable_fatal_linker_warnings=1 \
 	-Dsystem_libdir=%{_lib} \
