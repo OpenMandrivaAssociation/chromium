@@ -119,7 +119,7 @@ technology to make the web faster, safer, and easier.
 This is the stable channel Chromium browser. It offers a rock solid
 browser which is updated with features and fixes once they have been
 thoroughly tested. If you want the latest features, install the
-chromium-browser-unstable package instead.
+chromium-browser-dev package instead.
 
 %package -n chromium-browser
 Summary: 	A fast webkit-based web browser (transition package)
@@ -133,7 +133,7 @@ technology to make the web faster, safer, and easier.
 
 This is a transition package that installs the stable channel Chromium
 browser. If you prefer the dev channel browser, install the
-chromium-browser-unstable package instead.
+chromium-browser-dev package instead.
 
 %package -n chromedriver
 Summary:        WebDriver for Google Chrome/Chromium
