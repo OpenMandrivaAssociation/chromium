@@ -190,8 +190,13 @@ export PATH=$PWD/bfd:$PATH
 %global ldflags %{ldflags} -fuse-ld=bfd -Wl,--no-keep-memory -Wl,--reduce-memory-overheads
 %endif
 
+%if %mdvver >= 201500
 export CC=clang
 export CXX=clang++
+%else
+export CC=gcc
+export CXX=g++
+%endif
 
 # gyp is rather convoluted and not python3 friendly -- let's make
 # sure it sees python2 when it calls python
@@ -219,6 +224,9 @@ build/gyp_chromium --depth=. \
 %if %mdvver >= 201500
 	-Dclang=1 \
 	-Dhost_clang=1 \
+%else
+	-Dclang=0 \
+	-Dhost_clang=0 \
 %endif
 	-Dclang_use_chrome_plugins=0 \
         -Dwerror='' \
