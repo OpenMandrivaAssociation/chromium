@@ -7,6 +7,10 @@
 %define basever 42.0.2311.135
 %define	debug_package %nil
 
+%ifarch %ix86
+%define _build_pkgcheck_set %{nil}
+%endif
+
 # Set up Google API keys, see http://www.chromium.org/developers/how-tos/api-keys
 # OpenMandriva key, id and secret
 # For your own builds, please get your own set of keys.
@@ -191,8 +195,13 @@ export PATH=$PWD/bfd:$PATH
 %endif
 
 %if %mdvver >= 201500
+%ifarch %arm
+export CC=gcc
+export CXX=g++
+%else
 export CC=clang
 export CXX=clang++
+%endif
 %else
 export CC=gcc
 export CXX=g++
@@ -222,8 +231,13 @@ build/gyp_chromium --depth=. \
         -Duse_gconf=0 \
         -Dsysroot= \
 %if %mdvver >= 201500
+%ifarch %arm
+        -Dclang=0 \
+        -Dhost_clang=0 \
+%else
 	-Dclang=1 \
 	-Dhost_clang=1 \
+%endif
 %else
 	-Dclang=0 \
 	-Dhost_clang=0 \
