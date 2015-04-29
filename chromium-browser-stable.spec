@@ -4,7 +4,7 @@
 %define _src %{_topdir}/SOURCES
 # Valid current basever numbers can be found at
 # http://omahaproxy.appspot.com/
-%define basever 42.0.2311.90
+%define basever 42.0.2311.135
 %define	debug_package %nil
 
 # Set up Google API keys, see http://www.chromium.org/developers/how-tos/api-keys
@@ -24,7 +24,7 @@
 
 Name: 		chromium-browser-stable
 Version: 	%basever
-Release: 	2%{?extrarelsuffix}
+Release: 	1%{?extrarelsuffix}
 Summary: 	A fast webkit-based web browser
 Group: 		Networking/WWW
 License: 	BSD, LGPL
@@ -216,8 +216,10 @@ build/gyp_chromium --depth=. \
 	-Dlogging_like_official_build=1 \
         -Duse_gconf=0 \
         -Dsysroot= \
+%if %mdvver >= 201500
 	-Dclang=1 \
 	-Dhost_clang=1 \
+%endif
 	-Dclang_use_chrome_plugins=0 \
         -Dwerror='' \
 	-Ddisable_fatal_linker_warnings=1 \
