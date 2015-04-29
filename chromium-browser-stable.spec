@@ -4,8 +4,12 @@
 %define _src %{_topdir}/SOURCES
 # Valid current basever numbers can be found at
 # http://omahaproxy.appspot.com/
-%define basever 42.0.2311.90
+%define basever 42.0.2311.135
 %define	debug_package %nil
+
+%ifarch %ix86
+%define _build_pkgcheck_set %{nil}
+%endif
 
 # Set up Google API keys, see http://www.chromium.org/developers/how-tos/api-keys
 # OpenMandriva key, id and secret
@@ -119,7 +123,7 @@ technology to make the web faster, safer, and easier.
 This is the stable channel Chromium browser. It offers a rock solid
 browser which is updated with features and fixes once they have been
 thoroughly tested. If you want the latest features, install the
-chromium-browser-unstable package instead.
+chromium-browser-dev package instead.
 
 %package -n chromium-browser
 Summary: 	A fast webkit-based web browser (transition package)
@@ -133,7 +137,7 @@ technology to make the web faster, safer, and easier.
 
 This is a transition package that installs the stable channel Chromium
 browser. If you prefer the dev channel browser, install the
-chromium-browser-unstable package instead.
+chromium-browser-dev package instead.
 
 %package -n chromedriver
 Summary:        WebDriver for Google Chrome/Chromium
@@ -190,8 +194,18 @@ export PATH=$PWD/bfd:$PATH
 %global ldflags %{ldflags} -fuse-ld=bfd -Wl,--no-keep-memory -Wl,--reduce-memory-overheads
 %endif
 
+%if %mdvver >= 201500
+%ifarch %arm
 export CC=gcc
 export CXX=g++
+%else
+export CC=clang
+export CXX=clang++
+%endif
+%else
+export CC=gcc
+export CXX=g++
+%endif
 
 # gyp is rather convoluted and not python3 friendly -- let's make
 # sure it sees python2 when it calls python
@@ -202,9 +216,7 @@ export PATH=`pwd`:$PATH
 #
 #export GYP_DEFINES=sysroot=
 # get resources for high dpi and touch
-export GYP_DEFINES=use_aura=1
-export GYP_DEFINES=enable_hidpi=1
-export GYP_DEFINES=enable_touch_ui=1
+export GYP_DEFINES="use_aura=1 enable_hidpi=1 enable_touch_ui=1 clang_use_plugins=0"
 
 
 export GYP_GENERATORS=ninja
@@ -218,8 +230,19 @@ build/gyp_chromium --depth=. \
 	-Dlogging_like_official_build=1 \
         -Duse_gconf=0 \
         -Dsysroot= \
+%if %mdvver >= 201500
+%ifarch %arm
+        -Dclang=0 \
+        -Dhost_clang=0 \
+%else
+	-Dclang=1 \
+	-Dhost_clang=1 \
+%endif
+%else
 	-Dclang=0 \
 	-Dhost_clang=0 \
+%endif
+	-Dclang_use_chrome_plugins=0 \
         -Dwerror='' \
 	-Ddisable_fatal_linker_warnings=1 \
 	-Dsystem_libdir=%{_lib} \
