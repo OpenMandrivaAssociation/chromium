@@ -6,6 +6,6 @@ diff -urN chromium-25.0.1364.172.orig/build/all.gyp chromium-25.0.1364.172/build
          ['OS=="linux"', {
            'dependencies': [
 -            '../courgette/courgette.gyp:*',
-             '../dbus/dbus.gyp:*',
              '../sandbox/sandbox.gyp:*',
            ],
+           'conditions': [
