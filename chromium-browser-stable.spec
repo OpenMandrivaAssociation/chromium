@@ -216,7 +216,7 @@ export PATH=`pwd`:$PATH
 #
 #export GYP_DEFINES=sysroot=
 # get resources for high dpi and touch
-export GYP_DEFINES="use_aura=1 enable_hidpi=1 enable_touch_ui=1 clang_use_plugins=0"
+export GYP_DEFINES="use_aura=1 enable_hidpi=1 enable_touch_ui=1 clang_use_plugins=0 enable_hotwording=0"
 
 
 export GYP_GENERATORS=ninja
