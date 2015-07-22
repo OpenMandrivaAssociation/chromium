@@ -1,2 +1,4 @@
-sources:
+removed_sources:
   chromium-43.0.2357.130.tar.xz: 4c0b33b2f173a55c2b5110a79c1f7e5a1fd64af5
+sources:
+  chromium-44.0.2403.89.tar.xz: f0f8b2fdc3700a4b0886232b796bc37eb2727552
