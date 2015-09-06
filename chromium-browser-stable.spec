@@ -4,7 +4,7 @@
 %define _src %{_topdir}/SOURCES
 # Valid current basever numbers can be found at
 # http://omahaproxy.appspot.com/
-%define basever 44.0.2403.107
+%define basever 45.0.2454.85
 %define	debug_package %nil
 
 %ifarch %ix86
@@ -55,8 +55,8 @@ Patch14:        chromium-25.0.1364.172-no-courgette.patch
 Patch15:        chromium-25.0.1364.172-sandbox-pie.patch
 
 # Debian Patches
-Patch17:	arm.patch
-Patch18:	arm-neon.patch
+#Patch17:	arm.patch
+#Patch18:	arm-neon.patch
 Patch19:	fix-ld-on-arm.patch
 
 Provides: 	%{crname}
