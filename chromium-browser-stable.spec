@@ -54,6 +54,8 @@ Patch14:        chromium-25.0.1364.172-no-courgette.patch
 # PATCH-FIX-OPENSUSE Compile the sandbox with -fPIE settings
 Patch15:        chromium-25.0.1364.172-sandbox-pie.patch
 
+Patch16:	0001-Demand-for-newer-POSIX-macro.patch
+
 # Debian Patches
 #Patch17:	arm.patch
 #Patch18:	arm-neon.patch
