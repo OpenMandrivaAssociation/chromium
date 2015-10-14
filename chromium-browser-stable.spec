@@ -160,7 +160,7 @@ members of the Chromium and WebDriver teams.
 echo "%{revision}" > build/LASTCHANGE.in
 
 # Hard code extra version
-FILE=chrome/common/chrome_version_info_posix.cc
+FILE=chrome/common/channel_info_posix.cc
 sed -i.orig -e 's/getenv("CHROME_VERSION_EXTRA")/"%{product_vendor} %{product_version}"/' $FILE
 cmp $FILE $FILE.orig && exit 1
 
