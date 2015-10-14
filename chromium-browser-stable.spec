@@ -183,6 +183,9 @@ ln -s %{_bindir}/python2 python
 #	third_party/webrtc \
 #	--do-remove
 
+# workaround build failure
+touch chrome/test/data/webui/i18n_process_css_test.html
+
 %build
 %ifarch %{arm}
 # Use linker flags to reduce memory consumption on low-mem architectures
