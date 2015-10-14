@@ -4,7 +4,7 @@
 %define _src %{_topdir}/SOURCES
 # Valid current basever numbers can be found at
 # http://omahaproxy.appspot.com/
-%define basever 45.0.2454.85
+%define basever 46.0.2490.71
 %define	debug_package %nil
 
 %ifarch %ix86
@@ -53,8 +53,6 @@ Patch13:        chromium-25.0.1364.172-system-glew.patch
 Patch14:        chromium-25.0.1364.172-no-courgette.patch
 # PATCH-FIX-OPENSUSE Compile the sandbox with -fPIE settings
 Patch15:        chromium-25.0.1364.172-sandbox-pie.patch
-
-Patch16:	0001-Demand-for-newer-POSIX-macro.patch
 
 # Debian Patches
 #Patch17:	arm.patch
