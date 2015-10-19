@@ -1,3 +1,6 @@
+# eol 'fix' corrupts some .bin files 
+%define dont_fix_eol 1
+
 #define v8_ver 3.12.8
 %define crname chromium-browser
 %define _crdir %{_libdir}/%{crname}
@@ -28,7 +31,7 @@
 
 Name: 		chromium-browser-stable
 Version: 	%basever
-Release: 	1%{?extrarelsuffix}
+Release: 	2%{?extrarelsuffix}
 Summary: 	A fast webkit-based web browser
 Group: 		Networking/WWW
 License: 	BSD, LGPL
