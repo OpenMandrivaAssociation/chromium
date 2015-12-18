@@ -160,6 +160,8 @@ members of the Chromium and WebDriver teams.
 %setup -q -n chromium-%{basever}
 %apply_patches
 
+rm -rf third_party/binutils/
+
 echo "%{revision}" > build/LASTCHANGE.in
 
 # Hard code extra version
@@ -282,7 +284,6 @@ build/gyp_chromium --depth=. \
 	-Ddisable_nacl=1 \
         -Ddisable_sse2=1 \
 	-Duse_pulseaudio=1 \
-	-Dlinux_use_gold_binary=1 \
 	-Dlinux_use_gold_flags=1 \
 %if %{with plf}
 	-Dproprietary_codecs=1 \
