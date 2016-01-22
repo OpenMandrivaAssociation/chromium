@@ -1,4 +1,4 @@
-# eol 'fix' corrupts some .bin files 
+# eol 'fix' corrupts some .bin files
 %define dont_fix_eol 1
 
 #define v8_ver 3.12.8
@@ -7,7 +7,11 @@
 %define _src %{_topdir}/SOURCES
 # Valid current basever numbers can be found at
 # http://omahaproxy.appspot.com/
+<<<<<<< HEAD
 %define basever 47.0.2526.106
+=======
+%define basever 48.0.2564.82
+>>>>>>> master
 %define	debug_package %nil
 
 %ifarch %ix86
