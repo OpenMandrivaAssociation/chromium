@@ -7,7 +7,7 @@
 %define _src %{_topdir}/SOURCES
 # Valid current basever numbers can be found at
 # http://omahaproxy.appspot.com/
-%define basever 50.0.2661.75
+%define basever 50.0.2661.94
 %define	debug_package %nil
 
 %ifarch %ix86
