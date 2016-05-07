@@ -71,6 +71,7 @@ BuildRequires: 	bison
 BuildRequires: 	flex
 #BuildRequires: 	v8-devel
 BuildRequires: 	alsa-oss-devel
+BuildRequires:	atomic-devel
 BuildRequires: 	icu-devel
 BuildRequires: 	jsoncpp-devel
 BuildRequires: 	harfbuzz-devel
@@ -237,7 +238,7 @@ build/gyp_chromium --depth=. \
 	-Dlinux_link_libspeechd=1 \
 	-Dlogging_like_official_build=1 \
         -Duse_gconf=0 \
-        -Dsysroot= \
+        -Dsysroot=0 \
 %if %mdvver >= 201500
 %ifarch %arm
         -Dclang=0 \
