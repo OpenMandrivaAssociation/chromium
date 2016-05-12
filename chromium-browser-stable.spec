@@ -7,7 +7,7 @@
 %define _src %{_topdir}/SOURCES
 # Valid current basever numbers can be found at
 # http://omahaproxy.appspot.com/
-%define basever 50.0.2661.94
+%define basever 50.0.2661.102
 %define	debug_package %nil
 
 %ifarch %ix86
@@ -71,7 +71,9 @@ BuildRequires: 	bison
 BuildRequires: 	flex
 #BuildRequires: 	v8-devel
 BuildRequires: 	alsa-oss-devel
+%if %mdvver >= 201500
 BuildRequires:	atomic-devel
+%endif
 BuildRequires: 	icu-devel
 BuildRequires: 	jsoncpp-devel
 BuildRequires: 	harfbuzz-devel
