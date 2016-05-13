@@ -240,8 +240,8 @@ build/gyp_chromium --depth=. \
 	-Dlinux_link_libspeechd=1 \
 	-Dlogging_like_official_build=1 \
         -Duse_gconf=0 \
-        -Duse_sysroot=0 \
 %if %mdvver >= 201500
+	-Duse_sysroot=0 \
 %ifarch %arm
         -Dclang=0 \
         -Dhost_clang=0 \
@@ -250,6 +250,7 @@ build/gyp_chromium --depth=. \
 	-Dhost_clang=1 \
 %endif
 %else
+	-Dsysroot= \
 	-Dclang=0 \
 	-Dhost_clang=0 \
 %endif
