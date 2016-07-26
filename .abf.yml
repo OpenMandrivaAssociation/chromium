@@ -1,2 +1,4 @@
-sources:
+removed_sources:
   chromium-51.0.2704.106.tar.xz: 5212b0f96be80c0146f7caf0883cfb39a3827177
+sources:
+  chromium-52.0.2743.82.tar.xz: 427ae146c164f5c6289958476194696de36173ac
