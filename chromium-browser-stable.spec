@@ -7,7 +7,7 @@
 %define _src %{_topdir}/SOURCES
 # Valid current basever numbers can be found at
 # http://omahaproxy.appspot.com/
-%define basever 52.0.2743.82
+%define basever 52.0.2743.116
 %define	debug_package %nil
 
 %ifarch %ix86
@@ -73,10 +73,10 @@ BuildRequires: 	flex
 BuildRequires: 	alsa-oss-devel
 %if %mdvver >= 201500
 BuildRequires:	atomic-devel
+BuildRequires:	harfbuzz-devel
 %endif
 BuildRequires: 	icu-devel
 BuildRequires: 	jsoncpp-devel
-BuildRequires: 	harfbuzz-devel
 BuildRequires: 	pkgconfig(expat)
 BuildRequires: 	pkgconfig(glib-2.0)
 BuildRequires: 	pkgconfig(nss)
@@ -271,7 +271,9 @@ build/gyp_chromium --depth=. \
         -Duse_system_xdg_utils=1 \
         -Duse_system_libpng=1 \
         -Duse_system_libjpeg=1 \
+%if %mdvver >= 201500
 	-Duse_system_harfbuzz=1 \
+%endif
         -Duse_system_libevent=1 \
 	-Ddisable_newlib_untar=1 \
 	-Duse_system_yasm=1 \
