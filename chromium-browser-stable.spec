@@ -62,6 +62,8 @@ Patch15:        chromium-25.0.1364.172-sandbox-pie.patch
 #Patch18:	arm-neon.patch
 Patch19:	fix-ld-on-arm.patch
 
+Patch20:	chromium-53.0.2785.89-cups_2.2.patch
+
 Provides: 	%{crname}
 Obsoletes: 	chromium-browser-unstable < 26.0.1410.51
 Obsoletes: 	chromium-browser-beta < 26.0.1410.51
