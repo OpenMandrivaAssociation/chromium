@@ -7,7 +7,7 @@
 %define _src %{_topdir}/SOURCES
 # Valid current basever numbers can be found at
 # http://omahaproxy.appspot.com/
-%define basever 53.0.2785.89
+%define basever 53.0.2785.116
 %define	debug_package %nil
 
 %ifarch %ix86
@@ -61,6 +61,8 @@ Patch15:        chromium-25.0.1364.172-sandbox-pie.patch
 #Patch17:	arm.patch
 #Patch18:	arm-neon.patch
 Patch19:	fix-ld-on-arm.patch
+
+Patch20:	chromium-53.0.2785.89-cups_2.2.patch
 
 Provides: 	%{crname}
 Obsoletes: 	chromium-browser-unstable < 26.0.1410.51
