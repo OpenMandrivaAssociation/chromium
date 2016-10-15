@@ -7,7 +7,7 @@
 %define _src %{_topdir}/SOURCES
 # Valid current basever numbers can be found at
 # http://omahaproxy.appspot.com/
-%define basever 53.0.2785.116
+%define basever 54.0.2840.59
 %define	debug_package %nil
 
 %ifarch %ix86
@@ -62,8 +62,6 @@ Patch15:        chromium-25.0.1364.172-sandbox-pie.patch
 #Patch18:	arm-neon.patch
 Patch19:	fix-ld-on-arm.patch
 
-Patch20:	chromium-53.0.2785.89-cups_2.2.patch
-
 Provides: 	%{crname}
 Obsoletes: 	chromium-browser-unstable < 26.0.1410.51
 Obsoletes: 	chromium-browser-beta < 26.0.1410.51
@@ -85,7 +83,7 @@ BuildRequires: 	pkgconfig(nss)
 BuildRequires: 	bzip2-devel
 BuildRequires: 	jpeg-devel
 BuildRequires: 	pkgconfig(libpng)
-BuildRequires:	gtk+2.0-devel
+BuildRequires:	gtk+3.0-devel
 BuildRequires: 	pkgconfig(nspr)
 BuildRequires: 	pkgconfig(zlib)
 BuildRequires: 	pkgconfig(xscrnsaver)
@@ -174,12 +172,7 @@ FILE=chrome/common/channel_info_posix.cc
 sed -i.orig -e 's/getenv("CHROME_VERSION_EXTRA")/"%{product_vendor} %{product_version}"/' $FILE
 cmp $FILE $FILE.orig && exit 1
 
-# remove bundle v8
-#find v8 -type f \! -iname '*.gyp*' -delete
-#build/linux/unbundle/replace_gyp_files.py
-#-Duse_system_v8=1 \
-
-# gyp is rather convoluted and not python3 friendly -- let's make
+# gn is rather convoluted and not python3 friendly -- let's make
 # sure it sees python2 when it calls python
 ln -s %{_bindir}/python2 python
 
@@ -220,108 +213,54 @@ export CC=gcc
 export CXX=g++
 %endif
 
-# gyp is rather convoluted and not python3 friendly -- let's make
+# gn is rather convoluted and not python3 friendly -- let's make
 # sure it sees python2 when it calls python
 export PATH=`pwd`:$PATH
 
-# We need to find why even if building w -Duse_system_libpng=0, this is built with third party libpng.
-# We able bundle one in stable release for now and will work on beta with system libpng
-#
-#export GYP_DEFINES=sysroot=
-# get resources for high dpi and touch
-export GYP_DEFINES="use_aura=1 enable_hidpi=1 enable_touch_ui=1 clang_use_plugins=0 enable_hotwording=0"
-
-
-export GYP_GENERATORS=ninja
-build/gyp_chromium --depth=. \
-        -Dlinux_sandbox_path=%{_crdir}/chrome-sandbox \
-        -Dlinux_sandbox_chrome_path=%{_crdir}/chrome \
-        -Dlinux_link_gnome_keyring=0 \
-	-Dlinux_link_gsettings=1 \
-	-Dlinux_link_libpci=1 \
-	-Dlinux_link_libspeechd=1 \
-	-Dlogging_like_official_build=1 \
-        -Duse_gconf=0 \
-%if %mdvver >= 201500
-	-Duse_sysroot=0 \
+myconf_gn=" use_sysroot=false is_debug=false use_gold=true"
 %ifarch %arm
-        -Dclang=0 \
-        -Dhost_clang=0 \
+myconf_gn+=" is_clang=false"
 %else
-	-Dclang=1 \
-	-Dhost_clang=1 \
+myconf_gn+=" is_clang=true clang_base_path=\"/usr\" clang_use_chrome_plugins=false"
 %endif
-%else
-	-Dsysroot= \
-	-Dclang=0 \
-	-Dhost_clang=0 \
-%endif
-	-Dclang_use_chrome_plugins=0 \
-        -Dwerror='' \
-	-Ddisable_fatal_linker_warnings=1 \
-	-Dsystem_libdir=%{_lib} \
-	-Dpython_ver=%{python_version} \
+
+myconf_gn+=" treat_warnings_as_errors=false"
+myconf_gn+=" use_system_libjpeg=true "
 %if %mdvver >= 201500
-        -Dlibspeechd_h_prefix=speech-dispatcher/ \
+#myconf_gn+=" use_system_harfbuzz=true "
 %endif
-        -Duse_system_sqlite=0 \
-        -Duse_system_nss=1 \
-        -Duse_system_libxml=1 \
-        -Duse_system_zlib=1 \
-        -Duse_system_bzip2=1 \
-	-Duse_system_jsoncpp=1 \
-        -Duse_system_xdg_utils=1 \
-        -Duse_system_libpng=1 \
-        -Duse_system_libjpeg=1 \
-%if %mdvver >= 201500
-	-Duse_system_harfbuzz=1 \
-%endif
-        -Duse_system_libevent=1 \
-	-Ddisable_newlib_untar=1 \
-	-Duse_system_yasm=1 \
-	-Duse_system_libwebp=1 \
-	-Duse_system_opus=1 \
-        -Duse_system_flac=1 \
-        -Duse_system_vpx=1 \
-        -Duse_system_icu=0 \
-	-Duse_system_nspr=1 \
-        -Duse_system_libusb=1 \
-        -Duse_allocator=none \
-	-Duse_system_minizip=1 \
-	-Duse_system_protobuf=0 \
-	-Ddisable_nacl=1 \
-        -Ddisable_sse2=1 \
-	-Duse_pulseaudio=1 \
-	-Dlinux_use_gold_flags=1 \
+myconf_gn+=" use_gnome_keyring=false "
+myconf_gn+=" fatal_linker_warnings=false "
+myconf_gn+=" system_libdir=\"%{_lib}\""
+myconf_gn+=" use_allocator=\"none\""
+myconf_gn+=" use_aura=true "
+myconf_gn+=" use_gtk3=true "
+myconf_gn+=" enable_nacl=false "
 %if %{with plf}
-	-Dproprietary_codecs=1 \
-	-Dffmpeg_branding=Chrome \
+myconf_gn+=" proprietary_codecs=true "
+myconf_gn+=" ffmpeg_branding=\"Chrome\" "
 %else
-	-Dproprietary_codecs=1 \
+myconf_gn+=" proprietary_codecs=false"
 %endif
-        -Duse_system_speex=1 \
 %ifarch i586
-	-Dtarget_arch=ia32 \
+myconf_gn+=" target_cpu=\"x86\""
 %endif
 %ifarch x86_64
-	-Dtarget_arch=x64 \
+myconf_gn+=" target_cpu=\"x64\""
 %endif
 %ifarch %arm
-	-Darm_float_abi=hard \
-	-Dv8_use_arm_eabi_hardfloat=true \
-	-Drelease_extra_cflags="%optflags -DUSE_EABI_HARDFLOAT" \
-	-Dtarget_arch=arm \
-	-Darm_fpu=neon \
-	-Darm_thumb=1 \
-	-Dremove_webcore_debug_symbols=1 \
-	-Darm_neon=1 \
-	-Darm_neon_optional=0 \
-	-Darm_version=7 \
-	-Darmv7=1 \
+myconf_gn+=" target_cpi=\"arm\""
+myconf_gn+=" remove_webcore_debug_symbols=true"
+myconf_gn+=" rtc_build_with_neon=true"
 %endif
-        -Dgoogle_api_key=%{google_api_key} \
-        -Dgoogle_default_client_id=%{google_default_client_id} \
-        -Dgoogle_default_client_secret=%{google_default_client_secret}
+myconf_gn+=" google_api_key=\"%{google_api_key}\""
+myconf_gn+=" google_default_client_id=\"%{google_default_client_id}\""
+myconf_gn+=" google_default_client_secret=\"%{google_default_client_secret}\""
+
+python2 tools/gn/bootstrap/bootstrap.py -v --gn-gen-args "${myconf_gn}"
+
+out/Release/gn gen --args="${myconf_gn}" out/Release
+
 # Note: DON'T use system sqlite (3.7.3) -- it breaks history search
 # As of 36.0.1985.143, use_system_icu breaks the build.
 # gyp: Duplicate target definitions for /home/bero/abf/chromium-browser-stable/BUILD/chromium-36.0.1985.143/third_party/icu/icu.gyp:icudata#target
@@ -341,7 +280,6 @@ cp -a out/Release/chromedriver %{buildroot}%{_libdir}/%{name}/chromedriver
 install -m 644 out/Release/chrome.1 %{buildroot}%{_mandir}/man1/%{name}.1
 install -m 644 out/Release/locales/*.pak %{buildroot}%{_libdir}/%{name}/locales/
 install -m 644 out/Release/chrome_100_percent.pak %{buildroot}%{_libdir}/%{name}/
-install -m 644 out/Release/content_resources.pak %{buildroot}%{_libdir}/%{name}/
 install -m 644 out/Release/resources.pak %{buildroot}%{_libdir}/%{name}/
 install -m 644 out/Release/icudtl.dat %{buildroot}%{_libdir}/%{name}/
 install -m 644 out/Release/*.bin %{buildroot}%{_libdir}/%{name}/
@@ -383,7 +321,6 @@ find %{buildroot} -name "*.nexe" -exec strip {} \;
 %{_libdir}/%{name}/icudtl.dat
 %{_libdir}/%{name}/locales
 %{_libdir}/%{name}/chrome_100_percent.pak
-%{_libdir}/%{name}/content_resources.pak
 %{_libdir}/%{name}/resources.pak
 %{_libdir}/%{name}/resources
 %{_libdir}/%{name}/themes
