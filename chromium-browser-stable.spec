@@ -7,7 +7,7 @@
 %define _src %{_topdir}/SOURCES
 # Valid current basever numbers can be found at
 # http://omahaproxy.appspot.com/
-%define basever 54.0.2840.59
+%define basever 54.0.2840.100
 %define	debug_package %nil
 
 %ifarch %ix86
@@ -49,6 +49,7 @@ Patch0:         chromium-30.0.1599.66-master-prefs-path.patch
 # Don't use clang's integrated as while trying to check the version of gas
 #Patch4:		chromium-36.0.1985.143-clang-no-integrated-as.patch
 %endif
+Patch5:		chromium-54.0.2840.100-dont-crash-with-glibc-2.24.patch
 
 # PATCH-FIX-OPENSUSE patches in system glew library
 Patch13:        chromium-25.0.1364.172-system-glew.patch

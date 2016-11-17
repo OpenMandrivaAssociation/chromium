@@ -1,0 +1,14 @@
+--- chromium-54.0.2840.100/third_party/WebKit/Source/wtf/allocator/PageAllocator.cpp.omv~	2016-11-17 12:57:37.578047725 +0100
++++ chromium-54.0.2840.100/third_party/WebKit/Source/wtf/allocator/PageAllocator.cpp	2016-11-17 12:58:07.651303576 +0100
+@@ -41,6 +41,11 @@
+ #include <errno.h>
+ #include <sys/mman.h>
+ 
++#if OS(LINUX) && defined(MADV_FREE)
++// Added in Linux 4.5, but causes "Aw, snap" errors on every page
++#undef MADV_FREE
++#endif
++
+ #ifndef MADV_FREE
+ #define MADV_FREE MADV_DONTNEED
+ #endif
