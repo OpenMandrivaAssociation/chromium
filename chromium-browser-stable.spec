@@ -7,7 +7,7 @@
 %define _src %{_topdir}/SOURCES
 # Valid current basever numbers can be found at
 # http://omahaproxy.appspot.com/
-%define basever 54.0.2840.59
+%define basever 55.0.2883.75
 %define	debug_package %nil
 
 %ifarch %ix86
@@ -49,18 +49,19 @@ Patch0:         chromium-30.0.1599.66-master-prefs-path.patch
 # Don't use clang's integrated as while trying to check the version of gas
 #Patch4:		chromium-36.0.1985.143-clang-no-integrated-as.patch
 %endif
+Patch5:		chromium-54.0.2840.100-dont-crash-with-glibc-2.24.patch
 
 # PATCH-FIX-OPENSUSE patches in system glew library
-Patch13:        chromium-25.0.1364.172-system-glew.patch
+#Patch13:        chromium-25.0.1364.172-system-glew.patch
 # PATCH-FIX-OPENSUSE removes build part for courgette
-Patch14:        chromium-25.0.1364.172-no-courgette.patch
+#Patch14:        chromium-25.0.1364.172-no-courgette.patch
 # PATCH-FIX-OPENSUSE Compile the sandbox with -fPIE settings
-Patch15:        chromium-25.0.1364.172-sandbox-pie.patch
+#Patch15:        chromium-25.0.1364.172-sandbox-pie.patch
 
 # Debian Patches
 #Patch17:	arm.patch
 #Patch18:	arm-neon.patch
-Patch19:	fix-ld-on-arm.patch
+#Patch19:	fix-ld-on-arm.patch
 
 Patch20:	chromium-last-commit-position-r0.patch
 
