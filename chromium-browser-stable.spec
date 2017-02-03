@@ -7,7 +7,7 @@
 %define _src %{_topdir}/SOURCES
 # Valid current basever numbers can be found at
 # http://omahaproxy.appspot.com/
-%define basever 55.0.2883.75
+%define basever 56.0.2924.87
 %define	debug_package %nil
 
 %ifarch %ix86
@@ -77,6 +77,8 @@ BuildRequires: 	alsa-oss-devel
 %if %mdvver >= 201500
 BuildRequires:	atomic-devel
 BuildRequires:	harfbuzz-devel
+%else
+BuildRequires:	%{_lib}atomic1
 %endif
 BuildRequires: 	icu-devel
 BuildRequires: 	jsoncpp-devel
@@ -222,10 +224,14 @@ export CXX=g++
 export PATH=`pwd`:$PATH
 
 myconf_gn=" use_sysroot=false is_debug=false use_gold=true"
+%if %mdvver >= 201500
 %ifarch %arm
 myconf_gn+=" is_clang=false"
 %else
 myconf_gn+=" is_clang=true clang_base_path=\"/usr\" clang_use_chrome_plugins=false"
+%endif
+%else
+myconf_gn+=" is_clang=false"
 %endif
 
 myconf_gn+=" treat_warnings_as_errors=false"
