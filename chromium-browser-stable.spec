@@ -196,6 +196,8 @@ ln -s %{_bindir}/python2 python
 touch chrome/test/data/webui/i18n_process_css_test.html
 
 %build
+%define system_gn_list  harfbuzz-ng
+
 %ifarch %{arm}
 # Use linker flags to reduce memory consumption on low-mem architectures
 %global optflags %(echo %{optflags} | sed -e 's/-g /-g0 /' -e 's/-gdwarf-4//')
@@ -267,6 +269,8 @@ myconf_gn+=" rtc_build_with_neon=true"
 myconf_gn+=" google_api_key=\"%{google_api_key}\""
 myconf_gn+=" google_default_client_id=\"%{google_default_client_id}\""
 myconf_gn+=" google_default_client_secret=\"%{google_default_client_secret}\""
+
+build/linux/unbundle/replace_gn_files.py --system-libraries %{system_gn_list} 
 
 python2 tools/gn/bootstrap/bootstrap.py -v --gn-gen-args "${myconf_gn}"
 
