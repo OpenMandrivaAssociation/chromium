@@ -263,9 +263,12 @@ myconf_gn+=" target_cpu=\"x86\""
 myconf_gn+=" target_cpu=\"x64\""
 %endif
 %ifarch %arm
-myconf_gn+=" target_cpi=\"arm\""
+myconf_gn+=" target_cpu=\"arm\""
 myconf_gn+=" remove_webcore_debug_symbols=true"
 myconf_gn+=" rtc_build_with_neon=true"
+%endif
+%ifarch aarch64
+myconf_gn+=" target_cpu=\"arm64\""
 %endif
 myconf_gn+=" google_api_key=\"%{google_api_key}\""
 myconf_gn+=" google_default_client_id=\"%{google_default_client_id}\""
