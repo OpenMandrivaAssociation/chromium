@@ -41,29 +41,67 @@ Source1: 	chromium-wrapper
 Source2: 	chromium-browser.desktop
 Source3:	master_preferences
 
-Patch0:         chromium-30.0.1599.66-master-prefs-path.patch
-#Patch1:		chromium-36.0.1985.143-compile.patch
-#Patch2:		chromium-fix-arm-sysroot.patch
-#Patch3:		chromium-fix-arm-icu.patch
 %if %mdvver >= 201500
 # Don't use clang's integrated as while trying to check the version of gas
 #Patch4:		chromium-36.0.1985.143-clang-no-integrated-as.patch
 %endif
 Patch5:		chromium-54.0.2840.100-dont-crash-with-glibc-2.24.patch
 
-# PATCH-FIX-OPENSUSE patches in system glew library
-#Patch13:        chromium-25.0.1364.172-system-glew.patch
-# PATCH-FIX-OPENSUSE removes build part for courgette
-#Patch14:        chromium-25.0.1364.172-no-courgette.patch
-# PATCH-FIX-OPENSUSE Compile the sandbox with -fPIE settings
-#Patch15:        chromium-25.0.1364.172-sandbox-pie.patch
+#Patch20:	chromium-last-commit-position-r0.patch
 
-# Debian Patches
-#Patch17:	arm.patch
-#Patch18:	arm-neon.patch
-#Patch19:	fix-ld-on-arm.patch
-
-Patch20:	chromium-last-commit-position-r0.patch
+### Chromium Fedora Patches ###
+Patch1:         chromium-56.0.2924.87-gcc5.patch
+Patch2:         chromium-45.0.2454.101-linux-path-max.patch
+Patch3:         chromium-55.0.2883.75-addrfix.patch
+Patch4:         chromium-46.0.2490.71-notest.patch
+# Ignore broken nacl open fd counter
+Patch7:         chromium-47.0.2526.80-nacl-ignore-broken-fd-counter.patch
+# Use libusb_interrupt_event_handler from current libusbx (1.0.21-0.1.git448584a)
+Patch9:         chromium-48.0.2564.116-libusb_interrupt_event_handler.patch
+# Ignore deprecations in cups 2.2
+# https://bugs.chromium.org/p/chromium/issues/detail?id=622493
+Patch12:        chromium-55.0.2883.75-cups22.patch
+# Add ICU Text Codec aliases (from openSUSE via Russian Fedora)
+Patch14:        chromium-55.0.2883.75-more-codec-aliases.patch
+# Use PIE in the Linux sandbox (from openSUSE via Russian Fedora)
+Patch15:        chromium-55.0.2883.75-sandbox-pie.patch
+# Enable ARM CPU detection for webrtc (from archlinux via Russian Fedora)
+Patch16:        chromium-52.0.2743.82-arm-webrtc.patch
+# Use /etc/chromium for master_prefs
+Patch18:        chromium-52.0.2743.82-master-prefs-path.patch
+# Disable MADV_FREE (if set by glibc)
+# https://bugzilla.redhat.com/show_bug.cgi?id=1361157
+Patch19:        chromium-52.0.2743.116-unset-madv_free.patch
+# Use gn system files
+Patch20:        chromium-54.0.2840.59-gn-system.patch
+# Fix last commit position issue
+# https://groups.google.com/a/chromium.org/forum/#!topic/gn-dev/7nlJv486bD4
+Patch21:        chromium-53.0.2785.92-last-commit-position.patch
+# Fix issue where timespec is not defined when sys/stat.h is included.
+Patch22:        chromium-53.0.2785.92-boringssl-time-fix.patch
+# I wouldn't have to do this if there was a standard way to append extra compiler flags
+Patch24:        chromium-54.0.2840.59-nullfix.patch
+# Add explicit includedir for jpeglib.h
+Patch25:        chromium-54.0.2840.59-jpeg-include-dir.patch
+# On i686, pass --no-keep-memory --reduce-memory-overheads to ld.
+Patch26:        chromium-54.0.2840.59-i686-ld-memory-tricks.patch
+# obj/content/renderer/renderer/child_frame_compositing_helper.o: In function `content::ChildFrameCompositingHelper::OnSetSurface(cc::SurfaceId const&, gfx::Size const&, float, cc::SurfaceSequence const&)':
+# /builddir/build/BUILD/chromium-54.0.2840.90/out/Release/../../content/renderer/child_frame_compositing_helper.cc:214: undefined reference to `cc_blink::WebLayerImpl::setOpaque(bool)'
+Patch27:        chromium-54.0.2840.90-setopaque.patch
+# Fix rvalue issue in remoting code
+# https://chromium.googlesource.com/chromium/src.git/+/29bfbecb49572b61264de7acccf8b23942bba43d%5E%21/#F0
+Patch29:        chromium-55.0.2883.87-rvalue-fix.patch
+# Fix compiler issue with gcc 4.9
+# https://chromium.googlesource.com/external/webrtc/trunk/webrtc/+/69556b1c264da9e0f484eaab890ebd555966630c%5E%21/#F0
+Patch30:        chromium-56.0.2924.87-gcc-49.patch
+# Use -fpermissive to build WebKit
+Patch31:        chromium-56.0.2924.87-fpermissive.patch
+# Fix issue with unique_ptr move on return with older gcc
+Patch32:        chromium-56.0.2924.87-unique-ptr-fix.patch
+### Chromium Tests Patches ###
+Patch100:       chromium-46.0.2490.86-use_system_opus.patch
+Patch101:       chromium-55.0.2883.75-use_system_harfbuzz.patch
+Patch102:	arm64-support.patch
 
 Provides: 	%{crname}
 Obsoletes: 	chromium-browser-unstable < 26.0.1410.51

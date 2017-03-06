@@ -1,0 +1,15 @@
+diff -up chromium-55.0.2883.75/third_party/WebKit/Source/wtf/text/TextCodecICU.cpp.morealiases chromium-55.0.2883.75/third_party/WebKit/Source/wtf/text/TextCodecICU.cpp
+--- chromium-55.0.2883.75/third_party/WebKit/Source/wtf/text/TextCodecICU.cpp.morealiases	2016-12-12 15:53:06.545149310 -0500
++++ chromium-55.0.2883.75/third_party/WebKit/Source/wtf/text/TextCodecICU.cpp	2016-12-12 15:55:25.808468122 -0500
+@@ -213,7 +213,11 @@ void TextCodecICU::registerEncodingNames
+   registrar("iso_8859-6", "ISO-8859-6");
+   registrar("iso_8859-7", "ISO-8859-7");
+   registrar("iso_8859-8", "ISO-8859-8");
++  registrar("iso_8859-8-I", "ISO-8859-8-I");
+   registrar("iso_8859-9", "windows-1254");
++  registrar("iso_8859-10", "ISO-8859-10");
++  registrar("iso_8859-13", "ISO-8859-13");
++  registrar("iso_8859-14", "ISO-8859-14");
+   registrar("iso_8859-15", "ISO-8859-15");
+   registrar("koi8_r", "KOI8-R");
+   registrar("x-cp1253", "windows-1253");
