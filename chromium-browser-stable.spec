@@ -22,6 +22,8 @@
 %define    google_default_client_secret RDdr-pHq2gStY4uw0m-zxXeo
 
 %bcond_with	plf
+# Chromium breaks on wayland, hidpi, and colors with gtk3 enabled.
+%bcond_with	gtk3
 # Always support proprietary codecs
 # or html5 does not work
 %if %{with plf}
@@ -126,7 +128,9 @@ BuildRequires: 	pkgconfig(nss)
 BuildRequires: 	bzip2-devel
 BuildRequires: 	jpeg-devel
 BuildRequires: 	pkgconfig(libpng)
+%if %{with gtk3}
 BuildRequires:	gtk+3.0-devel
+%endif
 BuildRequires:	gtk+2.0-devel
 BuildRequires: 	pkgconfig(nspr)
 BuildRequires: 	pkgconfig(zlib)
@@ -232,6 +236,9 @@ ln -s %{_bindir}/python2 python
 
 # workaround build failure
 touch chrome/test/data/webui/i18n_process_css_test.html
+%ifarch aarch64
+sed -i s'!aarch64-linux-gnu-!%{_build}-!g' build/toolchain/linux/BUILD.gn
+%endif
 
 %build
 %define system_gn_list  harfbuzz-ng
@@ -285,7 +292,11 @@ myconf_gn+=" system_libdir=\"%{_lib}\""
 myconf_gn+=" use_allocator=\"none\""
 myconf_gn+=" use_aura=true "
 myconf_gn+=" use_gconf=false"
+%if %{with gtk3}
 myconf_gn+=" use_gtk3=true "
+%else
+myconf_gn+=" use_gtk3=false "
+%endif
 myconf_gn+=" enable_nacl=false "
 myconf_gn+=" use_ozone=true "
 %if %{with plf}
