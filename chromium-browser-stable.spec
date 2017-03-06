@@ -31,7 +31,7 @@
 
 Name: 		chromium-browser-stable
 Version: 	%basever
-Release: 	2%{?extrarelsuffix}
+Release: 	3%{?extrarelsuffix}
 Summary: 	A fast webkit-based web browser
 Group: 		Networking/WWW
 License: 	BSD, LGPL
@@ -249,6 +249,7 @@ myconf_gn+=" use_aura=true "
 myconf_gn+=" use_gconf=false"
 myconf_gn+=" use_gtk3=true "
 myconf_gn+=" enable_nacl=false "
+myconf_gn+=" use_ozone=true "
 %if %{with plf}
 myconf_gn+=" proprietary_codecs=true "
 myconf_gn+=" ffmpeg_branding=\"Chrome\" "
@@ -270,7 +271,7 @@ myconf_gn+=" google_api_key=\"%{google_api_key}\""
 myconf_gn+=" google_default_client_id=\"%{google_default_client_id}\""
 myconf_gn+=" google_default_client_secret=\"%{google_default_client_secret}\""
 
-build/linux/unbundle/replace_gn_files.py --system-libraries %{system_gn_list} 
+build/linux/unbundle/replace_gn_files.py --system-libraries %{system_gn_list}
 
 python2 tools/gn/bootstrap/bootstrap.py -v --gn-gen-args "${myconf_gn}"
 
