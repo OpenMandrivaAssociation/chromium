@@ -33,7 +33,7 @@
 
 Name: 		chromium-browser-stable
 Version: 	%basever
-Release: 	3%{?extrarelsuffix}
+Release: 	4%{?extrarelsuffix}
 Summary: 	A fast webkit-based web browser
 Group: 		Networking/WWW
 License: 	BSD, LGPL
