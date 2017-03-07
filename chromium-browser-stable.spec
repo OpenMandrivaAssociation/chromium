@@ -111,7 +111,7 @@ Obsoletes: 	chromium-browser-beta < 26.0.1410.51
 Obsoletes: 	chromium-browser < 1:9.0.597.94
 BuildRequires: 	gperf
 BuildRequires: 	bison
-BuildRequires: 	pkgconfig(re2)
+BuildRequires: 	re2c
 BuildRequires: 	flex
 #BuildRequires: 	v8-devel
 BuildRequires: 	alsa-oss-devel
@@ -126,6 +126,7 @@ BuildRequires: 	snappy-devel
 BuildRequires: 	jsoncpp-devel
 BuildRequires: 	pkgconfig(expat)
 BuildRequires: 	pkgconfig(glib-2.0)
+BuildRequires: 	pkgconfig(wayland-egl)
 BuildRequires: 	pkgconfig(nss)
 BuildRequires: 	bzip2-devel
 BuildRequires: 	jpeg-devel
