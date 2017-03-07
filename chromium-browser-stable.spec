@@ -111,6 +111,7 @@ Obsoletes: 	chromium-browser-beta < 26.0.1410.51
 Obsoletes: 	chromium-browser < 1:9.0.597.94
 BuildRequires: 	gperf
 BuildRequires: 	bison
+BuildRequires: 	re2c
 BuildRequires: 	flex
 #BuildRequires: 	v8-devel
 BuildRequires: 	alsa-oss-devel
@@ -169,6 +170,9 @@ BuildRequires:	python2
 BuildRequires:	python
 %endif
 BuildRequires:	ninja
+BuildRequires:	python2-markupsafe
+BuildRequires:	python-ply python-beautifulsoup
+BuildRequires:	python-simplejson
 
 %description
 Chromium is a browser that combines a minimal design with sophisticated
@@ -224,15 +228,165 @@ cmp $FILE $FILE.orig && exit 1
 # sure it sees python2 when it calls python
 ln -s %{_bindir}/python2 python
 
-# Remove most bundled libraries. Some are still needed.
-#build/linux/unbundle/remove_bundled_libraries.py \
-#	third_party/libwebp \
-#	third_party/libjpeg \
-#	third_party/libusb \
-#	third_party/libudev \
-#	third_party/opus \
-#	third_party/webrtc \
-#	--do-remove
+# Remove most of the bundled libraries. Libraries specified below (taken from
+# Gentoo's Chromium ebuild) are the libraries that needs to be preserved.
+python2 build/linux/unbundle/remove_bundled_libraries.py \
+	'buildtools/third_party/libc++' \
+	'buildtools/third_party/libc++abi' \
+	'third_party/ffmpeg' \
+	'third_party/adobe' \
+	'third_party/flac' \
+	'third_party/harfbuzz-ng' \
+	'third_party/icu' \
+	'base/third_party/libevent' \
+	'third_party/libjpeg_turbo' \
+	'third_party/libpng' \
+	'third_party/libsrtp' \
+	'third_party/libwebp' \
+	'third_party/libxml' \
+	'third_party/libxslt' \
+	'third_party/re2' \
+%if !%{with plf}
+	'third_party/openh264' \
+%endif
+	'third_party/snappy' \
+	'third_party/speech-dispatcher' \
+	'third_party/usb_ids' \
+	'third_party/xdg-utils' \
+	'third_party/yasm' \
+	'third_party/zlib' \
+	'third_party/wayland' \
+	'base/third_party/dmg_fp' \
+	'base/third_party/dynamic_annotations' \
+	'base/third_party/icu' \
+	'base/third_party/nspr' \
+	'base/third_party/superfasthash' \
+	'base/third_party/symbolize' \
+	'base/third_party/valgrind' \
+	'base/third_party/xdg_mime' \
+	'base/third_party/xdg_user_dirs' \
+	'breakpad/src/third_party/curl' \
+	'chrome/third_party/mozilla_security_manager' \
+	'courgette/third_party' \
+	'native_client_sdk/src/libraries/third_party/newlib-extras' \
+	'native_client/src/third_party/dlmalloc' \
+	'native_client/src/third_party/valgrind' \
+	'net/third_party/mozilla_security_manager' \
+	'net/third_party/nss' \
+	'third_party/WebKit' \
+	'third_party/analytics' \
+	'third_party/angle' \
+	'third_party/angle/src/common/third_party/numerics' \
+	'third_party/angle/src/third_party/compiler' \
+	'third_party/angle/src/third_party/libXNVCtrl' \
+	'third_party/angle/src/third_party/murmurhash' \
+	'third_party/angle/src/third_party/trace_event' \
+	'third_party/blanketjs' \
+	'third_party/boringssl' \
+	'third_party/brotli' \
+	'third_party/cacheinvalidation' \
+	'third_party/catapult' \
+	'third_party/catapult/tracing/third_party/d3' \
+	'third_party/catapult/tracing/third_party/gl-matrix' \
+	'third_party/catapult/tracing/third_party/jszip' \
+	'third_party/catapult/tracing/third_party/mannwhitneyu' \
+        'third_party/catapult/third_party/polymer' \
+	'third_party/catapult/third_party/py_vulcanize' \
+	'third_party/catapult/third_party/py_vulcanize/third_party/rcssmin' \
+	'third_party/catapult/third_party/py_vulcanize/third_party/rjsmin' \
+        'third_party/ced' \
+	'third_party/cld_2' \
+	'third_party/cld_3' \
+	'third_party/cros_system_api' \
+	'third_party/devscripts' \
+	'third_party/dom_distiller_js' \
+	'third_party/expat' \
+	'third_party/fips181' \
+        'third_party/flatbuffers' \
+	'third_party/flot' \
+	'third_party/google_input_tools' \
+	'third_party/google_input_tools/third_party/closure_library' \
+	'third_party/google_input_tools/third_party/closure_library/third_party/closure' \
+	'third_party/hunspell' \
+	'third_party/iccjpeg' \
+	'third_party/inspector_protocol' \
+	'third_party/jinja2' \
+	'third_party/jstemplate' \
+	'third_party/khronos' \
+	'third_party/leveldatabase' \
+	'third_party/libXNVCtrl' \
+	'third_party/libaddressinput' \
+	'third_party/libjingle' \
+	'third_party/libphonenumber' \
+	'third_party/libsecret' \
+        'third_party/libsrtp' \
+	'third_party/libudev' \
+	'third_party/libusb' \
+	'third_party/libvpx' \
+	'third_party/libvpx/source/libvpx/third_party/x86inc' \
+	'third_party/libxml/chromium' \
+	'third_party/libwebm' \
+	'third_party/libyuv' \
+	'third_party/lss' \
+	'third_party/lzma_sdk' \
+	'third_party/mesa' \
+	'third_party/modp_b64' \
+	'third_party/mt19937ar' \
+	'third_party/openmax_dl' \
+	'third_party/opus' \
+	'third_party/ots' \
+	'third_party/pdfium' \
+	'third_party/pdfium/third_party/agg23' \
+	'third_party/pdfium/third_party/base' \
+	'third_party/pdfium/third_party/bigint' \
+	'third_party/pdfium/third_party/freetype' \
+	'third_party/pdfium/third_party/lcms2-2.6' \
+	'third_party/pdfium/third_party/libjpeg' \
+	'third_party/pdfium/third_party/libopenjpeg20' \
+        'third_party/pdfium/third_party/libpng16' \
+        'third_party/pdfium/third_party/libtiff' \
+	'third_party/pdfium/third_party/zlib_v128' \
+	'third_party/polymer' \
+	'third_party/protobuf' \
+	'third_party/protobuf/third_party/six' \
+	'third_party/ply' \
+	'third_party/qcms' \
+	'third_party/qunit' \
+	'third_party/sfntly' \
+	'third_party/sinonjs' \
+	'third_party/skia' \
+	'third_party/smhasher' \
+	'third_party/sqlite' \
+	'third_party/tcmalloc' \
+	'third_party/usrsctp' \
+	'third_party/web-animations-js' \
+	'third_party/webdriver' \
+	'third_party/webrtc' \
+	'third_party/widevine' \
+        'third_party/woff2' \
+	'third_party/x86inc' \
+	'third_party/zlib/google' \
+	'url/third_party/mozilla' \
+	'v8/third_party/inspector_protocol' \
+	'v8/src/third_party/valgrind' \
+	--do-remove
+
+python2 build/linux/unbundle/replace_gn_files.py --system-libraries \
+        flac \
+        harfbuzz-ng \
+        icu \
+        libevent \
+        libusb \
+        libxml \
+        libxslt \
+        opus \
+        re2 \
+        yasm
+
+# Look, I don't know. This package is spit and chewing gum. Sorry.
+rm -rf third_party/markupsafe
+ln -s %{python2_sitearch}/markupsafe third_party/markupsafe
+# We should look on removing other python packages as well i.e. ply
 
 # workaround build failure
 touch chrome/test/data/webui/i18n_process_css_test.html
