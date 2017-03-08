@@ -136,6 +136,7 @@ BuildRequires: 	snappy-devel
 BuildRequires: 	jsoncpp-devel
 BuildRequires: 	pkgconfig(expat)
 BuildRequires: 	pkgconfig(glib-2.0)
+BuildRequires:	pkgconfig(re2)
 BuildRequires: 	pkgconfig(wayland-egl)
 BuildRequires: 	pkgconfig(nss)
 BuildRequires: 	bzip2-devel
