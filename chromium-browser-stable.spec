@@ -497,15 +497,16 @@ gn_system_libraries="
     libjpeg
     libpng
     libwebp
+    opus
+    libevent
+    libusb
     libxml
     libxslt
     re2
     snappy
+    yasm
 "
 
-%if !%{with sle_bundles}
-gn_system_libraries+=" yasm"
-%endif
 %if %{with system_minizip}
 gn_system_libraries+=" zlib"
 %endif
