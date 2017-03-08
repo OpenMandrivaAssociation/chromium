@@ -24,6 +24,12 @@
 %bcond_with	plf
 # Chromium breaks on wayland, hidpi, and colors with gtk3 enabled.
 %bcond_with	gtk3
+%bcond_with	system_icu
+%bcond_without	system_ffmpeg
+%bcond_without	system_minizip
+%bcond_without	system_vpx
+%bcond_without	system_harfbuzz
+
 # Always support proprietary codecs
 # or html5 does not work
 %if %{with plf}
@@ -104,6 +110,10 @@ Patch32:        chromium-56.0.2924.87-unique-ptr-fix.patch
 Patch100:       chromium-46.0.2490.86-use_system_opus.patch
 Patch101:       chromium-55.0.2883.75-use_system_harfbuzz.patch
 Patch102:	arm64-support.patch
+# suse, system libs
+Patch103:	arm_use_right_compiler.patch
+Patch104:	chromium-system-ffmpeg-r3.patch
+Patch105:	chromium-system-jinja-r13.patch
 
 Provides: 	%{crname}
 Obsoletes: 	chromium-browser-unstable < 26.0.1410.51
@@ -121,7 +131,7 @@ BuildRequires:	harfbuzz-devel
 %else
 BuildRequires:	%{_lib}atomic1
 %endif
-BuildRequires: 	icu-devel
+BuildRequires:  pkgconfig(icu-i18n)
 BuildRequires: 	snappy-devel
 BuildRequires: 	jsoncpp-devel
 BuildRequires: 	pkgconfig(expat)
@@ -131,6 +141,12 @@ BuildRequires: 	pkgconfig(nss)
 BuildRequires: 	bzip2-devel
 BuildRequires: 	jpeg-devel
 BuildRequires: 	pkgconfig(libpng)
+%if %{with system_ffmpeg}
+BuildRequires:  pkgconfig(libavcodec)
+BuildRequires:  pkgconfig(libavfilter)
+BuildRequires:  pkgconfig(libavformat) >= 57.41.100
+BuildRequires:  pkgconfig(libavutil)
+%endif
 %if %{with gtk3}
 BuildRequires:	gtk+3.0-devel
 %endif
@@ -144,7 +160,9 @@ BuildRequires: 	cups-devel
 BuildRequires:	pkgconfig(dbus-glib-1)
 BuildRequires: 	pkgconfig(gnome-keyring-1)
 BuildRequires: 	pam-devel
+%if %{with system_vpx}
 BuildRequires: 	pkgconfig(vpx)
+%endif
 BuildRequires: 	pkgconfig(xtst)
 BuildRequires: 	pkgconfig(libxslt)
 BuildRequires: 	pkgconfig(libxml-2.0)
@@ -159,7 +177,9 @@ BuildRequires: 	pkgconfig(flac)
 BuildRequires: 	pkgconfig(opus)
 BuildRequires: 	pkgconfig(libwebp)
 BuildRequires: 	pkgconfig(speex)
+%if %{with system_minizip}
 BuildRequires: 	pkgconfig(minizip)
+%endif
 BuildRequires:  pkgconfig(protobuf)
 BuildRequires: 	yasm
 BuildRequires: 	pkgconfig(libusb-1.0)
@@ -232,164 +252,152 @@ cmp $FILE $FILE.orig && exit 1
 # sure it sees python2 when it calls python
 ln -s %{_bindir}/python2 python
 
-# Remove most of the bundled libraries. Libraries specified below (taken from
-# Gentoo's Chromium ebuild) are the libraries that needs to be preserved.
-#python2 build/linux/unbundle/remove_bundled_libraries.py \
-#	'buildtools/third_party/libc++' \
-#	'buildtools/third_party/libc++abi' \
-#	'third_party/ffmpeg' \
-#	'third_party/adobe' \
-#	'third_party/flac' \
-#	'third_party/harfbuzz-ng' \
-#	'third_party/icu' \
-#	'base/third_party/libevent' \
-#	'third_party/libjpeg_turbo' \
-#	'third_party/libpng' \
-#	'third_party/libsrtp' \
-#	'third_party/libwebp' \
-#	'third_party/libxml' \
-#	'third_party/libxslt' \
-#	'third_party/re2' \
-#%if !%{with plf}
-#	'third_party/openh264' \
-#%endif
-#	'third_party/snappy' \
-#	'third_party/speech-dispatcher' \
-#	'third_party/usb_ids' \
-#	'third_party/xdg-utils' \
-#	'third_party/yasm' \
-#	'third_party/zlib' \
-#	'third_party/wayland' \
-#	'base/third_party/dmg_fp' \
-#	'base/third_party/dynamic_annotations' \
-#	'base/third_party/icu' \
-#	'base/third_party/nspr' \
-#	'base/third_party/superfasthash' \
-#	'base/third_party/symbolize' \
-#	'base/third_party/valgrind' \
-#	'base/third_party/xdg_mime' \
-#	'base/third_party/xdg_user_dirs' \
-#	'breakpad/src/third_party/curl' \
-#	'chrome/third_party/mozilla_security_manager' \
-#	'courgette/third_party' \
-#	'native_client_sdk/src/libraries/third_party/newlib-extras' \
-#	'native_client/src/third_party/dlmalloc' \
-#	'native_client/src/third_party/valgrind' \
-#	'net/third_party/mozilla_security_manager' \
-#	'net/third_party/nss' \
-#	'third_party/WebKit' \
-#	'third_party/analytics' \
-#	'third_party/angle' \
-#	'third_party/angle/src/common/third_party/numerics' \
-#	'third_party/angle/src/third_party/compiler' \
-#	'third_party/angle/src/third_party/libXNVCtrl' \
-#	'third_party/angle/src/third_party/murmurhash' \
-#	'third_party/angle/src/third_party/trace_event' \
-#	'third_party/blanketjs' \
-#	'third_party/boringssl' \
-#	'third_party/brotli' \
-#	'third_party/cacheinvalidation' \
-#	'third_party/catapult' \
-#	'third_party/catapult/tracing/third_party/d3' \
-#	'third_party/catapult/tracing/third_party/gl-matrix' \
-#	'third_party/catapult/tracing/third_party/jszip' \
-#	'third_party/catapult/tracing/third_party/mannwhitneyu' \
-#       'third_party/catapult/third_party/polymer' \
-#	'third_party/catapult/third_party/py_vulcanize' \
-#	'third_party/catapult/third_party/py_vulcanize/third_party/rcssmin' \
-#	'third_party/catapult/third_party/py_vulcanize/third_party/rjsmin' \
-#       'third_party/ced' \
-#	'third_party/cld_2' \
-#	'third_party/cld_3' \
-#	'third_party/cros_system_api' \
-#	'third_party/devscripts' \
-#	'third_party/dom_distiller_js' \
-#	'third_party/expat' \
-#	'third_party/fips181' \
-#       'third_party/flatbuffers' \
-#	'third_party/flot' \
-#	'third_party/google_input_tools' \
-#	'third_party/google_input_tools/third_party/closure_library' \
-#	'third_party/google_input_tools/third_party/closure_library/third_party/closure' \
-#	'third_party/hunspell' \
-#	'third_party/iccjpeg' \
-#	'third_party/inspector_protocol' \
-#	'third_party/jinja2' \
-#	'third_party/jstemplate' \
-#	'third_party/khronos' \
-#	'third_party/leveldatabase' \
-#	'third_party/libXNVCtrl' \
-#	'third_party/libaddressinput' \
-#	'third_party/libjingle' \
-#	'third_party/libphonenumber' \
-#	'third_party/libsecret' \
-#       'third_party/libsrtp' \
-#	'third_party/libudev' \
-#	'third_party/libusb' \
-#	'third_party/libvpx' \
-#	'third_party/libvpx/source/libvpx/third_party/x86inc' \
-#	'third_party/libxml/chromium' \
-#	'third_party/libwebm' \
-#	'third_party/libyuv' \
-#	'third_party/lss' \
-#	'third_party/lzma_sdk' \
-#	'third_party/mesa' \
-#	'third_party/modp_b64' \
-#	'third_party/mt19937ar' \
-#	'third_party/openmax_dl' \
-#	'third_party/opus' \
-#	'third_party/ots' \
-#	'third_party/pdfium' \
-#	'third_party/pdfium/third_party/agg23' \
-#	'third_party/pdfium/third_party/base' \
-#	'third_party/pdfium/third_party/bigint' \
-#	'third_party/pdfium/third_party/freetype' \
-#	'third_party/pdfium/third_party/lcms2-2.6' \
-#	'third_party/pdfium/third_party/libjpeg' \
-#	'third_party/pdfium/third_party/libopenjpeg20' \
-#       'third_party/pdfium/third_party/libpng16' \
-#        'third_party/pdfium/third_party/libtiff' \
-#	'third_party/pdfium/third_party/zlib_v128' \
-#	'third_party/polymer' \
-#	'third_party/protobuf' \
-#	'third_party/protobuf/third_party/six' \
-#	'third_party/ply' \
-#	'third_party/qcms' \
-#	'third_party/qunit' \
-#	'third_party/sfntly' \
-#	'third_party/sinonjs' \
-#	'third_party/skia' \
-#	'third_party/smhasher' \
-#	'third_party/sqlite' \
-#	'third_party/tcmalloc' \
-#	'third_party/usrsctp' \
-#	'third_party/web-animations-js' \
-#	'third_party/webdriver' \
-#	'third_party/webrtc' \
-#	'third_party/widevine' \
-#       'third_party/woff2' \
-#	'third_party/x86inc' \
-#	'third_party/zlib/google' \
-#	'url/third_party/mozilla' \
-#	'v8/third_party/inspector_protocol' \
-#	'v8/src/third_party/valgrind' \
-#	--do-remove
+# Remove bundled libs
+keeplibs=(
+    base/third_party/dmg_fp
+    base/third_party/dynamic_annotations
+    base/third_party/nspr
+    base/third_party/icu
+    base/third_party/superfasthash
+    base/third_party/symbolize
+    base/third_party/valgrind
+    base/third_party/xdg_mime
+    base/third_party/xdg_user_dirs
+    breakpad/src/third_party/curl
+    chrome/third_party/mozilla_security_manager
+    courgette/third_party
+    net/third_party/mozilla_security_manager
+    net/third_party/nss
+    third_party/WebKit
+    third_party/wayland
+    third_party/analytics
+    third_party/angle
+    third_party/angle/src/common/third_party/numerics
+    third_party/angle/src/third_party/compiler
+    third_party/angle/src/third_party/libXNVCtrl
+    third_party/angle/src/third_party/murmurhash
+    third_party/angle/src/third_party/trace_event
+    third_party/boringssl
+    third_party/brotli
+    third_party/cacheinvalidation
+    third_party/catapult
+    third_party/catapult/third_party/polymer
+    third_party/catapult/third_party/py_vulcanize
+    third_party/catapult/third_party/py_vulcanize/third_party/rcssmin
+    third_party/catapult/third_party/py_vulcanize/third_party/rjsmin
+    third_party/catapult/tracing/third_party/d3
+    third_party/catapult/tracing/third_party/gl-matrix
+    third_party/catapult/tracing/third_party/jszip
+    third_party/catapult/tracing/third_party/mannwhitneyu
+    third_party/ced
+    third_party/cld_2
+    third_party/cld_3
+    third_party/cros_system_api
+    third_party/devscripts
+    third_party/dom_distiller_js
+    third_party/fips181
+    third_party/flatbuffers
+    third_party/flot
+    third_party/google_input_tools
+    third_party/google_input_tools/third_party/closure_library
+    third_party/google_input_tools/third_party/closure_library/third_party/closure
+    third_party/hunspell
+    third_party/iccjpeg
+    third_party/inspector_protocol
+    third_party/jstemplate
+    third_party/khronos
+    third_party/leveldatabase
+    third_party/libXNVCtrl
+    third_party/libaddressinput
+    third_party/libjingle
+    third_party/libphonenumber
+    third_party/libsecret
+    third_party/libsrtp
+    third_party/libudev
+    third_party/libusb
+    third_party/libwebm
+    third_party/libxml/chromium
+    third_party/libyuv
+    third_party/lss
+    third_party/lzma_sdk
+    third_party/mesa
+    third_party/modp_b64
+    third_party/mt19937ar
+    third_party/openh264
+    third_party/openmax_dl
+    third_party/opus
+    third_party/ots
+    third_party/pdfium
+    third_party/pdfium/third_party/agg23
+    third_party/pdfium/third_party/base
+    third_party/pdfium/third_party/bigint
+    third_party/pdfium/third_party/freetype
+    third_party/pdfium/third_party/lcms2-2.6
+    third_party/pdfium/third_party/libjpeg
+    third_party/pdfium/third_party/libopenjpeg20
+    third_party/pdfium/third_party/libpng16
+    third_party/pdfium/third_party/libtiff
+    third_party/pdfium/third_party/zlib_v128
+    third_party/polymer
+    third_party/protobuf
+    third_party/protobuf/third_party/six
+    third_party/qcms
+    third_party/sfntly
+    third_party/skia
+    third_party/smhasher
+    third_party/sqlite
+    third_party/tcmalloc
+    third_party/usrsctp
+    third_party/web-animations-js
+    third_party/webdriver
+    third_party/webrtc
+    third_party/widevine
+    third_party/woff2
+    third_party/x86inc
+    third_party/zlib/google
+    url/third_party/mozilla
+    v8/src/third_party/valgrind
+    v8/third_party/inspector_protocol
+    third_party/libva
+    third_party/yasm
+    third_party/jinja2
+    third_party/markupsafe
+    third_party/simplejson
+    third_party/ply
+    third_party/catapult/third_party/beautifulsoup4
+    third_party/catapult/third_party/html5lib-python
+    third_party/catapult/third_party/six
+)
 
-python2 build/linux/unbundle/replace_gn_files.py --system-libraries \
-        flac \
-        harfbuzz-ng \
-        libevent \
-	libjpeg \
-	libpng \
-	libwebp \
-	snappy \
-        libusb \
-        libxml \
-        libxslt \
-        opus \
-	zlib \
-        re2 \
-        yasm
+%if !%{with system_minizip}
+keeplibs+=( third_party/zlib )
+%endif
+%if !%{with system_icu}
+keeplibs+=( third_party/icu )
+%endif
+%if !%{with system_vpx}
+keeplibs+=(
+    third_party/libvpx
+    third_party/libvpx/source/libvpx/third_party/x86inc
+)
+%endif
+%if !%{with system_ffmpeg}
+keeplibs+=( third_party/ffmpeg )
+%endif
+%if !%{with system_harfbuzz}
+keeplibs+=( third_party/harfbuzz-ng )
+%endif
+# needed due to bugs in GN
+keeplibs+=(
+    base/third_party/libevent
+    third_party/adobe
+    third_party/speech-dispatcher
+    third_party/usb_ids
+    third_party/xdg-utils
+    third_party/yasm/run_yasm.py
+)
+python2 build/linux/unbundle/remove_bundled_libraries.py "${keeplibs[@]}" --do-remove
+
 
 # Look, I don't know. This package is spit and chewing gum. Sorry.
 rm -rf third_party/markupsafe
@@ -397,14 +405,11 @@ ln -s %{python2_sitearch}/markupsafe third_party/markupsafe
 # We should look on removing other python packages as well i.e. ply
 
 # workaround build failure
-touch chrome/test/data/webui/i18n_process_css_test.html
-%ifarch aarch64
-sed -i s'!aarch64-linux-gnu-!%{_build}-!g' build/toolchain/linux/BUILD.gn
-%endif
+if [ ! -f chrome/test/data/webui/i18n_process_css_test.html ]; then
+    touch chrome/test/data/webui/i18n_process_css_test.html
+fi
 
 %build
-%define system_gn_list  harfbuzz-ng
-
 %ifarch %{arm}
 # Use linker flags to reduce memory consumption on low-mem architectures
 %global optflags %(echo %{optflags} | sed -e 's/-g /-g0 /' -e 's/-gdwarf-4//')
@@ -455,7 +460,6 @@ myconf_gn+=" use_allocator=\"none\""
 myconf_gn+=" use_aura=true "
 myconf_gn+=" use_gconf=false"
 myconf_gn+=" icu_use_data_file=true"
-myconf_gn+=" use_system_icu=true"
 %if %{with gtk3}
 myconf_gn+=" use_gtk3=true "
 %else
@@ -487,9 +491,41 @@ myconf_gn+=" google_api_key=\"%{google_api_key}\""
 myconf_gn+=" google_default_client_id=\"%{google_default_client_id}\""
 myconf_gn+=" google_default_client_secret=\"%{google_default_client_secret}\""
 
-build/linux/unbundle/replace_gn_files.py --system-libraries %{system_gn_list}
+# Set system libraries to be used
+gn_system_libraries="
+    flac
+    libjpeg
+    libpng
+    libwebp
+    libxml
+    libxslt
+    re2
+    snappy
+"
+
+%if !%{with sle_bundles}
+gn_system_libraries+=" yasm"
+%endif
+%if %{with system_minizip}
+gn_system_libraries+=" zlib"
+%endif
+%if %{with system_harfbuzz}
+gn_system_libraries+=" harfbuzz-ng"
+%endif
+%if %{with system_icu}
+gn_system_libraries+=" icu"
+%endif
+%if %{with system_vpx}
+gn_system_libraries+=" libvpx"
+%endif
+%if %{with system_ffmpeg}
+gn_system_libraries+=" ffmpeg"
+%endif
+python2 build/linux/unbundle/replace_gn_files.py --system-libraries ${gn_system_libraries}
 
 python2 tools/gn/bootstrap/bootstrap.py -v --gn-gen-args "${myconf_gn}"
+
+python2 third_party/libaddressinput/chromium/tools/update-strings.py
 
 out/Release/gn gen --args="${myconf_gn}" out/Release
 
