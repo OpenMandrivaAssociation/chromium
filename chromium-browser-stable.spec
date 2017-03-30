@@ -113,6 +113,8 @@ Patch101:       chromium-55.0.2883.75-use_system_harfbuzz.patch
 Patch103:	arm_use_right_compiler.patch
 Patch104:	chromium-system-ffmpeg-r3.patch
 Patch105:	chromium-system-jinja-r13.patch
+# debian
+Patch106:	arm64-seccomp-memfd.patch
 
 Provides: 	%{crname}
 Obsoletes: 	chromium-browser-unstable < 26.0.1410.51
