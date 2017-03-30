@@ -7,7 +7,7 @@
 %define _src %{_topdir}/SOURCES
 # Valid current basever numbers can be found at
 # http://omahaproxy.appspot.com/
-%define basever 56.0.2924.87
+%define basever 57.0.2987.110
 %define	debug_package %nil
 
 %ifarch %ix86
@@ -39,7 +39,7 @@
 
 Name: 		chromium-browser-stable
 Version: 	%basever
-Release: 	5%{?extrarelsuffix}
+Release: 	1%{?extrarelsuffix}
 Summary: 	A fast webkit-based web browser
 Group: 		Networking/WWW
 License: 	BSD, LGPL
@@ -53,14 +53,13 @@ Source3:	master_preferences
 # Don't use clang's integrated as while trying to check the version of gas
 #Patch4:		chromium-36.0.1985.143-clang-no-integrated-as.patch
 %endif
-Patch5:		chromium-54.0.2840.100-dont-crash-with-glibc-2.24.patch
 
 #Patch20:	chromium-last-commit-position-r0.patch
 
 ### Chromium Fedora Patches ###
-Patch1:         chromium-56.0.2924.87-gcc5.patch
-Patch2:         chromium-45.0.2454.101-linux-path-max.patch
-Patch3:         chromium-55.0.2883.75-addrfix.patch
+Patch0:         chromium-56.0.2924.87-gcc5.patch
+Patch1:         chromium-45.0.2454.101-linux-path-max.patch
+Patch2:         chromium-55.0.2883.75-addrfix.patch
 Patch4:         chromium-46.0.2490.71-notest.patch
 # Ignore broken nacl open fd counter
 Patch7:         chromium-47.0.2526.80-nacl-ignore-broken-fd-counter.patch
@@ -77,9 +76,6 @@ Patch15:        chromium-55.0.2883.75-sandbox-pie.patch
 Patch16:        chromium-52.0.2743.82-arm-webrtc.patch
 # Use /etc/chromium for master_prefs
 Patch18:        chromium-52.0.2743.82-master-prefs-path.patch
-# Disable MADV_FREE (if set by glibc)
-# https://bugzilla.redhat.com/show_bug.cgi?id=1361157
-Patch19:        chromium-52.0.2743.116-unset-madv_free.patch
 # Use gn system files
 Patch20:        chromium-54.0.2840.59-gn-system.patch
 # Fix last commit position issue
@@ -96,9 +92,6 @@ Patch26:        chromium-54.0.2840.59-i686-ld-memory-tricks.patch
 # obj/content/renderer/renderer/child_frame_compositing_helper.o: In function `content::ChildFrameCompositingHelper::OnSetSurface(cc::SurfaceId const&, gfx::Size const&, float, cc::SurfaceSequence const&)':
 # /builddir/build/BUILD/chromium-54.0.2840.90/out/Release/../../content/renderer/child_frame_compositing_helper.cc:214: undefined reference to `cc_blink::WebLayerImpl::setOpaque(bool)'
 Patch27:        chromium-54.0.2840.90-setopaque.patch
-# Fix rvalue issue in remoting code
-# https://chromium.googlesource.com/chromium/src.git/+/29bfbecb49572b61264de7acccf8b23942bba43d%5E%21/#F0
-Patch29:        chromium-55.0.2883.87-rvalue-fix.patch
 # Fix compiler issue with gcc 4.9
 # https://chromium.googlesource.com/external/webrtc/trunk/webrtc/+/69556b1c264da9e0f484eaab890ebd555966630c%5E%21/#F0
 Patch30:        chromium-56.0.2924.87-gcc-49.patch
@@ -106,10 +99,16 @@ Patch30:        chromium-56.0.2924.87-gcc-49.patch
 Patch31:        chromium-56.0.2924.87-fpermissive.patch
 # Fix issue with unique_ptr move on return with older gcc
 Patch32:        chromium-56.0.2924.87-unique-ptr-fix.patch
+# Fix issue with compilation on gcc7
+# Thanks to Ben Noordhuis
+Patch33:        chromium-56.0.2924.87-gcc7.patch
+# Enable mp3 support
+Patch34:        chromium-57.0.2987.110-enable-mp3.patch
+
 ### Chromium Tests Patches ###
 Patch100:       chromium-46.0.2490.86-use_system_opus.patch
 Patch101:       chromium-55.0.2883.75-use_system_harfbuzz.patch
-Patch102:	arm64-support.patch
+
 # suse, system libs
 Patch103:	arm_use_right_compiler.patch
 Patch104:	chromium-system-ffmpeg-r3.patch
