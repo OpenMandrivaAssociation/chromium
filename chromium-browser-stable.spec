@@ -25,7 +25,7 @@
 # Chromium breaks on wayland, hidpi, and colors with gtk3 enabled.
 %bcond_with	gtk3
 # crisb - ozone causes a segfault on startup as of 57.0.2987.133
-%bcond_wtih	ozone
+%bcond_with	ozone
 %bcond_with	system_icu
 %bcond_without	system_ffmpeg
 %bcond_without	system_minizip
