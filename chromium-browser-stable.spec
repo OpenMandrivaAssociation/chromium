@@ -7,7 +7,7 @@
 %define _src %{_topdir}/SOURCES
 # Valid current basever numbers can be found at
 # http://omahaproxy.appspot.com/
-%define basever 57.0.2987.110
+%define basever 57.0.2987.133
 %define	debug_package %nil
 
 %ifarch %ix86
@@ -24,6 +24,8 @@
 %bcond_with	plf
 # Chromium breaks on wayland, hidpi, and colors with gtk3 enabled.
 %bcond_with	gtk3
+# crisb - ozone causes a segfault on startup as of 57.0.2987.133
+%bcond_wtih	ozone
 %bcond_with	system_icu
 %bcond_without	system_ffmpeg
 %bcond_without	system_minizip
@@ -467,8 +469,10 @@ myconf_gn+=" use_gtk3=true "
 %else
 myconf_gn+=" use_gtk3=false "
 %endif
-myconf_gn+=" enable_nacl=false "
+%if %{with ozone}
 myconf_gn+=" use_ozone=true "
+%endif
+myconf_gn+=" enable_nacl=false "
 %if %{with plf}
 myconf_gn+=" proprietary_codecs=true "
 myconf_gn+=" ffmpeg_branding=\"Chrome\" "
