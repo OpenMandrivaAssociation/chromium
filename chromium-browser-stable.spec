@@ -104,8 +104,6 @@ Patch32:        chromium-56.0.2924.87-unique-ptr-fix.patch
 # Fix issue with compilation on gcc7
 # Thanks to Ben Noordhuis
 Patch33:        chromium-56.0.2924.87-gcc7.patch
-# Enable mp3 support
-Patch34:        chromium-57.0.2987.110-enable-mp3.patch
 
 ### Chromium Tests Patches ###
 Patch100:       chromium-46.0.2490.86-use_system_opus.patch
@@ -117,6 +115,11 @@ Patch104:	chromium-system-ffmpeg-r3.patch
 Patch105:	chromium-system-jinja-r13.patch
 # debian
 Patch106:	arm64-seccomp-memfd.patch
+
+# mga
+Patch111:	chromium-55-extra-media.patch
+Patch112:	chromium-40-wmvflvmpg.patch
+Patch114:	chromium-55-flac.patch
 
 Provides: 	%{crname}
 Obsoletes: 	chromium-browser-unstable < 26.0.1410.51
@@ -473,12 +476,11 @@ myconf_gn+=" use_gtk3=false "
 myconf_gn+=" use_ozone=true "
 %endif
 myconf_gn+=" enable_nacl=false "
-%if %{with plf}
 myconf_gn+=" proprietary_codecs=true "
 myconf_gn+=" ffmpeg_branding=\"Chrome\" "
-%else
-myconf_gn+=" proprietary_codecs=false"
-%endif
+myconf_gn+=" enable_ac3_eac3_audio_demuxing=true "
+myconf_gn+=" enable_hevc_demuxing=true "
+myconf_gn+=" enable_mse_mpeg2ts_stream_parser=true "
 %ifarch i586
 myconf_gn+=" target_cpu=\"x86\""
 %endif
@@ -503,7 +505,6 @@ gn_system_libraries="
     libjpeg
     libpng
     libwebp
-    opus
     libevent
     libusb
     libxml
