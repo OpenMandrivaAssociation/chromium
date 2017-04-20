@@ -154,9 +154,7 @@ BuildRequires:  pkgconfig(libavfilter)
 BuildRequires:  pkgconfig(libavformat) >= 57.41.100
 BuildRequires:  pkgconfig(libavutil)
 %endif
-%if %{with gtk3}
 BuildRequires:	gtk+3.0-devel
-%endif
 BuildRequires:	gtk+2.0-devel
 BuildRequires: 	pkgconfig(nspr)
 BuildRequires: 	pkgconfig(zlib)
