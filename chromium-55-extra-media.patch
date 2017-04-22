@@ -1,22 +1,22 @@
 --- chromium-52.0.2716.0/media/base/mime_util_internal.cc	2016-04-27 08:42:25.933047659 +0200
 +++ chromium-52.0.2716.0/media/base/mime_util_internal.cc	2016-12-03 22:43:46.182795570 +0100
 @@ -78,7 +78,11 @@
-     {"opus", MimeUtil::OPUS},
+     {"flac", MimeUtil::FLAC},
      {"vp8", MimeUtil::VP8},
      {"vp8.0", MimeUtil::VP8},
--    {"theora", MimeUtil::THEORA}};
+-    {"theora", MimeUtil::THEORA}
 +    {"theora", MimeUtil::THEORA},
 +    {"dts", MimeUtil::DTS},
 +    {"mp2", MimeUtil::MP2},
 +    {"mp4v.20.8", MimeUtil::MPEG4_SP},
-+    {"mp4v.20.240", MimeUtil::MPEG4_ASP}};
++    {"mp4v.20.240", MimeUtil::MPEG4_ASP}
+   };
  
- // List of codec IDs that are ambiguous and don't provide
- // enough information to determine the codec and profile.
+   return kStringToCodecMap;
 @@ -275,6 +279,9 @@
-       return kCodecVP9;
-     case MimeUtil::THEORA:
        return kCodecTheora;
+     case MimeUtil::DOLBY_VISION:
+       return kCodecDolbyVision;
 +    case MimeUtil::MPEG4_SP:
 +    case MimeUtil::MPEG4_ASP:
 +      return kCodecMPEG4;
@@ -71,7 +71,7 @@
 +  AddContainerWithCodecs("audio/x-matroska", matroska_audio_codecs, false);
 +  AddContainerWithCodecs("video/x-matroska", matroska_codecs, false);
 +
- #if defined(USE_PROPRIETARY_CODECS)
+ #if BUILDFLAG(USE_PROPRIETARY_CODECS)
    AddContainerWithCodecs("audio/mpeg", mp3_codecs, true);  // Allow "mp3".
    AddContainerWithCodecs("audio/mp3", implicit_codec, true);
 @@ -422,6 +459,7 @@
@@ -83,9 +83,9 @@
  #if BUILDFLAG(ENABLE_MSE_MPEG2TS_STREAM_PARSER)
    // TODO(ddorwin): Exactly which codecs should be supported?
 @@ -766,9 +804,13 @@
-     case MPEG4_AAC:
      case H264:
      case HEVC:
+     case DOLBY_VISION:
 +    case DTS:
 +    case MPEG4_SP:
 +    case MPEG4_ASP:
@@ -99,10 +99,10 @@
 --- chromium-52.0.2716.0/media/base/mime_util_internal.h.matroska-avi	2016-04-27 00:02:52.000000000 +0200
 +++ chromium-52.0.2716.0/media/base/mime_util_internal.h	2016-04-27 08:14:04.560330601 +0200
 @@ -39,7 +39,11 @@ class MEDIA_EXPORT MimeUtil {
-     VP8,
      VP9,
      THEORA,
--    LAST_CODEC = THEORA
+     DOLBY_VISION,
+-    LAST_CODEC = DOLBY_VISION
 +    DTS,
 +    MP2,
 +    MPEG4_SP,
@@ -217,11 +217,11 @@
      case media::kCodecMPEG2:
 -    case media::kCodecMPEG4:
 -    case media::kCodecHEVC:
+     case media::kCodecDolbyVision:
        return false;
    }
- 
---- chromium-56.0.2924.10/media/remoting/rpc/proto_enum_utils.cc.bak	2016-11-29 21:04:19.000000000 +0100
-+++ chromium-56.0.2924.10/media/remoting/rpc/proto_enum_utils.cc	2016-12-01 23:42:15.717317808 +0100
+--- chromium-56.0.2924.10/media/remoting/proto_enum_utils.cc.bak	2016-11-29 21:04:19.000000000 +0100
++++ chromium-56.0.2924.10/media/remoting/proto_enum_utils.cc	2016-12-01 23:42:15.717317808 +0100
 @@ -57,6 +57,7 @@
      CASE_RETURN_OTHER(kCodecPCM_ALAW);
      CASE_RETURN_OTHER(kCodecALAC);
@@ -238,8 +238,8 @@
    }
    return base::nullopt;  // Not a 'default' to ensure compile-time checks.
  }
---- chromium-56.0.2924.10/media/remoting/proto/remoting_rpc_message.proto.bak	2016-11-29 21:04:19.000000000 +0100
-+++ chromium-56.0.2924.10/media/remoting/proto/remoting_rpc_message.proto	2016-12-02 02:15:05.660562641 +0100
+--- chromium-56.0.2924.10/media/remoting/rpc.proto.bak	2016-11-29 21:04:19.000000000 +0100
++++ chromium-56.0.2924.10/media/remoting/rpc.proto	2016-12-02 02:15:05.660562641 +0100
 @@ -64,6 +64,7 @@
      kCodecPCM_ALAW = 14;
      kCodecALAC = 15;
@@ -256,8 +256,8 @@
        case kCodecMPEG2:
 -      case kCodecHEVC:
        case kCodecVP9:
+       case kCodecDolbyVision:
          // We do not compile ffmpeg with support for any of these codecs.
-         break;
 @@ -68,6 +67,7 @@
        case kCodecH264:
        case kCodecMPEG4:

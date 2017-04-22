@@ -7,7 +7,7 @@
 %define _src %{_topdir}/SOURCES
 # Valid current basever numbers can be found at
 # http://omahaproxy.appspot.com/
-%define basever 57.0.2987.133
+%define basever 58.0.3029.81
 %define	debug_package %nil
 
 %ifarch %ix86
@@ -29,7 +29,8 @@
 %bcond_with	system_icu
 %bcond_without	system_ffmpeg
 %bcond_without	system_minizip
-%bcond_without	system_vpx
+# chromium 58 fails with system vpx 1.6.1
+%bcond_with	system_vpx
 %bcond_without	system_harfbuzz
 
 # Always support proprietary codecs
@@ -94,13 +95,8 @@ Patch26:        chromium-54.0.2840.59-i686-ld-memory-tricks.patch
 # obj/content/renderer/renderer/child_frame_compositing_helper.o: In function `content::ChildFrameCompositingHelper::OnSetSurface(cc::SurfaceId const&, gfx::Size const&, float, cc::SurfaceSequence const&)':
 # /builddir/build/BUILD/chromium-54.0.2840.90/out/Release/../../content/renderer/child_frame_compositing_helper.cc:214: undefined reference to `cc_blink::WebLayerImpl::setOpaque(bool)'
 Patch27:        chromium-54.0.2840.90-setopaque.patch
-# Fix compiler issue with gcc 4.9
-# https://chromium.googlesource.com/external/webrtc/trunk/webrtc/+/69556b1c264da9e0f484eaab890ebd555966630c%5E%21/#F0
-Patch30:        chromium-56.0.2924.87-gcc-49.patch
 # Use -fpermissive to build WebKit
 Patch31:        chromium-56.0.2924.87-fpermissive.patch
-# Fix issue with unique_ptr move on return with older gcc
-Patch32:        chromium-56.0.2924.87-unique-ptr-fix.patch
 # Fix issue with compilation on gcc7
 # Thanks to Ben Noordhuis
 Patch33:        chromium-56.0.2924.87-gcc7.patch
@@ -113,13 +109,15 @@ Patch101:       chromium-55.0.2883.75-use_system_harfbuzz.patch
 Patch103:	arm_use_right_compiler.patch
 Patch104:	chromium-system-ffmpeg-r3.patch
 Patch105:	chromium-system-jinja-r13.patch
-# debian
-Patch106:	arm64-seccomp-memfd.patch
 
 # mga
 Patch111:	chromium-55-extra-media.patch
 Patch112:	chromium-40-wmvflvmpg.patch
 Patch114:	chromium-55-flac.patch
+
+# arch
+# fix gn build
+Patch120:	chromium-gn-bootstrap-r2.patch
 
 Provides: 	%{crname}
 Obsoletes: 	chromium-browser-unstable < 26.0.1410.51
@@ -197,6 +195,7 @@ BuildRequires:	python2
 BuildRequires:	python
 %endif
 BuildRequires:	ninja
+BuildRequires:	nodejs
 BuildRequires:	python2-markupsafe
 BuildRequires:	python2-ply
 BuildRequires:	python2-beautifulsoup4
@@ -256,6 +255,10 @@ cmp $FILE $FILE.orig && exit 1
 # gn is rather convoluted and not python3 friendly -- let's make
 # sure it sees python2 when it calls python
 ln -s %{_bindir}/python2 python
+
+# use the system nodejs
+mkdir -p third_party/node/linux/node-linux-x64/bin
+ln -s /usr/bin/node third_party/node/linux/node-linux-x64/bin/
 
 # Remove bundled libs
 keeplibs=(
@@ -328,6 +331,8 @@ keeplibs=(
     third_party/mesa
     third_party/modp_b64
     third_party/mt19937ar
+    third_party/node
+    third_party/node/node_modules/vulcanize/third_party/UglifyJS2
     third_party/openh264
     third_party/openmax_dl
     third_party/opus

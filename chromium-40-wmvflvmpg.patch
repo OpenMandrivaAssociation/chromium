@@ -5,7 +5,7 @@ diff -up chromium-51.0.2704.19/media/base/mime_util_internal.cc.wmvflvmpg chromi
      {"dts", MimeUtil::DTS},
      {"mp2", MimeUtil::MP2},
      {"mp4v.20.8", MimeUtil::MPEG4_SP},
--    {"mp4v.20.240", MimeUtil::MPEG4_ASP}};
+-    {"mp4v.20.240", MimeUtil::MPEG4_ASP}
 +    {"mp4v.20.240", MimeUtil::MPEG4_ASP},
 +    {"msmpeg4v1", MimeUtil::MSMPEG4v1},
 +    {"msmpeg4v2", MimeUtil::MSMPEG4v2},
@@ -16,10 +16,10 @@ diff -up chromium-51.0.2704.19/media/base/mime_util_internal.cc.wmvflvmpg chromi
 +    {"vc-1", MimeUtil::VC1},
 +    {"wma", MimeUtil::WMA},
 +    {"vp6", MimeUtil::VP6},
-+    {"mpeg1", MimeUtil::MPEG1}};
++    {"mpeg1", MimeUtil::MPEG1}
+   };
  
- // List of codec IDs that are ambiguous and don't provide
- // enough information to determine the codec and profile.
+   return kStringToCodecMap;
 @@ -398,6 +408,9 @@
    webm_video_codecs.insert(VP9);
    CodecSet webm_codecs(webm_audio_codecs);
@@ -28,11 +28,11 @@ diff -up chromium-51.0.2704.19/media/base/mime_util_internal.cc.wmvflvmpg chromi
 +  CodecSet mp1_codecs;
 +  mp1_codecs.insert(MPEG1);
  
- #if defined(USE_PROPRIETARY_CODECS)
+ #if BUILDFLAG(USE_PROPRIETARY_CODECS)
    CodecSet mp3_codecs;
 @@ -431,6 +444,29 @@
    mp4_codecs.insert(mp4_video_codecs.begin(), mp4_video_codecs.end());
- #endif  // defined(USE_PROPRIETARY_CODECS)
+ #endif  // BUILDFLAG(USE_PROPRIETARY_CODECS)
  
 +  CodecSet wma_codecs;
 +  wma_codecs.insert(WMA);
@@ -70,7 +70,7 @@ diff -up chromium-51.0.2704.19/media/base/mime_util_internal.cc.wmvflvmpg chromi
 +  AddContainerWithCodecs("video/x-flv", flv_codecs, true);
 +  AddContainerWithCodecs("video/mpeg", mp1_codecs, true);
  
- #if defined(USE_PROPRIETARY_CODECS)
+ #if BUILDFLAG(USE_PROPRIETARY_CODECS)
    AddContainerWithCodecs("audio/mpeg", mp3_codecs, true);  // Allow "mp3".
 @@ -806,6 +847,15 @@
      case DTS:

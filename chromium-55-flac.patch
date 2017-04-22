@@ -1,22 +1,6 @@
 diff -up chromium-55.0.2883.52/media/base/mime_util_internal.cc.flac chromium-55.0.2883.52/media/base/mime_util_internal.cc
 --- chromium-55.0.2883.52/media/base/mime_util_internal.cc.flac	2016-11-20 02:57:53.694441764 +0100
 +++ chromium-55.0.2883.52/media/base/mime_util_internal.cc	2016-11-20 13:02:12.683283042 +0100
-@@ -81,6 +81,7 @@
-     {"theora", MimeUtil::THEORA},
-     {"dts", MimeUtil::DTS},
-     {"mp2", MimeUtil::MP2},
-+    {"flac", MimeUtil::FLAC},
-     {"mp4v.20.8", MimeUtil::MPEG4_SP},
-     {"mp4v.20.240", MimeUtil::MPEG4_ASP},
-     {"msmpeg4v1", MimeUtil::MSMPEG4v1},
-@@ -368,6 +368,7 @@
-   CodecSet ogg_audio_codecs;
-   ogg_audio_codecs.insert(OPUS);
-   ogg_audio_codecs.insert(VORBIS);
-+  ogg_audio_codecs.insert(FLAC);
-   CodecSet ogg_video_codecs;
- #if !defined(OS_ANDROID)
-   ogg_video_codecs.insert(THEORA);
 @@ -386,6 +387,7 @@
    matroska_audio_codecs.insert(MPEG2_AAC);
    matroska_audio_codecs.insert(MPEG4_AAC);
@@ -33,11 +17,3 @@ diff -up chromium-55.0.2883.52/media/base/mime_util_internal.cc.flac chromium-55
  #if BUILDFLAG(ENABLE_AC3_EAC3_AUDIO_DEMUXING)
    mp4_audio_codecs.insert(AC3);
    mp4_audio_codecs.insert(EAC3);
-@@ -487,6 +490,7 @@
-   AddContainerWithCodecs("video/x-ms-asf", wmv_codecs, true);
-   AddContainerWithCodecs("video/x-flv", flv_codecs, true);
-   AddContainerWithCodecs("video/mpeg", mp1_codecs, true);
-+  AddContainerWithCodecs("audio/flac", implicit_codec, false);
- 
- #if defined(USE_PROPRIETARY_CODECS)
-   AddContainerWithCodecs("audio/mpeg", mp3_codecs, true);  // Allow "mp3".
