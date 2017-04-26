@@ -42,7 +42,7 @@
 
 Name: 		chromium-browser-stable
 Version: 	%basever
-Release: 	1%{?extrarelsuffix}
+Release: 	2%{?extrarelsuffix}
 Summary: 	A fast webkit-based web browser
 Group: 		Networking/WWW
 License: 	BSD, LGPL
@@ -508,7 +508,6 @@ gn_system_libraries="
     libjpeg
     libpng
     libwebp
-    libevent
     libusb
     libxml
     libxslt
@@ -516,6 +515,8 @@ gn_system_libraries="
     snappy
     yasm
 "
+# cb - chrome 58
+# libevent as system lib causes some hanging issues particularly with extensions
 
 %if %{with system_minizip}
 gn_system_libraries+=" zlib"
