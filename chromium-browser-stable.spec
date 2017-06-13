@@ -7,7 +7,7 @@
 %define _src %{_topdir}/SOURCES
 # Valid current basever numbers can be found at
 # http://omahaproxy.appspot.com/
-%define basever 58.0.3029.110
+%define basever 59.0.3071.86
 %define	debug_package %nil
 
 %ifarch %ix86
@@ -71,8 +71,6 @@ Patch9:         chromium-48.0.2564.116-libusb_interrupt_event_handler.patch
 # Ignore deprecations in cups 2.2
 # https://bugs.chromium.org/p/chromium/issues/detail?id=622493
 Patch12:        chromium-55.0.2883.75-cups22.patch
-# Add ICU Text Codec aliases (from openSUSE via Russian Fedora)
-Patch14:        chromium-55.0.2883.75-more-codec-aliases.patch
 # Use PIE in the Linux sandbox (from openSUSE via Russian Fedora)
 Patch15:        chromium-55.0.2883.75-sandbox-pie.patch
 # Enable ARM CPU detection for webrtc (from archlinux via Russian Fedora)
@@ -87,19 +85,21 @@ Patch21:        chromium-53.0.2785.92-last-commit-position.patch
 # Fix issue where timespec is not defined when sys/stat.h is included.
 Patch22:        chromium-53.0.2785.92-boringssl-time-fix.patch
 # I wouldn't have to do this if there was a standard way to append extra compiler flags
-Patch24:        chromium-54.0.2840.59-nullfix.patch
+Patch24:        http://pkgs.fedoraproject.org/cgit/rpms/chromium.git/plain/chromium-59.0.3071.86-nullfix.patch
 # Add explicit includedir for jpeglib.h
 Patch25:        chromium-54.0.2840.59-jpeg-include-dir.patch
 # On i686, pass --no-keep-memory --reduce-memory-overheads to ld.
-Patch26:        chromium-54.0.2840.59-i686-ld-memory-tricks.patch
+Patch26:        http://pkgs.fedoraproject.org/cgit/rpms/chromium.git/plain/chromium-59.0.3071.86-i686-ld-memory-tricks.patch
 # obj/content/renderer/renderer/child_frame_compositing_helper.o: In function `content::ChildFrameCompositingHelper::OnSetSurface(cc::SurfaceId const&, gfx::Size const&, float, cc::SurfaceSequence const&)':
 # /builddir/build/BUILD/chromium-54.0.2840.90/out/Release/../../content/renderer/child_frame_compositing_helper.cc:214: undefined reference to `cc_blink::WebLayerImpl::setOpaque(bool)'
-Patch27:        chromium-54.0.2840.90-setopaque.patch
+Patch27:        http://pkgs.fedoraproject.org/cgit/rpms/chromium.git/plain/chromium-59.0.3071.86-setopaque.patch
 # Use -fpermissive to build WebKit
 Patch31:        chromium-56.0.2924.87-fpermissive.patch
 # Fix issue with compilation on gcc7
 # Thanks to Ben Noordhuis
-Patch33:        chromium-56.0.2924.87-gcc7.patch
+Patch33:        http://pkgs.fedoraproject.org/cgit/rpms/chromium.git/plain/chromium-59.0.3071.86-gcc7.patch
+# Fix compilation with current (4.11/4.12) kernels
+Patch34:	http://pkgs.fedoraproject.org/cgit/rpms/chromium.git/plain/chromium-59.0.3071.86-dma-buf-header-hack.patch
 
 ### Chromium Tests Patches ###
 Patch100:       chromium-46.0.2490.86-use_system_opus.patch
@@ -114,10 +114,6 @@ Patch105:	chromium-system-jinja-r13.patch
 Patch111:	chromium-55-extra-media.patch
 Patch112:	chromium-40-wmvflvmpg.patch
 Patch114:	chromium-55-flac.patch
-
-# arch
-# fix gn build
-Patch120:	chromium-gn-bootstrap-r2.patch
 
 Provides: 	%{crname}
 Obsoletes: 	chromium-browser-unstable < 26.0.1410.51
@@ -305,6 +301,7 @@ keeplibs=(
     third_party/dom_distiller_js
     third_party/fips181
     third_party/flatbuffers
+    third_party/freetype
     third_party/flot
     third_party/google_input_tools
     third_party/google_input_tools/third_party/closure_library
@@ -324,7 +321,9 @@ keeplibs=(
     third_party/libudev
     third_party/libusb
     third_party/libwebm
+    third_party/libxml
     third_party/libxml/chromium
+    third_party/libxml/src
     third_party/libyuv
     third_party/lss
     third_party/lzma_sdk
@@ -341,13 +340,12 @@ keeplibs=(
     third_party/pdfium/third_party/agg23
     third_party/pdfium/third_party/base
     third_party/pdfium/third_party/bigint
+    third_party/pdfium/third_party/build
     third_party/pdfium/third_party/freetype
     third_party/pdfium/third_party/lcms2-2.6
-    third_party/pdfium/third_party/libjpeg
     third_party/pdfium/third_party/libopenjpeg20
     third_party/pdfium/third_party/libpng16
     third_party/pdfium/third_party/libtiff
-    third_party/pdfium/third_party/zlib_v128
     third_party/polymer
     third_party/protobuf
     third_party/protobuf/third_party/six
@@ -401,7 +399,20 @@ keeplibs+=( third_party/harfbuzz-ng )
 keeplibs+=(
     base/third_party/libevent
     third_party/adobe
+    third_party/libdrm
     third_party/speech-dispatcher
+    third_party/swiftshader
+    third_party/swiftshader/third_party/subzero
+    third_party/swiftshader/third_party/LLVM
+    third_party/swiftshader/third_party/llvm-subzero
+    third_party/swiftshader/third_party/pnacl-subzero
+    third_party/swiftshader/src/OpenGL/libGLESv2
+    third_party/swiftshader/src/OpenGL/compiler
+    third_party/swiftshader/src/OpenGL/common
+    third_party/swiftshader/src/Reactor
+    third_party/swiftshader/src/Renderer
+    third_party/swiftshader/src/Shader
+    third_party/swiftshader/src/Main
     third_party/usb_ids
     third_party/xdg-utils
     third_party/yasm/run_yasm.py
@@ -509,7 +520,6 @@ gn_system_libraries="
     libpng
     libwebp
     libusb
-    libxml
     libxslt
     re2
     snappy

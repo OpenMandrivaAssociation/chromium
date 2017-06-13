@@ -1,0 +1,13 @@
+diff -up chromium-59.0.3071.86/ui/gfx/linux/client_native_pixmap_dmabuf.cc.headerhack chromium-59.0.3071.86/ui/gfx/linux/client_native_pixmap_dmabuf.cc
+--- chromium-59.0.3071.86/ui/gfx/linux/client_native_pixmap_dmabuf.cc.headerhack	2017-06-09 15:12:49.684832489 -0400
++++ chromium-59.0.3071.86/ui/gfx/linux/client_native_pixmap_dmabuf.cc	2017-06-09 15:13:13.907342001 -0400
+@@ -17,7 +17,8 @@
+ #include "base/strings/stringprintf.h"
+ #include "base/trace_event/trace_event.h"
+ 
+-#if LINUX_VERSION_CODE < KERNEL_VERSION(4, 6, 0)
++//#if LINUX_VERSION_CODE < KERNEL_VERSION(4, 6, 0)
++#if 1
+ #include <linux/types.h>
+ 
+ struct local_dma_buf_sync {

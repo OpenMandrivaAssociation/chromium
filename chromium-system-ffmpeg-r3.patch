@@ -1,6 +1,6 @@
---- a/media/ffmpeg/ffmpeg_common.h.orig	2016-09-09 13:16:07.757294768 +0000
-+++ b/media/ffmpeg/ffmpeg_common.h	2016-09-09 13:16:41.705989273 +0000
-@@ -22,10 +22,6 @@
+--- chromium-59.0.3071.86/media/ffmpeg/ffmpeg_common.h.0104~	2017-06-05 21:03:08.000000000 +0200
++++ chromium-59.0.3071.86/media/ffmpeg/ffmpeg_common.h	2017-06-13 00:15:20.155833758 +0200
+@@ -23,10 +23,6 @@
  
  // Include FFmpeg header files.
  extern "C" {
@@ -11,7 +11,7 @@
  // Upstream libavcodec/utils.c still uses the deprecated
  // av_dup_packet(), causing deprecation warnings.
  // The normal fix for such things is to disable the feature as below,
-@@ -35,7 +35,6 @@
+@@ -40,7 +36,6 @@ extern "C" {
  MSVC_PUSH_DISABLE_WARNING(4244);
  #include <libavcodec/avcodec.h>
  #include <libavformat/avformat.h>
@@ -19,9 +19,9 @@
  #include <libavformat/avio.h>
  #include <libavutil/avutil.h>
  #include <libavutil/imgutils.h>
---- a/media/filters/ffmpeg_demuxer.cc.orig	2016-09-09 14:21:40.185828912 +0000
-+++ b/media/filters/ffmpeg_demuxer.cc	2016-09-09 14:21:52.894089352 +0000
-@@ -1185,24 +1185,6 @@
+--- chromium-59.0.3071.86/media/filters/ffmpeg_demuxer.cc.0104~	2017-06-13 00:15:20.155833758 +0200
++++ chromium-59.0.3071.86/media/filters/ffmpeg_demuxer.cc	2017-06-13 00:16:58.967493078 +0200
+@@ -1223,30 +1223,6 @@ void FFmpegDemuxer::OnFindStreamInfoDone
    // If no estimate is found, the stream entry will be kInfiniteDuration.
    std::vector<base::TimeDelta> start_time_estimates(format_context->nb_streams,
                                                      kInfiniteDuration);
@@ -37,12 +37,18 @@
 -      if (packet_buffer->pkt.pts != static_cast<int64_t>(AV_NOPTS_VALUE)) {
 -        const base::TimeDelta packet_pts =
 -            ConvertFromTimeBase(stream->time_base, packet_buffer->pkt.pts);
--        if (packet_pts < start_time_estimates[stream->index])
+-        // We ignore kNoTimestamp here since -int64_t::min() is possible; see
+-        // https://crbug.com/700501. Technically this is a valid value, but in
+-        // practice shouldn't occur, so just ignore it when estimating.
+-        if (packet_pts != kNoTimestamp && packet_pts != kInfiniteDuration &&
+-            packet_pts < start_time_estimates[stream->index]) {
 -          start_time_estimates[stream->index] = packet_pts;
+-        }
 -      }
 -      packet_buffer = packet_buffer->next;
 -    }
 -  }
- 
+-
    std::unique_ptr<MediaTracks> media_tracks(new MediaTracks());
  
+   DCHECK(track_id_to_demux_stream_map_.empty());
