@@ -115,6 +115,9 @@ Patch111:	chromium-55-extra-media.patch
 Patch112:	chromium-40-wmvflvmpg.patch
 Patch114:	chromium-55-flac.patch
 
+# omv
+Patch120:      chromium-59-clang-workaround.patch
+
 Provides: 	%{crname}
 Obsoletes: 	chromium-browser-unstable < 26.0.1410.51
 Obsoletes: 	chromium-browser-beta < 26.0.1410.51
