@@ -5,9 +5,6 @@
 %define crname chromium-browser
 %define _crdir %{_libdir}/%{crname}
 %define _src %{_topdir}/SOURCES
-# Valid current basever numbers can be found at
-# http://omahaproxy.appspot.com/
-%define basever 59.0.3071.115
 %define	debug_package %nil
 
 %ifarch %ix86
@@ -23,7 +20,8 @@
 
 %bcond_with	plf
 # Chromium breaks on wayland, hidpi, and colors with gtk3 enabled.
-%bcond_with	gtk3
+# But as of 60.0.3112.78 and .90, building with gtk2 is broken
+%bcond_without	gtk3
 # crisb - ozone causes a segfault on startup as of 57.0.2987.133
 %bcond_with	ozone
 %bcond_with	system_icu
@@ -42,13 +40,15 @@
 %endif
 
 Name: 		chromium-browser-stable
-Version: 	%basever
-Release: 	2%{?extrarelsuffix}
+# Working version numbers can be found at
+# http://omahaproxy.appspot.com/
+Version: 	60.0.3112.90
+Release: 	1%{?extrarelsuffix}
 Summary: 	A fast webkit-based web browser
 Group: 		Networking/WWW
 License: 	BSD, LGPL
 # From : http://gsdview.appspot.com/chromium-browser-official/
-Source0: 	https://commondatastorage.googleapis.com/chromium-browser-official/chromium-%{basever}.tar.xz
+Source0: 	https://commondatastorage.googleapis.com/chromium-browser-official/chromium-%{version}.tar.xz
 Source1: 	chromium-wrapper
 Source2: 	chromium-browser.desktop
 Source3:	master_preferences
@@ -101,19 +101,13 @@ Patch26:        http://pkgs.fedoraproject.org/cgit/rpms/chromium.git/plain/chrom
 Patch27:        http://pkgs.fedoraproject.org/cgit/rpms/chromium.git/plain/chromium-59.0.3071.86-setopaque.patch
 # Use -fpermissive to build WebKit
 Patch31:        chromium-56.0.2924.87-fpermissive.patch
-# Fix issue with compilation on gcc7
-# Thanks to Ben Noordhuis
-Patch33:        http://pkgs.fedoraproject.org/cgit/rpms/chromium.git/plain/chromium-59.0.3071.86-gcc7.patch
-# Fix compilation with current (4.11/4.12) kernels
-Patch34:	http://pkgs.fedoraproject.org/cgit/rpms/chromium.git/plain/chromium-59.0.3071.86-dma-buf-header-hack.patch
 
 ### Chromium Tests Patches ###
-Patch100:       chromium-46.0.2490.86-use_system_opus.patch
 Patch101:       chromium-55.0.2883.75-use_system_harfbuzz.patch
 
 # suse, system libs
 Patch103:	arm_use_right_compiler.patch
-Patch104:	chromium-system-ffmpeg-r3.patch
+#Patch104:	https://gitweb.gentoo.org/repo/gentoo.git/plain/www-client/chromium/files/chromium-system-ffmpeg-r6.patch
 Patch105:	chromium-system-jinja-r13.patch
 
 # mga
@@ -124,6 +118,8 @@ Patch114:	chromium-55-flac.patch
 # omv
 Patch120:	chromium-59-clang-workaround.patch
 Patch121:	chromium-59.0.3071.115-glibc-2.26.patch
+Patch122:	chromium-60-gn-bootstrap.patch
+Patch123:	chromium-60-glibc-2.26.patch
 
 Provides: 	%{crname}
 Obsoletes: 	chromium-browser-unstable < 26.0.1410.51
@@ -246,7 +242,7 @@ members of the Chromium and WebDriver teams.
 
 
 %prep
-%setup -q -n chromium-%{basever} -a 4
+%setup -q -n chromium-%{version} -a 4
 %apply_patches
 
 rm -rf third_party/binutils/
@@ -271,6 +267,7 @@ python2 build/linux/unbundle/remove_bundled_libraries.py \
 	'third_party/ffmpeg' \
 	'third_party/adobe' \
 	'third_party/flac' \
+	'third_party/glslang-angle' \
 	'third_party/harfbuzz-ng' \
 	'third_party/icu' \
 	'base/third_party/libevent' \
@@ -284,12 +281,14 @@ python2 build/linux/unbundle/remove_bundled_libraries.py \
 	'third_party/openh264' \
 	'third_party/snappy' \
 	'third_party/speech-dispatcher' \
+	'third_party/spirv-tools-angle' \
+	'third_party/spirv-headers' \
 	'third_party/swiftshader' \
 	'third_party/swiftshader/third_party/subzero' \
 	'third_party/swiftshader/third_party/LLVM' \
 	'third_party/swiftshader/third_party/llvm-subzero' \
-	'third_party/swiftshader/third_party/pnacl-subzero' \
 	'third_party/usb_ids' \
+	'third_party/vulkan-validation-layers' \
 	'third_party/xdg-utils' \
 	'third_party/yasm' \
 	'third_party/zlib' \
@@ -327,6 +326,7 @@ python2 build/linux/unbundle/remove_bundled_libraries.py \
 	'third_party/catapult/tracing/third_party/gl-matrix' \
 	'third_party/catapult/tracing/third_party/jszip' \
 	'third_party/catapult/tracing/third_party/mannwhitneyu' \
+	'third_party/catapult/tracing/third_party/oboe' \
 	'third_party/catapult/third_party/polymer' \
 	'third_party/catapult/third_party/py_vulcanize' \
 	'third_party/catapult/third_party/py_vulcanize/third_party/rcssmin' \
@@ -348,6 +348,11 @@ python2 build/linux/unbundle/remove_bundled_libraries.py \
 	'third_party/google_input_tools' \
 	'third_party/google_input_tools/third_party/closure_library' \
 	'third_party/google_input_tools/third_party/closure_library/third_party/closure' \
+	'third_party/googletest' \
+	'third_party/googletest/src' \
+	'third_party/googletest/src/googletest' \
+	'third_party/googletest/src/googletest/include' \
+	'third_party/googletest/src/googletest/include/gtest' \
 	'third_party/hunspell' \
 	'third_party/iccjpeg' \
 	'third_party/inspector_protocol' \
@@ -364,7 +369,6 @@ python2 build/linux/unbundle/remove_bundled_libraries.py \
 	'third_party/libudev' \
 	'third_party/libusb' \
 	'third_party/libvpx' \
-	'third_party/libvpx/source/libvpx/third_party/x86inc' \
 	'third_party/libxml/chromium' \
 	'third_party/libwebm' \
 	'third_party/libyuv' \
@@ -406,7 +410,7 @@ python2 build/linux/unbundle/remove_bundled_libraries.py \
 	'third_party/webrtc' \
 	'third_party/widevine' \
 	'third_party/woff2' \
-	'third_party/x86inc' \
+	'third_party/libvpx/source/libvpx/third_party/x86inc' \
 	'url/third_party/mozilla' \
 	'v8/third_party/inspector_protocol' \
 	'v8/src/third_party/valgrind' \
@@ -508,9 +512,10 @@ myconf_gn+=" google_default_client_secret=\"%{google_default_client_secret}\""
 # Set system libraries to be used
 gn_system_libraries="
     flac
+    opus
     libjpeg
     libwebp
-    libusb
+    ffmpeg
     libxslt
     re2
     snappy

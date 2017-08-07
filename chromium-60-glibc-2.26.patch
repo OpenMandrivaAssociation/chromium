@@ -1,0 +1,13 @@
+--- chromium-60.0.3112.78/ui/gfx/linux/client_native_pixmap_dmabuf.cc.omv~	2017-08-01 02:18:32.932746464 +0200
++++ chromium-60.0.3112.78/ui/gfx/linux/client_native_pixmap_dmabuf.cc	2017-08-01 02:19:43.041998310 +0200
+@@ -95,8 +95,8 @@ ClientNativePixmapDmaBuf::ClientNativePi
+     int major = -1;
+     struct stat buf;
+     if (!fstat(dmabuf_fd_.get(), &buf)) {
+-      minor = minor(buf.st_dev);
+-      major = major(buf.st_dev);
++      minor = gnu_dev_minor(buf.st_dev);
++      major = gnu_dev_major(buf.st_dev);
+     }
+ 
+     std::string mmap_params = base::StringPrintf(

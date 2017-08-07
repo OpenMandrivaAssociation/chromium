@@ -1,17 +1,15 @@
-diff -up chromium-53.0.2785.92/tools/gn/BUILD.gn.lastcommitfix chromium-53.0.2785.92/tools/gn/BUILD.gn
---- chromium-53.0.2785.92/tools/gn/BUILD.gn.lastcommitfix	2016-09-06 13:50:17.540459136 -0400
-+++ chromium-53.0.2785.92/tools/gn/BUILD.gn	2016-09-06 13:50:27.380269110 -0400
-@@ -259,7 +259,6 @@ executable("gn") {
+--- chromium-61.0.3124.4/tools/gn/BUILD.gn.0021~	2017-06-13 18:06:33.286161143 +0200
++++ chromium-61.0.3124.4/tools/gn/BUILD.gn	2017-06-13 18:07:37.969672191 +0200
+@@ -268,7 +268,6 @@ executable("gn") {
  
    deps = [
      ":gn_lib",
 -    ":last_commit_position",
      "//base",
-     "//build/config/sanitizers:deps",
+     "//build/config:exe_and_shlib_deps",
      "//build/win:default_exe_manifest",
-diff -up chromium-53.0.2785.92/tools/gn/gn_main.cc.lastcommitfix chromium-53.0.2785.92/tools/gn/gn_main.cc
---- chromium-53.0.2785.92/tools/gn/gn_main.cc.lastcommitfix	2016-09-06 13:49:34.620288177 -0400
-+++ chromium-53.0.2785.92/tools/gn/gn_main.cc	2016-09-06 13:49:47.316042652 -0400
+--- chromium-61.0.3124.4/tools/gn/gn_main.cc.0021~	2017-06-10 03:03:13.000000000 +0200
++++ chromium-61.0.3124.4/tools/gn/gn_main.cc	2017-06-13 18:06:33.287161120 +0200
 @@ -12,13 +12,7 @@
  #include "tools/gn/standard_out.h"
  #include "tools/gn/switches.h"
