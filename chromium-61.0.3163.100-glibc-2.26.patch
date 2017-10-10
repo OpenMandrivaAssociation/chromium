@@ -1,0 +1,11 @@
+--- chromium-61.0.3163.100/buildtools/third_party/libc++/trunk/include/__locale.omv~	2017-10-08 15:01:30.175495893 +0200
++++ chromium-61.0.3163.100/buildtools/third_party/libc++/trunk/include/__locale	2017-10-08 15:01:38.851485304 +0200
+@@ -36,7 +36,7 @@
+ # include <support/newlib/xlocale.h>
+ #elif (defined(__GLIBC__) || defined(__APPLE__)      || defined(__FreeBSD__) \
+     || defined(__EMSCRIPTEN__) || defined(__IBMCPP__))
+-# include <xlocale.h>
++# include <locale.h>
+ #elif defined(__Fuchsia__)
+ # include <support/fuchsia/xlocale.h>
+ #elif defined(_LIBCPP_HAS_MUSL_LIBC)

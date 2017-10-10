@@ -42,7 +42,7 @@
 Name: 		chromium-browser-stable
 # Working version numbers can be found at
 # http://omahaproxy.appspot.com/
-Version: 	60.0.3112.90
+Version: 	61.0.3163.100
 Release: 	1%{?extrarelsuffix}
 Summary: 	A fast webkit-based web browser
 Group: 		Networking/WWW
@@ -98,7 +98,7 @@ Patch25:        chromium-54.0.2840.59-jpeg-include-dir.patch
 Patch26:        http://pkgs.fedoraproject.org/cgit/rpms/chromium.git/plain/chromium-59.0.3071.86-i686-ld-memory-tricks.patch
 # obj/content/renderer/renderer/child_frame_compositing_helper.o: In function `content::ChildFrameCompositingHelper::OnSetSurface(cc::SurfaceId const&, gfx::Size const&, float, cc::SurfaceSequence const&)':
 # /builddir/build/BUILD/chromium-54.0.2840.90/out/Release/../../content/renderer/child_frame_compositing_helper.cc:214: undefined reference to `cc_blink::WebLayerImpl::setOpaque(bool)'
-Patch27:        http://pkgs.fedoraproject.org/cgit/rpms/chromium.git/plain/chromium-59.0.3071.86-setopaque.patch
+#Patch27:        http://pkgs.fedoraproject.org/cgit/rpms/chromium.git/plain/chromium-59.0.3071.86-setopaque.patch
 # Use -fpermissive to build WebKit
 Patch31:        chromium-56.0.2924.87-fpermissive.patch
 
@@ -118,8 +118,9 @@ Patch114:	chromium-55-flac.patch
 # omv
 Patch120:	chromium-59-clang-workaround.patch
 Patch121:	chromium-59.0.3071.115-glibc-2.26.patch
-Patch122:	chromium-60-gn-bootstrap.patch
-Patch123:	chromium-60-glibc-2.26.patch
+Patch122:	chromium-61.0.3163.100-gn-bootstrap.patch
+Patch123:	chromium-61.0.3163.100-glibc-2.26.patch
+Patch124:	chromium-61.0.3163.100-atk-compile.patch
 
 Provides: 	%{crname}
 Obsoletes: 	chromium-browser-unstable < 26.0.1410.51
@@ -142,7 +143,11 @@ BuildRequires: 	snappy-devel
 BuildRequires: 	jsoncpp-devel
 BuildRequires: 	pkgconfig(expat)
 BuildRequires: 	pkgconfig(glib-2.0)
-BuildRequires:	pkgconfig(re2)
+# FIXME we currently can't use system re2 because
+# Chromium uses libc++ while the system STL is libstdc++ for now
+# This leads to unresolved symbols because of disagreements over
+# the namespace of std::basic_string (__1 vs. not __1)
+#BuildRequires:	pkgconfig(re2)
 BuildRequires: 	pkgconfig(wayland-egl)
 BuildRequires: 	pkgconfig(nss)
 BuildRequires: 	bzip2-devel
@@ -279,6 +284,7 @@ python2 build/linux/unbundle/remove_bundled_libraries.py \
 	'third_party/libxml' \
 	'third_party/libxslt' \
 	'third_party/openh264' \
+	'third_party/re2' \
 	'third_party/snappy' \
 	'third_party/speech-dispatcher' \
 	'third_party/spirv-tools-angle' \
@@ -312,10 +318,10 @@ python2 build/linux/unbundle/remove_bundled_libraries.py \
 	'third_party/WebKit' \
 	'third_party/analytics' \
 	'third_party/angle' \
-	'third_party/angle/src/common/third_party/numerics' \
+	'third_party/angle/src/common/third_party/murmurhash' \
+	'third_party/angle/src/common/third_party/base' \
 	'third_party/angle/src/third_party/compiler' \
 	'third_party/angle/src/third_party/libXNVCtrl' \
-	'third_party/angle/src/third_party/murmurhash' \
 	'third_party/angle/src/third_party/trace_event' \
 	'third_party/blanketjs' \
 	'third_party/boringssl' \
@@ -411,6 +417,7 @@ python2 build/linux/unbundle/remove_bundled_libraries.py \
 	'third_party/widevine' \
 	'third_party/woff2' \
 	'third_party/libvpx/source/libvpx/third_party/x86inc' \
+	'buildtools/third_party/libc++' \
 	'url/third_party/mozilla' \
 	'v8/third_party/inspector_protocol' \
 	'v8/src/third_party/valgrind' \
@@ -487,7 +494,7 @@ myconf_gn+=" use_ozone=true "
 %endif
 myconf_gn+=" enable_nacl=false "
 myconf_gn+=" proprietary_codecs=true "
-myconf_gn+=" ffmpeg_branding=\"Chrome\" "
+myconf_gn+=" ffmpeg_branding=\"ChromeOS\" "
 myconf_gn+=" enable_ac3_eac3_audio_demuxing=true "
 myconf_gn+=" enable_hevc_demuxing=true "
 myconf_gn+=" enable_mse_mpeg2ts_stream_parser=true "
@@ -517,7 +524,6 @@ gn_system_libraries="
     libwebp
     ffmpeg
     libxslt
-    re2
     snappy
     yasm
 "
