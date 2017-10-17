@@ -96,6 +96,10 @@ Patch24:        http://pkgs.fedoraproject.org/cgit/rpms/chromium.git/plain/chrom
 Patch25:        chromium-54.0.2840.59-jpeg-include-dir.patch
 # On i686, pass --no-keep-memory --reduce-memory-overheads to ld.
 Patch26:        http://pkgs.fedoraproject.org/cgit/rpms/chromium.git/plain/chromium-59.0.3071.86-i686-ld-memory-tricks.patch
+# Fix mp3 for aarch64
+Patch49:        chromium-61.0.3163.79-fix-ffmpeg-aarch64.patch
+# Enable mp3 support
+Patch34:        chromium-61.0.3163.79-enable-mp3.patch
 # obj/content/renderer/renderer/child_frame_compositing_helper.o: In function `content::ChildFrameCompositingHelper::OnSetSurface(cc::SurfaceId const&, gfx::Size const&, float, cc::SurfaceSequence const&)':
 # /builddir/build/BUILD/chromium-54.0.2840.90/out/Release/../../content/renderer/child_frame_compositing_helper.cc:214: undefined reference to `cc_blink::WebLayerImpl::setOpaque(bool)'
 #Patch27:        http://pkgs.fedoraproject.org/cgit/rpms/chromium.git/plain/chromium-59.0.3071.86-setopaque.patch
@@ -112,7 +116,8 @@ Patch105:	chromium-system-jinja-r13.patch
 
 # mga
 Patch111:	chromium-55-extra-media.patch
-Patch112:	chromium-40-wmvflvmpg.patch
+#Patch112:	chromium-40-wmvflvmpg.patch
+Patch113:	chromium-buildname.patch
 Patch114:	chromium-55-flac.patch
 
 # omv
@@ -418,6 +423,7 @@ python2 build/linux/unbundle/remove_bundled_libraries.py \
 	'third_party/woff2' \
 	'third_party/libvpx/source/libvpx/third_party/x86inc' \
 	'buildtools/third_party/libc++' \
+        'buildtools/third_party/libc++abi' \
 	'url/third_party/mozilla' \
 	'v8/third_party/inspector_protocol' \
 	'v8/src/third_party/valgrind' \

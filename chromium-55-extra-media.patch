@@ -1,6 +1,8 @@
---- chromium-59.0.3071.86/media/base/audio_codecs.cc.0111~	2017-06-05 21:03:08.000000000 +0200
-+++ chromium-59.0.3071.86/media/base/audio_codecs.cc	2017-06-13 00:17:49.895288788 +0200
-@@ -44,6 +44,8 @@ std::string GetCodecName(AudioCodec code
+diff --git a/media/base/audio_codecs.cc b/media/base/audio_codecs.cc
+index ea5bafa..b9b617d 100644
+--- a/media/base/audio_codecs.cc
++++ b/media/base/audio_codecs.cc
+@@ -44,6 +44,8 @@ std::string GetCodecName(AudioCodec codec) {
        return "alac";
      case kCodecAC3:
        return "ac3";
@@ -9,7 +11,7 @@
    }
    NOTREACHED();
    return "";
-@@ -68,6 +70,8 @@ AudioCodec StringToAudioCodec(const std:
+@@ -68,6 +70,8 @@ AudioCodec StringToAudioCodec(const std::string& codec_id) {
      return kCodecVorbis;
    if (base::StartsWith(codec_id, "mp4a.40.", base::CompareCase::SENSITIVE))
      return kCodecAAC;
@@ -18,8 +20,10 @@
    return kUnknownAudioCodec;
  }
  
---- chromium-59.0.3071.86/media/base/audio_codecs.h.0111~	2017-06-05 21:03:08.000000000 +0200
-+++ chromium-59.0.3071.86/media/base/audio_codecs.h	2017-06-13 00:17:49.895288788 +0200
+diff --git a/media/base/audio_codecs.h b/media/base/audio_codecs.h
+index 1219d7a..7d29485 100644
+--- a/media/base/audio_codecs.h
++++ b/media/base/audio_codecs.h
 @@ -32,13 +32,14 @@ enum AudioCodec {
    kCodecPCM_ALAW = 14,
    kCodecALAC = 15,
@@ -36,9 +40,11 @@
  };
  
  std::string MEDIA_EXPORT GetCodecName(AudioCodec codec);
---- chromium-59.0.3071.86/media/base/mime_util_internal.cc.0111~	2017-06-05 21:03:08.000000000 +0200
-+++ chromium-59.0.3071.86/media/base/mime_util_internal.cc	2017-06-13 00:17:49.894288811 +0200
-@@ -77,7 +77,11 @@ const std::map<std::string, MimeUtil::Co
+diff --git a/media/base/mime_util_internal.cc b/media/base/mime_util_internal.cc
+index 3879bca..ec03f4c 100644
+--- a/media/base/mime_util_internal.cc
++++ b/media/base/mime_util_internal.cc
+@@ -77,7 +77,11 @@ const std::map<std::string, MimeUtil::Codec>& GetStringToCodecMap() {
      {"flac", MimeUtil::FLAC},
      {"vp8", MimeUtil::VP8},
      {"vp8.0", MimeUtil::VP8},
@@ -51,7 +57,7 @@
    };
  
    return kStringToCodecMap;
-@@ -175,6 +179,9 @@ VideoCodec MimeUtilToVideoCodec(MimeUtil
+@@ -175,6 +179,9 @@ VideoCodec MimeUtilToVideoCodec(MimeUtil::Codec codec) {
        return kCodecTheora;
      case MimeUtil::DOLBY_VISION:
        return kCodecDolbyVision;
@@ -61,11 +67,10 @@
      default:
        break;
    }
-@@ -276,6 +283,31 @@ void MimeUtil::AddSupportedMediaFormats(
- #endif  // !defined(OS_ANDROID)
+@@ -277,6 +284,31 @@ void MimeUtil::AddSupportedMediaFormats() {
    CodecSet ogg_codecs(ogg_audio_codecs);
    ogg_codecs.insert(ogg_video_codecs.begin(), ogg_video_codecs.end());
-+  
+ 
 +  CodecSet matroska_audio_codecs;
 +  matroska_audio_codecs.insert(OPUS);
 +  matroska_audio_codecs.insert(VORBIS);
@@ -77,7 +82,7 @@
 +  matroska_audio_codecs.insert(MPEG2_AAC);
 +  matroska_audio_codecs.insert(MPEG4_AAC);
 +  matroska_audio_codecs.insert(PCM);
-+  
++
 +  CodecSet matroska_video_codecs;
 +  matroska_video_codecs.insert(THEORA);
 +  matroska_video_codecs.insert(VP8);
@@ -90,10 +95,11 @@
 +#endif  // BUILDFLAG(ENABLE_HEVC_DEMUXING)
 +  CodecSet matroska_codecs(matroska_audio_codecs);
 +  matroska_codecs.insert(matroska_video_codecs.begin(), matroska_video_codecs.end());
- 
++
    CodecSet webm_audio_codecs;
    webm_audio_codecs.insert(OPUS);
-@@ -306,6 +338,8 @@ void MimeUtil::AddSupportedMediaFormats(
+   webm_audio_codecs.insert(VORBIS);
+@@ -306,6 +338,8 @@ void MimeUtil::AddSupportedMediaFormats() {
  
    CodecSet mp4_video_codecs;
    mp4_video_codecs.insert(H264);
@@ -102,17 +108,17 @@
  #if BUILDFLAG(ENABLE_HEVC_DEMUXING)
    mp4_video_codecs.insert(HEVC);
  #endif  // BUILDFLAG(ENABLE_HEVC_DEMUXING)
-@@ -333,6 +367,9 @@ void MimeUtil::AddSupportedMediaFormats(
+@@ -332,7 +366,8 @@ void MimeUtil::AddSupportedMediaFormats() {
+   // TODO(ddorwin): Should the application type support Opus?
    AddContainerWithCodecs("application/ogg", ogg_codecs, false);
    AddContainerWithCodecs("audio/flac", implicit_codec, false);
- 
+-
 +  AddContainerWithCodecs("audio/x-matroska", matroska_audio_codecs, false);
 +  AddContainerWithCodecs("video/x-matroska", matroska_codecs, false);
-+
- #if BUILDFLAG(USE_PROPRIETARY_CODECS)
    AddContainerWithCodecs("audio/mpeg", mp3_codecs, true);  // Allow "mp3".
    AddContainerWithCodecs("audio/mp3", implicit_codec, true);
-@@ -345,6 +382,7 @@ void MimeUtil::AddSupportedMediaFormats(
+   AddContainerWithCodecs("audio/x-mp3", implicit_codec, true);
+@@ -345,6 +380,7 @@ void MimeUtil::AddSupportedMediaFormats() {
    // support the codecs needed for compatibility.
    AddContainerWithCodecs("audio/x-m4a", aac, true);
    AddContainerWithCodecs("video/x-m4v", avc_and_aac, true);
@@ -120,7 +126,7 @@
  
  #if BUILDFLAG(ENABLE_MSE_MPEG2TS_STREAM_PARSER)
    // TODO(ddorwin): Exactly which codecs should be supported?
-@@ -795,9 +833,13 @@ bool MimeUtil::IsCodecProprietary(Codec
+@@ -794,10 +830,14 @@ bool MimeUtil::IsCodecProprietary(Codec codec) const {
      case H264:
      case HEVC:
      case DOLBY_VISION:
@@ -129,13 +135,16 @@
 +    case MPEG4_ASP:
        return true;
  
+     case MP3:
      case PCM:
 +    case MP2:
      case VORBIS:
      case OPUS:
      case FLAC:
---- chromium-59.0.3071.86/media/base/mime_util_internal.h.0111~	2017-06-05 21:03:08.000000000 +0200
-+++ chromium-59.0.3071.86/media/base/mime_util_internal.h	2017-06-13 00:17:49.895288788 +0200
+diff --git a/media/base/mime_util_internal.h b/media/base/mime_util_internal.h
+index d39a2d8..d12e1a9 100644
+--- a/media/base/mime_util_internal.h
++++ b/media/base/mime_util_internal.h
 @@ -45,7 +45,11 @@ class MEDIA_EXPORT MimeUtil {
      VP9,
      THEORA,
@@ -149,9 +158,11 @@
    };
  
    // Platform configuration structure.  Controls which codecs are supported at
---- chromium-59.0.3071.86/media/ffmpeg/ffmpeg_common.cc.0111~	2017-06-05 21:03:08.000000000 +0200
-+++ chromium-59.0.3071.86/media/ffmpeg/ffmpeg_common.cc	2017-06-13 00:17:49.895288788 +0200
-@@ -115,6 +115,8 @@ AudioCodec CodecIDToAudioCodec(AVCodecID
+diff --git a/media/ffmpeg/ffmpeg_common.cc b/media/ffmpeg/ffmpeg_common.cc
+index 950b9c0..e7833b8 100644
+--- a/media/ffmpeg/ffmpeg_common.cc
++++ b/media/ffmpeg/ffmpeg_common.cc
+@@ -115,6 +115,8 @@ AudioCodec CodecIDToAudioCodec(AVCodecID codec_id) {
        return kCodecOpus;
      case AV_CODEC_ID_ALAC:
        return kCodecALAC;
@@ -160,7 +171,7 @@
      default:
        DVLOG(1) << "Unknown audio CodecID: " << codec_id;
    }
-@@ -166,6 +168,10 @@ AVCodecID AudioCodecToCodecID(AudioCodec
+@@ -166,6 +168,10 @@ AVCodecID AudioCodecToCodecID(AudioCodec audio_codec,
        return AV_CODEC_ID_PCM_MULAW;
      case kCodecOpus:
        return AV_CODEC_ID_OPUS;
@@ -171,9 +182,11 @@
      default:
        DVLOG(1) << "Unknown AudioCodec: " << audio_codec;
    }
---- chromium-59.0.3071.86/media/filters/ffmpeg_video_decoder.cc.0111~	2017-06-05 21:03:08.000000000 +0200
-+++ chromium-59.0.3071.86/media/filters/ffmpeg_video_decoder.cc	2017-06-13 00:17:49.896288764 +0200
-@@ -58,7 +58,6 @@ static int GetThreadCount(const VideoDec
+diff --git a/media/filters/ffmpeg_video_decoder.cc b/media/filters/ffmpeg_video_decoder.cc
+index c6541e6..468fcfc 100644
+--- a/media/filters/ffmpeg_video_decoder.cc
++++ b/media/filters/ffmpeg_video_decoder.cc
+@@ -58,7 +58,6 @@ static int GetThreadCount(const VideoDecoderConfig& config) {
        case kUnknownVideoCodec:
        case kCodecVC1:
        case kCodecMPEG2:
@@ -181,7 +194,7 @@
        case kCodecVP9:
        case kCodecDolbyVision:
          // We do not compile ffmpeg with support for any of these codecs.
-@@ -71,6 +70,7 @@ static int GetThreadCount(const VideoDec
+@@ -71,6 +70,7 @@ static int GetThreadCount(const VideoDecoderConfig& config) {
        case kCodecH264:
        case kCodecMPEG4:
        case kCodecVP8:
@@ -189,9 +202,11 @@
          // Normalize to three threads for 1080p content, then scale linearly
          // with number of pixels.
          // Examples:
---- chromium-59.0.3071.86/media/remoting/proto_enum_utils.cc.0111~	2017-06-05 21:03:09.000000000 +0200
-+++ chromium-59.0.3071.86/media/remoting/proto_enum_utils.cc	2017-06-13 00:17:49.895288788 +0200
-@@ -57,6 +57,7 @@ base::Optional<AudioCodec> ToMediaAudioC
+diff --git a/media/remoting/proto_enum_utils.cc b/media/remoting/proto_enum_utils.cc
+index cd52a04..06cf478 100644
+--- a/media/remoting/proto_enum_utils.cc
++++ b/media/remoting/proto_enum_utils.cc
+@@ -57,6 +57,7 @@ base::Optional<AudioCodec> ToMediaAudioCodec(
      CASE_RETURN_OTHER(kCodecPCM_ALAW);
      CASE_RETURN_OTHER(kCodecALAC);
      CASE_RETURN_OTHER(kCodecAC3);
@@ -199,7 +214,7 @@
    }
    return base::nullopt;  // Not a 'default' to ensure compile-time checks.
  }
-@@ -83,6 +84,7 @@ base::Optional<pb::AudioDecoderConfig::C
+@@ -83,6 +84,7 @@ base::Optional<pb::AudioDecoderConfig::Codec> ToProtoAudioDecoderConfigCodec(
      CASE_RETURN_OTHER(kCodecPCM_ALAW);
      CASE_RETURN_OTHER(kCodecALAC);
      CASE_RETURN_OTHER(kCodecAC3);
@@ -207,8 +222,10 @@
    }
    return base::nullopt;  // Not a 'default' to ensure compile-time checks.
  }
---- chromium-59.0.3071.86/media/remoting/rpc.proto.0111~	2017-06-05 21:03:09.000000000 +0200
-+++ chromium-59.0.3071.86/media/remoting/rpc.proto	2017-06-13 00:17:49.895288788 +0200
+diff --git a/media/remoting/rpc.proto b/media/remoting/rpc.proto
+index 20a6883..0563acb 100644
+--- a/media/remoting/rpc.proto
++++ b/media/remoting/rpc.proto
 @@ -66,6 +66,7 @@ message AudioDecoderConfig {
      kCodecPCM_ALAW = 14;
      kCodecALAC = 15;
@@ -217,9 +234,11 @@
    }
  
    // Proto version of media::SampleFormat.
---- chromium-59.0.3071.86/net/base/mime_util.cc.0111~	2017-06-05 21:03:09.000000000 +0200
-+++ chromium-59.0.3071.86/net/base/mime_util.cc	2017-06-13 00:17:49.895288788 +0200
-@@ -78,6 +78,9 @@ static const MimeInfo kPrimaryMappings[]
+diff --git a/net/base/mime_util.cc b/net/base/mime_util.cc
+index 93aff23..61a47fd 100644
+--- a/net/base/mime_util.cc
++++ b/net/base/mime_util.cc
+@@ -78,6 +78,9 @@ static const MimeInfo kPrimaryMappings[] = {
      {"audio/webm", "webm"},
      {"audio/wav", "wav"},
      {"audio/flac", "flac"},
@@ -229,7 +248,7 @@
      {"application/xhtml+xml", "xhtml,xht,xhtm"},
      {"application/x-chrome-extension", "crx"},
      {"multipart/related", "mhtml,mht"}};
-@@ -425,6 +428,7 @@ static const char* const kStandardAudioT
+@@ -425,6 +428,7 @@ static const char* const kStandardAudioTypes[] = {
    "audio/vorbis",
    "audio/wav",
    "audio/webm",
@@ -237,7 +256,7 @@
    "audio/x-m4a",
    "audio/x-ms-wma",
    "audio/vnd.rn-realaudio",
-@@ -442,8 +446,10 @@ static const char* const kStandardVideoT
+@@ -442,8 +446,10 @@ static const char* const kStandardVideoTypes[] = {
    "video/webm",
    "video/x-dv",
    "video/x-m4v",
@@ -248,22 +267,3 @@
    "video/x-ms-wmv"
  };
  
---- chromium-59.0.3071.86/media/base/decode_capabilities.cc.omv~	2017-06-13 00:18:53.478786973 +0200
-+++ chromium-59.0.3071.86/media/base/decode_capabilities.cc	2017-06-13 00:20:00.552204594 +0200
-@@ -147,13 +147,13 @@ bool IsSupportedVideoConfig(const VideoC
-     case media::kCodecH264:
-     case media::kCodecVP8:
-     case media::kCodecTheora:
--      return true;
--
--    case media::kUnknownVideoCodec:
-     case media::kCodecVC1:
-     case media::kCodecMPEG2:
-     case media::kCodecMPEG4:
-     case media::kCodecHEVC:
-+      return true;
-+
-+    case media::kUnknownVideoCodec:
-     case media::kCodecDolbyVision:
-       return false;
-   }

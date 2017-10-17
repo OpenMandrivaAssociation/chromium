@@ -18,25 +18,25 @@ diff -up chromium-51.0.2704.19/media/base/mime_util_internal.cc.wmvflvmpg chromi
 +    {"vp6", MimeUtil::VP6},
 +    {"mpeg1", MimeUtil::MPEG1}
    };
- 
+
    return kStringToCodecMap;
 @@ -398,6 +408,9 @@
    webm_video_codecs.insert(VP9);
    CodecSet webm_codecs(webm_audio_codecs);
    webm_codecs.insert(webm_video_codecs.begin(), webm_video_codecs.end());
-+  
++
 +  CodecSet mp1_codecs;
 +  mp1_codecs.insert(MPEG1);
- 
+
  #if BUILDFLAG(USE_PROPRIETARY_CODECS)
    CodecSet mp3_codecs;
 @@ -431,6 +444,29 @@
    mp4_codecs.insert(mp4_video_codecs.begin(), mp4_video_codecs.end());
  #endif  // BUILDFLAG(USE_PROPRIETARY_CODECS)
- 
+
 +  CodecSet wma_codecs;
 +  wma_codecs.insert(WMA);
-+  
++
 +  CodecSet wmv_codecs(wma_codecs);
 +  wmv_codecs.insert(MSMPEG4v1);
 +  wmv_codecs.insert(MSMPEG4v2);
@@ -47,11 +47,11 @@ diff -up chromium-51.0.2704.19/media/base/mime_util_internal.cc.wmvflvmpg chromi
 +  wmv_codecs.insert(WMV8);
 +  wmv_codecs.insert(WMV9);
 +  wmv_codecs.insert(VC1);
-+  
++
 +  matroska_codecs.insert(MSMPEG4v1);
 +  matroska_codecs.insert(MSMPEG4v2);
 +  matroska_codecs.insert(MSMPEG4v3);
-+  
++
 +  CodecSet flv_codecs;
 +  flv_codecs.insert(VP6);
 +  flv_codecs.insert(mp4_codecs.begin(), mp4_codecs.end());
@@ -61,7 +61,7 @@ diff -up chromium-51.0.2704.19/media/base/mime_util_internal.cc.wmvflvmpg chromi
    AddContainerWithCodecs("audio/x-wav", wav_codecs, false);
    AddContainerWithCodecs("audio/webm", webm_audio_codecs, false);
 @@ -446,6 +482,11 @@
- 
+
    AddContainerWithCodecs("audio/x-matroska", matroska_audio_codecs, false);
    AddContainerWithCodecs("video/x-matroska", matroska_codecs, false);
 +  AddContainerWithCodecs("video/x-ms-wmv", wmv_codecs, true);
@@ -69,7 +69,7 @@ diff -up chromium-51.0.2704.19/media/base/mime_util_internal.cc.wmvflvmpg chromi
 +  AddContainerWithCodecs("video/x-ms-asf", wmv_codecs, true);
 +  AddContainerWithCodecs("video/x-flv", flv_codecs, true);
 +  AddContainerWithCodecs("video/mpeg", mp1_codecs, true);
- 
+
  #if BUILDFLAG(USE_PROPRIETARY_CODECS)
    AddContainerWithCodecs("audio/mpeg", mp3_codecs, true);  // Allow "mp3".
 @@ -806,6 +847,15 @@
@@ -86,7 +86,7 @@ diff -up chromium-51.0.2704.19/media/base/mime_util_internal.cc.wmvflvmpg chromi
 +    case WMA:
 +    case VP6:
        return true;
- 
+
      case PCM:
 @@ -814,6 +864,7 @@
      case VP8:
@@ -95,7 +95,7 @@ diff -up chromium-51.0.2704.19/media/base/mime_util_internal.cc.wmvflvmpg chromi
 +    case MPEG1:
        return false;
    }
- 
+
 diff -up chromium-51.0.2704.19/media/base/mime_util_internal.h.wmvflvmpg chromium-51.0.2704.19/media/base/mime_util_internal.h
 --- chromium-51.0.2704.19/media/base/mime_util_internal.h.wmvflvmpg	2016-04-20 21:52:50.507158749 +0200
 +++ chromium-51.0.2704.19/media/base/mime_util_internal.h	2016-04-20 21:52:50.960150543 +0200
@@ -116,7 +116,7 @@ diff -up chromium-51.0.2704.19/media/base/mime_util_internal.h.wmvflvmpg chromiu
 +    MPEG1,
 +    LAST_CODEC = MPEG1
    };
- 
+
    // Platform configuration structure.  Controls which codecs are supported at
 diff -up chromium-51.0.2704.19/net/base/mime_util.cc.wmvflvmpg chromium-51.0.2704.19/net/base/mime_util.cc
 --- chromium-51.0.2704.19/net/base/mime_util.cc.wmvflvmpg	2016-04-20 21:52:50.507158749 +0200
