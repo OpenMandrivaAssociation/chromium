@@ -1,36 +1,28 @@
-diff -up chromium-51.0.2704.19/media/base/mime_util_internal.cc.wmvflvmpg chromium-51.0.2704.19/media/base/mime_util_internal.cc
---- chromium-51.0.2704.19/media/base/mime_util_internal.cc.wmvflvmpg	2016-04-20 21:52:50.506158768 +0200
-+++ chromium-51.0.2704.19/media/base/mime_util_internal.cc	2016-04-20 22:15:04.206160526 +0200
-@@ -86,7 +86,17 @@
-     {"dts", MimeUtil::DTS},
-     {"mp2", MimeUtil::MP2},
-     {"mp4v.20.8", MimeUtil::MPEG4_SP},
--    {"mp4v.20.240", MimeUtil::MPEG4_ASP}
-+    {"mp4v.20.240", MimeUtil::MPEG4_ASP},
-+    {"msmpeg4v1", MimeUtil::MSMPEG4v1},
-+    {"msmpeg4v2", MimeUtil::MSMPEG4v2},
-+    {"msmpeg4v3", MimeUtil::MSMPEG4v3},
-+    {"wmv7", MimeUtil::WMV7},
-+    {"wmv8", MimeUtil::WMV8},
-+    {"wmv9", MimeUtil::WMV9},
-+    {"vc-1", MimeUtil::VC1},
-+    {"wma", MimeUtil::WMA},
-+    {"vp6", MimeUtil::VP6},
-+    {"mpeg1", MimeUtil::MPEG1}
-   };
+--- chromium-62.0.3202.89/media/base/mime_util_internal.cc.0112~	2017-11-12 16:11:06.596851305 +0100
++++ chromium-62.0.3202.89/media/base/mime_util_internal.cc	2017-11-12 16:13:08.837069343 +0100
+@@ -75,6 +75,11 @@ const base::flat_map<std::string, MimeUt
+         {"vp8.0", MimeUtil::VP8}, {"theora", MimeUtil::THEORA},
+ 	{"dts", MimeUtil::DTS}, {"mp2", MimeUtil::MP2},
+         {"mp4v.20.8", MimeUtil::MPEG4_SP}, {"mp4v.20.240", MimeUtil::MPEG4_ASP},
++        {"msmpeg4v1", MimeUtil::MSMPEG4v1}, {"msmpeg4v2", MimeUtil::MSMPEG4v2},
++        {"msmpeg4v3", MimeUtil::MSMPEG4v3}, {"wmv7", MimeUtil::WMV7},
++        {"wmv8", MimeUtil::WMV8}, {"wmv9", MimeUtil::WMV9},
++        {"vc-1", MimeUtil::VC1}, {"wma", MimeUtil::WMA},
++        {"vp6", MimeUtil::VP6}, {"mpeg1", MimeUtil::MPEG1},
+       },
+       base::KEEP_FIRST_OF_DUPES);
  
-   return kStringToCodecMap;
-@@ -398,6 +408,9 @@
-   webm_video_codecs.insert(VP9);
-   CodecSet webm_codecs(webm_audio_codecs);
-   webm_codecs.insert(webm_video_codecs.begin(), webm_video_codecs.end());
-+  
+@@ -300,6 +305,9 @@ void MimeUtil::AddSupportedMediaFormats(
+   const CodecSet mp3_codecs{MP3};
+   const CodecSet aac{MPEG2_AAC, MPEG4_AAC};
+ 
 +  CodecSet mp1_codecs;
-+  mp1_codecs.insert(MPEG1);
++  mp1_codecs.emplace(MPEG1);
++
+   CodecSet avc_and_aac(aac);
+   avc_and_aac.emplace(H264);
  
- #if BUILDFLAG(USE_PROPRIETARY_CODECS)
-   CodecSet mp3_codecs;
-@@ -431,6 +444,29 @@
+@@ -328,6 +336,29 @@ void MimeUtil::AddSupportedMediaFormats(
    mp4_codecs.insert(mp4_video_codecs.begin(), mp4_video_codecs.end());
  #endif  // BUILDFLAG(USE_PROPRIETARY_CODECS)
  
@@ -57,10 +49,10 @@ diff -up chromium-51.0.2704.19/media/base/mime_util_internal.cc.wmvflvmpg chromi
 +  flv_codecs.insert(mp4_codecs.begin(), mp4_codecs.end());
 +  flv_codecs.insert(MP3);
 +
+   const CodecSet implicit_codec;
    AddContainerWithCodecs("audio/wav", wav_codecs, false);
    AddContainerWithCodecs("audio/x-wav", wav_codecs, false);
-   AddContainerWithCodecs("audio/webm", webm_audio_codecs, false);
-@@ -446,6 +482,11 @@
+@@ -345,6 +376,11 @@ void MimeUtil::AddSupportedMediaFormats(
  
    AddContainerWithCodecs("audio/x-matroska", matroska_audio_codecs, false);
    AddContainerWithCodecs("video/x-matroska", matroska_codecs, false);
@@ -72,7 +64,7 @@ diff -up chromium-51.0.2704.19/media/base/mime_util_internal.cc.wmvflvmpg chromi
  
  #if BUILDFLAG(USE_PROPRIETARY_CODECS)
    AddContainerWithCodecs("audio/mpeg", mp3_codecs, true);  // Allow "mp3".
-@@ -806,6 +847,15 @@
+@@ -965,6 +1001,15 @@ bool MimeUtil::IsCodecProprietary(Codec
      case DTS:
      case MPEG4_SP:
      case MPEG4_ASP:
@@ -88,7 +80,7 @@ diff -up chromium-51.0.2704.19/media/base/mime_util_internal.cc.wmvflvmpg chromi
        return true;
  
      case PCM:
-@@ -814,6 +864,7 @@
+@@ -975,6 +1020,7 @@ bool MimeUtil::IsCodecProprietary(Codec
      case VP8:
      case VP9:
      case THEORA:
@@ -96,10 +88,9 @@ diff -up chromium-51.0.2704.19/media/base/mime_util_internal.cc.wmvflvmpg chromi
        return false;
    }
  
-diff -up chromium-51.0.2704.19/media/base/mime_util_internal.h.wmvflvmpg chromium-51.0.2704.19/media/base/mime_util_internal.h
---- chromium-51.0.2704.19/media/base/mime_util_internal.h.wmvflvmpg	2016-04-20 21:52:50.507158749 +0200
-+++ chromium-51.0.2704.19/media/base/mime_util_internal.h	2016-04-20 21:52:50.960150543 +0200
-@@ -43,7 +43,17 @@ class MEDIA_EXPORT MimeUtil {
+--- chromium-62.0.3202.89/media/base/mime_util_internal.h.0112~	2017-11-12 16:11:06.597851292 +0100
++++ chromium-62.0.3202.89/media/base/mime_util_internal.h	2017-11-12 16:11:06.598851279 +0100
+@@ -48,7 +48,17 @@ class MEDIA_EXPORT MimeUtil {
      MP2,
      MPEG4_SP,
      MPEG4_ASP,
@@ -118,21 +109,9 @@ diff -up chromium-51.0.2704.19/media/base/mime_util_internal.h.wmvflvmpg chromiu
    };
  
    // Platform configuration structure.  Controls which codecs are supported at
-diff -up chromium-51.0.2704.19/net/base/mime_util.cc.wmvflvmpg chromium-51.0.2704.19/net/base/mime_util.cc
---- chromium-51.0.2704.19/net/base/mime_util.cc.wmvflvmpg	2016-04-20 21:52:50.507158749 +0200
-+++ chromium-51.0.2704.19/net/base/mime_util.cc	2016-04-20 21:52:50.960150543 +0200
-@@ -81,6 +81,10 @@ static const MimeInfo kPrimaryMappings[]
-     {"video/x-matroska", "mkv"},
-     {"audio/x-matroska", "mkv"},
-     {"video/x-msvideo", "avi"},
-+    {"video/x-ms-wmv", "wmv"},
-+    {"audio/x-ms-wma", "wma"},
-+    {"video/x-flv", "flv"},
-+    {"video/mpeg", "mpg,mpeg"},
-     {"application/xhtml+xml", "xhtml,xht,xhtm"},
-     {"application/x-chrome-extension", "crx"},
-     {"multipart/related", "mhtml,mht"}};
-@@ -445,6 +449,7 @@ static const char* const kStandardVideoT
+--- chromium-62.0.3202.89/net/base/mime_util.cc.0112~	2017-11-12 16:11:06.597851292 +0100
++++ chromium-62.0.3202.89/net/base/mime_util.cc	2017-11-12 16:11:06.598851279 +0100
+@@ -512,6 +512,7 @@ static const char* const kStandardVideoT
    "video/sd-video",
    "video/webm",
    "video/x-dv",

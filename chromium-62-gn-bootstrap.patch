@@ -1,0 +1,22 @@
+--- chromium-62.0.3202.89/tools/gn/bootstrap/bootstrap.py.0124~	2017-11-06 21:05:49.000000000 +0100
++++ chromium-62.0.3202.89/tools/gn/bootstrap/bootstrap.py	2017-11-12 17:28:36.608210880 +0100
+@@ -595,6 +595,7 @@ def write_gn_ninja(path, root_gen_dir, o
+         'base/files/memory_mapped_file_posix.cc',
+         'base/memory/shared_memory_helper.cc',
+         'base/message_loop/message_pump_libevent.cc',
++        'base/metrics/field_trial_params.cc',
+         'base/posix/file_descriptor_shuffle.cc',
+         'base/posix/global_descriptors.cc',
+         'base/posix/safe_strerror.cc',
+@@ -609,9 +610,11 @@ def write_gn_ninja(path, root_gen_dir, o
+         'base/synchronization/read_write_lock_posix.cc',
+         'base/synchronization/waitable_event_posix.cc',
+         'base/sys_info_posix.cc',
++        'base/task_scheduler/scheduler_worker_pool.cc',
+         'base/task_scheduler/task_tracker_posix.cc',
+         'base/threading/platform_thread_internal_posix.cc',
+         'base/threading/platform_thread_posix.cc',
++        'base/threading/scoped_blocking_call.cc',
+         'base/threading/thread_local_storage_posix.cc',
+         'base/threading/worker_pool_posix.cc',
+         'base/time/time_conversion_posix.cc',

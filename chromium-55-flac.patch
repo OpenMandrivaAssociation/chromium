@@ -1,7 +1,6 @@
-diff -up chromium-55.0.2883.52/media/base/mime_util_internal.cc.flac chromium-55.0.2883.52/media/base/mime_util_internal.cc
---- chromium-55.0.2883.52/media/base/mime_util_internal.cc.flac	2016-11-20 02:57:53.694441764 +0100
-+++ chromium-55.0.2883.52/media/base/mime_util_internal.cc	2016-11-20 13:02:12.683283042 +0100
-@@ -386,6 +387,7 @@
+--- chromium-62.0.3202.89/media/base/mime_util_internal.cc.0114~	2017-11-12 16:14:03.270153746 +0100
++++ chromium-62.0.3202.89/media/base/mime_util_internal.cc	2017-11-12 16:14:03.271153750 +0100
+@@ -282,6 +282,7 @@ void MimeUtil::AddSupportedMediaFormats(
    matroska_audio_codecs.insert(MPEG2_AAC);
    matroska_audio_codecs.insert(MPEG4_AAC);
    matroska_audio_codecs.insert(PCM);
@@ -9,11 +8,3 @@ diff -up chromium-55.0.2883.52/media/base/mime_util_internal.cc.flac chromium-55
    
    CodecSet matroska_video_codecs;
    matroska_video_codecs.insert(THEORA);
-@@ -425,6 +427,7 @@
- 
-   CodecSet mp4_audio_codecs(aac);
-   mp4_audio_codecs.insert(MP3);
-+  mp4_audio_codecs.insert(FLAC);
- #if BUILDFLAG(ENABLE_AC3_EAC3_AUDIO_DEMUXING)
-   mp4_audio_codecs.insert(AC3);
-   mp4_audio_codecs.insert(EAC3);

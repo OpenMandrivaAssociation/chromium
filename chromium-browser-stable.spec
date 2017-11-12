@@ -42,7 +42,7 @@
 Name: 		chromium-browser-stable
 # Working version numbers can be found at
 # http://omahaproxy.appspot.com/
-Version: 	61.0.3163.100
+Version: 	62.0.3202.89
 Release: 	1%{?extrarelsuffix}
 Summary: 	A fast webkit-based web browser
 Group: 		Networking/WWW
@@ -118,9 +118,8 @@ Patch114:	chromium-55-flac.patch
 # omv
 Patch120:	chromium-59-clang-workaround.patch
 Patch121:	chromium-59.0.3071.115-glibc-2.26.patch
-Patch122:	chromium-61.0.3163.100-gn-bootstrap.patch
 Patch123:	chromium-61.0.3163.100-glibc-2.26.patch
-Patch124:	chromium-61.0.3163.100-atk-compile.patch
+Patch124:	chromium-62-gn-bootstrap.patch
 
 Provides: 	%{crname}
 Obsoletes: 	chromium-browser-unstable < 26.0.1410.51
@@ -340,6 +339,7 @@ python2 build/linux/unbundle/remove_bundled_libraries.py \
 	'third_party/ced' \
 	'third_party/cld_2' \
 	'third_party/cld_3' \
+	'third_party/crc32c' \
 	'third_party/cros_system_api' \
 	'third_party/devscripts' \
 	'third_party/dom_distiller_js' \
@@ -384,7 +384,7 @@ python2 build/linux/unbundle/remove_bundled_libraries.py \
 	'third_party/modp_b64' \
 	'third_party/mt19937ar' \
 	'third_party/node' \
-	'third_party/node/node_modules/vulcanize/third_party/UglifyJS2' \
+	'third_party/node/node_modules/polymer-bundler/lib/third_party/UglifyJS2' \
 	'third_party/openmax_dl' \
 	'third_party/opus' \
 	'third_party/ots' \
@@ -394,7 +394,7 @@ python2 build/linux/unbundle/remove_bundled_libraries.py \
 	'third_party/pdfium/third_party/bigint' \
 	'third_party/pdfium/third_party/build' \
 	'third_party/pdfium/third_party/freetype' \
-	'third_party/pdfium/third_party/lcms2-2.6' \
+	'third_party/pdfium/third_party/lcms' \
 	'third_party/pdfium/third_party/libopenjpeg20' \
 	'third_party/pdfium/third_party/libpng16' \
 	'third_party/pdfium/third_party/libtiff' \
@@ -407,6 +407,7 @@ python2 build/linux/unbundle/remove_bundled_libraries.py \
 	'third_party/sfntly' \
 	'third_party/sinonjs' \
 	'third_party/skia' \
+	'third_party/skia/third_party/gif' \
 	'third_party/smhasher' \
 	'third_party/sqlite' \
 	'third_party/tcmalloc' \
