@@ -30,7 +30,7 @@
 %bcond_with	system_minizip
 # chromium 58 fails with system vpx 1.6.1
 %bcond_with	system_vpx
-%bcond_without	system_harfbuzz
+%bcond_with	system_harfbuzz
 
 # Always support proprietary codecs
 # or html5 does not work
@@ -42,7 +42,7 @@
 Name: 		chromium-browser-stable
 # Working version numbers can be found at
 # http://omahaproxy.appspot.com/
-Version: 	62.0.3202.94
+Version: 	63.0.3239.84
 Release: 	1%{?extrarelsuffix}
 Summary: 	A fast webkit-based web browser
 Group: 		Networking/WWW
@@ -72,8 +72,10 @@ Patch2:         chromium-55.0.2883.75-addrfix.patch
 Patch4:         chromium-46.0.2490.71-notest.patch
 # Ignore broken nacl open fd counter
 Patch7:         chromium-47.0.2526.80-nacl-ignore-broken-fd-counter.patch
+Patch8:		chromium-63-system-clang.patch
 # Use libusb_interrupt_event_handler from current libusbx (1.0.21-0.1.git448584a)
 Patch9:         chromium-48.0.2564.116-libusb_interrupt_event_handler.patch
+Patch10:	chromium-64-system-curl.patch
 # Ignore deprecations in cups 2.2
 # https://bugs.chromium.org/p/chromium/issues/detail?id=622493
 Patch12:        chromium-55.0.2883.75-cups22.patch
@@ -102,9 +104,6 @@ Patch26:        http://pkgs.fedoraproject.org/cgit/rpms/chromium.git/plain/chrom
 # Use -fpermissive to build WebKit
 Patch31:        chromium-56.0.2924.87-fpermissive.patch
 
-### Chromium Tests Patches ###
-Patch101:       chromium-55.0.2883.75-use_system_harfbuzz.patch
-
 # suse, system libs
 Patch103:	arm_use_right_compiler.patch
 #Patch104:	https://gitweb.gentoo.org/repo/gentoo.git/plain/www-client/chromium/files/chromium-system-ffmpeg-r6.patch
@@ -117,9 +116,7 @@ Patch114:	chromium-55-flac.patch
 
 # omv
 Patch120:	chromium-59-clang-workaround.patch
-Patch121:	chromium-59.0.3071.115-glibc-2.26.patch
 Patch123:	chromium-61.0.3163.100-glibc-2.26.patch
-Patch124:	chromium-62-gn-bootstrap.patch
 
 Provides: 	%{crname}
 Obsoletes: 	chromium-browser-unstable < 26.0.1410.51
@@ -246,7 +243,7 @@ members of the Chromium and WebDriver teams.
 
 
 %prep
-%setup -q -n chromium-%{version} -a 4
+%setup -q -n chromium-%{version}
 %apply_patches
 
 rm -rf third_party/binutils/
@@ -270,6 +267,11 @@ ln -s /usr/bin/node third_party/node/linux/node-linux-x64/bin/
 python2 build/linux/unbundle/remove_bundled_libraries.py \
 	'third_party/ffmpeg' \
 	'third_party/adobe' \
+	'third_party/blink' \
+	'third_party/blink/tools' \
+	'third_party/blink/tools/blinkpy' \
+	'third_party/blink/tools/blinkpy/common' \
+	'third_party/breakpad' \
 	'third_party/flac' \
 	'third_party/glslang-angle' \
 	'third_party/harfbuzz-ng' \
@@ -306,7 +308,6 @@ python2 build/linux/unbundle/remove_bundled_libraries.py \
 	'base/third_party/valgrind' \
 	'base/third_party/xdg_mime' \
 	'base/third_party/xdg_user_dirs' \
-	'breakpad/src/third_party/curl' \
 	'chrome/third_party/mozilla_security_manager' \
 	'courgette/third_party' \
 	'native_client_sdk/src/libraries/third_party/newlib-extras' \
@@ -317,8 +318,8 @@ python2 build/linux/unbundle/remove_bundled_libraries.py \
 	'third_party/WebKit' \
 	'third_party/analytics' \
 	'third_party/angle' \
-	'third_party/angle/src/common/third_party/murmurhash' \
 	'third_party/angle/src/common/third_party/base' \
+	'third_party/angle/src/common/third_party/smhasher' \
 	'third_party/angle/src/third_party/compiler' \
 	'third_party/angle/src/third_party/libXNVCtrl' \
 	'third_party/angle/src/third_party/trace_event' \
@@ -332,10 +333,11 @@ python2 build/linux/unbundle/remove_bundled_libraries.py \
 	'third_party/catapult/tracing/third_party/jszip' \
 	'third_party/catapult/tracing/third_party/mannwhitneyu' \
 	'third_party/catapult/tracing/third_party/oboe' \
+	'third_party/catapult/tracing/third_party/pako' \
 	'third_party/catapult/third_party/polymer' \
-	'third_party/catapult/third_party/py_vulcanize' \
-	'third_party/catapult/third_party/py_vulcanize/third_party/rcssmin' \
-	'third_party/catapult/third_party/py_vulcanize/third_party/rjsmin' \
+	'third_party/catapult/common/py_vulcanize' \
+	'third_party/catapult/common/py_vulcanize/third_party/rcssmin' \
+	'third_party/catapult/common/py_vulcanize/third_party/rjsmin' \
 	'third_party/ced' \
 	'third_party/cld_2' \
 	'third_party/cld_3' \
@@ -476,7 +478,7 @@ myconf_gn+=" is_clang=false"
 myconf_gn+=" treat_warnings_as_errors=false"
 myconf_gn+=" use_system_libjpeg=true "
 %if %mdvver >= 201500
-#myconf_gn+=" use_system_harfbuzz=true "
+myconf_gn+=" use_system_harfbuzz=true "
 %endif
 myconf_gn+=" use_gnome_keyring=false "
 myconf_gn+=" fatal_linker_warnings=false "
@@ -571,7 +573,7 @@ install -m 755 %{SOURCE1} %{buildroot}%{_libdir}/%{name}/
 install -m 755 out/Release/chrome %{buildroot}%{_libdir}/%{name}/
 install -m 4755 out/Release/chrome_sandbox %{buildroot}%{_libdir}/%{name}/chrome-sandbox
 cp -a out/Release/chromedriver %{buildroot}%{_libdir}/%{name}/chromedriver
-install -m 644 out/Release/chrome.1 %{buildroot}%{_mandir}/man1/%{name}.1
+install -m 644 out/Release/chrome.1 %{buildroot}%{_mandir}/man1/%{name}.1 || :
 install -m 644 out/Release/locales/*.pak %{buildroot}%{_libdir}/%{name}/locales/
 install -m 644 out/Release/chrome_100_percent.pak %{buildroot}%{_libdir}/%{name}/
 install -m 644 out/Release/resources.pak %{buildroot}%{_libdir}/%{name}/
@@ -619,10 +621,9 @@ find %{buildroot} -name "*.nexe" -exec strip {} \;
 %{_libdir}/%{name}/resources
 %{_libdir}/%{name}/themes
 %{_libdir}/%{name}/default_apps
-%{_mandir}/man1/%{name}*
 %{_datadir}/applications/*.desktop
 %{_datadir}/icons/hicolor/*/apps/%{name}.png
-
+%optional %{_mandir}/man1/%{name}*
 
 %files -n chromedriver
 %doc LICENSE AUTHORS

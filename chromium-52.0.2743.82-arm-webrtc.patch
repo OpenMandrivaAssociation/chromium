@@ -1,9 +1,8 @@
-diff -up chromium-52.0.2743.82/third_party/webrtc/system_wrappers/source/cpu_features.cc.armwebrtc chromium-52.0.2743.82/third_party/webrtc/system_wrappers/source/cpu_features.cc
---- chromium-52.0.2743.82/third_party/webrtc/system_wrappers/source/cpu_features.cc.armwebrtc	2016-08-03 09:30:53.922861020 +0200
-+++ chromium-52.0.2743.82/third_party/webrtc/system_wrappers/source/cpu_features.cc	2016-08-03 09:32:00.337498174 +0200
+--- chromium-63.0.3239.84/third_party/webrtc/system_wrappers/source/cpu_features.cc.0016~	2017-12-07 12:38:38.825728577 +0100
++++ chromium-63.0.3239.84/third_party/webrtc/system_wrappers/source/cpu_features.cc	2017-12-07 12:50:35.858338372 +0100
 @@ -18,6 +18,47 @@
  
- #include "webrtc/typedefs.h"
+ #include "typedefs.h"  // NOLINT(build/include)
  
 +#include <elf.h>
 +#ifdef __arm__
