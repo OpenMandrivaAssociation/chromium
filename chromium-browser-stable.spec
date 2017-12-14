@@ -42,7 +42,7 @@
 Name: 		chromium-browser-stable
 # Working version numbers can be found at
 # http://omahaproxy.appspot.com/
-Version: 	63.0.3239.84
+Version: 	63.0.3239.108
 Release: 	1%{?extrarelsuffix}
 Summary: 	A fast webkit-based web browser
 Group: 		Networking/WWW
@@ -52,11 +52,6 @@ Source0: 	https://commondatastorage.googleapis.com/chromium-browser-official/chr
 Source1: 	chromium-wrapper
 Source2: 	chromium-browser.desktop
 Source3:	master_preferences
-# Upstream removed third_party/freetype (GOOD) but still relies on
-# internal freetype headers (BAD)... So we need to put freetype
-# sources back. This is pulled from the last Chromium build that
-# had them.
-Source4:	https://ftp.osuosl.org/pub/blfs/conglomeration/chromium/chromium-freetype.tar.xz
 
 %if %mdvver >= 201500
 # Don't use clang's integrated as while trying to check the version of gas
