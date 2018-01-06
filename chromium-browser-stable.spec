@@ -42,7 +42,7 @@
 Name: 		chromium-browser-stable
 # Working version numbers can be found at
 # http://omahaproxy.appspot.com/
-Version: 	63.0.3239.108
+Version: 	63.0.3239.132
 Release: 	1%{?extrarelsuffix}
 Summary: 	A fast webkit-based web browser
 Group: 		Networking/WWW
@@ -71,6 +71,7 @@ Patch8:		chromium-63-system-clang.patch
 # Use libusb_interrupt_event_handler from current libusbx (1.0.21-0.1.git448584a)
 Patch9:         chromium-48.0.2564.116-libusb_interrupt_event_handler.patch
 Patch10:	chromium-64-system-curl.patch
+Patch11:	chromium-63-ffmpeg-3.5.patch
 # Ignore deprecations in cups 2.2
 # https://bugs.chromium.org/p/chromium/issues/detail?id=622493
 Patch12:        chromium-55.0.2883.75-cups22.patch
