@@ -1,18 +1,18 @@
---- chromium-62.0.3202.89/media/base/mime_util_internal.cc.0112~	2017-11-12 16:11:06.596851305 +0100
-+++ chromium-62.0.3202.89/media/base/mime_util_internal.cc	2017-11-12 16:13:08.837069343 +0100
-@@ -75,6 +75,11 @@ const base::flat_map<std::string, MimeUt
+--- chromium-64.0.3282.119/media/base/mime_util_internal.cc.0112~	2018-01-27 13:13:56.050972071 +0100
++++ chromium-64.0.3282.119/media/base/mime_util_internal.cc	2018-01-27 13:15:39.210010833 +0100
+@@ -76,6 +76,11 @@ const base::flat_map<std::string, MimeUt
          {"vp8.0", MimeUtil::VP8}, {"theora", MimeUtil::THEORA},
  	{"dts", MimeUtil::DTS}, {"mp2", MimeUtil::MP2},
-         {"mp4v.20.8", MimeUtil::MPEG4_SP}, {"mp4v.20.240", MimeUtil::MPEG4_ASP},
-+        {"msmpeg4v1", MimeUtil::MSMPEG4v1}, {"msmpeg4v2", MimeUtil::MSMPEG4v2},
-+        {"msmpeg4v3", MimeUtil::MSMPEG4v3}, {"wmv7", MimeUtil::WMV7},
-+        {"wmv8", MimeUtil::WMV8}, {"wmv9", MimeUtil::WMV9},
-+        {"vc-1", MimeUtil::VC1}, {"wma", MimeUtil::WMA},
-+        {"vp6", MimeUtil::VP6}, {"mpeg1", MimeUtil::MPEG1},
-       },
-       base::KEEP_FIRST_OF_DUPES);
- 
-@@ -300,6 +305,9 @@ void MimeUtil::AddSupportedMediaFormats(
+ 	{"mp4v.20.8", MimeUtil::MPEG4_SP}, {"mp4v.20.240", MimeUtil::MPEG4_ASP},
++	{"msmpeg4v1", MimeUtil::MSMPEG4v1}, {"msmpeg4v2", MimeUtil::MSMPEG4v2},
++	{"msmpeg4v3", MimeUtil::MSMPEG4v3}, {"wmv7", MimeUtil::WMV7},
++	{"wmv8", MimeUtil::WMV8}, {"wmv9", MimeUtil::WMV9},
++	{"vc-1", MimeUtil::VC1}, {"wma", MimeUtil::WMA},
++	{"vp6", MimeUtil::VP6}, {"mpeg1", MimeUtil::MPEG1},
+ // TODO(dalecurtis): This is not the correct final string. Fix before enabling
+ // by default. http://crbug.com/784607
+ #if BUILDFLAG(ENABLE_AV1_DECODER)
+@@ -313,6 +318,9 @@ void MimeUtil::AddSupportedMediaFormats(
    const CodecSet mp3_codecs{MP3};
    const CodecSet aac{MPEG2_AAC, MPEG4_AAC};
  
@@ -22,7 +22,7 @@
    CodecSet avc_and_aac(aac);
    avc_and_aac.emplace(H264);
  
-@@ -328,6 +336,29 @@ void MimeUtil::AddSupportedMediaFormats(
+@@ -346,6 +354,29 @@ void MimeUtil::AddSupportedMediaFormats(
    mp4_codecs.insert(mp4_video_codecs.begin(), mp4_video_codecs.end());
  #endif  // BUILDFLAG(USE_PROPRIETARY_CODECS)
  
@@ -52,7 +52,7 @@
    const CodecSet implicit_codec;
    AddContainerWithCodecs("audio/wav", wav_codecs, false);
    AddContainerWithCodecs("audio/x-wav", wav_codecs, false);
-@@ -345,6 +376,11 @@ void MimeUtil::AddSupportedMediaFormats(
+@@ -363,6 +394,11 @@ void MimeUtil::AddSupportedMediaFormats(
  
    AddContainerWithCodecs("audio/x-matroska", matroska_audio_codecs, false);
    AddContainerWithCodecs("video/x-matroska", matroska_codecs, false);
@@ -64,7 +64,7 @@
  
  #if BUILDFLAG(USE_PROPRIETARY_CODECS)
    AddContainerWithCodecs("audio/mpeg", mp3_codecs, true);  // Allow "mp3".
-@@ -965,6 +1001,15 @@ bool MimeUtil::IsCodecProprietary(Codec
+@@ -1015,6 +1051,15 @@ bool MimeUtil::IsCodecProprietary(Codec
      case DTS:
      case MPEG4_SP:
      case MPEG4_ASP:
@@ -80,21 +80,20 @@
        return true;
  
      case PCM:
-@@ -975,6 +1020,7 @@ bool MimeUtil::IsCodecProprietary(Codec
-     case VP8:
+@@ -1026,6 +1071,7 @@ bool MimeUtil::IsCodecProprietary(Codec
      case VP9:
      case THEORA:
+     case AV1:
 +    case MPEG1:
        return false;
    }
  
---- chromium-62.0.3202.89/media/base/mime_util_internal.h.0112~	2017-11-12 16:11:06.597851292 +0100
-+++ chromium-62.0.3202.89/media/base/mime_util_internal.h	2017-11-12 16:11:06.598851279 +0100
-@@ -48,7 +48,17 @@ class MEDIA_EXPORT MimeUtil {
+--- chromium-64.0.3282.119/media/base/mime_util_internal.h.0112~	2018-01-27 13:13:56.053972072 +0100
++++ chromium-64.0.3282.119/media/base/mime_util_internal.h	2018-01-27 13:16:06.481021210 +0100
+@@ -48,6 +48,16 @@ class MEDIA_EXPORT MimeUtil {
      MP2,
      MPEG4_SP,
      MPEG4_ASP,
--    LAST_CODEC = MPEG4_ASP
 +    MSMPEG4v1,
 +    MSMPEG4v2,
 +    MSMPEG4v3,
@@ -105,13 +104,12 @@
 +    WMA,
 +    VP6,
 +    MPEG1,
-+    LAST_CODEC = MPEG1
+     AV1,
+     LAST_CODEC = AV1
    };
- 
-   // Platform configuration structure.  Controls which codecs are supported at
---- chromium-62.0.3202.89/net/base/mime_util.cc.0112~	2017-11-12 16:11:06.597851292 +0100
-+++ chromium-62.0.3202.89/net/base/mime_util.cc	2017-11-12 16:11:06.598851279 +0100
-@@ -512,6 +512,7 @@ static const char* const kStandardVideoT
+--- chromium-64.0.3282.119/net/base/mime_util.cc.0112~	2018-01-27 13:13:56.051972072 +0100
++++ chromium-64.0.3282.119/net/base/mime_util.cc	2018-01-27 13:13:56.054972073 +0100
+@@ -513,6 +513,7 @@ static const char* const kStandardVideoT
    "video/sd-video",
    "video/webm",
    "video/x-dv",

@@ -42,7 +42,7 @@
 Name: 		chromium-browser-stable
 # Working version numbers can be found at
 # http://omahaproxy.appspot.com/
-Version: 	63.0.3239.132
+Version: 	64.0.3282.119
 Release: 	1%{?extrarelsuffix}
 Summary: 	A fast webkit-based web browser
 Group: 		Networking/WWW
@@ -61,17 +61,14 @@ Source3:	master_preferences
 #Patch20:	chromium-last-commit-position-r0.patch
 
 ### Chromium Fedora Patches ###
-Patch0:         chromium-56.0.2924.87-gcc5.patch
 Patch1:         chromium-45.0.2454.101-linux-path-max.patch
 Patch2:         chromium-55.0.2883.75-addrfix.patch
 Patch4:         chromium-46.0.2490.71-notest.patch
 # Ignore broken nacl open fd counter
 Patch7:         chromium-47.0.2526.80-nacl-ignore-broken-fd-counter.patch
-Patch8:		chromium-63-system-clang.patch
 # Use libusb_interrupt_event_handler from current libusbx (1.0.21-0.1.git448584a)
 Patch9:         chromium-48.0.2564.116-libusb_interrupt_event_handler.patch
 Patch10:	chromium-64-system-curl.patch
-Patch11:	chromium-63-ffmpeg-3.5.patch
 # Ignore deprecations in cups 2.2
 # https://bugs.chromium.org/p/chromium/issues/detail?id=622493
 Patch12:        chromium-55.0.2883.75-cups22.patch
@@ -112,7 +109,6 @@ Patch114:	chromium-55-flac.patch
 
 # omv
 Patch120:	chromium-59-clang-workaround.patch
-Patch123:	chromium-61.0.3163.100-glibc-2.26.patch
 
 Provides: 	%{crname}
 Obsoletes: 	chromium-browser-unstable < 26.0.1410.51
@@ -321,6 +317,7 @@ python2 build/linux/unbundle/remove_bundled_libraries.py \
 	'third_party/angle/src/third_party/trace_event' \
 	'third_party/blanketjs' \
 	'third_party/boringssl' \
+	'third_party/boringssl/src/third_party/fiat' \
 	'third_party/brotli' \
 	'third_party/cacheinvalidation' \
 	'third_party/catapult' \
@@ -335,7 +332,6 @@ python2 build/linux/unbundle/remove_bundled_libraries.py \
 	'third_party/catapult/common/py_vulcanize/third_party/rcssmin' \
 	'third_party/catapult/common/py_vulcanize/third_party/rjsmin' \
 	'third_party/ced' \
-	'third_party/cld_2' \
 	'third_party/cld_3' \
 	'third_party/crc32c' \
 	'third_party/cros_system_api' \
@@ -379,6 +375,7 @@ python2 build/linux/unbundle/remove_bundled_libraries.py \
 	'third_party/lss' \
 	'third_party/lzma_sdk' \
 	'third_party/mesa' \
+	'third_party/metrics_proto' \
 	'third_party/modp_b64' \
 	'third_party/mt19937ar' \
 	'third_party/node' \

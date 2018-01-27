@@ -1,5 +1,5 @@
---- chromium-62.0.3202.89/media/base/audio_codecs.cc.0111~	2017-11-06 21:05:28.000000000 +0100
-+++ chromium-62.0.3202.89/media/base/audio_codecs.cc	2017-11-12 16:05:53.114100763 +0100
+--- chromium-64.0.3282.119/media/base/audio_codecs.cc.0111~	2018-01-24 21:05:48.000000000 +0100
++++ chromium-64.0.3282.119/media/base/audio_codecs.cc	2018-01-27 13:09:46.050882326 +0100
 @@ -44,6 +44,8 @@ std::string GetCodecName(AudioCodec code
        return "alac";
      case kCodecAC3:
@@ -18,8 +18,8 @@
    return kUnknownAudioCodec;
  }
  
---- chromium-62.0.3202.89/media/base/audio_codecs.h.0111~	2017-11-06 21:05:28.000000000 +0100
-+++ chromium-62.0.3202.89/media/base/audio_codecs.h	2017-11-12 16:05:53.114100763 +0100
+--- chromium-64.0.3282.119/media/base/audio_codecs.h.0111~	2018-01-24 21:05:48.000000000 +0100
++++ chromium-64.0.3282.119/media/base/audio_codecs.h	2018-01-27 13:09:46.051882326 +0100
 @@ -32,13 +32,14 @@ enum AudioCodec {
    kCodecPCM_ALAW = 14,
    kCodecALAC = 15,
@@ -36,8 +36,8 @@
  };
  
  std::string MEDIA_EXPORT GetCodecName(AudioCodec codec);
---- chromium-62.0.3202.89/media/base/decode_capabilities.cc.0111~	2017-11-06 21:05:28.000000000 +0100
-+++ chromium-62.0.3202.89/media/base/decode_capabilities.cc	2017-11-12 16:05:53.115100782 +0100
+--- chromium-64.0.3282.119/media/base/decode_capabilities.cc.0111~	2018-01-24 21:05:48.000000000 +0100
++++ chromium-64.0.3282.119/media/base/decode_capabilities.cc	2018-01-27 13:09:46.051882326 +0100
 @@ -179,13 +179,13 @@ bool IsSupportedVideoConfig(const VideoC
      case media::kCodecH264:
      case media::kCodecVP8:
@@ -55,18 +55,18 @@
      case media::kCodecDolbyVision:
        return false;
    }
---- chromium-62.0.3202.89/media/base/mime_util_internal.cc.0111~	2017-11-06 21:05:28.000000000 +0100
-+++ chromium-62.0.3202.89/media/base/mime_util_internal.cc	2017-11-12 16:10:11.518797893 +0100
-@@ -73,6 +73,8 @@ const base::flat_map<std::string, MimeUt
+--- chromium-64.0.3282.119/media/base/mime_util_internal.cc.0111~	2018-01-24 21:05:48.000000000 +0100
++++ chromium-64.0.3282.119/media/base/mime_util_internal.cc	2018-01-27 13:11:48.656925482 +0100
+@@ -74,6 +74,8 @@ const base::flat_map<std::string, MimeUt
          {"vorbis", MimeUtil::VORBIS}, {"opus", MimeUtil::OPUS},
          {"flac", MimeUtil::FLAC}, {"vp8", MimeUtil::VP8},
          {"vp8.0", MimeUtil::VP8}, {"theora", MimeUtil::THEORA},
 +	{"dts", MimeUtil::DTS}, {"mp2", MimeUtil::MP2},
-+        {"mp4v.20.8", MimeUtil::MPEG4_SP}, {"mp4v.20.240", MimeUtil::MPEG4_ASP},
-       },
-       base::KEEP_FIRST_OF_DUPES);
- 
-@@ -167,6 +169,9 @@ VideoCodec MimeUtilToVideoCodec(MimeUtil
++	{"mp4v.20.8", MimeUtil::MPEG4_SP}, {"mp4v.20.240", MimeUtil::MPEG4_ASP},
+ // TODO(dalecurtis): This is not the correct final string. Fix before enabling
+ // by default. http://crbug.com/784607
+ #if BUILDFLAG(ENABLE_AV1_DECODER)
+@@ -175,6 +177,9 @@ VideoCodec MimeUtilToVideoCodec(MimeUtil
        return kCodecTheora;
      case MimeUtil::DOLBY_VISION:
        return kCodecDolbyVision;
@@ -76,7 +76,7 @@
      default:
        break;
    }
-@@ -261,6 +266,31 @@ void MimeUtil::AddSupportedMediaFormats(
+@@ -269,6 +274,31 @@ void MimeUtil::AddSupportedMediaFormats(
    CodecSet ogg_codecs(ogg_audio_codecs);
    ogg_codecs.insert(ogg_video_codecs.begin(), ogg_video_codecs.end());
  
@@ -106,9 +106,9 @@
 +  matroska_codecs.insert(matroska_video_codecs.begin(), matroska_video_codecs.end());
 +
    const CodecSet webm_audio_codecs{OPUS, VORBIS};
-   const CodecSet webm_video_codecs{VP8, VP9};
-   CodecSet webm_codecs(webm_audio_codecs);
-@@ -283,6 +313,8 @@ void MimeUtil::AddSupportedMediaFormats(
+   CodecSet webm_video_codecs{VP8, VP9};
+ #if BUILDFLAG(ENABLE_AV1_DECODER)
+@@ -296,6 +326,8 @@ void MimeUtil::AddSupportedMediaFormats(
  
    CodecSet mp4_video_codecs;
    mp4_video_codecs.emplace(H264);
@@ -117,7 +117,7 @@
  #if BUILDFLAG(ENABLE_HEVC_DEMUXING)
    mp4_video_codecs.emplace(HEVC);
  #endif  // BUILDFLAG(ENABLE_HEVC_DEMUXING)
-@@ -311,6 +343,9 @@ void MimeUtil::AddSupportedMediaFormats(
+@@ -329,6 +361,9 @@ void MimeUtil::AddSupportedMediaFormats(
    AddContainerWithCodecs("application/ogg", ogg_codecs, false);
    AddContainerWithCodecs("audio/flac", implicit_codec, false);
  
@@ -127,7 +127,7 @@
  #if BUILDFLAG(USE_PROPRIETARY_CODECS)
    AddContainerWithCodecs("audio/mpeg", mp3_codecs, true);  // Allow "mp3".
    AddContainerWithCodecs("audio/mp3", implicit_codec, true);
-@@ -323,6 +358,7 @@ void MimeUtil::AddSupportedMediaFormats(
+@@ -341,6 +376,7 @@ void MimeUtil::AddSupportedMediaFormats(
    // support the codecs needed for compatibility.
    AddContainerWithCodecs("audio/x-m4a", aac, true);
    AddContainerWithCodecs("video/x-m4v", avc_and_aac, true);
@@ -135,7 +135,7 @@
  
  #if BUILDFLAG(ENABLE_MSE_MPEG2TS_STREAM_PARSER)
    // TODO(ddorwin): Exactly which codecs should be supported?
-@@ -926,9 +962,13 @@ bool MimeUtil::IsCodecProprietary(Codec
+@@ -976,9 +1012,13 @@ bool MimeUtil::IsCodecProprietary(Codec
      case H264:
      case HEVC:
      case DOLBY_VISION:
@@ -149,23 +149,21 @@
      case VORBIS:
      case OPUS:
      case FLAC:
---- chromium-62.0.3202.89/media/base/mime_util_internal.h.0111~	2017-11-06 21:05:28.000000000 +0100
-+++ chromium-62.0.3202.89/media/base/mime_util_internal.h	2017-11-12 16:05:53.114100763 +0100
-@@ -44,7 +44,11 @@ class MEDIA_EXPORT MimeUtil {
+--- chromium-64.0.3282.119/media/base/mime_util_internal.h.0111~	2018-01-27 13:09:46.051882326 +0100
++++ chromium-64.0.3282.119/media/base/mime_util_internal.h	2018-01-27 13:12:23.648938120 +0100
+@@ -44,6 +44,10 @@ class MEDIA_EXPORT MimeUtil {
      VP9,
      THEORA,
      DOLBY_VISION,
--    LAST_CODEC = DOLBY_VISION
 +    DTS,
 +    MP2,
 +    MPEG4_SP,
 +    MPEG4_ASP,
-+    LAST_CODEC = MPEG4_ASP
+     AV1,
+     LAST_CODEC = AV1
    };
- 
-   // Platform configuration structure.  Controls which codecs are supported at
---- chromium-62.0.3202.89/media/ffmpeg/ffmpeg_common.cc.0111~	2017-11-06 21:05:28.000000000 +0100
-+++ chromium-62.0.3202.89/media/ffmpeg/ffmpeg_common.cc	2017-11-12 16:05:53.114100763 +0100
+--- chromium-64.0.3282.119/media/ffmpeg/ffmpeg_common.cc.0111~	2018-01-24 21:05:48.000000000 +0100
++++ chromium-64.0.3282.119/media/ffmpeg/ffmpeg_common.cc	2018-01-27 13:09:46.051882326 +0100
 @@ -115,6 +115,8 @@ AudioCodec CodecIDToAudioCodec(AVCodecID
        return kCodecOpus;
      case AV_CODEC_ID_ALAC:
@@ -186,17 +184,17 @@
      default:
        DVLOG(1) << "Unknown AudioCodec: " << audio_codec;
    }
---- chromium-62.0.3202.89/media/filters/ffmpeg_video_decoder.cc.0111~	2017-11-06 21:05:28.000000000 +0100
-+++ chromium-62.0.3202.89/media/filters/ffmpeg_video_decoder.cc	2017-11-12 16:05:53.114100763 +0100
-@@ -58,7 +58,6 @@ static int GetThreadCount(const VideoDec
+--- chromium-64.0.3282.119/media/filters/ffmpeg_video_decoder.cc.0111~	2018-01-24 21:05:48.000000000 +0100
++++ chromium-64.0.3282.119/media/filters/ffmpeg_video_decoder.cc	2018-01-27 13:13:07.616954175 +0100
+@@ -59,7 +59,6 @@ static int GetThreadCount(const VideoDec
        case kUnknownVideoCodec:
        case kCodecVC1:
        case kCodecMPEG2:
 -      case kCodecHEVC:
        case kCodecVP9:
+       case kCodecAV1:
        case kCodecDolbyVision:
-         // We do not compile ffmpeg with support for any of these codecs.
-@@ -71,6 +70,7 @@ static int GetThreadCount(const VideoDec
+@@ -73,6 +72,7 @@ static int GetThreadCount(const VideoDec
        case kCodecH264:
        case kCodecMPEG4:
        case kCodecVP8:
@@ -204,8 +202,8 @@
          // Normalize to three threads for 1080p content, then scale linearly
          // with number of pixels.
          // Examples:
---- chromium-62.0.3202.89/media/remoting/proto_enum_utils.cc.0111~	2017-11-06 21:05:28.000000000 +0100
-+++ chromium-62.0.3202.89/media/remoting/proto_enum_utils.cc	2017-11-12 16:05:53.115100782 +0100
+--- chromium-64.0.3282.119/media/remoting/proto_enum_utils.cc.0111~	2018-01-24 21:05:49.000000000 +0100
++++ chromium-64.0.3282.119/media/remoting/proto_enum_utils.cc	2018-01-27 13:09:46.052882327 +0100
 @@ -57,6 +57,7 @@ base::Optional<AudioCodec> ToMediaAudioC
      CASE_RETURN_OTHER(kCodecPCM_ALAW);
      CASE_RETURN_OTHER(kCodecALAC);
@@ -222,8 +220,8 @@
    }
    return base::nullopt;  // Not a 'default' to ensure compile-time checks.
  }
---- chromium-62.0.3202.89/media/remoting/rpc.proto.0111~	2017-11-06 21:05:28.000000000 +0100
-+++ chromium-62.0.3202.89/media/remoting/rpc.proto	2017-11-12 16:05:53.115100782 +0100
+--- chromium-64.0.3282.119/media/remoting/rpc.proto.0111~	2018-01-24 21:05:49.000000000 +0100
++++ chromium-64.0.3282.119/media/remoting/rpc.proto	2018-01-27 13:09:46.052882327 +0100
 @@ -66,6 +66,7 @@ message AudioDecoderConfig {
      kCodecPCM_ALAW = 14;
      kCodecALAC = 15;
@@ -232,9 +230,9 @@
    }
  
    // Proto version of media::SampleFormat.
---- chromium-62.0.3202.89/net/base/mime_util.cc.0111~	2017-11-06 21:05:29.000000000 +0100
-+++ chromium-62.0.3202.89/net/base/mime_util.cc	2017-11-12 16:06:44.499137500 +0100
-@@ -97,6 +97,9 @@ static const MimeInfo kPrimaryMappings[]
+--- chromium-64.0.3282.119/net/base/mime_util.cc.0111~	2018-01-24 21:05:50.000000000 +0100
++++ chromium-64.0.3282.119/net/base/mime_util.cc	2018-01-27 13:09:46.052882327 +0100
+@@ -98,6 +98,9 @@ static const MimeInfo kPrimaryMappings[]
      {"text/xml", "xml"},
      {"video/mp4", "mp4,m4v"},
      {"video/ogg", "ogv,ogm"},
@@ -244,7 +242,7 @@
  };
  
  static const MimeInfo kSecondaryMappings[] = {
-@@ -492,6 +495,7 @@ static const char* const kStandardAudioT
+@@ -493,6 +496,7 @@ static const char* const kStandardAudioT
    "audio/vorbis",
    "audio/wav",
    "audio/webm",
@@ -252,7 +250,7 @@
    "audio/x-m4a",
    "audio/x-ms-wma",
    "audio/vnd.rn-realaudio",
-@@ -509,8 +513,10 @@ static const char* const kStandardVideoT
+@@ -510,8 +514,10 @@ static const char* const kStandardVideoT
    "video/webm",
    "video/x-dv",
    "video/x-m4v",
