@@ -590,6 +590,12 @@ for i in 22 24 48 64 128 256; do
                 %{buildroot}%{_datadir}/icons/hicolor/${i}x${i}/apps/%{name}.png
 done
 
+# Set some symlinks
+# FIXME should just look in the right place...
+mkdir -p %{buildroot}%{_libdir}/%{name}/swiftshader
+ln -s ../../libGLESv2.so.2 /usr/lib64/chromium-browser-stable/swiftshader/libGLESv2.so
+ln -s ../../libEGL.so.1 /usr/lib64/chromium-browser-stable/swiftshader/libEGL.so
+
 # Install the master_preferences file
 mkdir -p %{buildroot}%{_sysconfdir}/chromium
 install -m 0644 %{SOURCE3} %{buildroot}%{_sysconfdir}/chromium
@@ -612,6 +618,7 @@ find %{buildroot} -name "*.nexe" -exec strip {} \;
 %{_libdir}/%{name}/chrome_100_percent.pak
 %{_libdir}/%{name}/resources.pak
 %{_libdir}/%{name}/resources
+%{_libdir}/%{name}/swiftshader
 %{_libdir}/%{name}/themes
 %{_libdir}/%{name}/default_apps
 %{_datadir}/applications/*.desktop
