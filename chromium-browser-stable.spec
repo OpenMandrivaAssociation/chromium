@@ -42,7 +42,7 @@
 Name: 		chromium-browser-stable
 # Working version numbers can be found at
 # http://omahaproxy.appspot.com/
-Version: 	64.0.3282.119
+Version: 	64.0.3282.140
 Release: 	1%{?extrarelsuffix}
 Summary: 	A fast webkit-based web browser
 Group: 		Networking/WWW
@@ -593,8 +593,8 @@ done
 # Set some symlinks
 # FIXME should just look in the right place...
 mkdir -p %{buildroot}%{_libdir}/%{name}/swiftshader
-ln -s ../../libGLESv2.so.2 /usr/lib64/chromium-browser-stable/swiftshader/libGLESv2.so
-ln -s ../../libEGL.so.1 /usr/lib64/chromium-browser-stable/swiftshader/libEGL.so
+ln -s ../../libGLESv2.so.2 %{buildroot}/usr/lib64/chromium-browser-stable/swiftshader/libGLESv2.so
+ln -s ../../libEGL.so.1 %{buildroot}/usr/lib64/chromium-browser-stable/swiftshader/libEGL.so
 
 # Install the master_preferences file
 mkdir -p %{buildroot}%{_sysconfdir}/chromium
