@@ -24,13 +24,14 @@
 %bcond_without	gtk3
 # crisb - ozone causes a segfault on startup as of 57.0.2987.133
 %bcond_with	ozone
-%bcond_with	system_icu
+%bcond_without	system_icu
 %bcond_without	system_ffmpeg
 # Temporarily broken, cr_z_* symbols used even when we're supposed to use system minizip
 %bcond_without	system_minizip
 # chromium 58 fails with system vpx 1.6.1
 %bcond_without	system_vpx
 %bcond_with	system_harfbuzz
+%bcond_with	system_freetype
 
 # Always support proprietary codecs
 # or html5 does not work
@@ -56,7 +57,7 @@ Source3:	master_preferences
 # internal freetype headers (BAD)... So we need to put freetype
 # sources back. This is pulled from the last Chromium build that
 # had them.
-Source4:	https://ftp.osuosl.org/pub/blfs/conglomeration/chromium/chromium-freetype.tar.xz
+# Source4:	https://ftp.osuosl.org/pub/blfs/conglomeration/chromium/chromium-freetype.tar.xz
 ### Chromium Fedora Patches ###
 Patch0:		chromium-64.0.3282.119-gcc5.patch
 Patch1:		chromium-45.0.2454.101-linux-path-max.patch
@@ -174,6 +175,7 @@ BuildRequires:	%{_lib}atomic1
 BuildRequires:  pkgconfig(icu-i18n)
 BuildRequires: 	snappy-devel
 BuildRequires: 	jsoncpp-devel
+BuildRequires:  pkgconfig(openh264)
 BuildRequires: 	pkgconfig(expat)
 BuildRequires: 	pkgconfig(glib-2.0)
 # FIXME we currently can't use system re2 because
@@ -280,7 +282,7 @@ members of the Chromium and WebDriver teams.
 
 
 %prep
-%setup -q -n chromium-%{version} -a 4
+%setup -q -n chromium-%{version}
 %apply_patches
 
 rm -rf third_party/binutils/
@@ -301,12 +303,15 @@ mkdir -p third_party/node/linux/node-linux-x64/bin
 ln -s /usr/bin/node third_party/node/linux/node-linux-x64/bin/
 # Remove most of the bundled libraries. Libraries specified below (taken from
 # Gentoo's Chromium ebuild) are the libraries that needs to be preserved.
+#	'base/third_party/libevent'
+
 %{__python2} build/linux/unbundle/remove_bundled_libraries.py \
 	'buildtools/third_party/libc++' \
+	'base/third_party/libevent' \
 	'buildtools/third_party/libc++abi' \
 	'base/third_party/dmg_fp' \
 	'base/third_party/dynamic_annotations' \
-%if !%{with system_icu}
+%if %{with system_icu}
 	'base/third_party/icu' \
 %endif
 	'base/third_party/nspr' \
@@ -353,23 +358,27 @@ ln -s /usr/bin/node third_party/node/linux/node-linux-x64/bin/
 	'third_party/devscripts' \
 	'third_party/dom_distiller_js' \
 	'third_party/expat' \
-%if !%{with system_ffmpeg}
+%if %{with system_ffmpeg}
         'third_party/ffmpeg' \
 %endif
 	'third_party/fips181' \
 	'third_party/flac' \
         'third_party/flatbuffers' \
 	'third_party/flot' \
+%if %{with system_freetype}
 	'third_party/freetype' \
+%endif
 	'third_party/glslang-angle' \
 	'third_party/google_input_tools' \
 	'third_party/google_input_tools/third_party/closure_library' \
 	'third_party/google_input_tools/third_party/closure_library/third_party/closure' \
 	'third_party/googletest' \
+%if %{with system_harfbuzz}
 	'third_party/harfbuzz-ng' \
+%endif
 	'third_party/hunspell' \
 	'third_party/iccjpeg' \
-%if !%{with system_icu}
+%if %{with system_icu}
 	'third_party/icu' \
 %endif
 	'third_party/inspector_protocol' \
@@ -414,7 +423,9 @@ ln -s /usr/bin/node third_party/node/linux/node-linux-x64/bin/
 	'third_party/pdfium/third_party/base' \
 	'third_party/pdfium/third_party/bigint' \
 	'third_party/pdfium/third_party/build' \
+%if %{with system_freetype}
 	'third_party/pdfium/third_party/freetype' \
+%endif
 	'third_party/pdfium/third_party/lcms' \
 	'third_party/pdfium/third_party/libopenjpeg20' \
         'third_party/pdfium/third_party/libpng16' \
@@ -499,19 +510,20 @@ export CXX=g++
 export PATH=`pwd`:$PATH
 
 myconf_gn=" use_sysroot=false is_debug=false use_gold=true"
-%if %mdvver >= 201500
 %ifarch %arm
 myconf_gn+=" is_clang=false"
 %else
 myconf_gn+=" is_clang=true clang_base_path=\"/usr\" clang_use_chrome_plugins=false"
 %endif
-%else
-myconf_gn+=" is_clang=false"
-%endif
 
 myconf_gn+=" treat_warnings_as_errors=false"
 myconf_gn+=" use_system_libjpeg=true "
+%if %{with system_harfbuzz}
 myconf_gn+=" use_system_harfbuzz=true "
+%endif
+%if %{with system_freetype}
+myconf_gn+=" use_system_freetype=true "
+%endif
 myconf_gn+=" use_gnome_keyring=false "
 myconf_gn+=" fatal_linker_warnings=false "
 myconf_gn+=" system_libdir=\"%{_lib}\""
@@ -573,6 +585,9 @@ gn_system_libraries="
 %if %{with system_minizip}
 gn_system_libraries+=" zlib"
 %endif
+%if %{with system_freetype}
+gn_system_libraries+=" freetype"
+%endif
 %if %{with system_harfbuzz}
 gn_system_libraries+=" harfbuzz-ng"
 %endif
@@ -585,6 +600,7 @@ gn_system_libraries+=" libvpx"
 %if %{with system_ffmpeg}
 gn_system_libraries+=" ffmpeg"
 %endif
+
 python2 build/linux/unbundle/replace_gn_files.py --system-libraries ${gn_system_libraries}
 
 python2 tools/gn/bootstrap/bootstrap.py -s --no-clean -v --gn-gen-args "${myconf_gn}"
