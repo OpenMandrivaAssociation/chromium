@@ -1,0 +1,11 @@
+diff -up chromium-62.0.3202.62/content/network/network_service_impl.cc.gcc-nc chromium-62.0.3202.62/content/network/network_service_impl.cc
+--- chromium-62.0.3202.62/content/network/network_service_impl.cc.gcc-nc	2017-10-18 10:07:04.045041261 -0400
++++ chromium-62.0.3202.62/content/network/network_service_impl.cc	2017-10-18 10:07:53.175088528 -0400
+@@ -90,6 +90,7 @@ NetworkServiceImpl::CreateNetworkContext
+       base::MakeUnique<NetworkContext>(this, std::move(request),
+                                        std::move(params), std::move(builder));
+   *url_request_context = network_context->url_request_context();
++  return std::unique_ptr<content::NetworkContext>(network_context.release());
+   return network_context;
+ }
+ 

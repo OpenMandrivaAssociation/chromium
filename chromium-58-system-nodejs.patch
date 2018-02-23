@@ -1,0 +1,15 @@
+--- chromium-58.0.3029.81/third_party/node/node.py.system-nodejs	2017-04-19 21:06:52.000000000 +0200
++++ chromium-58.0.3029.81/third_party/node/node.py	2017-04-24 00:52:35.271085493 +0200
+@@ -10,11 +10,7 @@
+ 
+ 
+ def GetBinaryPath():
+-  return os_path.join(os_path.dirname(__file__), *{
+-    'Darwin': ('mac', 'node-darwin-x64', 'bin', 'node'),
+-    'Linux': ('linux', 'node-linux-x64', 'bin', 'node'),
+-    'Windows': ('win', 'node.exe'),
+-  }[platform.system()])
++  return '/usr/bin/node'
+ 
+ 
+ def RunNode(cmd_parts, stdout=None):

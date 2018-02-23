@@ -27,10 +27,10 @@
 %bcond_with	system_icu
 %bcond_without	system_ffmpeg
 # Temporarily broken, cr_z_* symbols used even when we're supposed to use system minizip
-%bcond_with	system_minizip
+%bcond_without	system_minizip
 # chromium 58 fails with system vpx 1.6.1
-%bcond_with	system_vpx
-%bcond_without	system_harfbuzz
+%bcond_without	system_vpx
+%bcond_with	system_harfbuzz
 
 # Always support proprietary codecs
 # or html5 does not work
@@ -42,7 +42,7 @@
 Name: 		chromium-browser-stable
 # Working version numbers can be found at
 # http://omahaproxy.appspot.com/
-Version: 	61.0.3163.100
+Version: 	64.0.3282.167
 Release: 	1%{?extrarelsuffix}
 Summary: 	A fast webkit-based web browser
 Group: 		Networking/WWW
@@ -57,57 +57,82 @@ Source3:	master_preferences
 # sources back. This is pulled from the last Chromium build that
 # had them.
 Source4:	https://ftp.osuosl.org/pub/blfs/conglomeration/chromium/chromium-freetype.tar.xz
-
-%if %mdvver >= 201500
-# Don't use clang's integrated as while trying to check the version of gas
-#Patch4:		chromium-36.0.1985.143-clang-no-integrated-as.patch
-%endif
-
-#Patch20:	chromium-last-commit-position-r0.patch
-
 ### Chromium Fedora Patches ###
-Patch0:         chromium-56.0.2924.87-gcc5.patch
-Patch1:         chromium-45.0.2454.101-linux-path-max.patch
-Patch2:         chromium-55.0.2883.75-addrfix.patch
-Patch4:         chromium-46.0.2490.71-notest.patch
+Patch0:		chromium-64.0.3282.119-gcc5.patch
+Patch1:		chromium-45.0.2454.101-linux-path-max.patch
+Patch2:		chromium-55.0.2883.75-addrfix.patch
+Patch4:		chromium-46.0.2490.71-notest.patch
+# In file included from ../linux/directory.c:21:
+# In file included from ../../../../native_client/src/nonsfi/linux/abi_conversion.h:20:
+# ../../../../native_client/src/nonsfi/linux/linux_syscall_structs.h:44:13: error: GNU-style inline assembly is disabled
+#     __asm__ __volatile__("mov %%gs, %0" : "=r"(gs));
+#             ^
 # Ignore broken nacl open fd counter
-Patch7:         chromium-47.0.2526.80-nacl-ignore-broken-fd-counter.patch
+Patch7:		chromium-47.0.2526.80-nacl-ignore-broken-fd-counter.patch
 # Use libusb_interrupt_event_handler from current libusbx (1.0.21-0.1.git448584a)
-Patch9:         chromium-48.0.2564.116-libusb_interrupt_event_handler.patch
+Patch9:		chromium-48.0.2564.116-libusb_interrupt_event_handler.patch
 # Ignore deprecations in cups 2.2
 # https://bugs.chromium.org/p/chromium/issues/detail?id=622493
-Patch12:        chromium-55.0.2883.75-cups22.patch
+Patch12:	chromium-55.0.2883.75-cups22.patch
 # Use PIE in the Linux sandbox (from openSUSE via Russian Fedora)
-Patch15:        chromium-55.0.2883.75-sandbox-pie.patch
-# Enable ARM CPU detection for webrtc (from archlinux via Russian Fedora)
-Patch16:        chromium-52.0.2743.82-arm-webrtc.patch
+Patch15:	chromium-55.0.2883.75-sandbox-pie.patch
 # Use /etc/chromium for master_prefs
-Patch18:        chromium-52.0.2743.82-master-prefs-path.patch
+Patch18:	chromium-52.0.2743.82-master-prefs-path.patch
 # Use gn system files
-Patch20:        chromium-54.0.2840.59-gn-system.patch
+Patch20:	chromium-60.0.3112.78-gn-system.patch
 # Fix last commit position issue
 # https://groups.google.com/a/chromium.org/forum/#!topic/gn-dev/7nlJv486bD4
-Patch21:        chromium-53.0.2785.92-last-commit-position.patch
+Patch21:	chromium-60.0.3112.78-last-commit-position.patch
 # Fix issue where timespec is not defined when sys/stat.h is included.
-Patch22:        chromium-53.0.2785.92-boringssl-time-fix.patch
+Patch22:	chromium-53.0.2785.92-boringssl-time-fix.patch
 # I wouldn't have to do this if there was a standard way to append extra compiler flags
-Patch24:        http://pkgs.fedoraproject.org/cgit/rpms/chromium.git/plain/chromium-59.0.3071.86-nullfix.patch
+Patch24:	chromium-63.0.3289.84-nullfix.patch
 # Add explicit includedir for jpeglib.h
-Patch25:        chromium-54.0.2840.59-jpeg-include-dir.patch
+Patch25:	chromium-54.0.2840.59-jpeg-include-dir.patch
 # On i686, pass --no-keep-memory --reduce-memory-overheads to ld.
-Patch26:        http://pkgs.fedoraproject.org/cgit/rpms/chromium.git/plain/chromium-59.0.3071.86-i686-ld-memory-tricks.patch
-# Fix mp3 for aarch64
-Patch49:        chromium-61.0.3163.79-fix-ffmpeg-aarch64.patch
-# Enable mp3 support
-Patch34:        chromium-61.0.3163.79-enable-mp3.patch
+Patch26:	chromium-59.0.3071.86-i686-ld-memory-tricks.patch
 # obj/content/renderer/renderer/child_frame_compositing_helper.o: In function `content::ChildFrameCompositingHelper::OnSetSurface(cc::SurfaceId const&, gfx::Size const&, float, cc::SurfaceSequence const&)':
 # /builddir/build/BUILD/chromium-54.0.2840.90/out/Release/../../content/renderer/child_frame_compositing_helper.cc:214: undefined reference to `cc_blink::WebLayerImpl::setOpaque(bool)'
-#Patch27:        http://pkgs.fedoraproject.org/cgit/rpms/chromium.git/plain/chromium-59.0.3071.86-setopaque.patch
+Patch27:	chromium-63.0.3289.84-setopaque.patch
 # Use -fpermissive to build WebKit
-Patch31:        chromium-56.0.2924.87-fpermissive.patch
-
-### Chromium Tests Patches ###
-Patch101:       chromium-55.0.2883.75-use_system_harfbuzz.patch
+Patch31:	chromium-56.0.2924.87-fpermissive.patch
+# Fix issue with compilation on gcc7
+# Thanks to Ben Noordhuis
+Patch33: 	chromium-64.0.3282.119-gcc7.patch
+# Enable mp3 support
+Patch34:	chromium-64.0.3282.119-enable-mp3.patch
+# Revert https://chromium.googlesource.com/chromium/src/+/b794998819088f76b4cf44c8db6940240c563cf4%5E%21/#F0
+# https://bugs.chromium.org/p/chromium/issues/detail?id=712737
+# https://bugzilla.redhat.com/show_bug.cgi?id=1446851
+Patch36:	chromium-58.0.3029.96-revert-b794998819088f76b4cf44c8db6940240c563cf4.patch
+# Correctly compile the stdatomic.h in ffmpeg with gcc 4.8
+Patch37:	chromium-64.0.3282.119-ffmpeg-stdatomic.patch
+# Nacl can't die soon enough
+Patch39:	chromium-59.0.3071.86-system-clang.patch
+# Do not prefix libpng functions
+Patch42:	chromium-60.0.3112.78-no-libpng-prefix.patch
+# Do not mangle libjpeg
+Patch43:	chromium-60.0.3112.78-jpeg-nomangle.patch
+# Do not mangle zlib
+Patch45:	chromium-60.0.3112.78-no-zlib-mangle.patch
+# Fix libavutil include pathing to find arch specific timer.h
+# For some reason, this only fails on aarch64. No idea why.
+Patch50:	chromium-60.0.3112.113-libavutil-timer-include-path-fix.patch
+# from gentoo
+Patch53:	chromium-61.0.3163.79-gcc-no-opt-safe-math.patch
+# From gentoo
+Patch62:	chromium-64.0.3282.119-gcc5-r3.patch
+# Do not try to use libc++ in the remoting stack
+Patch63:	chromium-63.0.3289.84-nolibc++.patch
+# Fix freetype and harfbuzz-ng unbundle
+Patch64:	chromium-63.0.3289.84-fix-ft-hb-unbundle.patch
+# To use round with gcc, you need to #include <cmath>
+Patch65:	chromium-64.0.3282.119-gcc-round-fix.patch
+# Fix constexpr gcc issues
+# https://chromium.googlesource.com/angle/angle/+/030017a4855c7b6e7f2ff8d9566c146f31eb301b
+Patch66:	chromium-64.0.3282.119-gcc-constexpr-fix.patch
+# Include proper headers to invoke memcpy()
+Patch67:	chromium-64.0.3282.119-memcpy-fix.patch
 
 # suse, system libs
 Patch103:	arm_use_right_compiler.patch
@@ -115,17 +140,20 @@ Patch103:	arm_use_right_compiler.patch
 Patch105:	chromium-system-jinja-r13.patch
 
 # mga
-Patch111:	chromium-55-extra-media.patch
+#Patch111:	chromium-55-extra-media.patch
 #Patch112:	chromium-40-wmvflvmpg.patch
 Patch113:	chromium-buildname.patch
-Patch114:	chromium-55-flac.patch
+#Patch114:	chromium-53-gn-system-opus.patch
+Patch115:	chromium-53-gn-system-icu-jsoncpp.patch
+Patch116:	chromium-58-system-nodejs.patch
+
 
 # omv
 Patch120:	chromium-59-clang-workaround.patch
-Patch121:	chromium-59.0.3071.115-glibc-2.26.patch
-Patch122:	chromium-61.0.3163.100-gn-bootstrap.patch
-Patch123:	chromium-61.0.3163.100-glibc-2.26.patch
-Patch124:	chromium-61.0.3163.100-atk-compile.patch
+#Patch121:	chromium-59.0.3071.115-glibc-2.26.patch
+#Patch122:	chromium-61.0.3163.100-gn-bootstrap.patch
+#Patch123:	chromium-61.0.3163.100-glibc-2.26.patch
+#Patch124:	chromium-61.0.3163.100-atk-compile.patch
 
 Provides: 	%{crname}
 Obsoletes: 	chromium-browser-unstable < 26.0.1410.51
@@ -271,101 +299,79 @@ ln -s %{_bindir}/python2 python
 # use the system nodejs
 mkdir -p third_party/node/linux/node-linux-x64/bin
 ln -s /usr/bin/node third_party/node/linux/node-linux-x64/bin/
-
-# Remove bundled libs
-python2 build/linux/unbundle/remove_bundled_libraries.py \
-	'third_party/ffmpeg' \
-	'third_party/adobe' \
-	'third_party/flac' \
-	'third_party/glslang-angle' \
-	'third_party/harfbuzz-ng' \
-	'third_party/icu' \
-	'base/third_party/libevent' \
-	'third_party/libdrm' \
-	'third_party/libjpeg_turbo' \
-	'third_party/libpng' \
-	'third_party/libsrtp' \
-	'third_party/libwebp' \
-	'third_party/libxml' \
-	'third_party/libxslt' \
-	'third_party/openh264' \
-	'third_party/re2' \
-	'third_party/snappy' \
-	'third_party/speech-dispatcher' \
-	'third_party/spirv-tools-angle' \
-	'third_party/spirv-headers' \
-	'third_party/swiftshader' \
-	'third_party/swiftshader/third_party/subzero' \
-	'third_party/swiftshader/third_party/LLVM' \
-	'third_party/swiftshader/third_party/llvm-subzero' \
-	'third_party/usb_ids' \
-	'third_party/vulkan-validation-layers' \
-	'third_party/xdg-utils' \
-	'third_party/yasm' \
-	'third_party/zlib' \
+# Remove most of the bundled libraries. Libraries specified below (taken from
+# Gentoo's Chromium ebuild) are the libraries that needs to be preserved.
+%{__python2} build/linux/unbundle/remove_bundled_libraries.py \
+	'buildtools/third_party/libc++' \
+	'buildtools/third_party/libc++abi' \
 	'base/third_party/dmg_fp' \
 	'base/third_party/dynamic_annotations' \
+%if !%{with system_icu}
 	'base/third_party/icu' \
+%endif
 	'base/third_party/nspr' \
 	'base/third_party/superfasthash' \
 	'base/third_party/symbolize' \
 	'base/third_party/valgrind' \
 	'base/third_party/xdg_mime' \
 	'base/third_party/xdg_user_dirs' \
-	'breakpad/src/third_party/curl' \
 	'chrome/third_party/mozilla_security_manager' \
 	'courgette/third_party' \
-	'native_client_sdk/src/libraries/third_party/newlib-extras' \
-	'native_client/src/third_party/dlmalloc' \
-	'native_client/src/third_party/valgrind' \
 	'net/third_party/mozilla_security_manager' \
 	'net/third_party/nss' \
 	'third_party/WebKit' \
+	'third_party/adobe' \
 	'third_party/analytics' \
 	'third_party/angle' \
-	'third_party/angle/src/common/third_party/murmurhash' \
 	'third_party/angle/src/common/third_party/base' \
+	'third_party/angle/src/common/third_party/smhasher' \
 	'third_party/angle/src/third_party/compiler' \
 	'third_party/angle/src/third_party/libXNVCtrl' \
 	'third_party/angle/src/third_party/trace_event' \
 	'third_party/blanketjs' \
+	'third_party/blink' \
 	'third_party/boringssl' \
+	'third_party/boringssl/src/third_party/fiat' \
+	'third_party/breakpad' \
+	'third_party/breakpad/breakpad/src/third_party/curl' \
 	'third_party/brotli' \
 	'third_party/cacheinvalidation' \
 	'third_party/catapult' \
+	'third_party/catapult/common/py_vulcanize/third_party/rcssmin' \
+	'third_party/catapult/common/py_vulcanize/third_party/rjsmin' \
+	'third_party/catapult/third_party/polymer' \
 	'third_party/catapult/tracing/third_party/d3' \
 	'third_party/catapult/tracing/third_party/gl-matrix' \
 	'third_party/catapult/tracing/third_party/jszip' \
 	'third_party/catapult/tracing/third_party/mannwhitneyu' \
 	'third_party/catapult/tracing/third_party/oboe' \
-	'third_party/catapult/third_party/polymer' \
-	'third_party/catapult/third_party/py_vulcanize' \
-	'third_party/catapult/third_party/py_vulcanize/third_party/rcssmin' \
-	'third_party/catapult/third_party/py_vulcanize/third_party/rjsmin' \
-	'third_party/ced' \
-	'third_party/cld_2' \
+	'third_party/catapult/tracing/third_party/pako' \
+        'third_party/ced' \
 	'third_party/cld_3' \
+	'third_party/crc32c' \
 	'third_party/cros_system_api' \
 	'third_party/devscripts' \
 	'third_party/dom_distiller_js' \
 	'third_party/expat' \
+%if !%{with system_ffmpeg}
+        'third_party/ffmpeg' \
+%endif
 	'third_party/fips181' \
-	'third_party/flatbuffers' \
+	'third_party/flac' \
+        'third_party/flatbuffers' \
 	'third_party/flot' \
 	'third_party/freetype' \
-	'third_party/freetype/src' \
-	'third_party/freetype/src/src' \
-	'third_party/freetype/src/src/psnames' \
+	'third_party/glslang-angle' \
 	'third_party/google_input_tools' \
 	'third_party/google_input_tools/third_party/closure_library' \
 	'third_party/google_input_tools/third_party/closure_library/third_party/closure' \
 	'third_party/googletest' \
-	'third_party/googletest/src' \
-	'third_party/googletest/src/googletest' \
-	'third_party/googletest/src/googletest/include' \
-	'third_party/googletest/src/googletest/include/gtest' \
+	'third_party/harfbuzz-ng' \
 	'third_party/hunspell' \
 	'third_party/iccjpeg' \
+%if !%{with system_icu}
+	'third_party/icu' \
+%endif
 	'third_party/inspector_protocol' \
 	'third_party/jinja2' \
 	'third_party/jstemplate' \
@@ -373,23 +379,33 @@ python2 build/linux/unbundle/remove_bundled_libraries.py \
 	'third_party/leveldatabase' \
 	'third_party/libXNVCtrl' \
 	'third_party/libaddressinput' \
+	'third_party/libdrm' \
 	'third_party/libjingle' \
+	'third_party/libjpeg_turbo' \
 	'third_party/libphonenumber' \
+	'third_party/libpng' \
 	'third_party/libsecret' \
-	'third_party/libsrtp' \
+        'third_party/libsrtp' \
 	'third_party/libudev' \
 	'third_party/libusb' \
 	'third_party/libvpx' \
+	'third_party/libvpx/source/libvpx/third_party/x86inc' \
+	'third_party/libxml' \
 	'third_party/libxml/chromium' \
+	'third_party/libxslt' \
 	'third_party/libwebm' \
+	'third_party/libwebp' \
 	'third_party/libyuv' \
 	'third_party/lss' \
 	'third_party/lzma_sdk' \
+	'third_party/markupsafe' \
 	'third_party/mesa' \
+	'third_party/metrics_proto' \
 	'third_party/modp_b64' \
 	'third_party/mt19937ar' \
 	'third_party/node' \
-	'third_party/node/node_modules/vulcanize/third_party/UglifyJS2' \
+	'third_party/node/node_modules/polymer-bundler/lib/third_party/UglifyJS2' \
+	'third_party/openh264' \
 	'third_party/openmax_dl' \
 	'third_party/opus' \
 	'third_party/ots' \
@@ -399,34 +415,49 @@ python2 build/linux/unbundle/remove_bundled_libraries.py \
 	'third_party/pdfium/third_party/bigint' \
 	'third_party/pdfium/third_party/build' \
 	'third_party/pdfium/third_party/freetype' \
-	'third_party/pdfium/third_party/lcms2-2.6' \
+	'third_party/pdfium/third_party/lcms' \
 	'third_party/pdfium/third_party/libopenjpeg20' \
-	'third_party/pdfium/third_party/libpng16' \
-	'third_party/pdfium/third_party/libtiff' \
+        'third_party/pdfium/third_party/libpng16' \
+        'third_party/pdfium/third_party/libtiff' \
+        'third_party/ply' \
 	'third_party/polymer' \
 	'third_party/protobuf' \
 	'third_party/protobuf/third_party/six' \
-	'third_party/ply' \
 	'third_party/qcms' \
 	'third_party/qunit' \
+	'third_party/re2' \
 	'third_party/sfntly' \
 	'third_party/sinonjs' \
 	'third_party/skia' \
+	'third_party/skia/third_party/gif' \
+	'third_party/skia/third_party/vulkan' \
 	'third_party/smhasher' \
+	'third_party/snappy' \
+	'third_party/speech-dispatcher' \
+	'third_party/spirv-headers' \
+	'third_party/spirv-tools-angle' \
 	'third_party/sqlite' \
+	'third_party/swiftshader' \
+	'third_party/swiftshader/third_party/subzero' \
+	'third_party/swiftshader/third_party/LLVM' \
+	'third_party/swiftshader/third_party/llvm-subzero' \
 	'third_party/tcmalloc' \
+        'third_party/usb_ids' \
 	'third_party/usrsctp' \
+	'third_party/vulkan' \
+	'third_party/vulkan-validation-layers' \
 	'third_party/web-animations-js' \
 	'third_party/webdriver' \
 	'third_party/webrtc' \
 	'third_party/widevine' \
-	'third_party/woff2' \
-	'third_party/libvpx/source/libvpx/third_party/x86inc' \
-	'buildtools/third_party/libc++' \
-        'buildtools/third_party/libc++abi' \
+        'third_party/woff2' \
+        'third_party/xdg-utils' \
+        'third_party/yasm' \
+        'third_party/zlib' \
+	'third_party/zlib/google' \
 	'url/third_party/mozilla' \
-	'v8/third_party/inspector_protocol' \
 	'v8/src/third_party/valgrind' \
+	'v8/third_party/inspector_protocol' \
 	--do-remove
 
 # Look, I don't know. This package is spit and chewing gum. Sorry.
@@ -480,9 +511,7 @@ myconf_gn+=" is_clang=false"
 
 myconf_gn+=" treat_warnings_as_errors=false"
 myconf_gn+=" use_system_libjpeg=true "
-%if %mdvver >= 201500
-#myconf_gn+=" use_system_harfbuzz=true "
-%endif
+myconf_gn+=" use_system_harfbuzz=true "
 myconf_gn+=" use_gnome_keyring=false "
 myconf_gn+=" fatal_linker_warnings=false "
 myconf_gn+=" system_libdir=\"%{_lib}\""
@@ -504,6 +533,9 @@ myconf_gn+=" ffmpeg_branding=\"ChromeOS\" "
 myconf_gn+=" enable_ac3_eac3_audio_demuxing=true "
 myconf_gn+=" enable_hevc_demuxing=true "
 myconf_gn+=" enable_mse_mpeg2ts_stream_parser=true "
+myconf_gn+=" enable_widevine=true"
+myconf_gn+=" use_kerberos=true"
+myconf_gn+=" use_pulseaudio=true link_pulseaudio=true"
 %ifarch i586
 myconf_gn+=" target_cpu=\"x86\""
 %endif
@@ -524,19 +556,20 @@ myconf_gn+=" google_default_client_secret=\"%{google_default_client_secret}\""
 
 # Set system libraries to be used
 gn_system_libraries="
-    flac
-    opus
-    libjpeg
-    libwebp
-    ffmpeg
-    libxslt
-    snappy
-    yasm
+ flac
+ libdrm
+ libjpeg
+ libpng
+ jsoncpp
+ libwebp
+ libxml
+ libxslt
+ openh264
+ re2
+ snappy
+ yasm
+ zlib
 "
-#    libpng
-# cb - chrome 58
-# libevent as system lib causes some hanging issues particularly with extensions
-
 %if %{with system_minizip}
 gn_system_libraries+=" zlib"
 %endif
@@ -554,7 +587,7 @@ gn_system_libraries+=" ffmpeg"
 %endif
 python2 build/linux/unbundle/replace_gn_files.py --system-libraries ${gn_system_libraries}
 
-python2 tools/gn/bootstrap/bootstrap.py -v --gn-gen-args "${myconf_gn}"
+python2 tools/gn/bootstrap/bootstrap.py -s --no-clean -v --gn-gen-args "${myconf_gn}"
 
 python2 third_party/libaddressinput/chromium/tools/update-strings.py
 

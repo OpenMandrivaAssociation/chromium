@@ -1,0 +1,11 @@
+diff -up chromium-64.0.3282.119/cc/paint/raw_memory_transfer_cache_entry.cc.memcpyfix chromium-64.0.3282.119/cc/paint/raw_memory_transfer_cache_entry.cc
+--- chromium-64.0.3282.119/cc/paint/raw_memory_transfer_cache_entry.cc.memcpyfix	2018-01-26 15:04:44.708100850 -0500
++++ chromium-64.0.3282.119/cc/paint/raw_memory_transfer_cache_entry.cc	2018-01-26 15:04:54.234915081 -0500
+@@ -3,6 +3,7 @@
+ // found in the LICENSE file.
+ 
+ #include "cc/paint/raw_memory_transfer_cache_entry.h"
++#include <memory.h>
+ 
+ namespace cc {
+ 
