@@ -165,6 +165,7 @@ Obsoletes: 	chromium-browser < 1:9.0.597.94
 BuildRequires: 	gperf
 BuildRequires: 	bison
 BuildRequires: 	re2c
+BuildRequires: 	pkgconfig(re2)
 BuildRequires: 	flex
 #BuildRequires: 	v8-devel
 BuildRequires: 	alsa-oss-devel
@@ -293,6 +294,7 @@ echo "%{revision}" > build/LASTCHANGE.in
 
 #sed -i 's!"-instcombine-lower-dbg-declare=0",!!g' build/config/compiler/BUILD.gn
 #sed -i 's!-no-canonical-prefixes!!g' build/config/compiler/BUILD.gn
+sed -i 's!-nostdlib++!!g'  build/config/posix/BUILD.gn
 
 # Hard code extra version
 FILE=chrome/common/channel_info_posix.cc
@@ -514,7 +516,7 @@ export CXX=g++
 # sure it sees python2 when it calls python
 export PATH=`pwd`:$PATH
 
-myconf_gn=" use_sysroot=false is_debug=false use_gold=true"
+myconf_gn=" use_sysroot=false is_debug=false use_gold=true use_lld=false"
 %ifarch %arm
 myconf_gn+=" is_clang=false"
 %else
@@ -615,9 +617,9 @@ NM=%{__nm}; export NM
 LD=%{__cxx}; export LD
 
 # filter out -g from CFLAGS and CXXFLAGS to fix builds
-CFLAGS=$(echo "$CFLAGS"|sed -e 's/-g //')
-CXXFLAGS=$(echo "$CXXFLAGS"|sed -e 's/-g //')
-CXXFLAGS="$CXXFLAGS -Wno-error=attributes -Wno-error=comment -Wno-error=unused-variable -Wno-error=noexcept-type -Wno-error=register -Wno-error=strict-overflow -Wno-error=deprecated-declarations"
+#CFLAGS=$(echo "$CFLAGS"|sed -e 's/-g //')
+#CXXFLAGS=$(echo "$CXXFLAGS"|sed -e 's/-g //')
+#CXXFLAGS="$CXXFLAGS -Wno-error=attributes -Wno-error=comment -Wno-error=unused-variable -Wno-error=noexcept-type -Wno-error=register -Wno-error=strict-overflow -Wno-error=deprecated-declarations"
 
 python2 build/linux/unbundle/replace_gn_files.py --system-libraries ${gn_system_libraries}
 
