@@ -158,6 +158,7 @@ Patch120:	chromium-59-clang-workaround.patch
 #Patch123:	chromium-61.0.3163.100-glibc-2.26.patch
 #Patch124:	chromium-61.0.3163.100-atk-compile.patch
 Patch125:	chromium-clang-r2.patch
+Patch126:	chromium-widevine-r1.patch
 
 Provides: 	%{crname}
 Obsoletes: 	chromium-browser-unstable < 26.0.1410.51
