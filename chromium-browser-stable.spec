@@ -25,6 +25,7 @@
 # crisb - ozone causes a segfault on startup as of 57.0.2987.133
 %bcond_with	ozone
 %bcond_without	system_icu
+%bcond_with	system_re2
 %bcond_without	system_ffmpeg
 # Temporarily broken, cr_z_* symbols used even when we're supposed to use system minizip
 %bcond_without	system_minizip
@@ -165,7 +166,9 @@ Obsoletes: 	chromium-browser < 1:9.0.597.94
 BuildRequires: 	gperf
 BuildRequires: 	bison
 BuildRequires: 	re2c
+%if %{with system_re2}
 BuildRequires: 	pkgconfig(re2)
+%endif
 BuildRequires: 	flex
 #BuildRequires: 	v8-devel
 BuildRequires: 	alsa-oss-devel
@@ -585,13 +588,15 @@ gn_system_libraries="
  libxml
  libxslt
  openh264
- re2
  snappy
  yasm
  zlib
 "
 %if %{with system_minizip}
 gn_system_libraries+=" zlib"
+%endif
+%if %{with system_re2}
+gn_system_libraries+=" re2"
 %endif
 %if %{with system_freetype}
 gn_system_libraries+=" freetype"
