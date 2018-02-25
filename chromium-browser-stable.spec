@@ -30,8 +30,9 @@
 %bcond_without	system_minizip
 # chromium 58 fails with system vpx 1.6.1
 %bcond_without	system_vpx
+# changed 13.43
 %bcond_with	system_harfbuzz
-%bcond_with	system_freetype
+%bcond_without	system_freetype
 
 # Always support proprietary codecs
 # or html5 does not work
@@ -155,6 +156,7 @@ Patch120:	chromium-59-clang-workaround.patch
 #Patch122:	chromium-61.0.3163.100-gn-bootstrap.patch
 #Patch123:	chromium-61.0.3163.100-glibc-2.26.patch
 #Patch124:	chromium-61.0.3163.100-atk-compile.patch
+Patch125:	chromium-clang-r2.patch
 
 Provides: 	%{crname}
 Obsoletes: 	chromium-browser-unstable < 26.0.1410.51
@@ -288,6 +290,9 @@ members of the Chromium and WebDriver teams.
 rm -rf third_party/binutils/
 
 echo "%{revision}" > build/LASTCHANGE.in
+
+#sed -i 's!"-instcombine-lower-dbg-declare=0",!!g' build/config/compiler/BUILD.gn
+#sed -i 's!-no-canonical-prefixes!!g' build/config/compiler/BUILD.gn
 
 # Hard code extra version
 FILE=chrome/common/channel_info_posix.cc
@@ -518,9 +523,9 @@ myconf_gn+=" is_clang=true clang_base_path=\"/usr\" clang_use_chrome_plugins=fal
 
 myconf_gn+=" treat_warnings_as_errors=false"
 myconf_gn+=" use_system_libjpeg=true "
-%if %{with system_harfbuzz}
+#% if %{with system_harfbuzz}
 myconf_gn+=" use_system_harfbuzz=true "
-%endif
+#% endif
 %if %{with system_freetype}
 myconf_gn+=" use_system_freetype=true "
 %endif
@@ -541,6 +546,7 @@ myconf_gn+=" use_ozone=true "
 %endif
 myconf_gn+=" enable_nacl=false "
 myconf_gn+=" proprietary_codecs=true "
+# myconf_gn+=" custom_toolchain=\"%{_sourcedir}:default\" "
 myconf_gn+=" ffmpeg_branding=\"ChromeOS\" "
 myconf_gn+=" enable_ac3_eac3_audio_demuxing=true "
 myconf_gn+=" enable_hevc_demuxing=true "
@@ -600,6 +606,18 @@ gn_system_libraries+=" libvpx"
 %if %{with system_ffmpeg}
 gn_system_libraries+=" ffmpeg"
 %endif
+
+%setup_compile_flags
+CC=%{__cc}; export CC
+CXX=%{__cxx}; export CXX
+AR=%{__ar}; export AR
+NM=%{__nm}; export NM
+LD=%{__cxx}; export LD
+
+# filter out -g from CFLAGS and CXXFLAGS to fix builds
+CFLAGS=$(echo "$CFLAGS"|sed -e 's/-g //')
+CXXFLAGS=$(echo "$CXXFLAGS"|sed -e 's/-g //')
+CXXFLAGS="$CXXFLAGS -Wno-error=attributes -Wno-error=comment -Wno-error=unused-variable -Wno-error=noexcept-type -Wno-error=register -Wno-error=strict-overflow -Wno-error=deprecated-declarations"
 
 python2 build/linux/unbundle/replace_gn_files.py --system-libraries ${gn_system_libraries}
 
