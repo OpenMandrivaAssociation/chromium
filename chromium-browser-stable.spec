@@ -655,7 +655,9 @@ cp -a out/Release/chromedriver %{buildroot}%{_libdir}/%{name}/chromedriver
 install -m 644 out/Release/locales/*.pak %{buildroot}%{_libdir}/%{name}/locales/
 install -m 644 out/Release/chrome_100_percent.pak %{buildroot}%{_libdir}/%{name}/
 install -m 644 out/Release/resources.pak %{buildroot}%{_libdir}/%{name}/
+%if !%{with system_icu}
 install -m 644 out/Release/icudtl.dat %{buildroot}%{_libdir}/%{name}/
+%endif
 install -m 644 out/Release/*.bin %{buildroot}%{_libdir}/%{name}/
 install -m 644 chrome/browser/resources/default_apps/* %{buildroot}%{_libdir}/%{name}/default_apps/
 ln -s %{_libdir}/%{name}/chromium-wrapper %{buildroot}%{_bindir}/%{name}
