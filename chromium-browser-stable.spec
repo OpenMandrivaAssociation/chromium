@@ -694,14 +694,16 @@ find %{buildroot} -name "*.nexe" -exec strip {} \;
 %{_libdir}/%{name}/chromium-wrapper
 %{_libdir}/%{name}/chrome
 %{_libdir}/%{name}/chrome-sandbox
+%if !%{with system_icu}
 %{_libdir}/%{name}/icudtl.dat
+%endif
 %{_libdir}/%{name}/locales
 %{_libdir}/%{name}/chrome_100_percent.pak
 %{_libdir}/%{name}/resources.pak
 %{_libdir}/%{name}/resources
 %{_libdir}/%{name}/themes
 %{_libdir}/%{name}/default_apps
-%{_mandir}/man1/%{name}*
+#% {_mandir}/man1/%{name}*
 %{_datadir}/applications/*.desktop
 %{_datadir}/icons/hicolor/*/apps/%{name}.png
 
