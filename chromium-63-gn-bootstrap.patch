@@ -1,0 +1,26 @@
+--- chromium-63.0.3230.0/tools/gn/bootstrap/bootstrap.py.0122~	2017-10-03 21:07:18.000000000 +0200
++++ chromium-63.0.3230.0/tools/gn/bootstrap/bootstrap.py	2017-10-09 23:02:18.018240648 +0200
+@@ -536,7 +535,6 @@ def write_gn_ninja(path, root_gen_dir, o
+       'base/threading/thread_local_storage.cc',
+       'base/threading/thread_restrictions.cc',
+       'base/threading/thread_task_runner_handle.cc',
+-      'base/threading/worker_pool.cc',
+       'base/time/clock.cc',
+       'base/time/default_clock.cc',
+       'base/time/default_tick_clock.cc',
+@@ -546,7 +544,6 @@ def write_gn_ninja(path, root_gen_dir, o
+       'base/timer/timer.cc',
+       'base/trace_event/category_registry.cc',
+       'base/trace_event/event_name_filter.cc',
+-      'base/trace_event/freed_object_tracker.cc',
+       'base/trace_event/heap_profiler_allocation_context.cc',
+       'base/trace_event/heap_profiler_allocation_context_tracker.cc',
+       'base/trace_event/heap_profiler_allocation_register.cc',
+@@ -611,7 +608,6 @@ def write_gn_ninja(path, root_gen_dir, o
+         'base/threading/platform_thread_internal_posix.cc',
+         'base/threading/platform_thread_posix.cc',
+         'base/threading/thread_local_storage_posix.cc',
+-        'base/threading/worker_pool_posix.cc',
+         'base/time/time_conversion_posix.cc',
+         'base/trace_event/heap_profiler_allocation_register_posix.cc',
+     ])

@@ -1,34 +1,36 @@
---- chromium-64.0.3282.119/media/base/mime_util_internal.cc.0112~	2018-01-27 13:13:56.050972071 +0100
-+++ chromium-64.0.3282.119/media/base/mime_util_internal.cc	2018-01-27 13:15:39.210010833 +0100
-@@ -76,6 +76,11 @@ const base::flat_map<std::string, MimeUt
-         {"vp8.0", MimeUtil::VP8}, {"theora", MimeUtil::THEORA},
- 	{"dts", MimeUtil::DTS}, {"mp2", MimeUtil::MP2},
- 	{"mp4v.20.8", MimeUtil::MPEG4_SP}, {"mp4v.20.240", MimeUtil::MPEG4_ASP},
+--- chromium-65.0.3294.5/media/base/mime_util_internal.cc.0112~	2017-12-16 05:27:08.293304909 +0100
++++ chromium-65.0.3294.5/media/base/mime_util_internal.cc	2017-12-16 05:31:48.297726447 +0100
+@@ -80,7 +80,12 @@ const base::flat_map<std::string, MimeUt
+         {"av1", MimeUtil::AV1},
+ #endif
+         {"dts", MimeUtil::DTS}, {"mp2", MimeUtil::MP2},
+-	{"mp4v.20.8", MimeUtil::MPEG4_SP}, {"mp4v.20.240", MimeUtil::MPEG4_ASP}
++	{"mp4v.20.8", MimeUtil::MPEG4_SP}, {"mp4v.20.240", MimeUtil::MPEG4_ASP},
 +	{"msmpeg4v1", MimeUtil::MSMPEG4v1}, {"msmpeg4v2", MimeUtil::MSMPEG4v2},
 +	{"msmpeg4v3", MimeUtil::MSMPEG4v3}, {"wmv7", MimeUtil::WMV7},
 +	{"wmv8", MimeUtil::WMV8}, {"wmv9", MimeUtil::WMV9},
 +	{"vc-1", MimeUtil::VC1}, {"wma", MimeUtil::WMA},
-+	{"vp6", MimeUtil::VP6}, {"mpeg1", MimeUtil::MPEG1},
- // TODO(dalecurtis): This is not the correct final string. Fix before enabling
- // by default. http://crbug.com/784607
- #if BUILDFLAG(ENABLE_AV1_DECODER)
-@@ -313,6 +318,9 @@ void MimeUtil::AddSupportedMediaFormats(
-   const CodecSet mp3_codecs{MP3};
-   const CodecSet aac{MPEG2_AAC, MPEG4_AAC};
++	{"vp6", MimeUtil::VP6}, {"mpeg1", MimeUtil::MPEG1}
+       },
+       base::KEEP_FIRST_OF_DUPES);
+ 
+@@ -309,6 +314,9 @@ void MimeUtil::AddSupportedMediaFormats(
+   CodecSet webm_codecs(webm_audio_codecs);
+   webm_codecs.insert(webm_video_codecs.begin(), webm_video_codecs.end());
  
 +  CodecSet mp1_codecs;
-+  mp1_codecs.emplace(MPEG1);
++  mp1_codecs.insert(MPEG1);
 +
-   CodecSet avc_and_aac(aac);
-   avc_and_aac.emplace(H264);
+   const CodecSet mp3_codecs{MP3};
  
-@@ -346,6 +354,29 @@ void MimeUtil::AddSupportedMediaFormats(
+   CodecSet mp4_audio_codecs;
+@@ -351,6 +359,29 @@ void MimeUtil::AddSupportedMediaFormats(
+   CodecSet mp4_codecs(mp4_audio_codecs);
    mp4_codecs.insert(mp4_video_codecs.begin(), mp4_video_codecs.end());
- #endif  // BUILDFLAG(USE_PROPRIETARY_CODECS)
  
 +  CodecSet wma_codecs;
 +  wma_codecs.insert(WMA);
-+  
++
 +  CodecSet wmv_codecs(wma_codecs);
 +  wmv_codecs.insert(MSMPEG4v1);
 +  wmv_codecs.insert(MSMPEG4v2);
@@ -39,11 +41,11 @@
 +  wmv_codecs.insert(WMV8);
 +  wmv_codecs.insert(WMV9);
 +  wmv_codecs.insert(VC1);
-+  
++
 +  matroska_codecs.insert(MSMPEG4v1);
 +  matroska_codecs.insert(MSMPEG4v2);
 +  matroska_codecs.insert(MSMPEG4v3);
-+  
++
 +  CodecSet flv_codecs;
 +  flv_codecs.insert(VP6);
 +  flv_codecs.insert(mp4_codecs.begin(), mp4_codecs.end());
@@ -52,19 +54,19 @@
    const CodecSet implicit_codec;
    AddContainerWithCodecs("audio/wav", wav_codecs, false);
    AddContainerWithCodecs("audio/x-wav", wav_codecs, false);
-@@ -363,6 +394,11 @@ void MimeUtil::AddSupportedMediaFormats(
+@@ -374,6 +405,11 @@ void MimeUtil::AddSupportedMediaFormats(
  
    AddContainerWithCodecs("audio/x-matroska", matroska_audio_codecs, false);
-   AddContainerWithCodecs("video/x-matroska", matroska_codecs, false);
+   AddContainerWithCodecs("video/x-matroska", matroska_video_codecs, false);
 +  AddContainerWithCodecs("video/x-ms-wmv", wmv_codecs, true);
-+  AddContainerWithCodecs("audio/x-ms-wma", wma_codecs, true);
++  AddContainerWithCodecs("video/x-ms-wma", wma_codecs, true);
 +  AddContainerWithCodecs("video/x-ms-asf", wmv_codecs, true);
 +  AddContainerWithCodecs("video/x-flv", flv_codecs, true);
 +  AddContainerWithCodecs("video/mpeg", mp1_codecs, true);
  
  #if BUILDFLAG(USE_PROPRIETARY_CODECS)
-   AddContainerWithCodecs("audio/mpeg", mp3_codecs, true);  // Allow "mp3".
-@@ -1015,6 +1051,15 @@ bool MimeUtil::IsCodecProprietary(Codec
+   AddContainerWithCodecs("audio/aac", implicit_codec, true);  // AAC / ADTS.
+@@ -1032,6 +1068,15 @@ bool MimeUtil::IsCodecProprietary(Codec
      case DTS:
      case MPEG4_SP:
      case MPEG4_ASP:
@@ -79,21 +81,22 @@
 +    case VP6:
        return true;
  
-     case PCM:
-@@ -1026,6 +1071,7 @@ bool MimeUtil::IsCodecProprietary(Codec
+     case MP3:
+@@ -1043,6 +1088,7 @@ bool MimeUtil::IsCodecProprietary(Codec
+     case VP8:
      case VP9:
      case THEORA:
-     case AV1:
 +    case MPEG1:
+     case AV1:
        return false;
    }
- 
---- chromium-64.0.3282.119/media/base/mime_util_internal.h.0112~	2018-01-27 13:13:56.053972072 +0100
-+++ chromium-64.0.3282.119/media/base/mime_util_internal.h	2018-01-27 13:16:06.481021210 +0100
-@@ -48,6 +48,16 @@ class MEDIA_EXPORT MimeUtil {
+--- chromium-65.0.3294.5/media/base/mime_util_internal.h.0112~	2017-12-16 05:27:08.293304909 +0100
++++ chromium-65.0.3294.5/media/base/mime_util_internal.h	2017-12-16 05:27:08.295304921 +0100
+@@ -49,7 +49,17 @@ class MEDIA_EXPORT MimeUtil {
      MP2,
      MPEG4_SP,
      MPEG4_ASP,
+-    LAST_CODEC = MPEG4_ASP
 +    MSMPEG4v1,
 +    MSMPEG4v2,
 +    MSMPEG4v3,
@@ -104,12 +107,24 @@
 +    WMA,
 +    VP6,
 +    MPEG1,
-     AV1,
-     LAST_CODEC = AV1
++    LAST_CODEC = MPEG1
    };
---- chromium-64.0.3282.119/net/base/mime_util.cc.0112~	2018-01-27 13:13:56.051972072 +0100
-+++ chromium-64.0.3282.119/net/base/mime_util.cc	2018-01-27 13:13:56.054972073 +0100
-@@ -513,6 +513,7 @@ static const char* const kStandardVideoT
+ 
+   // Platform configuration structure.  Controls which codecs are supported at
+--- chromium-65.0.3294.5/net/base/mime_util.cc.0112~	2017-12-16 05:27:08.294304915 +0100
++++ chromium-65.0.3294.5/net/base/mime_util.cc	2017-12-16 05:27:08.295304921 +0100
+@@ -101,6 +101,10 @@ static const MimeInfo kPrimaryMappings[]
+     {"video/x-matroska", "mkv"},
+     {"audio/x-matroska", "mkv"},
+     {"video/x-msvideo", "avi"},
++    {"video/x-ms-wmv", "wmv"},
++    {"audio/x-ms-wma", "wma"},
++    {"video/x-flv", "flv"},
++    {"video/mpeg", "mpg,mpeg"}
+ };
+ 
+ static const MimeInfo kSecondaryMappings[] = {
+@@ -513,6 +517,7 @@ static const char* const kStandardVideoT
    "video/sd-video",
    "video/webm",
    "video/x-dv",

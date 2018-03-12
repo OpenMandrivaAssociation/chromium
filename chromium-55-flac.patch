@@ -1,5 +1,5 @@
---- chromium-62.0.3202.89/media/base/mime_util_internal.cc.0114~	2017-11-12 16:14:03.270153746 +0100
-+++ chromium-62.0.3202.89/media/base/mime_util_internal.cc	2017-11-12 16:14:03.271153750 +0100
+--- chromium-63.0.3230.0/media/base/mime_util_internal.cc.0114~	2017-10-09 20:07:12.902664570 +0200
++++ chromium-63.0.3230.0/media/base/mime_util_internal.cc	2017-10-09 21:02:36.858649113 +0200
 @@ -282,6 +282,7 @@ void MimeUtil::AddSupportedMediaFormats(
    matroska_audio_codecs.insert(MPEG2_AAC);
    matroska_audio_codecs.insert(MPEG4_AAC);
@@ -8,3 +8,11 @@
    
    CodecSet matroska_video_codecs;
    matroska_video_codecs.insert(THEORA);
+@@ -358,6 +359,7 @@ void MimeUtil::AddSupportedMediaFormats(
+   flv_codecs.insert(VP6);
+   flv_codecs.insert(mp4_codecs.begin(), mp4_codecs.end());
+   flv_codecs.insert(MP3);
++  flv_codecs.insert(FLAC);
+ 
+   const CodecSet implicit_codec;
+   AddContainerWithCodecs("audio/wav", wav_codecs, false);

@@ -1,5 +1,5 @@
---- chromium-59.0.3071.115/third_party/angle/src/compiler/preprocessor/ExpressionParser.cpp.omv~	2017-07-01 21:46:30.989210490 +0200
-+++ chromium-59.0.3071.115/third_party/angle/src/compiler/preprocessor/ExpressionParser.cpp	2017-07-01 21:46:42.230975404 +0200
+--- chromium-65.0.3298.3/third_party/angle/src/compiler/preprocessor/ExpressionParser.cpp.0120~	2017-12-19 21:07:32.000000000 +0100
++++ chromium-65.0.3298.3/third_party/angle/src/compiler/preprocessor/ExpressionParser.cpp	2017-12-19 23:44:51.796064532 +0100
 @@ -291,7 +291,7 @@ typedef short int yytype_int16;
  # define YYUSE(E) /* empty */
  #endif
@@ -9,9 +9,9 @@
  /* Suppress an incorrect diagnostic about yylval being uninitialized.  */
  # define YY_IGNORE_MAYBE_UNINITIALIZED_BEGIN \
      _Pragma ("GCC diagnostic push") \
---- chromium-59.0.3071.115/third_party/angle/src/compiler/translator/glslang_tab.cpp.omv~	2017-07-01 21:53:22.099417864 +0200
-+++ chromium-59.0.3071.115/third_party/angle/src/compiler/translator/glslang_tab.cpp	2017-07-01 21:53:47.681860618 +0200
-@@ -518,7 +518,7 @@ typedef short int yytype_int16;
+--- chromium-65.0.3298.3/third_party/angle/src/compiler/translator/glslang_tab.cpp.0120~	2017-12-19 21:07:32.000000000 +0100
++++ chromium-65.0.3298.3/third_party/angle/src/compiler/translator/glslang_tab.cpp	2017-12-19 23:44:51.797064539 +0100
+@@ -520,7 +520,7 @@ typedef short int yytype_int16;
  # define YYUSE(E) /* empty */
  #endif
  
@@ -20,9 +20,20 @@
  /* Suppress an incorrect diagnostic about yylval being uninitialized.  */
  # define YY_IGNORE_MAYBE_UNINITIALIZED_BEGIN \
      _Pragma ("GCC diagnostic push") \
---- chromium-59.0.3071.115/third_party/libdrm/src/xf86drm.c.omv~	2017-07-01 22:01:20.150894944 +0200
-+++ chromium-59.0.3071.115/third_party/libdrm/src/xf86drm.c	2017-07-01 22:01:34.616573845 +0200
-@@ -2715,8 +2715,8 @@ int drmGetNodeTypeFromFd(int fd)
+--- chromium-65.0.3298.3/third_party/glslang-angle/src/glslang/MachineIndependent/glslang_tab.cpp.0120~	2017-12-19 23:44:51.799064554 +0100
++++ chromium-65.0.3298.3/third_party/glslang-angle/src/glslang/MachineIndependent/glslang_tab.cpp	2017-12-19 23:45:55.328507114 +0100
+@@ -560,7 +560,7 @@ typedef short int yytype_int16;
+ # define YYUSE(E) /* empty */
+ #endif
+ 
+-#if defined __GNUC__ && 407 <= __GNUC__ * 100 + __GNUC_MINOR__
++#if !defined(__clang__) && defined __GNUC__ && 407 <= __GNUC__ * 100 + __GNUC_MINOR__
+ /* Suppress an incorrect diagnostic about yylval being uninitialized.  */
+ # define YY_IGNORE_MAYBE_UNINITIALIZED_BEGIN \
+     _Pragma ("GCC diagnostic push") \
+--- chromium-65.0.3298.3/third_party/libdrm/src/xf86drm.c.0120~	2017-12-19 21:07:33.000000000 +0100
++++ chromium-65.0.3298.3/third_party/libdrm/src/xf86drm.c	2017-12-19 23:44:51.797064539 +0100
+@@ -2735,8 +2735,8 @@ int drmGetNodeTypeFromFd(int fd)
      if (fstat(fd, &sbuf))
          return -1;
  
@@ -33,7 +44,7 @@
  
      if (maj != DRM_MAJOR || !S_ISCHR(sbuf.st_mode)) {
          errno = EINVAL;
-@@ -2781,8 +2781,8 @@ static char *drmGetMinorNameForFD(int fd
+@@ -2801,8 +2801,8 @@ static char *drmGetMinorNameForFD(int fd
      if (fstat(fd, &sbuf))
          return NULL;
  
@@ -44,7 +55,7 @@
  
      if (maj != DRM_MAJOR || !S_ISCHR(sbuf.st_mode))
          return NULL;
-@@ -3103,8 +3103,8 @@ int drmGetDevice(int fd, drmDevicePtr *d
+@@ -3787,8 +3787,8 @@ int drmGetDevice2(int fd, uint32_t flags
          return -errno;
  
      find_rdev = sbuf.st_rdev;
@@ -55,7 +66,7 @@
  
      if (maj != DRM_MAJOR || !S_ISCHR(sbuf.st_mode))
          return -EINVAL;
-@@ -3131,8 +3131,8 @@ int drmGetDevice(int fd, drmDevicePtr *d
+@@ -3815,8 +3815,8 @@ int drmGetDevice2(int fd, uint32_t flags
          if (stat(node, &sbuf))
              continue;
  
@@ -66,7 +77,7 @@
  
          if (maj != DRM_MAJOR || !S_ISCHR(sbuf.st_mode))
              continue;
-@@ -3239,8 +3239,8 @@ int drmGetDevices(drmDevicePtr devices[]
+@@ -3965,8 +3965,8 @@ int drmGetDevices2(uint32_t flags, drmDe
          if (stat(node, &sbuf))
              continue;
  
@@ -77,19 +88,8 @@
  
          if (maj != DRM_MAJOR || !S_ISCHR(sbuf.st_mode))
              continue;
---- chromium-59.0.3071.86/third_party/swiftshader/src/OpenGL/compiler/preprocessor/ExpressionParser.cpp.omv~	2017-07-02 20:01:02.653570649 +0200
-+++ chromium-59.0.3071.86/third_party/swiftshader/src/OpenGL/compiler/preprocessor/ExpressionParser.cpp	2017-07-02 20:01:13.569315140 +0200
-@@ -277,7 +277,7 @@ typedef short int yytype_int16;
- # define YYUSE(E) /* empty */
- #endif
- 
--#if defined __GNUC__ && 407 <= __GNUC__ * 100 + __GNUC_MINOR__
-+#if !defined(__clang__) && defined __GNUC__ && 407 <= __GNUC__ * 100 + __GNUC_MINOR__
- /* Suppress an incorrect diagnostic about yylval being uninitialized.  */
- # define YY_IGNORE_MAYBE_UNINITIALIZED_BEGIN \
-     _Pragma ("GCC diagnostic push") \
---- chromium-59.0.3071.86/third_party/swiftshader/src/OpenGL/compiler/glslang_tab.cpp.omv~	2017-07-02 20:14:24.123790626 +0200
-+++ chromium-59.0.3071.86/third_party/swiftshader/src/OpenGL/compiler/glslang_tab.cpp	2017-07-02 20:14:33.447572010 +0200
+--- chromium-65.0.3298.3/third_party/swiftshader/src/OpenGL/compiler/glslang_tab.cpp.0120~	2017-12-19 21:07:35.000000000 +0100
++++ chromium-65.0.3298.3/third_party/swiftshader/src/OpenGL/compiler/glslang_tab.cpp	2017-12-19 23:44:51.798064546 +0100
 @@ -483,7 +483,7 @@ typedef short int yytype_int16;
  # define YYUSE(E) /* empty */
  #endif
@@ -99,14 +99,14 @@
  /* Suppress an incorrect diagnostic about yylval being uninitialized.  */
  # define YY_IGNORE_MAYBE_UNINITIALIZED_BEGIN \
      _Pragma ("GCC diagnostic push") \
---- chromium-60.0.3112.78/third_party/glslang-angle/src/glslang/MachineIndependent/glslang_tab.cpp.omv~	2017-07-31 11:28:31.561956138 +0200
-+++ chromium-60.0.3112.78/third_party/glslang-angle/src/glslang/MachineIndependent/glslang_tab.cpp	2017-07-31 11:28:56.237307377 +0200
-@@ -3319,7 +3319,7 @@ yyparse (pParseContext)
- int yychar;
- 
+--- chromium-65.0.3298.3/third_party/swiftshader/src/OpenGL/compiler/preprocessor/ExpressionParser.cpp.0120~	2017-12-19 21:07:35.000000000 +0100
++++ chromium-65.0.3298.3/third_party/swiftshader/src/OpenGL/compiler/preprocessor/ExpressionParser.cpp	2017-12-19 23:44:51.798064546 +0100
+@@ -277,7 +277,7 @@ typedef short int yytype_int16;
+ # define YYUSE(E) /* empty */
+ #endif
  
 -#if defined __GNUC__ && 407 <= __GNUC__ * 100 + __GNUC_MINOR__
-+#if defined __GNUC__ && 407 <= __GNUC__ * 100 + __GNUC_MINOR__ && !defined __clang__
++#if !defined(__clang__) && defined __GNUC__ && 407 <= __GNUC__ * 100 + __GNUC_MINOR__
  /* Suppress an incorrect diagnostic about yylval being uninitialized.  */
  # define YY_IGNORE_MAYBE_UNINITIALIZED_BEGIN \
      _Pragma ("GCC diagnostic push") \

@@ -1,3 +1,10 @@
+%define channel stable
+%if "%{channel}" == "stable"
+%define namesuffix %{nil}
+%else
+%define namesuffix -%{channel}
+%endif
+
 # eol 'fix' corrupts some .bin files
 %define dont_fix_eol 1
 
@@ -39,10 +46,10 @@
 %define distsuffix plf
 %endif
 
-Name: 		chromium-browser-stable
+Name: 		chromium-browser-%{channel}
 # Working version numbers can be found at
 # http://omahaproxy.appspot.com/
-Version: 	64.0.3282.140
+Version: 	65.0.3325.146
 Release: 	1%{?extrarelsuffix}
 Summary: 	A fast webkit-based web browser
 Group: 		Networking/WWW
@@ -50,8 +57,9 @@ License: 	BSD, LGPL
 # From : http://gsdview.appspot.com/chromium-browser-official/
 Source0: 	https://commondatastorage.googleapis.com/chromium-browser-official/chromium-%{version}.tar.xz
 Source1: 	chromium-wrapper
-Source2: 	chromium-browser.desktop
+Source2: 	chromium-browser%{namesuffix}.desktop
 Source3:	master_preferences
+Source100:	%{name}.rpmlintrc
 
 %if %mdvver >= 201500
 # Don't use clang's integrated as while trying to check the version of gas
@@ -61,14 +69,15 @@ Source3:	master_preferences
 #Patch20:	chromium-last-commit-position-r0.patch
 
 ### Chromium Fedora Patches ###
+Patch0:         chromium-56.0.2924.87-gcc5.patch
 Patch1:         chromium-45.0.2454.101-linux-path-max.patch
 Patch2:         chromium-55.0.2883.75-addrfix.patch
 Patch4:         chromium-46.0.2490.71-notest.patch
 # Ignore broken nacl open fd counter
 Patch7:         chromium-47.0.2526.80-nacl-ignore-broken-fd-counter.patch
+Patch8:		chromium-65-buildfix.patch
 # Use libusb_interrupt_event_handler from current libusbx (1.0.21-0.1.git448584a)
 Patch9:         chromium-48.0.2564.116-libusb_interrupt_event_handler.patch
-Patch10:	chromium-64-system-curl.patch
 # Ignore deprecations in cups 2.2
 # https://bugs.chromium.org/p/chromium/issues/detail?id=622493
 Patch12:        chromium-55.0.2883.75-cups22.patch
@@ -97,6 +106,7 @@ Patch26:        http://pkgs.fedoraproject.org/cgit/rpms/chromium.git/plain/chrom
 # Use -fpermissive to build WebKit
 Patch31:        chromium-56.0.2924.87-fpermissive.patch
 
+### Chromium Tests Patches ###
 # suse, system libs
 Patch103:	arm_use_right_compiler.patch
 #Patch104:	https://gitweb.gentoo.org/repo/gentoo.git/plain/www-client/chromium/files/chromium-system-ffmpeg-r6.patch
@@ -109,6 +119,10 @@ Patch114:	chromium-55-flac.patch
 
 # omv
 Patch120:	chromium-59-clang-workaround.patch
+#Patch122:	chromium-63-gn-bootstrap.patch
+#Patch124:	chromium-61.0.3163.100-atk-compile.patch
+Patch125:	chromium-64-system-curl.patch
+Patch126:	chromium-65-ffmpeg-3.5.patch
 
 Provides: 	%{crname}
 Obsoletes: 	chromium-browser-unstable < 26.0.1410.51
@@ -141,6 +155,8 @@ BuildRequires: 	pkgconfig(nss)
 BuildRequires: 	bzip2-devel
 BuildRequires: 	jpeg-devel
 BuildRequires: 	pkgconfig(libpng)
+BuildRequires:	pkgconfig(libcurl)
+BuildRequires:	clang lld
 %if %{with system_ffmpeg}
 BuildRequires:  pkgconfig(libavcodec)
 BuildRequires:  pkgconfig(libavfilter)
@@ -175,6 +191,7 @@ BuildRequires: 	pkgconfig(flac)
 BuildRequires: 	pkgconfig(opus)
 BuildRequires: 	pkgconfig(libwebp)
 BuildRequires: 	pkgconfig(speex)
+BuildRequires:	pkgconfig(lcms2)
 %if %{with system_minizip}
 BuildRequires: 	pkgconfig(minizip)
 %endif
@@ -206,6 +223,7 @@ browser which is updated with features and fixes once they have been
 thoroughly tested. If you want the latest features, install the
 chromium-browser-dev package instead.
 
+%if "%{channel}" == "stable"
 %package -n chromium-browser
 Summary: 	A fast webkit-based web browser (transition package)
 Epoch: 		1
@@ -219,14 +237,15 @@ technology to make the web faster, safer, and easier.
 This is a transition package that installs the stable channel Chromium
 browser. If you prefer the dev channel browser, install the
 chromium-browser-dev package instead.
+%endif
 
-%package -n chromedriver
+%package -n chromedriver%{namesuffix}
 Summary:	WebDriver for Google Chrome/Chromium
 Group:		Development/Other
 Requires:	%{name} = %{version}-%{release}
 
 
-%description -n chromedriver
+%description -n chromedriver%{namesuffix}
 WebDriver is an open source tool for automated testing of webapps across many
 browsers. It provides capabilities for navigating to web pages, user input,
 JavaScript execution, and more. ChromeDriver is a standalone server which
@@ -258,16 +277,18 @@ ln -s /usr/bin/node third_party/node/linux/node-linux-x64/bin/
 # Remove bundled libs
 python2 build/linux/unbundle/remove_bundled_libraries.py \
 	'third_party/ffmpeg' \
+	'third_party/fontconfig' \
 	'third_party/adobe' \
+	'third_party/angle' \
+	'third_party/angle/src/common/third_party/smhasher' \
 	'third_party/blink' \
-	'third_party/blink/tools' \
-	'third_party/blink/tools/blinkpy' \
-	'third_party/blink/tools/blinkpy/common' \
 	'third_party/breakpad' \
+	'third_party/crc32c' \
 	'third_party/flac' \
 	'third_party/glslang-angle' \
 	'third_party/harfbuzz-ng' \
 	'third_party/icu' \
+	'third_party/libaom' \
 	'base/third_party/libevent' \
 	'third_party/libdrm' \
 	'third_party/libjpeg_turbo' \
@@ -276,8 +297,13 @@ python2 build/linux/unbundle/remove_bundled_libraries.py \
 	'third_party/libwebp' \
 	'third_party/libxml' \
 	'third_party/libxslt' \
+	'third_party/llvm-build' \
+	'third_party/metrics_proto' \
 	'third_party/openh264' \
 	'third_party/re2' \
+	'third_party/s2cellid' \
+	'third_party/skia' \
+	'third_party/skia/third_party/gif' \
 	'third_party/snappy' \
 	'third_party/speech-dispatcher' \
 	'third_party/spirv-tools-angle' \
@@ -311,7 +337,6 @@ python2 build/linux/unbundle/remove_bundled_libraries.py \
 	'third_party/analytics' \
 	'third_party/angle' \
 	'third_party/angle/src/common/third_party/base' \
-	'third_party/angle/src/common/third_party/smhasher' \
 	'third_party/angle/src/third_party/compiler' \
 	'third_party/angle/src/third_party/libXNVCtrl' \
 	'third_party/angle/src/third_party/trace_event' \
@@ -321,6 +346,8 @@ python2 build/linux/unbundle/remove_bundled_libraries.py \
 	'third_party/brotli' \
 	'third_party/cacheinvalidation' \
 	'third_party/catapult' \
+	'third_party/catapult/common/py_vulcanize/third_party/rcssmin' \
+	'third_party/catapult/common/py_vulcanize/third_party/rjsmin' \
 	'third_party/catapult/tracing/third_party/d3' \
 	'third_party/catapult/tracing/third_party/gl-matrix' \
 	'third_party/catapult/tracing/third_party/jszip' \
@@ -328,12 +355,8 @@ python2 build/linux/unbundle/remove_bundled_libraries.py \
 	'third_party/catapult/tracing/third_party/oboe' \
 	'third_party/catapult/tracing/third_party/pako' \
 	'third_party/catapult/third_party/polymer' \
-	'third_party/catapult/common/py_vulcanize' \
-	'third_party/catapult/common/py_vulcanize/third_party/rcssmin' \
-	'third_party/catapult/common/py_vulcanize/third_party/rjsmin' \
 	'third_party/ced' \
 	'third_party/cld_3' \
-	'third_party/crc32c' \
 	'third_party/cros_system_api' \
 	'third_party/devscripts' \
 	'third_party/dom_distiller_js' \
@@ -364,6 +387,7 @@ python2 build/linux/unbundle/remove_bundled_libraries.py \
 	'third_party/libaddressinput' \
 	'third_party/libjingle' \
 	'third_party/libphonenumber' \
+	'third_party/libphonenumber/dist/cpp/src/phonenumbers/base/synchronization' \
 	'third_party/libsecret' \
 	'third_party/libsrtp' \
 	'third_party/libudev' \
@@ -375,7 +399,6 @@ python2 build/linux/unbundle/remove_bundled_libraries.py \
 	'third_party/lss' \
 	'third_party/lzma_sdk' \
 	'third_party/mesa' \
-	'third_party/metrics_proto' \
 	'third_party/modp_b64' \
 	'third_party/mt19937ar' \
 	'third_party/node' \
@@ -388,11 +411,8 @@ python2 build/linux/unbundle/remove_bundled_libraries.py \
 	'third_party/pdfium/third_party/base' \
 	'third_party/pdfium/third_party/bigint' \
 	'third_party/pdfium/third_party/build' \
-	'third_party/pdfium/third_party/freetype' \
-	'third_party/pdfium/third_party/lcms' \
 	'third_party/pdfium/third_party/libopenjpeg20' \
-	'third_party/pdfium/third_party/libpng16' \
-	'third_party/pdfium/third_party/libtiff' \
+	'third_party/pdfium/third_party/freetype' \
 	'third_party/polymer' \
 	'third_party/protobuf' \
 	'third_party/protobuf/third_party/six' \
@@ -402,7 +422,6 @@ python2 build/linux/unbundle/remove_bundled_libraries.py \
 	'third_party/sfntly' \
 	'third_party/sinonjs' \
 	'third_party/skia' \
-	'third_party/skia/third_party/gif' \
 	'third_party/smhasher' \
 	'third_party/sqlite' \
 	'third_party/tcmalloc' \
@@ -417,6 +436,7 @@ python2 build/linux/unbundle/remove_bundled_libraries.py \
 	'url/third_party/mozilla' \
 	'v8/third_party/inspector_protocol' \
 	'v8/src/third_party/valgrind' \
+	'v8/src/third_party/utf8-decoder' \
 	--do-remove
 
 # Look, I don't know. This package is spit and chewing gum. Sorry.
@@ -440,45 +460,29 @@ export PATH=$PWD/bfd:$PATH
 %global ldflags %{ldflags} -fuse-ld=bfd -Wl,--no-keep-memory -Wl,--reduce-memory-overheads
 %endif
 
-%if %mdvver >= 201500
-%ifarch %arm
-export CC=gcc
-export CXX=g++
-%else
 export CC=clang
 export CXX=clang++
-%endif
-%else
-export CC=gcc
-export CXX=g++
-%endif
 
 # gn is rather convoluted and not python3 friendly -- let's make
 # sure it sees python2 when it calls python
 export PATH=`pwd`:$PATH
 
 myconf_gn=" use_sysroot=false is_debug=false use_gold=true"
-%if %mdvver >= 201500
-%ifarch %arm
-myconf_gn+=" is_clang=false"
-%else
-myconf_gn+=" is_clang=true clang_base_path=\"/usr\" clang_use_chrome_plugins=false"
-%endif
-%else
-myconf_gn+=" is_clang=false"
-%endif
+myconf_gn+=" is_clang=true clang_base_path=\"%{_prefix}\" clang_use_chrome_plugins=false is_component_build=true "
 
 myconf_gn+=" treat_warnings_as_errors=false"
 myconf_gn+=" use_system_libjpeg=true "
+myconf_gn+=" use_system_lcms2=true "
+myconf_gn+=" use_system_libpng=true "
 %if %mdvver >= 201500
-myconf_gn+=" use_system_harfbuzz=true "
+#myconf_gn+=" use_system_harfbuzz=true "
 %endif
 myconf_gn+=" use_gnome_keyring=false "
 myconf_gn+=" fatal_linker_warnings=false "
 myconf_gn+=" system_libdir=\"%{_lib}\""
 myconf_gn+=" use_allocator=\"none\""
 myconf_gn+=" use_aura=true "
-myconf_gn+=" use_gconf=false"
+myconf_gn+=" use_gio=false"
 myconf_gn+=" icu_use_data_file=true"
 %if %{with gtk3}
 myconf_gn+=" use_gtk3=true "
@@ -566,7 +570,6 @@ install -m 755 %{SOURCE1} %{buildroot}%{_libdir}/%{name}/
 install -m 755 out/Release/chrome %{buildroot}%{_libdir}/%{name}/
 install -m 4755 out/Release/chrome_sandbox %{buildroot}%{_libdir}/%{name}/chrome-sandbox
 cp -a out/Release/chromedriver %{buildroot}%{_libdir}/%{name}/chromedriver
-install -m 644 out/Release/chrome.1 %{buildroot}%{_mandir}/man1/%{name}.1 || :
 install -m 644 out/Release/locales/*.pak %{buildroot}%{_libdir}/%{name}/locales/
 install -m 644 out/Release/chrome_100_percent.pak %{buildroot}%{_libdir}/%{name}/
 install -m 644 out/Release/resources.pak %{buildroot}%{_libdir}/%{name}/
@@ -590,20 +593,22 @@ for i in 22 24 48 64 128 256; do
                 %{buildroot}%{_datadir}/icons/hicolor/${i}x${i}/apps/%{name}.png
 done
 
-# Set some symlinks
-# FIXME should just look in the right place...
-mkdir -p %{buildroot}%{_libdir}/%{name}/swiftshader
-ln -s ../../libGLESv2.so.2 %{buildroot}/usr/lib64/chromium-browser-stable/swiftshader/libGLESv2.so
-ln -s ../../libEGL.so.1 %{buildroot}/usr/lib64/chromium-browser-stable/swiftshader/libEGL.so
-
 # Install the master_preferences file
 mkdir -p %{buildroot}%{_sysconfdir}/chromium
 install -m 0644 %{SOURCE3} %{buildroot}%{_sysconfdir}/chromium
 
+# FIXME ultimately Chromium should just use the system version
+# instead of looking in its own directory... But for now, symlinking
+# stuff where Chromium wants it will do
+mkdir -p %{buildroot}%{_libdir}/%{name}/swiftshader
+ln -s %{_libdir}/libGLESv2.so.2.0.0 %{buildroot}%{_libdir}/%{name}/swiftshader/libGLESv2.so
+ln -s %{_libdir}/libEGL.so.1.0.0 %{buildroot}%{_libdir}/%{name}/swiftshader/libEGL.so
 
 find %{buildroot} -name "*.nexe" -exec strip {} \;
 
+%if "%{channel}" == "stable"
 %files -n chromium-browser
+%endif
 
 %files
 %doc LICENSE AUTHORS
@@ -618,14 +623,13 @@ find %{buildroot} -name "*.nexe" -exec strip {} \;
 %{_libdir}/%{name}/chrome_100_percent.pak
 %{_libdir}/%{name}/resources.pak
 %{_libdir}/%{name}/resources
-%{_libdir}/%{name}/swiftshader
 %{_libdir}/%{name}/themes
 %{_libdir}/%{name}/default_apps
 %{_datadir}/applications/*.desktop
 %{_datadir}/icons/hicolor/*/apps/%{name}.png
-%optional %{_mandir}/man1/%{name}*
+%{_libdir}/%{name}/swiftshader
 
-%files -n chromedriver
+%files -n chromedriver%{namesuffix}
 %doc LICENSE AUTHORS
 %{_bindir}/chromedriver
 %{_libdir}/%{name}/chromedriver
