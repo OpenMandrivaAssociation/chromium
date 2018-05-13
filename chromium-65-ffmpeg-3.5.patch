@@ -13,8 +13,8 @@
      : public base::RefCountedThreadSafe<DecoderBuffer> {
   public:
    enum {
--    kPaddingSize = 32,
-+    kPaddingSize = AV_INPUT_BUFFER_PADDING_SIZE > 32 ? AV_INPUT_BUFFER_PADDING_SIZE : 32,
+-    kPaddingSize = 64,
++    kPaddingSize = AV_INPUT_BUFFER_PADDING_SIZE > 64 ? AV_INPUT_BUFFER_PADDING_SIZE : 64,
  #if defined(ARCH_CPU_ARM_FAMILY)
      kAlignmentSize = 16
  #else

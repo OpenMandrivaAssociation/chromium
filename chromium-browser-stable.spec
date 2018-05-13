@@ -5,6 +5,8 @@
 %define namesuffix -%{channel}
 %endif
 
+%define _disable_ld_no_undefined 1
+
 # eol 'fix' corrupts some .bin files
 %define dont_fix_eol 1
 
@@ -49,7 +51,7 @@
 Name: 		chromium-browser-%{channel}
 # Working version numbers can be found at
 # http://omahaproxy.appspot.com/
-Version: 	65.0.3325.181
+Version: 	66.0.3359.170
 Release: 	1%{?extrarelsuffix}
 Summary: 	A fast webkit-based web browser
 Group: 		Networking/WWW
@@ -105,6 +107,7 @@ Patch26:        http://pkgs.fedoraproject.org/cgit/rpms/chromium.git/plain/chrom
 #Patch27:        http://pkgs.fedoraproject.org/cgit/rpms/chromium.git/plain/chromium-59.0.3071.86-setopaque.patch
 # Use -fpermissive to build WebKit
 Patch31:        chromium-56.0.2924.87-fpermissive.patch
+Patch32:	chromium-66.0.3359.117-nounrar.patch
 
 ### Chromium Tests Patches ###
 # suse, system libs
@@ -123,6 +126,7 @@ Patch120:	chromium-59-clang-workaround.patch
 #Patch124:	chromium-61.0.3163.100-atk-compile.patch
 Patch125:	chromium-64-system-curl.patch
 Patch126:	chromium-65-ffmpeg-3.5.patch
+Patch127:	chromium-clang-5.patch
 
 Provides: 	%{crname}
 Obsoletes: 	chromium-browser-unstable < 26.0.1410.51
@@ -261,6 +265,9 @@ rm -rf third_party/binutils/
 
 echo "%{revision}" > build/LASTCHANGE.in
 
+sed -i 's!-nostdlib++!!g'  build/config/posix/BUILD.gn
+sed -i 's!ffmpeg_buildflags!ffmpeg_features!g' build/linux/unbundle/ffmpeg.gn
+ 
 # Hard code extra version
 FILE=chrome/common/channel_info_posix.cc
 sed -i.orig -e 's/getenv("CHROME_VERSION_EXTRA")/"%{product_vendor} %{product_version}"/' $FILE
@@ -281,6 +288,10 @@ python2 build/linux/unbundle/remove_bundled_libraries.py \
 	'third_party/adobe' \
 	'third_party/angle' \
 	'third_party/angle/src/common/third_party/smhasher' \
+        'third_party/angle/third_party/glslang' \
+        'third_party/angle/third_party/spirv-headers' \
+        'third_party/angle/third_party/spirv-tools' \
+        'third_party/angle/third_party/vulkan-validation-layers' \
 	'third_party/blink' \
 	'third_party/breakpad' \
 	'third_party/crc32c' \
@@ -289,6 +300,7 @@ python2 build/linux/unbundle/remove_bundled_libraries.py \
 	'third_party/harfbuzz-ng' \
 	'third_party/icu' \
 	'third_party/libaom' \
+        'third_party/libaom/source/libaom/third_party/x86inc' \
 	'base/third_party/libevent' \
 	'third_party/libdrm' \
 	'third_party/libjpeg_turbo' \
@@ -400,7 +412,6 @@ python2 build/linux/unbundle/remove_bundled_libraries.py \
 	'third_party/lzma_sdk' \
 	'third_party/mesa' \
 	'third_party/modp_b64' \
-	'third_party/mt19937ar' \
 	'third_party/node' \
 	'third_party/node/node_modules/polymer-bundler/lib/third_party/UglifyJS2' \
 	'third_party/openmax_dl' \
@@ -410,9 +421,9 @@ python2 build/linux/unbundle/remove_bundled_libraries.py \
 	'third_party/pdfium/third_party/agg23' \
 	'third_party/pdfium/third_party/base' \
 	'third_party/pdfium/third_party/bigint' \
-	'third_party/pdfium/third_party/build' \
 	'third_party/pdfium/third_party/libopenjpeg20' \
 	'third_party/pdfium/third_party/freetype' \
+        'third_party/pdfium/third_party/skia_shared' \
 	'third_party/polymer' \
 	'third_party/protobuf' \
 	'third_party/protobuf/third_party/six' \

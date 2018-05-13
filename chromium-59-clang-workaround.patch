@@ -20,17 +20,6 @@
  /* Suppress an incorrect diagnostic about yylval being uninitialized.  */
  # define YY_IGNORE_MAYBE_UNINITIALIZED_BEGIN \
      _Pragma ("GCC diagnostic push") \
---- chromium-65.0.3298.3/third_party/glslang-angle/src/glslang/MachineIndependent/glslang_tab.cpp.0120~	2017-12-19 23:44:51.799064554 +0100
-+++ chromium-65.0.3298.3/third_party/glslang-angle/src/glslang/MachineIndependent/glslang_tab.cpp	2017-12-19 23:45:55.328507114 +0100
-@@ -560,7 +560,7 @@ typedef short int yytype_int16;
- # define YYUSE(E) /* empty */
- #endif
- 
--#if defined __GNUC__ && 407 <= __GNUC__ * 100 + __GNUC_MINOR__
-+#if !defined(__clang__) && defined __GNUC__ && 407 <= __GNUC__ * 100 + __GNUC_MINOR__
- /* Suppress an incorrect diagnostic about yylval being uninitialized.  */
- # define YY_IGNORE_MAYBE_UNINITIALIZED_BEGIN \
-     _Pragma ("GCC diagnostic push") \
 --- chromium-65.0.3298.3/third_party/libdrm/src/xf86drm.c.0120~	2017-12-19 21:07:33.000000000 +0100
 +++ chromium-65.0.3298.3/third_party/libdrm/src/xf86drm.c	2017-12-19 23:44:51.797064539 +0100
 @@ -2735,8 +2735,8 @@ int drmGetNodeTypeFromFd(int fd)

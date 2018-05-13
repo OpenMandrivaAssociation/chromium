@@ -1,0 +1,16 @@
+diff -up chromium-66.0.3359.117/chrome/services/file_util/public/cpp/BUILD.gn.nounrar chromium-66.0.3359.117/chrome/services/file_util/public/cpp/BUILD.gn
+--- chromium-66.0.3359.117/chrome/services/file_util/public/cpp/BUILD.gn.nounrar	2018-04-25 12:17:13.858139109 -0400
++++ chromium-66.0.3359.117/chrome/services/file_util/public/cpp/BUILD.gn	2018-04-25 12:19:53.639532053 -0400
+@@ -27,9 +27,9 @@ source_set("cpp") {
+     }
+ 
+     #TODO(crbug/750327): This dependency is here temporarily.
+-    deps = [
+-      "//third_party/unrar:unrar",
+-    ]
++    # deps = [
++    #   "//third_party/unrar:unrar",
++    # ]
+ 
+     public_deps += [ "//chrome/common/safe_browsing" ]
+   }
