@@ -51,7 +51,7 @@
 Name: 		chromium-browser-%{channel}
 # Working version numbers can be found at
 # http://omahaproxy.appspot.com/
-Version: 	66.0.3359.170
+Version: 	66.0.3359.181
 Release: 	1%{?extrarelsuffix}
 Summary: 	A fast webkit-based web browser
 Group: 		Networking/WWW
@@ -108,11 +108,11 @@ Patch26:        http://pkgs.fedoraproject.org/cgit/rpms/chromium.git/plain/chrom
 # Use -fpermissive to build WebKit
 Patch31:        chromium-56.0.2924.87-fpermissive.patch
 Patch32:	chromium-66.0.3359.117-nounrar.patch
+Patch33:	chromium-50-system-ffmpeg-3.patch
 
 ### Chromium Tests Patches ###
 # suse, system libs
 Patch103:	arm_use_right_compiler.patch
-#Patch104:	https://gitweb.gentoo.org/repo/gentoo.git/plain/www-client/chromium/files/chromium-system-ffmpeg-r6.patch
 Patch105:	chromium-system-jinja-r13.patch
 
 # mga
@@ -125,7 +125,6 @@ Patch120:	chromium-59-clang-workaround.patch
 #Patch122:	chromium-63-gn-bootstrap.patch
 #Patch124:	chromium-61.0.3163.100-atk-compile.patch
 Patch125:	chromium-64-system-curl.patch
-Patch126:	chromium-65-ffmpeg-3.5.patch
 Patch127:	chromium-clang-5.patch
 
 Provides: 	%{crname}
@@ -480,7 +479,7 @@ export PATH=`pwd`:$PATH
 
 myconf_gn=" use_sysroot=false is_debug=false use_gold=true"
 myconf_gn+=" is_clang=true clang_base_path=\"%{_prefix}\" clang_use_chrome_plugins=false is_component_build=true "
-
+myconf_gn+=" use_lld=false"
 myconf_gn+=" treat_warnings_as_errors=false"
 myconf_gn+=" use_system_libjpeg=true "
 myconf_gn+=" use_system_lcms2=true "
@@ -533,7 +532,6 @@ gn_system_libraries="
     opus
     libjpeg
     libwebp
-    ffmpeg
     libxslt
     snappy
     yasm
