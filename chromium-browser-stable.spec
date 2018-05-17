@@ -479,7 +479,6 @@ export PATH=`pwd`:$PATH
 
 myconf_gn=" use_sysroot=false is_debug=false use_gold=true"
 myconf_gn+=" is_clang=true clang_base_path=\"%{_prefix}\" clang_use_chrome_plugins=false is_component_build=true "
-myconf_gn+=" use_lld=false"
 myconf_gn+=" treat_warnings_as_errors=false"
 myconf_gn+=" use_system_libjpeg=true "
 myconf_gn+=" use_system_lcms2=true "
@@ -492,7 +491,7 @@ myconf_gn+=" fatal_linker_warnings=false "
 myconf_gn+=" system_libdir=\"%{_lib}\""
 myconf_gn+=" use_allocator=\"none\""
 myconf_gn+=" use_aura=true "
-myconf_gn+=" use_gio=false"
+myconf_gn+=" use_gio=true"
 myconf_gn+=" icu_use_data_file=true"
 %if %{with gtk3}
 myconf_gn+=" use_gtk3=true "
