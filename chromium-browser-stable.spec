@@ -30,7 +30,7 @@
 # Temporarily broken, cr_z_* symbols used even when we're supposed to use system minizip
 %bcond_without	system_minizip
 # chromium 58 fails with system vpx 1.6.1
-%bcond_without	system_vpx
+%bcond_with	system_vpx
 # changed 13.43
 %bcond_with	system_harfbuzz
 %bcond_without	system_freetype
@@ -45,7 +45,7 @@
 Name: 		chromium-browser-stable
 # Working version numbers can be found at
 # http://omahaproxy.appspot.com/
-Version: 	64.0.3282.186
+Version: 	66.0.3359.181
 Release: 	1%{?extrarelsuffix}
 Summary: 	A fast webkit-based web browser
 Group: 		Networking/WWW
@@ -101,9 +101,9 @@ Patch27:	chromium-63.0.3289.84-setopaque.patch
 Patch31:	chromium-56.0.2924.87-fpermissive.patch
 # Fix issue with compilation on gcc7
 # Thanks to Ben Noordhuis
-Patch33: 	chromium-64.0.3282.119-gcc7.patch
+#Patch33: 	chromium-64.0.3282.119-gcc7.patch
 # Enable mp3 support
-Patch34:	chromium-64.0.3282.119-enable-mp3.patch
+#Patch34:	chromium-64.0.3282.119-enable-mp3.patch
 # Revert https://chromium.googlesource.com/chromium/src/+/b794998819088f76b4cf44c8db6940240c563cf4%5E%21/#F0
 # https://bugs.chromium.org/p/chromium/issues/detail?id=712737
 # https://bugzilla.redhat.com/show_bug.cgi?id=1446851
@@ -111,7 +111,7 @@ Patch36:	chromium-58.0.3029.96-revert-b794998819088f76b4cf44c8db6940240c563cf4.p
 # Correctly compile the stdatomic.h in ffmpeg with gcc 4.8
 Patch37:	chromium-64.0.3282.119-ffmpeg-stdatomic.patch
 # Nacl can't die soon enough
-Patch39:	chromium-59.0.3071.86-system-clang.patch
+#Patch39:	chromium-59.0.3071.86-system-clang.patch
 # Do not prefix libpng functions
 Patch42:	chromium-60.0.3112.78-no-libpng-prefix.patch
 # Do not mangle libjpeg
@@ -124,18 +124,20 @@ Patch50:	chromium-60.0.3112.113-libavutil-timer-include-path-fix.patch
 # from gentoo
 Patch53:	chromium-61.0.3163.79-gcc-no-opt-safe-math.patch
 # From gentoo
-Patch62:	chromium-64.0.3282.119-gcc5-r3.patch
+#Patch62:	chromium-64.0.3282.119-gcc5-r3.patch
 # Do not try to use libc++ in the remoting stack
 Patch63:	chromium-63.0.3289.84-nolibc++.patch
 # Fix freetype and harfbuzz-ng unbundle
-Patch64:	chromium-63.0.3289.84-fix-ft-hb-unbundle.patch
+#Patch64:	chromium-63.0.3289.84-fix-ft-hb-unbundle.patch
 # To use round with gcc, you need to #include <cmath>
-Patch65:	chromium-64.0.3282.119-gcc-round-fix.patch
+#Patch65:	chromium-64.0.3282.119-gcc-round-fix.patch
 # Fix constexpr gcc issues
 # https://chromium.googlesource.com/angle/angle/+/030017a4855c7b6e7f2ff8d9566c146f31eb301b
-Patch66:	chromium-64.0.3282.119-gcc-constexpr-fix.patch
+#Patch66:	chromium-64.0.3282.119-gcc-constexpr-fix.patch
 # Include proper headers to invoke memcpy()
-Patch67:	chromium-64.0.3282.119-memcpy-fix.patch
+#Patch67:	chromium-64.0.3282.119-memcpy-fix.patch
+Patch68:       chromium-66.0.3359.117-nounrar.patch
+Patch69:       chromium-50-system-ffmpeg-3.patch
 
 # suse, system libs
 Patch103:	arm_use_right_compiler.patch
@@ -147,12 +149,12 @@ Patch105:	chromium-system-jinja-r13.patch
 #Patch112:	chromium-40-wmvflvmpg.patch
 Patch113:	chromium-buildname.patch
 #Patch114:	chromium-53-gn-system-opus.patch
-Patch115:	chromium-53-gn-system-icu-jsoncpp.patch
+#Patch115:	chromium-53-gn-system-icu-jsoncpp.patch
 Patch116:	chromium-58-system-nodejs.patch
 
 
 # omv
-Patch120:	chromium-59-clang-workaround.patch
+#Patch120:	chromium-59-clang-workaround.patch
 #Patch121:	chromium-59.0.3071.115-glibc-2.26.patch
 #Patch122:	chromium-61.0.3163.100-gn-bootstrap.patch
 #Patch123:	chromium-61.0.3163.100-glibc-2.26.patch
@@ -299,6 +301,7 @@ echo "%{revision}" > build/LASTCHANGE.in
 #sed -i 's!"-instcombine-lower-dbg-declare=0",!!g' build/config/compiler/BUILD.gn
 #sed -i 's!-no-canonical-prefixes!!g' build/config/compiler/BUILD.gn
 sed -i 's!-nostdlib++!!g'  build/config/posix/BUILD.gn
+sed -i 's!ffmpeg_buildflags!ffmpeg_features!g' build/linux/unbundle/ffmpeg.gn
 
 # Hard code extra version
 FILE=chrome/common/channel_info_posix.cc
@@ -344,6 +347,10 @@ ln -s /usr/bin/node third_party/node/linux/node-linux-x64/bin/
 	'third_party/angle/src/third_party/compiler' \
 	'third_party/angle/src/third_party/libXNVCtrl' \
 	'third_party/angle/src/third_party/trace_event' \
+	'third_party/angle/third_party/glslang' \
+	'third_party/angle/third_party/spirv-headers' \
+	'third_party/angle/third_party/spirv-tools' \
+	'third_party/angle/third_party/vulkan-validation-layers' \
 	'third_party/blanketjs' \
 	'third_party/blink' \
 	'third_party/boringssl' \
@@ -376,6 +383,7 @@ ln -s /usr/bin/node third_party/node/linux/node-linux-x64/bin/
 	'third_party/flac' \
         'third_party/flatbuffers' \
 	'third_party/flot' \
+        'third_party/fontconfig' \
 %if %{with system_freetype}
 	'third_party/freetype' \
 %endif
@@ -392,6 +400,8 @@ ln -s /usr/bin/node third_party/node/linux/node-linux-x64/bin/
 %if %{with system_icu}
 	'third_party/icu' \
 %endif
+        'third_party/libaom' \
+        'third_party/libaom/source/libaom/third_party/x86inc' \
 	'third_party/inspector_protocol' \
 	'third_party/jinja2' \
 	'third_party/jstemplate' \
@@ -408,8 +418,8 @@ ln -s /usr/bin/node third_party/node/linux/node-linux-x64/bin/
         'third_party/libsrtp' \
 	'third_party/libudev' \
 	'third_party/libusb' \
-	'third_party/libvpx' \
-	'third_party/libvpx/source/libvpx/third_party/x86inc' \
+        'third_party/libvpx' \
+        'third_party/libvpx/source/libvpx/third_party/x86inc' \
 	'third_party/libxml' \
 	'third_party/libxml/chromium' \
 	'third_party/libxslt' \
@@ -422,7 +432,6 @@ ln -s /usr/bin/node third_party/node/linux/node-linux-x64/bin/
 	'third_party/mesa' \
 	'third_party/metrics_proto' \
 	'third_party/modp_b64' \
-	'third_party/mt19937ar' \
 	'third_party/node' \
 	'third_party/node/node_modules/polymer-bundler/lib/third_party/UglifyJS2' \
 	'third_party/openh264' \
@@ -433,7 +442,7 @@ ln -s /usr/bin/node third_party/node/linux/node-linux-x64/bin/
 	'third_party/pdfium/third_party/agg23' \
 	'third_party/pdfium/third_party/base' \
 	'third_party/pdfium/third_party/bigint' \
-	'third_party/pdfium/third_party/build' \
+	'third_party/pdfium/third_party/skia_shared' \
 %if %{with system_freetype}
 	'third_party/pdfium/third_party/freetype' \
 %endif
@@ -448,6 +457,7 @@ ln -s /usr/bin/node third_party/node/linux/node-linux-x64/bin/
 	'third_party/qcms' \
 	'third_party/qunit' \
 	'third_party/re2' \
+        'third_party/s2cellid' \
 	'third_party/sfntly' \
 	'third_party/sinonjs' \
 	'third_party/skia' \
@@ -478,6 +488,7 @@ ln -s /usr/bin/node third_party/node/linux/node-linux-x64/bin/
         'third_party/zlib' \
 	'third_party/zlib/google' \
 	'url/third_party/mozilla' \
+        'v8/src/third_party/utf8-decoder' \
 	'v8/src/third_party/valgrind' \
 	'v8/third_party/inspector_protocol' \
 	--do-remove
@@ -540,7 +551,6 @@ myconf_gn+=" fatal_linker_warnings=false "
 myconf_gn+=" system_libdir=\"%{_lib}\""
 myconf_gn+=" use_allocator=\"none\""
 myconf_gn+=" use_aura=true "
-myconf_gn+=" use_gconf=false"
 myconf_gn+=" icu_use_data_file=true"
 %if %{with gtk3}
 myconf_gn+=" use_gtk3=true "
@@ -584,7 +594,6 @@ gn_system_libraries="
  libdrm
  libjpeg
  libpng
- jsoncpp
  libwebp
  libxml
  libxslt
