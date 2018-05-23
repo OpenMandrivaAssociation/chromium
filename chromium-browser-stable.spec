@@ -60,6 +60,7 @@ Source3:	master_preferences
 # sources back. This is pulled from the last Chromium build that
 # had them.
 # Source4:	https://ftp.osuosl.org/pub/blfs/conglomeration/chromium/chromium-freetype.tar.xz
+Source100:	chromium-browser-stable.rpmlintrc
 ### Chromium Fedora Patches ###
 Patch0:		chromium-64.0.3282.119-gcc5.patch
 Patch1:		chromium-45.0.2454.101-linux-path-max.patch
