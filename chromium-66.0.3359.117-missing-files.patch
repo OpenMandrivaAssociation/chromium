@@ -1,0 +1,272 @@
+diff -up chromium-66.0.3359.117/third_party/blink/tools/blinkpy/common/__init__.py.missing chromium-66.0.3359.117/third_party/blink/tools/blinkpy/common/__init__.py
+--- chromium-66.0.3359.117/third_party/blink/tools/blinkpy/common/__init__.py.missing	2018-04-19 09:51:46.165723235 -0400
++++ chromium-66.0.3359.117/third_party/blink/tools/blinkpy/common/__init__.py	2018-04-19 09:51:46.171723115 -0400
+@@ -0,0 +1,3 @@
++# Copyright 2017 The Chromium Authors. All rights reserved.
++# Use of this source code is governed by a BSD-style license that can be
++# found in the LICENSE file.
+diff -up chromium-66.0.3359.117/third_party/blink/tools/blinkpy/common/name_style_converter.py.missing chromium-66.0.3359.117/third_party/blink/tools/blinkpy/common/name_style_converter.py
+--- chromium-66.0.3359.117/third_party/blink/tools/blinkpy/common/name_style_converter.py.missing	2018-04-19 09:51:46.171723115 -0400
++++ chromium-66.0.3359.117/third_party/blink/tools/blinkpy/common/name_style_converter.py	2018-04-19 09:51:46.172723095 -0400
+@@ -0,0 +1,110 @@
++# Copyright 2017 The Chromium Authors. All rights reserved.
++# Use of this source code is governed by a BSD-style license that can be
++# found in the LICENSE file.
++# pylint: disable=import-error,print-statement,relative-import
++import re
++SPECIAL_TOKENS = [
++    # This list should be sorted by length.
++    'CString',
++    'Float32',
++    'Float64',
++    'Base64',
++    'IFrame',
++    'Latin1',
++    'PlugIn',
++    'SQLite',
++    'Uint16',
++    'Uint32',
++    'WebGL2',
++    'ASCII',
++    'CType',
++    'DList',
++    'Int16',
++    'Int32',
++    'MPath',
++    'OList',
++    'TSpan',
++    'UList',
++    'UTF16',
++    'Uint8',
++    'WebGL',
++    'XPath',
++    'ETC1',
++    'HTML',
++    'Int8',
++    'S3TC',
++    'SPv2',
++    'UTF8',
++    'API',
++    'CSS',
++    'DOM',
++    'EXT',
++    'RTC',
++    'SVG',
++    '2D',
++    'AX',
++    'V0',
++    'V8',
++]
++MATCHING_EXPRESSION = '((?:[A-Z][a-z]+)|[0-9]D?$)'
++class SmartTokenizer(object):
++    """Detects special cases that are not easily discernible without additional
++       knowledge, such as recognizing that in SVGSVGElement, the first two SVGs
++       are separate tokens, but WebGL is one token."""
++    def __init__(self, name):
++        self.remaining = name
++    def tokenize(self):
++        name = self.remaining
++        tokens = []
++        while len(name) > 0:
++            matched_token = None
++            for token in SPECIAL_TOKENS:
++                if name.startswith(token):
++                    matched_token = token
++                    break
++            if not matched_token:
++                match = re.search(MATCHING_EXPRESSION, name)
++                if not match:
++                    matched_token = name
++                elif match.start(0) != 0:
++                    matched_token = name[:match.start(0)]
++                else:
++                    matched_token = match.group(0)
++            tokens.append(name[:len(matched_token)])
++            name = name[len(matched_token):]
++        return tokens
++class NameStyleConverter(object):
++    """Converts names from camelCase to various other styles.
++    """
++    def __init__(self, name):
++        self.tokens = self.tokenize(name)
++    def tokenize(self, name):
++        tokenizer = SmartTokenizer(name)
++        return tokenizer.tokenize()
++    def to_snake_case(self):
++        """Snake case is the file and variable name style per Google C++ Style
++           Guide:
++           https://google.github.io/styleguide/cppguide.html#Variable_Names
++           Also known as the hacker case.
++           https://en.wikipedia.org/wiki/Snake_case
++        """
++        return '_'.join([token.lower() for token in self.tokens])
++    def to_upper_camel_case(self):
++        """Upper-camel case is the class and function name style per
++           Google C++ Style Guide:
++           https://google.github.io/styleguide/cppguide.html#Function_Names
++           Also known as the PascalCase.
++           https://en.wikipedia.org/wiki/Camel_case.
++        """
++        return ''.join([token[0].upper() + token[1:] for token in self.tokens])
++    def to_macro_case(self):
++        """Macro case is the macro name style per Google C++ Style Guide:
++           https://google.github.io/styleguide/cppguide.html#Macro_Names
++        """
++        return '_'.join([token.upper() for token in self.tokens])
++    def to_all_cases(self):
++        return {
++            'snake_case': self.to_snake_case(),
++            'upper_camel_case': self.to_upper_camel_case(),
++            'macro_case': self.to_macro_case(),
++        }
+diff -up chromium-66.0.3359.117/third_party/blink/tools/blinkpy/common/name_style_converter_test.py.missing chromium-66.0.3359.117/third_party/blink/tools/blinkpy/common/name_style_converter_test.py
+--- chromium-66.0.3359.117/third_party/blink/tools/blinkpy/common/name_style_converter_test.py.missing	2018-04-19 09:51:46.172723095 -0400
++++ chromium-66.0.3359.117/third_party/blink/tools/blinkpy/common/name_style_converter_test.py	2018-04-19 09:51:46.173723075 -0400
+@@ -0,0 +1,140 @@
++# Copyright 2017 The Chromium Authors. All rights reserved.
++# Use of this source code is governed by a BSD-style license that can be
++# found in the LICENSE file.
++# pylint: disable=import-error,print-statement,relative-import,protected-access
++"""Unit tests for name_style_converter.py."""
++import unittest
++from name_style_converter import NameStyleConverter
++from name_style_converter import SmartTokenizer
++class SmartTokenizerTest(unittest.TestCase):
++    def test_simple_cases(self):
++        tokenizer = SmartTokenizer('foo')
++        self.assertEqual(tokenizer.tokenize(), ['foo'])
++        tokenizer = SmartTokenizer('fooBar')
++        self.assertEqual(tokenizer.tokenize(), ['foo', 'Bar'])
++        tokenizer = SmartTokenizer('fooBarBaz')
++        self.assertEqual(tokenizer.tokenize(), ['foo', 'Bar', 'Baz'])
++        tokenizer = SmartTokenizer('Baz')
++        self.assertEqual(tokenizer.tokenize(), ['Baz'])
++        tokenizer = SmartTokenizer('')
++        self.assertEqual(tokenizer.tokenize(), [])
++        tokenizer = SmartTokenizer('FOO')
++        self.assertEqual(tokenizer.tokenize(), ['FOO'])
++        tokenizer = SmartTokenizer('foo2')
++        self.assertEqual(tokenizer.tokenize(), ['foo', '2'])
++    def test_tricky_cases(self):
++        tokenizer = SmartTokenizer('XMLHttpRequest')
++        self.assertEqual(tokenizer.tokenize(), ['XML', 'Http', 'Request'])
++        tokenizer = SmartTokenizer('HTMLElement')
++        self.assertEqual(tokenizer.tokenize(), ['HTML', 'Element'])
++        tokenizer = SmartTokenizer('WebGLRenderingContext')
++        self.assertEqual(tokenizer.tokenize(),
++                         ['WebGL', 'Rendering', 'Context'])
++        tokenizer = SmartTokenizer('CanvasRenderingContext2D')
++        self.assertEqual(tokenizer.tokenize(),
++                         ['Canvas', 'Rendering', 'Context', '2D'])
++        tokenizer = SmartTokenizer('CanvasRenderingContext2DAPITest')
++        self.assertEqual(tokenizer.tokenize(),
++                         ['Canvas', 'Rendering', 'Context', '2D', 'API', 'Test'])
++        tokenizer = SmartTokenizer('SVGSVGElement')
++        self.assertEqual(tokenizer.tokenize(), ['SVG', 'SVG', 'Element'])
++        tokenizer = SmartTokenizer('CanvasRenderingContext2D')
++        self.assertEqual(tokenizer.tokenize(), ['Canvas', 'Rendering', 'Context', '2D'])
++        tokenizer = SmartTokenizer('CSSURLImageValue')
++        self.assertEqual(tokenizer.tokenize(), ['CSS', 'URL', 'Image', 'Value'])
++        tokenizer = SmartTokenizer('CSSPropertyAPID')
++        self.assertEqual(tokenizer.tokenize(), ['CSS', 'Property', 'API', 'D'])
++        tokenizer = SmartTokenizer('AXARIAGridCell')
++        self.assertEqual(tokenizer.tokenize(), ['AX', 'ARIA', 'Grid', 'Cell'])
++        tokenizer = SmartTokenizer('CDATASection')
++        self.assertEqual(tokenizer.tokenize(), ['CDATA', 'Section'])
++        tokenizer = SmartTokenizer('ASCIICType')
++        self.assertEqual(tokenizer.tokenize(), ['ASCII', 'CType'])
++        tokenizer = SmartTokenizer('CString')
++        self.assertEqual(tokenizer.tokenize(), ['CString'])
++        tokenizer = SmartTokenizer('HTMLDListElement')
++        self.assertEqual(tokenizer.tokenize(), ['HTML', 'DList', 'Element'])
++        tokenizer = SmartTokenizer('HTMLOListElement')
++        self.assertEqual(tokenizer.tokenize(), ['HTML', 'OList', 'Element'])
++        tokenizer = SmartTokenizer('HTMLIFrameElement')
++        self.assertEqual(tokenizer.tokenize(), ['HTML', 'IFrame', 'Element'])
++        tokenizer = SmartTokenizer('HTMLPlugInElement')
++        self.assertEqual(tokenizer.tokenize(), ['HTML', 'PlugIn', 'Element'])
++        # No special handling for OptGroup, FieldSet, and TextArea.
++        tokenizer = SmartTokenizer('HTMLOptGroupElement')
++        self.assertEqual(tokenizer.tokenize(), ['HTML', 'Opt', 'Group', 'Element'])
++        tokenizer = SmartTokenizer('HTMLFieldSetElement')
++        self.assertEqual(tokenizer.tokenize(), ['HTML', 'Field', 'Set', 'Element'])
++        tokenizer = SmartTokenizer('HTMLTextAreaElement')
++        self.assertEqual(tokenizer.tokenize(), ['HTML', 'Text', 'Area', 'Element'])
++        tokenizer = SmartTokenizer('Path2D')
++        self.assertEqual(tokenizer.tokenize(), ['Path', '2D'])
++        tokenizer = SmartTokenizer('Point2D')
++        self.assertEqual(tokenizer.tokenize(), ['Point', '2D'])
++        tokenizer = SmartTokenizer('CanvasRenderingContext2DState')
++        self.assertEqual(tokenizer.tokenize(), ['Canvas', 'Rendering', 'Context', '2D', 'State'])
++        tokenizer = SmartTokenizer('RTCDTMFSender')
++        self.assertEqual(tokenizer.tokenize(), ['RTC', 'DTMF', 'Sender'])
++        tokenizer = SmartTokenizer('WebGLCompressedTextureS3TCsRGB')
++        self.assertEqual(tokenizer.tokenize(), ['WebGL', 'Compressed', 'Texture', 'S3TC', 'sRGB'])
++        tokenizer = SmartTokenizer('WebGL2CompressedTextureETC1')
++        self.assertEqual(tokenizer.tokenize(), ['WebGL2', 'Compressed', 'Texture', 'ETC1'])
++        tokenizer = SmartTokenizer('EXTsRGB')
++        self.assertEqual(tokenizer.tokenize(), ['EXT', 'sRGB'])
++        tokenizer = SmartTokenizer('SVGFEBlendElement')
++        self.assertEqual(tokenizer.tokenize(), ['SVG', 'FE', 'Blend', 'Element'])
++        tokenizer = SmartTokenizer('SVGMPathElement')
++        self.assertEqual(tokenizer.tokenize(), ['SVG', 'MPath', 'Element'])
++        tokenizer = SmartTokenizer('SVGTSpanElement')
++        self.assertEqual(tokenizer.tokenize(), ['SVG', 'TSpan', 'Element'])
++        tokenizer = SmartTokenizer('SVGURIReference')
++        self.assertEqual(tokenizer.tokenize(), ['SVG', 'URI', 'Reference'])
++        tokenizer = SmartTokenizer('UTF16TextIterator')
++        self.assertEqual(tokenizer.tokenize(), ['UTF16', 'Text', 'Iterator'])
++        tokenizer = SmartTokenizer('UTF8Decoder')
++        self.assertEqual(tokenizer.tokenize(), ['UTF8', 'Decoder'])
++        tokenizer = SmartTokenizer('Uint8Array')
++        self.assertEqual(tokenizer.tokenize(), ['Uint8', 'Array'])
++        tokenizer = SmartTokenizer('DOMWindowBase64')
++        self.assertEqual(tokenizer.tokenize(), ['DOM', 'Window', 'Base64'])
++        tokenizer = SmartTokenizer('TextCodecLatin1')
++        self.assertEqual(tokenizer.tokenize(), ['Text', 'Codec', 'Latin1'])
++        tokenizer = SmartTokenizer('V8BindingForCore')
++        self.assertEqual(tokenizer.tokenize(), ['V8', 'Binding', 'For', 'Core'])
++        tokenizer = SmartTokenizer('V8DOMRect')
++        self.assertEqual(tokenizer.tokenize(), ['V8', 'DOM', 'Rect'])
++        tokenizer = SmartTokenizer('V0InsertionPoint')
++        self.assertEqual(tokenizer.tokenize(), ['V0', 'Insertion', 'Point'])
++        tokenizer = SmartTokenizer('ShadowDOMV0Test')
++        self.assertEqual(tokenizer.tokenize(), ['Shadow', 'DOM', 'V0', 'Test'])
++        tokenizer = SmartTokenizer('ElementShadowV0')
++        self.assertEqual(tokenizer.tokenize(), ['Element', 'Shadow', 'V0'])
++        tokenizer = SmartTokenizer('StubChromeClientForSPv2')
++        self.assertEqual(tokenizer.tokenize(), ['Stub', 'Chrome', 'Client', 'For', 'SPv2'])
++        tokenizer = SmartTokenizer('SQLiteAuthorizer')
++        self.assertEqual(tokenizer.tokenize(), ['SQLite', 'Authorizer'])
++        tokenizer = SmartTokenizer('XPathEvaluator')
++        self.assertEqual(tokenizer.tokenize(), ['XPath', 'Evaluator'])
++        tokenizer = SmartTokenizer('IsXHTMLDocument')
++        self.assertEqual(tokenizer.tokenize(), ['Is', 'XHTML', 'Document'])
++        tokenizer = SmartTokenizer('Animation.idl')
++        self.assertEqual(tokenizer.tokenize(), ['Animation', '.idl'])
++class NameStyleConverterTest(unittest.TestCase):
++    def test_snake_case(self):
++        converter = NameStyleConverter('HTMLElement')
++        self.assertEqual(converter.to_snake_case(), 'html_element')
++    def test_upper_camel_case(self):
++        converter = NameStyleConverter('someSuperThing')
++        self.assertEqual(converter.to_upper_camel_case(), 'SomeSuperThing')
++        converter = NameStyleConverter('SVGElement')
++        self.assertEqual(converter.to_upper_camel_case(), 'SVGElement')
++    def test_macro_case(self):
++        converter = NameStyleConverter('WebGLBaz2D')
++        self.assertEqual(converter.to_macro_case(), 'WEBGL_BAZ_2D')
++    def test_all_cases(self):
++        converter = NameStyleConverter('SVGScriptElement')
++        self.assertEqual(converter.to_all_cases(), {
++            'snake_case': 'svg_script_element',
++            'upper_camel_case': 'SVGScriptElement',
++            'macro_case': 'SVG_SCRIPT_ELEMENT',
++        })
+diff -up chromium-66.0.3359.117/third_party/blink/tools/blinkpy/__init__.py.missing chromium-66.0.3359.117/third_party/blink/tools/blinkpy/__init__.py
+--- chromium-66.0.3359.117/third_party/blink/tools/blinkpy/__init__.py.missing	2018-04-19 11:34:40.621293007 -0400
++++ chromium-66.0.3359.117/third_party/blink/tools/blinkpy/__init__.py	2018-04-19 11:34:34.440413163 -0400
+@@ -0,0 +1,3 @@
++# Copyright 2017 The Chromium Authors. All rights reserved.
++# Use of this source code is governed by a BSD-style license that can be
++# found in the LICENSE file.
