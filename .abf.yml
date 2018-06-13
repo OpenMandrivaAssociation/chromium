@@ -1,5 +1,2 @@
-removed_sources:
-  chromium-65.0.3325.146.tar.xz: 4f736ba24ae34b3b9d7e074ee93f527a85a5b0cb
-  chromium-66.0.3359.170.tar.xz: 2e4a872f6cb45373d2fad5620a5dd77be6628cd5
 sources:
-  chromium-67.0.3396.79.tar.xz: c3eb9aca34ac23768ddda9eb49671064bd7c3119
+  chromium-67.0.3396.87.tar.xz: 925f1ebeee83caef863eec2b821854173d9597d8
