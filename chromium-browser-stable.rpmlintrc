@@ -1,0 +1,3 @@
+# False positive -- this is about libEGL.so and friends
+# symlinks in swiftshader
+addFilter("E: devel-file-in-non-devel-package")
