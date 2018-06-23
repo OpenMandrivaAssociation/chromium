@@ -1,17 +1,3 @@
-diff -up chromium-60.0.3112.78/build/linux/unbundle/libjpeg.gn.gnsystem chromium-60.0.3112.78/build/linux/unbundle/libjpeg.gn
---- chromium-60.0.3112.78/build/linux/unbundle/libjpeg.gn.gnsystem	2017-07-25 15:04:48.000000000 -0400
-+++ chromium-60.0.3112.78/build/linux/unbundle/libjpeg.gn	2017-07-31 10:38:25.879951641 -0400
-@@ -16,6 +16,10 @@ source_set("libjpeg") {
-   libs = [ "jpeg" ]
- }
- 
-+config("system_libjpeg") {
-+  defines = [ "USE_SYSTEM_LIBJPEG=1" ]
-+}
-+
- source_set("simd") {
- }
- 
 diff -up chromium-60.0.3112.78/build/linux/unbundle/libusb.gn.gnsystem chromium-60.0.3112.78/build/linux/unbundle/libusb.gn
 --- chromium-60.0.3112.78/build/linux/unbundle/libusb.gn.gnsystem	2017-07-31 10:38:25.880951622 -0400
 +++ chromium-60.0.3112.78/build/linux/unbundle/libusb.gn	2017-07-31 10:38:25.879951641 -0400
@@ -213,7 +199,7 @@ diff -up chromium-60.0.3112.78/build/linux/unbundle/replace_gn_files.py.gnsystem
 +++ chromium-60.0.3112.78/build/linux/unbundle/replace_gn_files.py	2017-07-31 10:39:58.067159914 -0400
 @@ -26,6 +26,7 @@ REPLACEMENTS = {
    'libevent': 'base/third_party/libevent/BUILD.gn',
-   'libjpeg': 'build/secondary/third_party/libjpeg_turbo/BUILD.gn',
+   'libjpeg': 'third_party/libjpeg.gni',
    'libpng': 'third_party/libpng/BUILD.gn',
 +  'libusb': 'third_party/libusb/BUILD.gn',
    'libvpx': 'third_party/libvpx/BUILD.gn',

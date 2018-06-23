@@ -45,7 +45,7 @@
 Name: 		chromium-browser-stable
 # Working version numbers can be found at
 # http://omahaproxy.appspot.com/
-Version: 	66.0.3359.181
+Version: 	67.0.3396.87
 Release: 	1%{?extrarelsuffix}
 Summary: 	A fast webkit-based web browser
 Group: 		Networking/WWW
@@ -62,7 +62,7 @@ Source3:	master_preferences
 # Source4:	https://ftp.osuosl.org/pub/blfs/conglomeration/chromium/chromium-freetype.tar.xz
 Source100:	chromium-browser-stable.rpmlintrc
 ### Chromium Fedora Patches ###
-Patch0:		chromium-64.0.3282.119-gcc5.patch
+#Patch0:		chromium-64.0.3282.119-gcc5.patch
 Patch1:		chromium-45.0.2454.101-linux-path-max.patch
 Patch2:		chromium-55.0.2883.75-addrfix.patch
 Patch4:		chromium-46.0.2490.71-notest.patch
@@ -98,8 +98,6 @@ Patch26:	chromium-59.0.3071.86-i686-ld-memory-tricks.patch
 # obj/content/renderer/renderer/child_frame_compositing_helper.o: In function `content::ChildFrameCompositingHelper::OnSetSurface(cc::SurfaceId const&, gfx::Size const&, float, cc::SurfaceSequence const&)':
 # /builddir/build/BUILD/chromium-54.0.2840.90/out/Release/../../content/renderer/child_frame_compositing_helper.cc:214: undefined reference to `cc_blink::WebLayerImpl::setOpaque(bool)'
 Patch27:	chromium-63.0.3289.84-setopaque.patch
-# Use -fpermissive to build WebKit
-Patch31:	chromium-56.0.2924.87-fpermissive.patch
 # Fix issue with compilation on gcc7
 # Thanks to Ben Noordhuis
 #Patch33: 	chromium-64.0.3282.119-gcc7.patch
@@ -126,8 +124,6 @@ Patch50:	chromium-60.0.3112.113-libavutil-timer-include-path-fix.patch
 Patch53:	chromium-61.0.3163.79-gcc-no-opt-safe-math.patch
 # From gentoo
 #Patch62:	chromium-64.0.3282.119-gcc5-r3.patch
-# Do not try to use libc++ in the remoting stack
-Patch63:	chromium-63.0.3289.84-nolibc++.patch
 # Fix freetype and harfbuzz-ng unbundle
 #Patch64:	chromium-63.0.3289.84-fix-ft-hb-unbundle.patch
 # To use round with gcc, you need to #include <cmath>
@@ -143,7 +139,7 @@ Patch69:       chromium-50-system-ffmpeg-3.patch
 # suse, system libs
 Patch103:	arm_use_right_compiler.patch
 #Patch104:	https://gitweb.gentoo.org/repo/gentoo.git/plain/www-client/chromium/files/chromium-system-ffmpeg-r6.patch
-Patch105:	chromium-system-jinja-r13.patch
+#Patch105:	chromium-system-jinja-r13.patch
 
 # mga
 #Patch111:	chromium-55-extra-media.patch
@@ -161,7 +157,8 @@ Patch116:	chromium-58-system-nodejs.patch
 #Patch123:	chromium-61.0.3163.100-glibc-2.26.patch
 #Patch124:	chromium-61.0.3163.100-atk-compile.patch
 Patch125:	chromium-clang-r2.patch
-Patch126:	chromium-widevine-r1.patch
+Patch126:	chromium-widevine-r2.patch
+Patch127:	chromium-browser-67-llvm_ar_5.patch
 
 Provides: 	%{crname}
 Obsoletes: 	chromium-browser-unstable < 26.0.1410.51
@@ -352,6 +349,7 @@ ln -s /usr/bin/node third_party/node/linux/node-linux-x64/bin/
 	'third_party/angle/third_party/spirv-headers' \
 	'third_party/angle/third_party/spirv-tools' \
 	'third_party/angle/third_party/vulkan-validation-layers' \
+        'third_party/apple_apsl' \
 	'third_party/blanketjs' \
 	'third_party/blink' \
 	'third_party/boringssl' \
@@ -372,6 +370,8 @@ ln -s /usr/bin/node third_party/node/linux/node-linux-x64/bin/
 	'third_party/catapult/tracing/third_party/pako' \
         'third_party/ced' \
 	'third_party/cld_3' \
+	'third_party/crashpad' \
+	'third_party/crashpad/crashpad/third_party/zlib/' \
 	'third_party/crc32c' \
 	'third_party/cros_system_api' \
 	'third_party/devscripts' \
@@ -475,6 +475,7 @@ ln -s /usr/bin/node third_party/node/linux/node-linux-x64/bin/
 	'third_party/swiftshader/third_party/LLVM' \
 	'third_party/swiftshader/third_party/llvm-subzero' \
 	'third_party/tcmalloc' \
+        'third_party/test_fonts' \
         'third_party/usb_ids' \
 	'third_party/usrsctp' \
 	'third_party/vulkan' \

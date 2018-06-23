@@ -1,0 +1,39 @@
+--- chromium-67.0.3396.87/build/toolchain/gcc_toolchain.gni	2018-06-12 23:10:02.000000000 +0100
++++ chromium-66.0.3359.181/build/toolchain/gcc_toolchain.gni	2018-05-15 20:06:44.000000000 +0100
+@@ -334,21 +334,13 @@
+       # POSIX-like toolchains such as NaCl on Windows).
+       ar_wrapper =
+           rebase_path("//build/toolchain/gcc_ar_wrapper.py", root_build_dir)
+-
+-      # TODO(thomasanderson): Remove the special ChromeOS case once
+-      # https://crbug.com/829956 is fixed.
+-      if (default_toolchain == "//build/toolchain/cros:target") {
+-        extra_arflags = "rcsD"
+-      } else if (current_os == "aix") {
++      if (current_os == "aix") {
+         # We use slightly different arflags for AIX.
+-        extra_arflags = "-r -c -s"
++        extra_arflags = "rcsT"
+       } else {
+-        extra_arflags = "-r -c -s -D"
++        extra_arflags = "rcsD"
+       }
+-
+-      # Almost all targets build with //build/config/compiler:thin_archive which
+-      # adds -T to arflags.
+-      command = "$python_path \"$ar_wrapper\"$whitelist_flag --output={{output}} --ar=\"$ar\" \"{{arflags}} $extra_arflags\" @\"$rspfile\""
++      command = "$python_path \"$ar_wrapper\"$whitelist_flag --output={{output}} --ar=\"$ar\" \"{{arflags}}$extra_arflags\" @\"$rspfile\""
+       description = "AR {{output}}"
+       rspfile_content = "{{inputs}}"
+       outputs = [
+--- chromium-67.0.3396.87/build/config/compiler/BUILD.gn.orig	2018-06-18 23:45:02.961632262 +0100
++++ chromium-67.0.3396.87/build/config/compiler/BUILD.gn	2018-06-18 23:45:05.812632080 +0100
+@@ -1561,7 +1561,7 @@
+     # TODO(thomasanderson): Enable on ChromeOS builds once
+     # https://crbug.com/829956 is fixed.
+     if (default_toolchain != "//build/toolchain/cros:target") {
+-      arflags = [ "-T" ]
++      arflags = [ "T" ]
+     }
+   }
+ }
