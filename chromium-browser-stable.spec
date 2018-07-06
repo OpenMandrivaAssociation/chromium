@@ -192,6 +192,7 @@ BuildRequires: 	re2c
 BuildRequires: 	flex
 #BuildRequires: 	v8-devel
 BuildRequires:	pkgconfig(alsa)
+BuildRequires:	pkgconfig(krb5)
 BuildRequires: 	alsa-oss-devel
 %if %mdvver >= 201500
 BuildRequires:	atomic-devel
