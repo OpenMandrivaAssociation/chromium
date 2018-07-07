@@ -193,6 +193,7 @@ BuildRequires: 	flex
 #BuildRequires: 	v8-devel
 BuildRequires:	pkgconfig(alsa)
 BuildRequires:	pkgconfig(krb5)
+BuildRequires:	pkgconfig(com_err)
 BuildRequires: 	alsa-oss-devel
 %if %mdvver >= 201500
 BuildRequires:	atomic-devel
