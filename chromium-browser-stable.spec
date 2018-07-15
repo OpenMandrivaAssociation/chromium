@@ -30,7 +30,7 @@
 # Temporarily broken, cr_z_* symbols used even when we're supposed to use system minizip
 %bcond_without	system_minizip
 # chromium 58 fails with system vpx 1.6.1
-%bcond_with	system_vpx
+%bcond_without	system_vpx
 # changed 13.43
 %bcond_with	system_harfbuzz
 %bcond_without	system_freetype
