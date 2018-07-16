@@ -26,7 +26,8 @@
 %bcond_with	ozone
 %bcond_without	system_icu
 %bcond_with	system_re2
-%bcond_without	system_ffmpeg
+# https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=900533
+%bcond_with	system_ffmpeg
 # Temporarily broken, cr_z_* symbols used even when we're supposed to use system minizip
 %bcond_without	system_minizip
 # chromium 58 fails with system vpx 1.6.1
@@ -46,7 +47,7 @@ Name: 		chromium-browser-stable
 # Working version numbers can be found at
 # http://omahaproxy.appspot.com/
 Version: 	67.0.3396.99
-Release: 	2%{?extrarelsuffix}
+Release: 	3%{?extrarelsuffix}
 Summary: 	A fast webkit-based web browser
 Group: 		Networking/WWW
 License: 	BSD, LGPL
