@@ -46,7 +46,7 @@ Name: 		chromium-browser-stable
 # Working version numbers can be found at
 # http://omahaproxy.appspot.com/
 Version: 	67.0.3396.99
-Release: 	1%{?extrarelsuffix}
+Release: 	2%{?extrarelsuffix}
 Summary: 	A fast webkit-based web browser
 Group: 		Networking/WWW
 License: 	BSD, LGPL
@@ -565,7 +565,7 @@ myconf_gn+=" use_ozone=true "
 myconf_gn+=" enable_nacl=false "
 myconf_gn+=" proprietary_codecs=true "
 # myconf_gn+=" custom_toolchain=\"%{_sourcedir}:default\" "
-myconf_gn+=" ffmpeg_branding=\"ChromeOS\" "
+myconf_gn+=" ffmpeg_branding=\"Chrome\" "
 myconf_gn+=" enable_ac3_eac3_audio_demuxing=true "
 myconf_gn+=" enable_hevc_demuxing=true "
 myconf_gn+=" enable_mse_mpeg2ts_stream_parser=true "
