@@ -538,7 +538,7 @@ export CXX=g++
 # sure it sees python2 when it calls python
 export PATH=`pwd`:$PATH
 
-myconf_gn=" use_sysroot=false is_debug=false use_gold=false use_lld=false"
+myconf_gn=" use_sysroot=false is_debug=false use_gold=true use_lld=false"
 %ifarch %arm
 myconf_gn+=" is_clang=false"
 %else
@@ -570,7 +570,7 @@ myconf_gn+=" use_ozone=true "
 myconf_gn+=" enable_nacl=false "
 myconf_gn+=" proprietary_codecs=true "
 # myconf_gn+=" custom_toolchain=\"%{_sourcedir}:default\" "
-myconf_gn+=" ffmpeg_branding=\"Chrome\" "
+myconf_gn+=" ffmpeg_branding=\"ChromeOS\" "
 myconf_gn+=" enable_ac3_eac3_audio_demuxing=true "
 myconf_gn+=" enable_hevc_demuxing=true "
 myconf_gn+=" enable_mse_mpeg2ts_stream_parser=true "
