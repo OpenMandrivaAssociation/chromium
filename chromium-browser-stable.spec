@@ -27,7 +27,7 @@
 %bcond_without	system_icu
 %bcond_with	system_re2
 # https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=900533
-%bcond_with	system_ffmpeg
+%bcond_without	system_ffmpeg
 # Temporarily broken, cr_z_* symbols used even when we're supposed to use system minizip
 %bcond_without	system_minizip
 # chromium 58 fails with system vpx 1.6.1
@@ -47,7 +47,7 @@ Name: 		chromium-browser-stable
 # Working version numbers can be found at
 # http://omahaproxy.appspot.com/
 Version: 	67.0.3396.99
-Release: 	3%{?extrarelsuffix}
+Release: 	4%{?extrarelsuffix}
 Summary: 	A fast webkit-based web browser
 Group: 		Networking/WWW
 License: 	BSD, LGPL
@@ -160,6 +160,7 @@ Patch116:	chromium-58-system-nodejs.patch
 Patch125:	chromium-clang-r2.patch
 Patch126:	chromium-widevine-r2.patch
 Patch127:	chromium-browser-67-llvm_ar_5.patch
+Patch128:	remove-dependency-on-ffmpeg-internals-for-start-time.patch
 
 Provides: 	%{crname}
 Obsoletes: 	chromium-browser-unstable < 26.0.1410.51
@@ -301,6 +302,9 @@ echo "%{revision}" > build/LASTCHANGE.in
 #sed -i 's!-no-canonical-prefixes!!g' build/config/compiler/BUILD.gn
 sed -i 's!-nostdlib++!!g'  build/config/posix/BUILD.gn
 sed -i 's!ffmpeg_buildflags!ffmpeg_features!g' build/linux/unbundle/ffmpeg.gn
+
+# Allow building against system libraries in official builds
+sed -i 's/OFFICIAL_BUILD/GOOGLE_CHROME_BUILD/' tools/generate_shim_headers/generate_shim_headers.py
 
 # Hard code extra version
 FILE=chrome/common/channel_info_posix.cc
@@ -573,6 +577,7 @@ myconf_gn+=" enable_mse_mpeg2ts_stream_parser=true "
 myconf_gn+=" enable_widevine=true"
 myconf_gn+=" use_kerberos=true"
 myconf_gn+=" use_pulseaudio=true link_pulseaudio=true"
+myconf_gn+=" is_official_build=true fieldtrial_testing_like_official_build=true"
 %ifarch i586
 myconf_gn+=" target_cpu=\"x86\""
 %endif
