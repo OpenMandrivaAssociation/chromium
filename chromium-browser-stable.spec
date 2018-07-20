@@ -534,12 +534,11 @@ export CC=gcc
 export CXX=g++
 %endif
 
-ln -s %{_bindir}/ld.bfd ld
 # gn is rather convoluted and not python3 friendly -- let's make
 # sure it sees python2 when it calls python
 export PATH=`pwd`:$PATH
 
-myconf_gn=" use_sysroot=false is_debug=false use_gold=false use_lld=false"
+myconf_gn=" use_sysroot=false is_debug=false use_gold=true use_lld=false"
 %ifarch %arm
 myconf_gn+=" is_clang=false"
 %else
