@@ -511,6 +511,7 @@ if [ ! -f chrome/test/data/webui/i18n_process_css_test.html ]; then
 fi
 
 %build
+%ifarch %arm
 # Use linker flags to reduce memory consumption on low-mem architectures
 %global optflags %(echo %{optflags} | sed -e 's/-g /-g0 /' -e 's/-gdwarf-4//')
 mkdir -p bfd
@@ -518,6 +519,7 @@ ln -s %{_bindir}/ld.bfd bfd/ld
 export PATH=$PWD/bfd:$PATH
 # Use linker flags to reduce memory consumption
 %global ldflags %{ldflags} -fuse-ld=bfd -Wl,--no-keep-memory -Wl,--reduce-memory-overheads
+%endif
 
 %if %mdvver >= 201500
 %ifarch %arm
@@ -532,6 +534,7 @@ export CC=gcc
 export CXX=g++
 %endif
 
+ln -s %{_bindir}/ld.bfd ld
 # gn is rather convoluted and not python3 friendly -- let's make
 # sure it sees python2 when it calls python
 export PATH=`pwd`:$PATH
@@ -575,7 +578,7 @@ myconf_gn+=" enable_mse_mpeg2ts_stream_parser=true "
 myconf_gn+=" enable_widevine=true"
 myconf_gn+=" use_kerberos=true"
 myconf_gn+=" use_pulseaudio=true link_pulseaudio=true"
-myconf_gn+=" is_official_build=true fieldtrial_testing_like_official_build=true"
+myconf_gn+=" fieldtrial_testing_like_official_build=true"
 %ifarch i586
 myconf_gn+=" target_cpu=\"x86\""
 %endif
