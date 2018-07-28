@@ -1,20 +1,19 @@
---- chromium-65.0.3294.5/media/base/mime_util_internal.cc.0112~	2017-12-16 05:27:08.293304909 +0100
-+++ chromium-65.0.3294.5/media/base/mime_util_internal.cc	2017-12-16 05:31:48.297726447 +0100
-@@ -80,7 +80,12 @@ const base::flat_map<std::string, MimeUt
-         {"av1", MimeUtil::AV1},
+diff -up chromium-68.0.3440.42/media/base/mime_util_internal.cc.0112~ chromium-68.0.3440.42/media/base/mime_util_internal.cc
+--- chromium-68.0.3440.42/media/base/mime_util_internal.cc.0112~	2018-07-07 01:52:17.807213200 +0200
++++ chromium-68.0.3440.42/media/base/mime_util_internal.cc	2018-07-07 01:55:19.345219970 +0200
+@@ -81,6 +81,11 @@ const base::flat_map<std::string, MimeUt
  #endif
          {"dts", MimeUtil::DTS}, {"mp2", MimeUtil::MP2},
--	{"mp4v.20.8", MimeUtil::MPEG4_SP}, {"mp4v.20.240", MimeUtil::MPEG4_ASP}
-+	{"mp4v.20.8", MimeUtil::MPEG4_SP}, {"mp4v.20.240", MimeUtil::MPEG4_ASP},
-+	{"msmpeg4v1", MimeUtil::MSMPEG4v1}, {"msmpeg4v2", MimeUtil::MSMPEG4v2},
-+	{"msmpeg4v3", MimeUtil::MSMPEG4v3}, {"wmv7", MimeUtil::WMV7},
-+	{"wmv8", MimeUtil::WMV8}, {"wmv9", MimeUtil::WMV9},
-+	{"vc-1", MimeUtil::VC1}, {"wma", MimeUtil::WMA},
-+	{"vp6", MimeUtil::VP6}, {"mpeg1", MimeUtil::MPEG1}
+         {"mp4v.20.8", MimeUtil::MPEG4_SP}, {"mp4v.20.240", MimeUtil::MPEG4_ASP},
++        {"msmpeg4v1", MimeUtil::MSMPEG4v1}, {"msmpeg4v2", MimeUtil::MSMPEG4v2},
++        {"msmpeg4v3", MimeUtil::MSMPEG4v3}, {"wmv7", MimeUtil::WMV7},
++        {"wmv8", MimeUtil::WMV8}, {"wmv9", MimeUtil::WMV9},
++        {"vc-1", MimeUtil::VC1}, {"wma", MimeUtil::WMA},
++        {"vp6", MimeUtil::VP6}, {"mpeg1", MimeUtil::MPEG1}
        },
        base::KEEP_FIRST_OF_DUPES);
  
-@@ -309,6 +314,9 @@ void MimeUtil::AddSupportedMediaFormats(
+@@ -311,6 +316,9 @@ void MimeUtil::AddSupportedMediaFormats(
    CodecSet webm_codecs(webm_audio_codecs);
    webm_codecs.insert(webm_video_codecs.begin(), webm_video_codecs.end());
  
@@ -24,7 +23,7 @@
    const CodecSet mp3_codecs{MP3};
  
    CodecSet mp4_audio_codecs;
-@@ -351,6 +359,29 @@ void MimeUtil::AddSupportedMediaFormats(
+@@ -357,6 +365,29 @@ void MimeUtil::AddSupportedMediaFormats(
    CodecSet mp4_codecs(mp4_audio_codecs);
    mp4_codecs.insert(mp4_video_codecs.begin(), mp4_video_codecs.end());
  
@@ -54,7 +53,7 @@
    const CodecSet implicit_codec;
    AddContainerWithCodecs("audio/wav", wav_codecs, false);
    AddContainerWithCodecs("audio/x-wav", wav_codecs, false);
-@@ -374,6 +405,11 @@ void MimeUtil::AddSupportedMediaFormats(
+@@ -380,6 +411,11 @@ void MimeUtil::AddSupportedMediaFormats(
  
    AddContainerWithCodecs("audio/x-matroska", matroska_audio_codecs, false);
    AddContainerWithCodecs("video/x-matroska", matroska_video_codecs, false);
@@ -66,7 +65,7 @@
  
  #if BUILDFLAG(USE_PROPRIETARY_CODECS)
    AddContainerWithCodecs("audio/aac", implicit_codec, true);  // AAC / ADTS.
-@@ -1032,6 +1068,15 @@ bool MimeUtil::IsCodecProprietary(Codec
+@@ -1014,6 +1050,15 @@ bool MimeUtil::IsCodecProprietary(Codec
      case DTS:
      case MPEG4_SP:
      case MPEG4_ASP:
@@ -82,7 +81,7 @@
        return true;
  
      case MP3:
-@@ -1043,6 +1088,7 @@ bool MimeUtil::IsCodecProprietary(Codec
+@@ -1025,6 +1070,7 @@ bool MimeUtil::IsCodecProprietary(Codec
      case VP8:
      case VP9:
      case THEORA:
@@ -90,9 +89,10 @@
      case AV1:
        return false;
    }
---- chromium-65.0.3294.5/media/base/mime_util_internal.h.0112~	2017-12-16 05:27:08.293304909 +0100
-+++ chromium-65.0.3294.5/media/base/mime_util_internal.h	2017-12-16 05:27:08.295304921 +0100
-@@ -49,7 +49,17 @@ class MEDIA_EXPORT MimeUtil {
+diff -up chromium-68.0.3440.42/media/base/mime_util_internal.h.0112~ chromium-68.0.3440.42/media/base/mime_util_internal.h
+--- chromium-68.0.3440.42/media/base/mime_util_internal.h.0112~	2018-07-07 01:52:17.807213200 +0200
++++ chromium-68.0.3440.42/media/base/mime_util_internal.h	2018-07-07 01:52:17.809213200 +0200
+@@ -50,7 +50,17 @@ class MEDIA_EXPORT MimeUtil {
      MP2,
      MPEG4_SP,
      MPEG4_ASP,
@@ -111,9 +111,10 @@
    };
  
    // Platform configuration structure.  Controls which codecs are supported at
---- chromium-65.0.3294.5/net/base/mime_util.cc.0112~	2017-12-16 05:27:08.294304915 +0100
-+++ chromium-65.0.3294.5/net/base/mime_util.cc	2017-12-16 05:27:08.295304921 +0100
-@@ -101,6 +101,10 @@ static const MimeInfo kPrimaryMappings[]
+diff -up chromium-68.0.3440.42/net/base/mime_util.cc.0112~ chromium-68.0.3440.42/net/base/mime_util.cc
+--- chromium-68.0.3440.42/net/base/mime_util.cc.0112~	2018-07-07 01:52:17.808213200 +0200
++++ chromium-68.0.3440.42/net/base/mime_util.cc	2018-07-07 01:52:17.810213200 +0200
+@@ -104,6 +104,10 @@ static const MimeInfo kPrimaryMappings[]
      {"video/x-matroska", "mkv"},
      {"audio/x-matroska", "mkv"},
      {"video/x-msvideo", "avi"},
@@ -124,7 +125,7 @@
  };
  
  static const MimeInfo kSecondaryMappings[] = {
-@@ -513,6 +517,7 @@ static const char* const kStandardVideoT
+@@ -509,6 +513,7 @@ static const char* const kStandardVideoT
    "video/sd-video",
    "video/webm",
    "video/x-dv",

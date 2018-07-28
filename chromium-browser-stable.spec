@@ -51,7 +51,7 @@
 Name: 		chromium-browser-%{channel}
 # Working version numbers can be found at
 # http://omahaproxy.appspot.com/
-Version: 	67.0.3396.87
+Version: 	68.0.3440.75
 Release: 	1%{?extrarelsuffix}
 Summary: 	A fast webkit-based web browser
 Group: 		Networking/WWW
@@ -67,8 +67,6 @@ Source100:	%{name}.rpmlintrc
 # Don't use clang's integrated as while trying to check the version of gas
 #Patch4:		chromium-36.0.1985.143-clang-no-integrated-as.patch
 %endif
-
-#Patch20:	chromium-last-commit-position-r0.patch
 
 ### Chromium Fedora Patches ###
 Patch0:         https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-67.0.3396.62-gcc5.patch
@@ -93,7 +91,7 @@ Patch18:        https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromiu
 Patch20:        https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-67.0.3396.62-gn-system.patch
 # Fix last commit position issue
 # https://groups.google.com/a/chromium.org/forum/#!topic/gn-dev/7nlJv486bD4
-Patch21:        https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-53.0.2785.92-last-commit-position.patch
+Patch21:        https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-60.0.3112.78-last-commit-position.patch
 # Fix issue where timespec is not defined when sys/stat.h is included.
 Patch22:        https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-53.0.2785.92-boringssl-time-fix.patch
 # I wouldn't have to do this if there was a standard way to append extra compiler flags
@@ -102,9 +100,6 @@ Patch24:        https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromiu
 Patch25:        https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-54.0.2840.59-jpeg-include-dir.patch
 # On i686, pass --no-keep-memory --reduce-memory-overheads to ld.
 Patch26:        https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-59.0.3071.86-i686-ld-memory-tricks.patch
-# obj/content/renderer/renderer/child_frame_compositing_helper.o: In function `content::ChildFrameCompositingHelper::OnSetSurface(cc::SurfaceId const&, gfx::Size const&, float, cc::SurfaceSequence const&)':
-# /builddir/build/BUILD/chromium-54.0.2840.90/out/Release/../../content/renderer/child_frame_compositing_helper.cc:214: undefined reference to `cc_blink::WebLayerImpl::setOpaque(bool)'
-Patch27:        https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-63.0.3289.84-setopaque.patch
 Patch32:	chromium-66.0.3359.117-nounrar.patch
 Patch33:	chromium-50-system-ffmpeg-3.patch
 Patch36:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-58.0.3029.96-revert-b794998819088f76b4cf44c8db6940240c563cf4.patch
@@ -136,8 +131,6 @@ Patch62:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-66.0.
 Patch65:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-65.0.3325.146-gcc-round-fix.patch
 # Include proper headers to invoke memcpy()
 Patch67:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-65.0.3325.146-memcpy-fix.patch
-# ../../mojo/public/cpp/bindings/associated_interface_ptr_info.h:48:43: error: cannot convert 'const mojo::ScopedInterfaceEndpointHandle' to 'bool' in return
-Patch85:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-67.0.3396.62-boolfix.patch
 # From Debian
 Patch86:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-67.0.3396.62-skia-aarch64-buildfix.patch
 # Use lstdc++ on EPEL7 only
@@ -180,7 +173,7 @@ Patch120:	chromium-59-clang-workaround.patch
 #Patch122:	chromium-63-gn-bootstrap.patch
 #Patch124:	chromium-61.0.3163.100-atk-compile.patch
 Patch125:	chromium-64-system-curl.patch
-Patch127:	chromium-clang-5.patch
+Patch126:	chromium-68-system-libjpeg.patch
 
 Provides: 	%{crname}
 Obsoletes: 	chromium-browser-unstable < 26.0.1410.51
@@ -194,6 +187,7 @@ BuildRequires: 	flex
 BuildRequires:	pkgconfig(alsa)
 BuildRequires:	pkgconfig(krb5)
 BuildRequires:	pkgconfig(com_err)
+BuildRequires:	python2dist(json5)
 BuildRequires: 	alsa-oss-devel
 %if %mdvver >= 201500
 BuildRequires:	atomic-devel
@@ -354,8 +348,11 @@ python2 build/linux/unbundle/remove_bundled_libraries.py \
 	'base/third_party/xdg_user_dirs' \
 	'chrome/third_party/mozilla_security_manager' \
 	'courgette/third_party' \
+	'net/third_party/http2' \
 	'net/third_party/mozilla_security_manager' \
 	'net/third_party/nss' \
+	'net/third_party/quic' \
+	'net/third_party/spdy' \
 	'third_party/WebKit' \
 	'third_party/adobe' \
 	'third_party/analytics' \
@@ -421,7 +418,6 @@ python2 build/linux/unbundle/remove_bundled_libraries.py \
 	'third_party/libXNVCtrl' \
 	'third_party/libaddressinput' \
 	'third_party/libaom' \
-	'third_party/libaom/source/libaom/third_party/x86inc' \
 	'third_party/libdrm' \
 	'third_party/libjingle' \
 	'third_party/libjpeg_turbo' \
@@ -429,6 +425,7 @@ python2 build/linux/unbundle/remove_bundled_libraries.py \
 	'third_party/libpng' \
 	'third_party/libsecret' \
         'third_party/libsrtp' \
+	'third_party/libsync' \
 	'third_party/libudev' \
 	'third_party/libusb' \
 	'third_party/libvpx' \
@@ -461,6 +458,7 @@ python2 build/linux/unbundle/remove_bundled_libraries.py \
         'third_party/pdfium/third_party/libpng16' \
         'third_party/pdfium/third_party/libtiff' \
 	'third_party/pdfium/third_party/skia_shared' \
+	'third_party/perfetto' \
         'third_party/ply' \
 	'third_party/polymer' \
 	'third_party/protobuf' \
@@ -468,11 +466,13 @@ python2 build/linux/unbundle/remove_bundled_libraries.py \
 	'third_party/qcms' \
 	'third_party/qunit' \
 	'third_party/re2' \
+	'third_party/rnnoise' \
 	'third_party/s2cellid' \
 	'third_party/sfntly' \
 	'third_party/sinonjs' \
 	'third_party/skia' \
 	'third_party/skia/third_party/gif' \
+	'third_party/skia/third_party/skcms' \
 	'third_party/skia/third_party/vulkan' \
 	'third_party/smhasher' \
 	'third_party/snappy' \
@@ -502,6 +502,7 @@ python2 build/linux/unbundle/remove_bundled_libraries.py \
 	'url/third_party/mozilla' \
 	'v8/src/third_party/utf8-decoder' \
 	'v8/src/third_party/valgrind' \
+	'v8/third_party/antlr4' \
 	'v8/third_party/inspector_protocol' \
 	--do-remove
 
