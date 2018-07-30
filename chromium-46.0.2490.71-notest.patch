@@ -1,11 +1,11 @@
-diff -up chromium-46.0.2490.71/chrome/test/data/webui_test_resources.grd.notest chromium-46.0.2490.71/chrome/test/data/webui_test_resources.grd
---- chromium-46.0.2490.71/chrome/test/data/webui_test_resources.grd.notest	2015-10-16 02:01:56.644149741 -0400
-+++ chromium-46.0.2490.71/chrome/test/data/webui_test_resources.grd	2015-10-16 02:02:36.217285227 -0400
+diff -up chromium-68.0.3440.42/chrome/test/data/webui_test_resources.grd.0004~ chromium-68.0.3440.42/chrome/test/data/webui_test_resources.grd
+--- chromium-68.0.3440.42/chrome/test/data/webui_test_resources.grd.0004~	2018-07-07 00:38:05.716047181 +0200
++++ chromium-68.0.3440.42/chrome/test/data/webui_test_resources.grd	2018-07-07 01:15:57.337131890 +0200
 @@ -8,7 +8,6 @@
    </outputs>
    <release seq="1">
      <includes>
 -      <include name="IDR_WEBUI_TEST_I18N_PROCESS_CSS_TEST" file="webui/i18n_process_css_test.html" flattenhtml="true" allowexternalscript="true" type="BINDATA" />
+       <include name="IDR_WEB_UI_TEST_MOJO_JS" file="${root_gen_dir}/chrome/test/data/webui/web_ui_test.mojom.js" use_base_dir="false" type="BINDATA"/>
      </includes>
    </release>
- </grit>
