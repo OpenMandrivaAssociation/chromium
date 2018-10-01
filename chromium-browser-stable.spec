@@ -51,7 +51,7 @@
 Name: 		chromium-browser-%{channel}
 # Working version numbers can be found at
 # http://omahaproxy.appspot.com/
-Version: 	68.0.3440.75
+Version: 	69.0.3497.92
 Release: 	1%{?extrarelsuffix}
 Summary: 	A fast webkit-based web browser
 Group: 		Networking/WWW
@@ -69,104 +69,56 @@ Source100:	%{name}.rpmlintrc
 %endif
 
 ### Chromium Fedora Patches ###
-Patch0:         https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-67.0.3396.62-gcc5.patch
-Patch1:         https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-45.0.2454.101-linux-path-max.patch
-Patch2:         https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-55.0.2883.75-addrfix.patch
-Patch4:         https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-46.0.2490.71-notest.patch
-#Patch6:		https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-47.0.2526.80-pnacl-fgnu-inline-asm.patch
-# Ignore broken nacl open fd counter
-Patch7:         https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-47.0.2526.80-nacl-ignore-broken-fd-counter.patch
-# Use libusb_interrupt_event_handler from current libusbx (1.0.21-0.1.git448584a)
-Patch9:         https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-48.0.2564.116-libusb_interrupt_event_handler.patch
-# Ignore deprecations in cups 2.2
-# https://bugs.chromium.org/p/chromium/issues/detail?id=622493
-Patch12:        https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-55.0.2883.75-cups22.patch
-# Use PIE in the Linux sandbox (from openSUSE via Russian Fedora)
-Patch15:        https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-55.0.2883.75-sandbox-pie.patch
-# Enable ARM CPU detection for webrtc (from archlinux via Russian Fedora)
-Patch16:        chromium-52.0.2743.82-arm-webrtc.patch
-# Use /etc/chromium for master_prefs
-Patch18:        https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-52.0.2743.82-master-prefs-path.patch
-# Use gn system files
-Patch20:        https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-67.0.3396.62-gn-system.patch
-# Fix last commit position issue
-# https://groups.google.com/a/chromium.org/forum/#!topic/gn-dev/7nlJv486bD4
-Patch21:        https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-60.0.3112.78-last-commit-position.patch
-# Fix issue where timespec is not defined when sys/stat.h is included.
-Patch22:        https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-53.0.2785.92-boringssl-time-fix.patch
-# I wouldn't have to do this if there was a standard way to append extra compiler flags
-Patch24:        https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-59.0.3071.86-nullfix.patch
-# Add explicit includedir for jpeglib.h
-Patch25:        https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-54.0.2840.59-jpeg-include-dir.patch
-# On i686, pass --no-keep-memory --reduce-memory-overheads to ld.
-Patch26:        https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-59.0.3071.86-i686-ld-memory-tricks.patch
-Patch32:	chromium-66.0.3359.117-nounrar.patch
-Patch33:	chromium-50-system-ffmpeg-3.patch
-Patch36:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-58.0.3029.96-revert-b794998819088f76b4cf44c8db6940240c563cf4.patch
-# Correctly compile the stdatomic.h in ffmpeg with gcc 4.8
-Patch37:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-64.0.3282.119-ffmpeg-stdatomic.patch
-# Nacl can't die soon enough
-Patch39:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-66.0.3359.117-system-clang.patch
-# Do not prefix libpng functions
-Patch42:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-60.0.3112.78-no-libpng-prefix.patch
-# Do not mangle libjpeg
-Patch43:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-60.0.3112.78-jpeg-nomangle.patch
-# Do not mangle zlib
-Patch45:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-60.0.3112.78-no-zlib-mangle.patch
-# Apply these changes to work around EPEL7 compiler issues
-Patch46:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-62.0.3202.62-kmaxskip-constexpr.patch
-#Patch47:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-60.0.3112.90-vulkan-force-c99.patch
-# Fix libavutil include pathing to find arch specific timer.h
-# For some reason, this only fails on aarch64. No idea why.
-Patch50:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-60.0.3112.113-libavutil-timer-include-path-fix.patch
-# from gentoo
-Patch53:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-61.0.3163.79-gcc-no-opt-safe-math.patch
-# Only needed when glibc 2.26.90 or later is used
-Patch57:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-63.0.3289.84-aarch64-glibc-2.26.90.patch
-# From gentoo
-Patch62:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-66.0.3359.117-gcc5-r3.patch
-# Do not try to use libc++ in the remoting stack
-# Patch63:	chromium-63.0.3289.84-nolibc++.patch
-# To use round with gcc, you need to #include <cmath>
-Patch65:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-65.0.3325.146-gcc-round-fix.patch
-# Include proper headers to invoke memcpy()
-Patch67:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-65.0.3325.146-memcpy-fix.patch
-# From Debian
-Patch86:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-67.0.3396.62-skia-aarch64-buildfix.patch
-# Use lstdc++ on EPEL7 only
-Patch87:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-65.0.3325.162-epel7-stdc++.patch
-# Missing files in tarball
-Patch88:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-66.0.3359.117-missing-files.patch
-# https://chromium.googlesource.com/chromium/src/+/ba4141e451f4e0b1b19410b1b503bd32e150df06%5E%21/#F0
-# Patch89:	chromium-66.0.3359.117-gcc-optional-move-fixes.patch
-# https://chromium.googlesource.com/chromium/src/+/4f2b52281ce1649ea8347489443965ad33262ecc%5E%21
-# Patch90:	chromium-66.0.3359.117-gcc-copy-constructor-fix.patch
-# https://bugs.chromium.org/p/chromium/issues/detail?id=816952
-# Patch91:	chromium-66.0.3359.117-gcc-vector-copy-constructor-fix.patch
-Patch94:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-66.0.3359.117-GCC-fully-declare-ConfigurationPolicyProvider.patch
-# Patch95:	chromium-65.0.3325.146-GCC-IDB-methods-String-renamed-to-GetString.patch
-# https://github.com/archlinuxarm/PKGBUILDs/blob/master/extra/chromium/0006-GCC-do-not-use-initializer-list-for-NoDestructor-of-.patch
-# Patch96:	chromium-66.0.3359.117-GCC-do-not-use-initializer-list-for-NoDestructor-of-.patch
-# https://chromium.googlesource.com/chromium/src/+/b84682f31dc99b9c90f5a04947075815697c68d9%5E%21/#F0
-# Patch97:	chromium-66.0.3359.139-arm-init-fix.patch
-# GCC8 has changed the alignof operator to return the minimal alignment required by the target ABI
-# instead of the preferred alignment. This means int64_t is now 4 on i686 (instead of 8).
-# Use __alignof__ to get the value we expect (and chromium checks for).
-Patch98:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-66.0.3359.170-gcc8-alignof.patch
-# https://chromium.googlesource.com/crashpad/crashpad/+/26ef5c910fc7e2edb441f1d2b39944195342dee9
-Patch99:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-67.0.3396.62-crashpad-aarch64-buildfix.patch
-# RHEL 7 has a bug in its python2.7 which does not propely handle exec with a tuple
-# https://bugs.python.org/issue21591
-Patch100:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-67.0.3396.62-epel7-use-old-python-exec-syntax.patch
+Patch0:         chromium-67.0.3396.62-gcc5.patch
+Patch1:         chromium-45.0.2454.101-linux-path-max.patch
+Patch2:         chromium-55.0.2883.75-addrfix.patch
+Patch4:         chromium-68.0.3440.106-notest.patch
+Patch7:         chromium-47.0.2526.80-nacl-ignore-broken-fd-counter.patch
+Patch9:         chromium-48.0.2564.116-libusb_interrupt_event_handler.patch
+Patch12:        chromium-55.0.2883.75-cups22.patch
+Patch15:        chromium-55.0.2883.75-sandbox-pie.patch
+Patch18:        chromium-68.0.3440.106-master-prefs-path.patch
+Patch20:        chromium-67.0.3396.62-gn-system.patch
+Patch22:        chromium-53.0.2785.92-boringssl-time-fix.patch
+Patch24:        chromium-63.0.3289.84-nullfix.patch
+Patch25:        chromium-54.0.2840.59-jpeg-include-dir.patch
+Patch26:        chromium-59.0.3071.86-i686-ld-memory-tricks.patch
+Patch36:        chromium-58.0.3029.96-revert-b794998819088f76b4cf44c8db6940240c563cf4.patch
+Patch37:        chromium-64.0.3282.119-ffmpeg-stdatomic.patch
+Patch39:        chromium-66.0.3359.117-system-clang.patch
+Patch42:        chromium-60.0.3112.78-no-libpng-prefix.patch
+Patch43:        chromium-60.0.3112.78-jpeg-nomangle.patch
+Patch45:        chromium-60.0.3112.78-no-zlib-mangle.patch
+Patch46:        chromium-62.0.3202.62-kmaxskip-constexpr.patch
+Patch50:        chromium-60.0.3112.113-libavutil-timer-include-path-fix.patch
+Patch53:        chromium-61.0.3163.79-gcc-no-opt-safe-math.patch
+Patch57:        chromium-63.0.3289.84-aarch64-glibc-2.26.90.patch
+Patch62:        chromium-66.0.3359.117-gcc5-r3.patch
+Patch65:        chromium-65.0.3325.146-gcc-round-fix.patch
+Patch67:        chromium-65.0.3325.146-memcpy-fix.patch
+Patch85:        chromium-68.0.3440.106-boolfix.patch
+Patch86:        chromium-67.0.3396.62-skia-aarch64-buildfix.patch
+Patch87:        chromium-65.0.3325.162-epel7-stdc++.patch
+Patch88:        chromium-66.0.3359.117-missing-files.patch
+Patch92:        chromium-69.0.3497.81-norar.patch
+Patch94:        chromium-66.0.3359.117-GCC-fully-declare-ConfigurationPolicyProvider.patch
+Patch98:        chromium-69.0.3497.81-gcc8-alignof.patch
+Patch101:       chromium-68.0.3440.106-fedora-user-agent.patch
+Patch102:       chromium-67.0.3396.99-py3fix.patch
+Patch103:       chromium-69.0.3497.81-py2-bootstrap.patch
+Patch109:       0001-vpx_sum_squares_2d_i16_neon-Make-s2-a-uint64x1_t.patch
+Patch110:       chromium-68.0.3440.106-fix-default-on-redeclaration.patch
+# https://gitweb.gentoo.org/repo/gentoo.git/tree/www-client/chromium/files/chromium-widevine-r2.patch
+Patch111:       chromium-69.0.3497.81-widevine-r2.patch
+Patch112:       chromium-69.0.3497.81-build-sanely-please.patch
 
 ### Chromium Tests Patches ###
 # suse, system libs
-Patch103:	arm_use_right_compiler.patch
+Patch115:	arm_use_right_compiler.patch
 
 # mga
-Patch111:	chromium-55-extra-media.patch
-Patch112:	chromium-40-wmvflvmpg.patch
-Patch114:	chromium-55-flac.patch
+Patch116:	chromium-55-extra-media.patch
+Patch117:	chromium-40-wmvflvmpg.patch
 
 # omv
 Patch120:	chromium-59-clang-workaround.patch
@@ -174,7 +126,6 @@ Patch121:	chromium-clang-r2.patch
 #Patch122:	chromium-63-gn-bootstrap.patch
 #Patch124:	chromium-61.0.3163.100-atk-compile.patch
 Patch125:	chromium-64-system-curl.patch
-Patch126:	chromium-68-system-libjpeg.patch
 Patch127:	chromium-browser-67-llvm_ar_5.patch
 
 Provides: 	%{crname}
@@ -412,6 +363,7 @@ python2 build/linux/unbundle/remove_bundled_libraries.py \
 	'third_party/hunspell' \
 	'third_party/iccjpeg' \
 	'third_party/icu' \
+	'tools/gn/base/third_party/icu' \
 	'third_party/inspector_protocol' \
 	'third_party/jinja2' \
 	'third_party/jstemplate' \
@@ -618,7 +570,7 @@ gn_system_libraries+=" ffmpeg"
 %endif
 python2 build/linux/unbundle/replace_gn_files.py --system-libraries ${gn_system_libraries}
 
-python2 tools/gn/bootstrap/bootstrap.py -v --gn-gen-args "${myconf_gn}"
+python2 tools/gn/bootstrap/bootstrap.py --gn-gen-args "${myconf_gn}"
 
 python2 third_party/libaddressinput/chromium/tools/update-strings.py
 

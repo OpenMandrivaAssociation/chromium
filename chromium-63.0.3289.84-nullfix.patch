@@ -1,5 +1,6 @@
---- chromium-63.0.3236.7/build/toolchain/linux/BUILD.gn.0024~	2017-10-13 03:05:24.000000000 +0200
-+++ chromium-63.0.3236.7/build/toolchain/linux/BUILD.gn	2017-10-17 13:18:19.877771152 +0200
+diff -up chromium-63.0.3239.84/build/toolchain/linux/BUILD.gn.nullfix chromium-63.0.3239.84/build/toolchain/linux/BUILD.gn
+--- chromium-63.0.3239.84/build/toolchain/linux/BUILD.gn.nullfix	2017-12-06 15:05:21.000000000 -0500
++++ chromium-63.0.3239.84/build/toolchain/linux/BUILD.gn	2017-12-07 10:44:34.507207080 -0500
 @@ -31,6 +31,7 @@ gcc_toolchain("arm64") {
    ld = cxx
    readelf = "${toolprefix}readelf"
@@ -32,3 +33,11 @@
  
    # Output linker map files for binary size analysis.
    enable_linker_map = true
+@@ -186,6 +190,7 @@ gcc_toolchain("mipsel") {
+   ld = cxx
+   readelf = "${toolprefix}readelf"
+   nm = "${toolprefix}nm"
++  extra_cppflags = "-fno-delete-null-pointer-checks"
+ 
+   toolchain_args = {
+     cc_wrapper = ""
