@@ -1,0 +1,25 @@
+diff --git a/tools/gn/build/gen.py b/tools/gn/build/gen.py
+index 11c9246..bc29464 100755
+--- a/tools/gn/build/gen.py
++++ b/tools/gn/build/gen.py
+@@ -369,7 +369,6 @@ def WriteGNNinja(path, platform, host, options, linux_sysroot):
+         cflags.append('--sysroot=' + linux_sysroot)
+         ldflags.append('--sysroot=' + linux_sysroot)
+       ldflags.extend([
+-          '-static-libstdc++',
+           '-Wl,--as-needed',
+       ])
+       libs.extend([
+diff --git a/build/config/compiler/BUILD.gn b/build/config/compiler/BUILD.gn
+index 65580fa..5e1ba8e 100644
+--- a/build/config/compiler/BUILD.gn
++++ b/build/config/compiler/BUILD.gn
+@@ -670,7 +670,7 @@ config("compiler") {
+   # https://crbug.com/847724).
+   if (is_clang && !is_nacl && target_os != "chromeos" && !use_xcode_clang &&
+       (is_win || use_custom_libcxx)) {
+-    cflags += [ "-fcomplete-member-pointers" ]
++    cflags += [ "" ]
+   }
+ 
+   # Pass the same C/C++ flags to the objective C/C++ compiler.

@@ -127,12 +127,15 @@ Patch121:	chromium-clang-r2.patch
 #Patch124:	chromium-61.0.3163.100-atk-compile.patch
 Patch125:	chromium-64-system-curl.patch
 Patch127:	chromium-browser-67-llvm_ar_5.patch
+Patch128:	remove-static.patch
 
 Provides: 	%{crname}
 Obsoletes: 	chromium-browser-unstable < 26.0.1410.51
 Obsoletes: 	chromium-browser-beta < 26.0.1410.51
 Obsoletes: 	chromium-browser < 1:9.0.597.94
 BuildRequires: 	gperf
+BuildRequires: 	stdc++-static-devel
+BuildRequires: 	glibc-static-devel
 BuildRequires: 	bison
 BuildRequires: 	re2c
 BuildRequires: 	flex
@@ -307,6 +310,7 @@ python2 build/linux/unbundle/remove_bundled_libraries.py \
 	'net/third_party/quic' \
 	'net/third_party/spdy' \
 	'third_party/WebKit' \
+	'third_party/abseil-cpp' \
 	'third_party/adobe' \
 	'third_party/analytics' \
 	'third_party/angle' \
@@ -318,6 +322,9 @@ python2 build/linux/unbundle/remove_bundled_libraries.py \
 	'third_party/angle/third_party/glslang' \
 	'third_party/angle/third_party/spirv-headers' \
 	'third_party/angle/third_party/spirv-tools' \
+	'third_party/angle/third_party/vulkan-headers' \
+	'third_party/angle/third_party/vulkan-loader' \
+	'third_party/angle/third_party/vulkan-tools' \
 	'third_party/angle/third_party/vulkan-validation-layers' \
 	'third_party/apple_apsl' \
 	'third_party/blanketjs' \
@@ -331,7 +338,10 @@ python2 build/linux/unbundle/remove_bundled_libraries.py \
 	'third_party/catapult' \
 	'third_party/catapult/common/py_vulcanize/third_party/rcssmin' \
 	'third_party/catapult/common/py_vulcanize/third_party/rjsmin' \
+	'third_party/catapult/third_party/beautifulsoup4' \
+	'third_party/catapult/third_party/html5lib-python' \
 	'third_party/catapult/third_party/polymer' \
+	'third_party/catapult/third_party/six' \
 	'third_party/catapult/tracing/third_party/d3' \
 	'third_party/catapult/tracing/third_party/gl-matrix' \
 	'third_party/catapult/tracing/third_party/jszip' \
@@ -363,7 +373,6 @@ python2 build/linux/unbundle/remove_bundled_libraries.py \
 	'third_party/hunspell' \
 	'third_party/iccjpeg' \
 	'third_party/icu' \
-	'tools/gn/base/third_party/icu' \
 	'third_party/inspector_protocol' \
 	'third_party/jinja2' \
 	'third_party/jstemplate' \
@@ -393,6 +402,7 @@ python2 build/linux/unbundle/remove_bundled_libraries.py \
 	'third_party/llvm-build' \
 	'third_party/lss' \
 	'third_party/lzma_sdk' \
+	'third_party/markupsafe' \
 	'third_party/mesa' \
 	'third_party/metrics_proto' \
 	'third_party/modp_b64' \
@@ -417,12 +427,14 @@ python2 build/linux/unbundle/remove_bundled_libraries.py \
 	'third_party/polymer' \
 	'third_party/protobuf' \
 	'third_party/protobuf/third_party/six' \
+	'third_party/pyjson5' \
 	'third_party/qcms' \
 	'third_party/qunit' \
 	'third_party/re2' \
 	'third_party/rnnoise' \
 	'third_party/s2cellid' \
 	'third_party/sfntly' \
+	'third_party/simplejson' \
 	'third_party/sinonjs' \
 	'third_party/skia' \
 	'third_party/skia/third_party/gif' \
@@ -453,6 +465,7 @@ python2 build/linux/unbundle/remove_bundled_libraries.py \
         'third_party/yasm' \
         'third_party/zlib' \
 	'third_party/zlib/google' \
+	'tools/gn/base/third_party/icu' \
 	'url/third_party/mozilla' \
 	'v8/src/third_party/utf8-decoder' \
 	'v8/src/third_party/valgrind' \
@@ -484,13 +497,18 @@ export PATH=$PWD/bfd:$PATH
 export CC=clang
 export CXX=clang++
 
+export CFLAGS="%{optflags}"
+export CXXFLAGS="%{optflags}"
+export LDFLAGS="%{ldflags}"
+
 # gn is rather convoluted and not python3 friendly -- let's make
 # sure it sees python2 when it calls python
 export PATH=`pwd`:$PATH
 
-myconf_gn=" use_sysroot=false is_debug=false use_gold=true"
+myconf_gn=" use_sysroot=false is_debug=false use_gold=true fieldtrial_testing_like_official_build=true"
 myconf_gn+=" is_clang=true clang_base_path=\"%{_prefix}\" clang_use_chrome_plugins=false "
 myconf_gn+=" treat_warnings_as_errors=false"
+myconf_gn+=" use_lld=false"
 myconf_gn+=" use_system_libjpeg=true "
 myconf_gn+=" use_system_lcms2=true "
 myconf_gn+=" use_system_libpng=true "
