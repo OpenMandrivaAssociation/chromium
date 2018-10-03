@@ -185,6 +185,7 @@ BuildRequires: 	flex
 #BuildRequires: 	v8-devel
 BuildRequires:	pkgconfig(alsa)
 BuildRequires:	pkgconfig(krb5)
+BuildRequires:	pkgconfig(re2)
 BuildRequires:	pkgconfig(com_err)
 BuildRequires:	python2dist(json5)
 BuildRequires: 	alsa-oss-devel
