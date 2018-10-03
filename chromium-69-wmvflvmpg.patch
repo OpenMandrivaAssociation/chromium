@@ -1,8 +1,8 @@
-diff -up chromium-68.0.3440.42/media/base/mime_util_internal.cc.0112~ chromium-68.0.3440.42/media/base/mime_util_internal.cc
---- chromium-68.0.3440.42/media/base/mime_util_internal.cc.0112~	2018-07-07 01:52:17.807213200 +0200
-+++ chromium-68.0.3440.42/media/base/mime_util_internal.cc	2018-07-07 01:55:19.345219970 +0200
-@@ -81,6 +81,11 @@ const base::flat_map<std::string, MimeUt
- #endif
+diff -up chromium-69.0.3497.100/media/base/mime_util_internal.cc.38~ chromium-69.0.3497.100/media/base/mime_util_internal.cc
+--- chromium-69.0.3497.100/media/base/mime_util_internal.cc.38~	2018-10-02 22:33:23.202267666 +0200
++++ chromium-69.0.3497.100/media/base/mime_util_internal.cc	2018-10-02 22:35:18.081936900 +0200
+@@ -76,6 +76,11 @@ const base::flat_map<std::string, MimeUt
+         {"vp8.0", MimeUtil::VP8}, {"theora", MimeUtil::THEORA},
          {"dts", MimeUtil::DTS}, {"mp2", MimeUtil::MP2},
          {"mp4v.20.8", MimeUtil::MPEG4_SP}, {"mp4v.20.240", MimeUtil::MPEG4_ASP},
 +        {"msmpeg4v1", MimeUtil::MSMPEG4v1}, {"msmpeg4v2", MimeUtil::MSMPEG4v2},
@@ -13,7 +13,7 @@ diff -up chromium-68.0.3440.42/media/base/mime_util_internal.cc.0112~ chromium-6
        },
        base::KEEP_FIRST_OF_DUPES);
  
-@@ -311,6 +316,9 @@ void MimeUtil::AddSupportedMediaFormats(
+@@ -306,6 +311,9 @@ void MimeUtil::AddSupportedMediaFormats(
    CodecSet webm_codecs(webm_audio_codecs);
    webm_codecs.insert(webm_video_codecs.begin(), webm_video_codecs.end());
  
@@ -23,7 +23,7 @@ diff -up chromium-68.0.3440.42/media/base/mime_util_internal.cc.0112~ chromium-6
    const CodecSet mp3_codecs{MP3};
  
    CodecSet mp4_audio_codecs;
-@@ -357,6 +365,29 @@ void MimeUtil::AddSupportedMediaFormats(
+@@ -352,6 +360,29 @@ void MimeUtil::AddSupportedMediaFormats(
    CodecSet mp4_codecs(mp4_audio_codecs);
    mp4_codecs.insert(mp4_video_codecs.begin(), mp4_video_codecs.end());
  
@@ -53,7 +53,7 @@ diff -up chromium-68.0.3440.42/media/base/mime_util_internal.cc.0112~ chromium-6
    const CodecSet implicit_codec;
    AddContainerWithCodecs("audio/wav", wav_codecs, false);
    AddContainerWithCodecs("audio/x-wav", wav_codecs, false);
-@@ -380,6 +411,11 @@ void MimeUtil::AddSupportedMediaFormats(
+@@ -375,6 +406,11 @@ void MimeUtil::AddSupportedMediaFormats(
  
    AddContainerWithCodecs("audio/x-matroska", matroska_audio_codecs, false);
    AddContainerWithCodecs("video/x-matroska", matroska_video_codecs, false);
@@ -65,7 +65,7 @@ diff -up chromium-68.0.3440.42/media/base/mime_util_internal.cc.0112~ chromium-6
  
  #if BUILDFLAG(USE_PROPRIETARY_CODECS)
    AddContainerWithCodecs("audio/aac", implicit_codec, true);  // AAC / ADTS.
-@@ -1014,6 +1050,15 @@ bool MimeUtil::IsCodecProprietary(Codec
+@@ -1007,6 +1043,15 @@ bool MimeUtil::IsCodecProprietary(Codec
      case DTS:
      case MPEG4_SP:
      case MPEG4_ASP:
@@ -81,7 +81,7 @@ diff -up chromium-68.0.3440.42/media/base/mime_util_internal.cc.0112~ chromium-6
        return true;
  
      case MP3:
-@@ -1025,6 +1070,7 @@ bool MimeUtil::IsCodecProprietary(Codec
+@@ -1018,6 +1063,7 @@ bool MimeUtil::IsCodecProprietary(Codec
      case VP8:
      case VP9:
      case THEORA:
@@ -89,9 +89,9 @@ diff -up chromium-68.0.3440.42/media/base/mime_util_internal.cc.0112~ chromium-6
      case AV1:
        return false;
    }
-diff -up chromium-68.0.3440.42/media/base/mime_util_internal.h.0112~ chromium-68.0.3440.42/media/base/mime_util_internal.h
---- chromium-68.0.3440.42/media/base/mime_util_internal.h.0112~	2018-07-07 01:52:17.807213200 +0200
-+++ chromium-68.0.3440.42/media/base/mime_util_internal.h	2018-07-07 01:52:17.809213200 +0200
+diff -up chromium-69.0.3497.100/media/base/mime_util_internal.h.38~ chromium-69.0.3497.100/media/base/mime_util_internal.h
+--- chromium-69.0.3497.100/media/base/mime_util_internal.h.38~	2018-10-02 22:33:23.202267666 +0200
++++ chromium-69.0.3497.100/media/base/mime_util_internal.h	2018-10-02 22:33:23.205267683 +0200
 @@ -50,7 +50,17 @@ class MEDIA_EXPORT MimeUtil {
      MP2,
      MPEG4_SP,
@@ -111,9 +111,9 @@ diff -up chromium-68.0.3440.42/media/base/mime_util_internal.h.0112~ chromium-68
    };
  
    // Platform configuration structure.  Controls which codecs are supported at
-diff -up chromium-68.0.3440.42/net/base/mime_util.cc.0112~ chromium-68.0.3440.42/net/base/mime_util.cc
---- chromium-68.0.3440.42/net/base/mime_util.cc.0112~	2018-07-07 01:52:17.808213200 +0200
-+++ chromium-68.0.3440.42/net/base/mime_util.cc	2018-07-07 01:52:17.810213200 +0200
+diff -up chromium-69.0.3497.100/net/base/mime_util.cc.38~ chromium-69.0.3497.100/net/base/mime_util.cc
+--- chromium-69.0.3497.100/net/base/mime_util.cc.38~	2018-10-02 22:33:23.203267672 +0200
++++ chromium-69.0.3497.100/net/base/mime_util.cc	2018-10-02 22:33:23.205267683 +0200
 @@ -104,6 +104,10 @@ static const MimeInfo kPrimaryMappings[]
      {"video/x-matroska", "mkv"},
      {"audio/x-matroska", "mkv"},
@@ -125,7 +125,7 @@ diff -up chromium-68.0.3440.42/net/base/mime_util.cc.0112~ chromium-68.0.3440.42
  };
  
  static const MimeInfo kSecondaryMappings[] = {
-@@ -509,6 +513,7 @@ static const char* const kStandardVideoT
+@@ -510,6 +514,7 @@ static const char* const kStandardVideoT
    "video/sd-video",
    "video/webm",
    "video/x-dv",

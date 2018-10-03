@@ -1,0 +1,33 @@
+diff -up chromium-69.0.3497.81/build/config/BUILD.gn.fyoursysroot chromium-69.0.3497.81/build/config/BUILD.gn
+--- chromium-69.0.3497.81/build/config/BUILD.gn.fyoursysroot	2018-09-06 13:43:44.863375238 -0400
++++ chromium-69.0.3497.81/build/config/BUILD.gn	2018-09-06 13:43:58.377083290 -0400
+@@ -284,9 +284,9 @@ group("executable_and_loadable_module_an
+     public_deps += [ "//build/config/sanitizers:deps" ]
+   }
+ 
+-  if (use_custom_libcxx) {
+-    public_deps += [ "//buildtools/third_party/libc++" ]
+-  }
++  # if (use_custom_libcxx) {
++  #   public_deps += [ "//buildtools/third_party/libc++" ]
++  # }
+ 
+   if (use_afl) {
+     public_deps += [ "//third_party/afl" ]
+diff -up chromium-69.0.3497.81/build/config/sysroot.gni.fyoursysroot chromium-69.0.3497.81/build/config/sysroot.gni
+--- chromium-69.0.3497.81/build/config/sysroot.gni.fyoursysroot	2018-09-06 13:40:46.212232232 -0400
++++ chromium-69.0.3497.81/build/config/sysroot.gni	2018-09-06 13:41:02.421882529 -0400
+@@ -15,9 +15,10 @@ declare_args() {
+   # The absolute path to directory containing linux sysroot images
+   target_sysroot_dir = "//build/linux"
+ 
+-  use_sysroot = current_cpu == "x86" || current_cpu == "x64" ||
+-                current_cpu == "arm" || current_cpu == "arm64" ||
+-                current_cpu == "mipsel" || current_cpu == "mips64el"
++  use_sysroot = false
++  # use_sysroot = current_cpu == "x86" || current_cpu == "x64" ||
++  #               current_cpu == "arm" || current_cpu == "arm64" ||
++  #               current_cpu == "mipsel" || current_cpu == "mips64el"
+ }
+ 
+ if (current_os == target_os && current_cpu == target_cpu &&
