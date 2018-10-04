@@ -610,7 +610,6 @@ gn_system_libraries="
     fontconfig
     freetype
     harfbuzz-ng
-    icu
     libdrm
     libjpeg
     libusb
