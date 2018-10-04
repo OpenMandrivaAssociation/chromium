@@ -1,0 +1,28 @@
+diff -up chromium-51.0.2687.0/third_party/webrtc/modules/video_coding/codecs/h264/h264_decoder_impl.cc.system-ffmpeg-3 chromium-51.0.2687.0/third_party/webrtc/modules/video_coding/codecs/h264/h264_decoder_impl.cc
+--- chromium-51.0.2687.0/third_party/webrtc/modules/video_coding/codecs/h264/h264_decoder_impl.cc.system-ffmpeg-3	2016-03-22 23:02:39.000000000 +0100
++++ chromium-51.0.2687.0/third_party/webrtc/modules/video_coding/codecs/h264/h264_decoder_impl.cc	2016-03-23 18:51:16.810699343 +0100
+@@ -15,9 +15,9 @@
+ #include <limits>
+ 
+ extern "C" {
+-#include "third_party/ffmpeg/libavcodec/avcodec.h"
+-#include "third_party/ffmpeg/libavformat/avformat.h"
+-#include "third_party/ffmpeg/libavutil/imgutils.h"
++#include <libavcodec/avcodec.h>
++#include <libavformat/avformat.h>
++#include <libavutil/imgutils.h>
+ }  // extern "C"
+ 
+ #include "api/video/i420_buffer.h"
+diff -up chromium-51.0.2687.0/third_party/webrtc/modules/video_coding/codecs/h264/h264_decoder_impl.h.system-ffmpeg-3 chromium-51.0.2687.0/third_party/webrtc/modules/video_coding/codecs/h264/h264_decoder_impl.h
+--- chromium-51.0.2687.0/third_party/webrtc/modules/video_coding/codecs/h264/h264_decoder_impl.h.system-ffmpeg-3	2016-03-23 18:55:39.080894319 +0100
++++ chromium-51.0.2687.0/third_party/webrtc/modules/video_coding/codecs/h264/h264_decoder_impl.h	2016-03-23 18:54:32.178123691 +0100
+@@ -17,7 +17,7 @@
+ #include "modules/video_coding/codecs/h264/include/h264.h"
+ 
+ extern "C" {
+-#include "third_party/ffmpeg/libavcodec/avcodec.h"
++#include <libavcodec/avcodec.h>
+ }  // extern "C"
+ 
+ #include "common_video/h264/h264_bitstream_parser.h"
