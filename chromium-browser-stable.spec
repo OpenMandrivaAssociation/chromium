@@ -36,7 +36,7 @@
 %bcond_without	system_icu
 %bcond_without	system_ffmpeg
 # Temporarily broken, cr_z_* symbols used even when we're supposed to use system minizip
-%bcond_with	system_minizip
+%bcond_without	system_minizip
 # chromium 58 fails with system vpx 1.6.1
 %bcond_with	system_vpx
 %bcond_with	system_harfbuzz
@@ -615,7 +615,6 @@ gn_system_libraries="
     re2
     snappy
     yasm
-    zlib
 "
 #    libpng
 #    opus
