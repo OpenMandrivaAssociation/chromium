@@ -30,7 +30,7 @@
 %bcond_with	plf
 # crisb - ozone causes a segfault on startup as of 57.0.2987.133
 %bcond_with	ozone
-%bcond_without	system_icu
+%bcond_with	system_icu
 %bcond_without	system_ffmpeg
 # Temporarily broken, cr_z_* symbols used even when we're supposed to use system minizip
 %bcond_with	system_minizip
