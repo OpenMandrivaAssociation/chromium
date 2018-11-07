@@ -137,7 +137,7 @@ diff -up chromium-69.0.3497.100/media/base/mime_util_internal.cc.37~ chromium-69
 +  AddContainerWithCodecs("video/x-msvideo", matroska_codecs, true);
  
  #if BUILDFLAG(ENABLE_MSE_MPEG2TS_STREAM_PARSER)
-   // TODO(ddorwin): Exactly which codecs should be supported?
+   CodecSet mp2t_codecs{H264, MPEG2_AAC, MPEG4_AAC, MP3};
 @@ -968,9 +1004,13 @@ bool MimeUtil::IsCodecProprietary(Codec
      case H264:
      case HEVC:
@@ -230,8 +230,8 @@ diff -up chromium-69.0.3497.100/media/remoting/proto_enum_utils.cc.37~ chromium-
    return base::nullopt;  // Not a 'default' to ensure compile-time checks.
  }
 diff -up chromium-69.0.3497.100/media/remoting/rpc.proto.37~ chromium-69.0.3497.100/media/remoting/rpc.proto
---- chromium-69.0.3497.100/media/remoting/rpc.proto.37~	2018-09-17 21:10:16.000000000 +0200
-+++ chromium-69.0.3497.100/media/remoting/rpc.proto	2018-10-02 22:30:05.031093090 +0200
+--- chromium-69.0.3497.100/media/remoting/media_remoting_rpc.proto.37~	2018-09-17 21:10:16.000000000 +0200
++++ chromium-69.0.3497.100/media/remoting/media_remoting_rpc.proto	2018-10-02 22:30:05.031093090 +0200
 @@ -67,6 +67,7 @@ message AudioDecoderConfig {
      kCodecALAC = 15;
      kCodecAC3 = 16;
