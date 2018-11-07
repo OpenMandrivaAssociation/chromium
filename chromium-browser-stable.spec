@@ -28,9 +28,6 @@
 %define    google_default_client_secret RDdr-pHq2gStY4uw0m-zxXeo
 
 %bcond_with	plf
-# Chromium breaks on wayland, hidpi, and colors with gtk3 enabled.
-# But as of 60.0.3112.78 and .90, building with gtk2 is broken
-%bcond_without	gtk3
 # crisb - ozone causes a segfault on startup as of 57.0.2987.133
 %bcond_with	ozone
 %bcond_without	system_icu
@@ -51,7 +48,7 @@
 Name: 		chromium-browser-%{channel}
 # Working version numbers can be found at
 # http://omahaproxy.appspot.com/
-Version: 	69.0.3497.100
+Version: 	70.0.3538.77
 Release: 	1%{?extrarelsuffix}
 Summary: 	A fast webkit-based web browser
 Group: 		Networking/WWW
@@ -82,9 +79,9 @@ Patch9:         https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromiu
 # https://bugs.chromium.org/p/chromium/issues/detail?id=622493
 Patch12:        https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-55.0.2883.75-cups22.patch
 # Use PIE in the Linux sandbox (from openSUSE via Russian Fedora)
-Patch15:        https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-55.0.2883.75-sandbox-pie.patch
+Patch15:        https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-70.0.3538.67-sandbox-pie.patch
 # Enable ARM CPU detection for webrtc (from archlinux via Russian Fedora)
-Patch16:        chromium-52.0.2743.82-arm-webrtc.patch
+#Patch16:        chromium-52.0.2743.82-arm-webrtc.patch
 # Use /etc/chromium for master_prefs
 Patch18:        https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-52.0.2743.82-master-prefs-path.patch
 # Use gn system files
@@ -351,6 +348,7 @@ python2 build/linux/unbundle/remove_bundled_libraries.py \
 	'net/third_party/nss' \
 	'net/third_party/quic' \
 	'net/third_party/spdy' \
+        'net/third_party/uri_template' \
 	'third_party/WebKit' \
 	'third_party/abseil-cpp' \
 	'third_party/adobe' \
@@ -423,6 +421,8 @@ python2 build/linux/unbundle/remove_bundled_libraries.py \
 	'third_party/libXNVCtrl' \
 	'third_party/libaddressinput' \
 	'third_party/libaom' \
+        'third_party/libaom/source/libaom/third_party/vector' \
+        'third_party/libaom/source/libaom/third_party/x86inc' \
 	'third_party/libdrm' \
 	'third_party/libjingle' \
 	'third_party/libjpeg_turbo' \
@@ -501,6 +501,13 @@ python2 build/linux/unbundle/remove_bundled_libraries.py \
 	'third_party/web-animations-js' \
 	'third_party/webdriver' \
 	'third_party/webrtc' \
+        'third_party/webrtc/common_audio/third_party/fft4g' \
+        'third_party/webrtc/common_audio/third_party/spl_sqrt_floor' \
+        'third_party/webrtc/modules/third_party/fft' \
+        'third_party/webrtc/modules/third_party/g711' \
+        'third_party/webrtc/modules/third_party/g722' \
+        'third_party/webrtc/rtc_base/third_party/base64' \
+        'third_party/webrtc/rtc_base/third_party/sigslot' \
 	'third_party/widevine' \
         'third_party/woff2' \
         'third_party/xdg-utils' \
@@ -511,7 +518,7 @@ python2 build/linux/unbundle/remove_bundled_libraries.py \
 	'url/third_party/mozilla' \
 	'v8/src/third_party/utf8-decoder' \
 	'v8/src/third_party/valgrind' \
-	'v8/third_party/antlr4' \
+	'v8/third_party/v8' \
 	'v8/third_party/inspector_protocol' \
 	--do-remove
 
@@ -559,11 +566,6 @@ CHROMIUM_CORE_GN_DEFINES+=" use_allocator=\"none\""
 CHROMIUM_CORE_GN_DEFINES+=" use_aura=true "
 #CHROMIUM_CORE_GN_DEFINES+=" use_gio=true"
 CHROMIUM_CORE_GN_DEFINES+=" icu_use_data_file=true"
-%if %{with gtk3}
-CHROMIUM_CORE_GN_DEFINES+=" use_gtk3=true "
-%else
-CHROMIUM_CORE_GN_DEFINES+=" use_gtk3=false "
-%endif
 %if %{with ozone}
 CHROMIUM_CORE_GN_DEFINES+=" use_ozone=true "
 %endif
@@ -590,6 +592,7 @@ CHROMIUM_CORE_GN_DEFINES+=" target_cpu=\"arm64\""
 CHROMIUM_CORE_GN_DEFINES+=" google_api_key=\"%{google_api_key}\""
 CHROMIUM_CORE_GN_DEFINES+=" google_default_client_id=\"%{google_default_client_id}\""
 CHROMIUM_CORE_GN_DEFINES+=" google_default_client_secret=\"%{google_default_client_secret}\""
+CHROMIUM_CORE_GN_DEFINES+=' use_jumbo_build=true jumbo_file_merge_limit=12'
 
 CHROMIUM_BROWSER_GN_DEFINES="use_pulseaudio=true icu_use_data_file=true"
 CHROMIUM_BROWSER_GN_DEFINES+=" enable_nacl=false"

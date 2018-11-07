@@ -22,7 +22,7 @@ diff -up chromium-69.0.3497.100/media/base/mime_util_internal.cc.38~ chromium-69
 +
    const CodecSet mp3_codecs{MP3};
  
-   CodecSet mp4_audio_codecs;
+   CodecSet mp4_audio_codecs{FLAC, MP3, OPUS};
 @@ -352,6 +360,29 @@ void MimeUtil::AddSupportedMediaFormats(
    CodecSet mp4_codecs(mp4_audio_codecs);
    mp4_codecs.insert(mp4_video_codecs.begin(), mp4_video_codecs.end());
