@@ -551,7 +551,7 @@ export CXX=g++
 export PATH=`pwd`:$PATH
 
 CHROMIUM_CORE_GN_DEFINES=" use_sysroot=false is_debug=false fieldtrial_testing_like_official_build=true use_lld=false use_gold=true"
-CHROMIUM_CORE_GN_DEFINES+=" is_clang=false clang_base_path=\"%{_prefix}\" clang_use_chrome_plugins=false "
+CHROMIUM_CORE_GN_DEFINES+=" is_clang=true clang_base_path=\"%{_prefix}\" clang_use_chrome_plugins=false "
 CHROMIUM_CORE_GN_DEFINES+=" treat_warnings_as_errors=false use_custom_libcxx=false "
 CHROMIUM_CORE_GN_DEFINES+=" use_system_libjpeg=true "
 CHROMIUM_CORE_GN_DEFINES+=" use_system_lcms2=true "
