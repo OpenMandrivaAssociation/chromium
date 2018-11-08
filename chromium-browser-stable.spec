@@ -170,6 +170,7 @@ Patch302:	chromium-55-flac.patch
 Patch500:	chromium-59-clang-workaround.patch
 Patch501:	chromium-64-system-curl.patch
 Patch502:	chromium-69-no-static-libstdc++.patch
+Patch503:	revert-Xclang-instcombine-lower-dbg-declare.patch
 
 Provides: 	%{crname}
 Obsoletes: 	chromium-browser-unstable < 26.0.1410.51
