@@ -152,6 +152,8 @@ Patch94:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-66.0.
 Patch98:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-69.0.3497.81-gcc8-alignof.patch
 # Don't build in a Debian chroot
 Patch99:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-69.0.3497.81-build-sanely-please.patch
+# Fix build against harfbuzz2
+Patch118:	chromium-70.0.3538.77-harfbuzz2-fix.patch
 
 ### Chromium Tests Patches ###
 # suse, system libs
