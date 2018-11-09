@@ -36,7 +36,6 @@
 %bcond_without	system_minizip
 # chromium 58 fails with system vpx 1.6.1
 %bcond_with	system_vpx
-%bcond_with	system_harfbuzz
 
 # Always support proprietary codecs
 # or html5 does not work
@@ -59,11 +58,6 @@ Source1: 	chromium-wrapper
 Source2: 	chromium-browser%{namesuffix}.desktop
 Source3:	master_preferences
 Source100:	%{name}.rpmlintrc
-
-%if %mdvver >= 201500
-# Don't use clang's integrated as while trying to check the version of gas
-#Patch4:		chromium-36.0.1985.143-clang-no-integrated-as.patch
-%endif
 
 ### Chromium Fedora Patches ###
 Patch0:         https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-67.0.3396.62-gcc5.patch
@@ -188,12 +182,8 @@ BuildRequires:	pkgconfig(re2)
 BuildRequires:	pkgconfig(com_err)
 BuildRequires:	python2dist(json5)
 BuildRequires: 	alsa-oss-devel
-%if %mdvver >= 201500
 BuildRequires:	atomic-devel
 BuildRequires:	harfbuzz-devel
-%else
-BuildRequires:	%{_lib}atomic1
-%endif
 BuildRequires:  pkgconfig(icu-i18n)
 BuildRequires: 	snappy-devel
 BuildRequires: 	jsoncpp-devel
@@ -255,11 +245,7 @@ BuildRequires: 	pkgconfig(libusb-1.0)
 BuildRequires:  speech-dispatcher-devel
 BuildRequires:  pkgconfig(libpci)
 BuildRequires:	pkgconfig(libexif)
-%if %mdvver >= 201500
 BuildRequires:	python2
-%else
-BuildRequires:	python
-%endif
 BuildRequires:	ninja
 BuildRequires:	nodejs
 BuildRequires:	python2-markupsafe
@@ -553,9 +539,7 @@ CHROMIUM_CORE_GN_DEFINES+=" treat_warnings_as_errors=false use_custom_libcxx=fal
 CHROMIUM_CORE_GN_DEFINES+=" use_system_libjpeg=true "
 CHROMIUM_CORE_GN_DEFINES+=" use_system_lcms2=true "
 CHROMIUM_CORE_GN_DEFINES+=" use_system_libpng=true "
-%if %mdvver >= 201500
 CHROMIUM_CORE_GN_DEFINES+=" use_system_harfbuzz=true "
-%endif
 CHROMIUM_CORE_GN_DEFINES+=" use_gnome_keyring=false "
 CHROMIUM_CORE_GN_DEFINES+=" fatal_linker_warnings=false "
 CHROMIUM_CORE_GN_DEFINES+=" system_libdir=\"%{_lib}\""
@@ -610,7 +594,6 @@ gn_system_libraries="
     fontconfig
     freetype
     harfbuzz-ng
-    icu
     libdrm
     libjpeg
     libusb
@@ -628,9 +611,6 @@ gn_system_libraries="
 
 %if %{with system_minizip}
 gn_system_libraries+=" zlib"
-%endif
-%if %{with system_harfbuzz}
-gn_system_libraries+=" harfbuzz-ng"
 %endif
 %if %{with system_icu}
 gn_system_libraries+=" icu"
