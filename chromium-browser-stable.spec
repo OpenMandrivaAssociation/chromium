@@ -155,6 +155,7 @@ Patch99:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-69.0.
 
 Patch100: 	chromium-gcc8-r589614.patch
 Patch101:	chromium-gcc8-r591015.patch
+Patch102:	chromium-gcc8-r588316.patch
 
 ### Chromium Tests Patches ###
 # suse, system libs
