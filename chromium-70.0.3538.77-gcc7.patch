@@ -1,0 +1,117 @@
+--- chromium-70.0.3538.77/gpu/config/gpu_info.h.orig	2018-11-08 21:07:55.602876608 +0000
++++ chromium-70.0.3538.77/gpu/config/gpu_info.h	2018-11-08 21:08:07.971875817 +0000
+@@ -111,7 +111,7 @@
+     GPUDevice(GPUDevice&& other) noexcept;
+     ~GPUDevice() noexcept;
+     GPUDevice& operator=(const GPUDevice& other);
+-    GPUDevice& operator=(GPUDevice&& other) noexcept;
++    GPUDevice& operator=(GPUDevice&& other);
+ 
+     // The DWORD (uint32_t) representing the graphics card vendor id.
+     uint32_t vendor_id;
+--- chromium-70.0.3538.77/gpu/config/gpu_info.cc.orig	2018-11-08 21:07:37.703877753 +0000
++++ chromium-70.0.3538.77/gpu/config/gpu_info.cc	2018-11-08 21:07:47.841877105 +0000
+@@ -105,7 +105,7 @@
+     const GPUInfo::GPUDevice& other) = default;
+ 
+ GPUInfo::GPUDevice& GPUInfo::GPUDevice::operator=(
+-    GPUInfo::GPUDevice&& other) noexcept = default;
++    GPUInfo::GPUDevice&& other) = default;
+ 
+ GPUInfo::GPUInfo()
+     : optimus(false),
+--- chromium-68.0.3440.106/components/search_provider_logos/logo_common.cc.122692c	2018-08-17 14:54:30.587338865 -0400
++++ chromium-68.0.3440.106/components/search_provider_logos/logo_common.cc	2018-08-17 14:55:20.461184298 -0400
+@@ -14,22 +14,22 @@ LogoMetadata::LogoMetadata() = default;
+ LogoMetadata::LogoMetadata(const LogoMetadata&) = default;
+ LogoMetadata::LogoMetadata(LogoMetadata&&) noexcept = default;
+ LogoMetadata& LogoMetadata::operator=(const LogoMetadata&) = default;
+-LogoMetadata& LogoMetadata::operator=(LogoMetadata&&) noexcept = default;
++LogoMetadata& LogoMetadata::operator=(LogoMetadata&&) = default;
+ LogoMetadata::~LogoMetadata() = default;
+ 
+ EncodedLogo::EncodedLogo() = default;
+ EncodedLogo::EncodedLogo(const EncodedLogo&) = default;
+ EncodedLogo::EncodedLogo(EncodedLogo&&) noexcept = default;
+ EncodedLogo& EncodedLogo::operator=(const EncodedLogo&) = default;
+-EncodedLogo& EncodedLogo::operator=(EncodedLogo&&) noexcept = default;
++EncodedLogo& EncodedLogo::operator=(EncodedLogo&&) = default;
+ EncodedLogo::~EncodedLogo() = default;
+ 
+ Logo::Logo() = default;
+ Logo::~Logo() = default;
+ 
+ LogoCallbacks::LogoCallbacks() = default;
+-LogoCallbacks::LogoCallbacks(LogoCallbacks&&) noexcept = default;
+-LogoCallbacks& LogoCallbacks::operator=(LogoCallbacks&&) noexcept = default;
++LogoCallbacks::LogoCallbacks(LogoCallbacks&&) = default;
++LogoCallbacks& LogoCallbacks::operator=(LogoCallbacks&&) = default;
+ LogoCallbacks::~LogoCallbacks() = default;
+ 
+ }  // namespace search_provider_logos
+--- chromium-70.0.3538.77/chrome/common/media_router/media_sink.h.orig	2018-11-08 23:17:56.354377772 +0000
++++ chromium-70.0.3538.77/chrome/common/media_router/media_sink.h	2018-11-08 23:18:15.905376521 +0000
+@@ -54,7 +54,7 @@
+   ~MediaSink();
+ 
+   MediaSink& operator=(const MediaSink& other);
+-  MediaSink& operator=(MediaSink&& other) noexcept;
++  MediaSink& operator=(MediaSink&& other);
+ 
+   void set_sink_id(const MediaSink::Id& sink_id) { sink_id_ = sink_id; }
+   const MediaSink::Id& id() const { return sink_id_; }
+--- chromium-70.0.3538.77/chrome/common/media_router/media_sink.cc.orig	2018-11-08 23:17:22.962379907 +0000
++++ chromium-70.0.3538.77/chrome/common/media_router/media_sink.cc	2018-11-08 23:17:36.625379033 +0000
+@@ -24,7 +24,7 @@
+ MediaSink::~MediaSink() = default;
+ 
+ MediaSink& MediaSink::operator=(const MediaSink& other) = default;
+-MediaSink& MediaSink::operator=(MediaSink&& other) noexcept = default;
++MediaSink& MediaSink::operator=(MediaSink&& other) = default;
+ 
+ bool MediaSink::Equals(const MediaSink& other) const {
+   return sink_id_ == other.sink_id_;
+--- chromium-70.0.3538.77/components/policy/core/common/policy_map.cc.orig	2018-11-08 23:55:51.325232293 +0000
++++ chromium-70.0.3538.77/components/policy/core/common/policy_map.cc	2018-11-08 23:56:17.654230610 +0000
+@@ -18,7 +18,7 @@
+ PolicyMap::Entry::~Entry() = default;
+ 
+ PolicyMap::Entry::Entry(Entry&&) noexcept = default;
+-PolicyMap::Entry& PolicyMap::Entry::operator=(Entry&&) noexcept = default;
++PolicyMap::Entry& PolicyMap::Entry::operator=(Entry&&) = default;
+ 
+ PolicyMap::Entry PolicyMap::Entry::DeepCopy() const {
+   Entry copy;
+--- chromium-70.0.3538.77/components/policy/core/common/policy_map.h.orig	2018-11-08 23:56:03.948231486 +0000
++++ chromium-70.0.3538.77/components/policy/core/common/policy_map.h	2018-11-08 23:56:35.908229442 +0000
+@@ -40,7 +40,7 @@
+     ~Entry();
+ 
+     Entry(Entry&&) noexcept;
+-    Entry& operator=(Entry&&) noexcept;
++    Entry& operator=(Entry&&);
+ 
+     // Returns a copy of |this|.
+     Entry DeepCopy() const;
+--- chromium-70.0.3538.77/components/signin/core/browser/account_info.h.orig	2018-11-09 00:03:20.709203557 +0000
++++ chromium-70.0.3538.77/components/signin/core/browser/account_info.h	2018-11-09 00:03:59.284201090 +0000
+@@ -20,7 +20,7 @@
+   AccountInfo(AccountInfo&& other) noexcept;
+ 
+   AccountInfo& operator=(const AccountInfo& other);
+-  AccountInfo& operator=(AccountInfo&& other) noexcept;
++  AccountInfo& operator=(AccountInfo&& other);
+ 
+   std::string account_id;  // The account ID used by OAuth2TokenService.
+   std::string gaia;
+--- chromium-70.0.3538.77/components/signin/core/browser/account_info.cc.orig	2018-11-09 00:03:15.789203871 +0000
++++ chromium-70.0.3538.77/components/signin/core/browser/account_info.cc	2018-11-09 00:03:52.644201514 +0000
+@@ -32,7 +32,7 @@
+ 
+ AccountInfo& AccountInfo::operator=(const AccountInfo& other) = default;
+ 
+-AccountInfo& AccountInfo::operator=(AccountInfo&& other) noexcept = default;
++AccountInfo& AccountInfo::operator=(AccountInfo&& other) = default;
+ 
+ bool AccountInfo::IsEmpty() const {
+   return account_id.empty() && email.empty() && gaia.empty() &&

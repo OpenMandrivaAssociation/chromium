@@ -153,6 +153,9 @@ Patch98:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-69.0.
 # Don't build in a Debian chroot
 Patch99:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-69.0.3497.81-build-sanely-please.patch
 
+Patch100: 	chromium-gcc8-r589614.patch
+Patch101:	chromium-gcc8-r591015.patch
+
 ### Chromium Tests Patches ###
 # suse, system libs
 Patch200:	arm_use_right_compiler.patch
@@ -171,6 +174,7 @@ Patch500:	chromium-59-clang-workaround.patch
 Patch501:	chromium-64-system-curl.patch
 Patch502:	chromium-69-no-static-libstdc++.patch
 Patch503:	revert-Xclang-instcombine-lower-dbg-declare.patch
+Patch504:	chromium-70.0.3538.77-gcc7.patch
 
 Provides: 	%{crname}
 Obsoletes: 	chromium-browser-unstable < 26.0.1410.51
@@ -552,7 +556,7 @@ export CXX=g++
 export PATH=`pwd`:$PATH
 
 CHROMIUM_CORE_GN_DEFINES=" use_sysroot=false is_debug=false fieldtrial_testing_like_official_build=true use_lld=false use_gold=true"
-CHROMIUM_CORE_GN_DEFINES+=" is_clang=true clang_base_path=\"%{_prefix}\" clang_use_chrome_plugins=false "
+CHROMIUM_CORE_GN_DEFINES+=" is_clang=false clang_base_path=\"%{_prefix}\" clang_use_chrome_plugins=false "
 CHROMIUM_CORE_GN_DEFINES+=" treat_warnings_as_errors=false use_custom_libcxx=false "
 CHROMIUM_CORE_GN_DEFINES+=" use_system_libjpeg=true "
 CHROMIUM_CORE_GN_DEFINES+=" use_system_lcms2=true "
