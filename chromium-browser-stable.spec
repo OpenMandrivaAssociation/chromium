@@ -629,7 +629,6 @@ gn_system_libraries="
     re2
     snappy
     yasm
-    zlib
 "
 #    libpng
 #    opus
