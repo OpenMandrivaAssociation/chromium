@@ -189,11 +189,6 @@ BuildRequires: 	snappy-devel
 BuildRequires: 	jsoncpp-devel
 BuildRequires: 	pkgconfig(expat)
 BuildRequires: 	pkgconfig(glib-2.0)
-# FIXME we currently can't use system re2 because
-# Chromium uses libc++ while the system STL is libstdc++ for now
-# This leads to unresolved symbols because of disagreements over
-# the namespace of std::basic_string (__1 vs. not __1)
-#BuildRequires:	pkgconfig(re2)
 BuildRequires: 	pkgconfig(wayland-egl)
 BuildRequires: 	pkgconfig(nss)
 BuildRequires: 	bzip2-devel
