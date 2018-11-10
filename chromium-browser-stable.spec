@@ -578,7 +578,6 @@ CHROMIUM_CORE_GN_DEFINES+=" target_cpu=\"arm64\""
 CHROMIUM_CORE_GN_DEFINES+=" google_api_key=\"%{google_api_key}\""
 CHROMIUM_CORE_GN_DEFINES+=" google_default_client_id=\"%{google_default_client_id}\""
 CHROMIUM_CORE_GN_DEFINES+=" google_default_client_secret=\"%{google_default_client_secret}\""
-CHROMIUM_CORE_GN_DEFINES+=' use_jumbo_build=true jumbo_file_merge_limit=4'
 
 CHROMIUM_BROWSER_GN_DEFINES="use_pulseaudio=true icu_use_data_file=true"
 CHROMIUM_BROWSER_GN_DEFINES+=" enable_nacl=false"
