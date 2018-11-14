@@ -172,6 +172,9 @@ Patch502:	chromium-69-no-static-libstdc++.patch
 Patch503:	revert-Xclang-instcombine-lower-dbg-declare.patch
 Patch504:	chromium-70.0.3538.77-gcc7.patch
 
+# fixed upstream
+Patch505:	chromium-70.0.3538.102-sysroot.patch
+
 Provides: 	%{crname}
 Obsoletes: 	chromium-browser-unstable < 26.0.1410.51
 Obsoletes: 	chromium-browser-beta < 26.0.1410.51
