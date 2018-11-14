@@ -2,8 +2,8 @@ diff -up chromium-69.0.3497.100/tools/gn/build/gen.py.omv~ chromium-69.0.3497.10
 --- chromium-69.0.3497.100/tools/gn/build/gen.py.omv~	2018-10-02 23:08:29.804860884 +0200
 +++ chromium-69.0.3497.100/tools/gn/build/gen.py	2018-10-02 23:08:33.896888587 +0200
 @@ -369,7 +369,6 @@ def WriteGNNinja(path, platform, host, o
-         cflags.append('--sysroot=' + linux_sysroot)
-         ldflags.append('--sysroot=' + linux_sysroot)
+
+     if platform.is_linux():
        ldflags.extend([
 -          '-static-libstdc++',
            '-Wl,--as-needed',

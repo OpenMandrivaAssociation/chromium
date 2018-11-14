@@ -167,6 +167,9 @@ Patch500:	chromium-59-clang-workaround.patch
 Patch501:	chromium-64-system-curl.patch
 Patch502:	chromium-69-no-static-libstdc++.patch
 
+# fixed upstream
+Patch505:	chromium-70.0.3538.102-sysroot.patch
+
 Provides: 	%{crname}
 Obsoletes: 	chromium-browser-unstable < 26.0.1410.51
 Obsoletes: 	chromium-browser-beta < 26.0.1410.51
