@@ -525,7 +525,7 @@ if [ ! -f chrome/test/data/webui/i18n_process_css_test.html ]; then
 fi
 
 %build
-%ifarch %{arm}
+%ifarch %{arm} %{ix86}
 # Use linker flags to reduce memory consumption on low-mem architectures
 %global optflags %(echo %{optflags} | sed -e 's/-g /-g0 /' -e 's/-gdwarf-4//')
 mkdir -p bfd
