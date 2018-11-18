@@ -544,9 +544,9 @@ export PATH=`pwd`:$PATH
 
 CHROMIUM_CORE_GN_DEFINES=" use_sysroot=false is_debug=false fieldtrial_testing_like_official_build=true use_lld=false"
 %ifarch %{ix86}
-CHROMIUM_CORE_GN_DEFINES+=" use_gold=true"
-%else
 CHROMIUM_CORE_GN_DEFINES+=" use_gold=false"
+%else
+CHROMIUM_CORE_GN_DEFINES+=" use_gold=true"
 %endif
 CHROMIUM_CORE_GN_DEFINES+=" is_clang=false clang_base_path=\"%{_prefix}\" clang_use_chrome_plugins=false "
 CHROMIUM_CORE_GN_DEFINES+=" treat_warnings_as_errors=false use_custom_libcxx=false "
