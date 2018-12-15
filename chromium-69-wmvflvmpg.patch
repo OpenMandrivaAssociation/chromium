@@ -2,16 +2,16 @@ diff -up chromium-69.0.3497.100/media/base/mime_util_internal.cc.38~ chromium-69
 --- chromium-69.0.3497.100/media/base/mime_util_internal.cc.38~	2018-10-02 22:33:23.202267666 +0200
 +++ chromium-69.0.3497.100/media/base/mime_util_internal.cc	2018-10-02 22:35:18.081936900 +0200
 @@ -76,6 +76,11 @@ const base::flat_map<std::string, MimeUt
-         {"vp8.0", MimeUtil::VP8}, {"theora", MimeUtil::THEORA},
-         {"dts", MimeUtil::DTS}, {"mp2", MimeUtil::MP2},
-         {"mp4v.20.8", MimeUtil::MPEG4_SP}, {"mp4v.20.240", MimeUtil::MPEG4_ASP},
-+        {"msmpeg4v1", MimeUtil::MSMPEG4v1}, {"msmpeg4v2", MimeUtil::MSMPEG4v2},
-+        {"msmpeg4v3", MimeUtil::MSMPEG4v3}, {"wmv7", MimeUtil::WMV7},
-+        {"wmv8", MimeUtil::WMV8}, {"wmv9", MimeUtil::WMV9},
-+        {"vc-1", MimeUtil::VC1}, {"wma", MimeUtil::WMA},
-+        {"vp6", MimeUtil::VP6}, {"mpeg1", MimeUtil::MPEG1}
-       },
-       base::KEEP_FIRST_OF_DUPES);
+                 {"vp8.0", MimeUtil::VP8}, {"theora", MimeUtil::THEORA},
+                 {"dts", MimeUtil::DTS}, {"mp2", MimeUtil::MP2},
+                 {"mp4v.20.8", MimeUtil::MPEG4_SP}, {"mp4v.20.240", MimeUtil::MPEG4_ASP},
++                {"msmpeg4v1", MimeUtil::MSMPEG4v1}, {"msmpeg4v2", MimeUtil::MSMPEG4v2},
++                {"msmpeg4v3", MimeUtil::MSMPEG4v3}, {"wmv7", MimeUtil::WMV7},
++                {"wmv8", MimeUtil::WMV8}, {"wmv9", MimeUtil::WMV9},
++                {"vc-1", MimeUtil::VC1}, {"wma", MimeUtil::WMA},
++                {"vp6", MimeUtil::VP6}, {"mpeg1", MimeUtil::MPEG1}
+           },
+           base::KEEP_FIRST_OF_DUPES));
  
 @@ -306,6 +311,9 @@ void MimeUtil::AddSupportedMediaFormats(
    CodecSet webm_codecs(webm_audio_codecs);

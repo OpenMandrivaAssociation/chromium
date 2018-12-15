@@ -62,13 +62,13 @@ diff -up chromium-69.0.3497.100/media/base/mime_util_internal.cc.37~ chromium-69
 --- chromium-69.0.3497.100/media/base/mime_util_internal.cc.37~	2018-09-17 21:10:16.000000000 +0200
 +++ chromium-69.0.3497.100/media/base/mime_util_internal.cc	2018-10-02 22:31:21.254548374 +0200
 @@ -74,6 +74,8 @@ const base::flat_map<std::string, MimeUt
-         {"vorbis", MimeUtil::VORBIS}, {"opus", MimeUtil::OPUS},
-         {"flac", MimeUtil::FLAC}, {"vp8", MimeUtil::VP8},
-         {"vp8.0", MimeUtil::VP8}, {"theora", MimeUtil::THEORA},
-+        {"dts", MimeUtil::DTS}, {"mp2", MimeUtil::MP2},
-+        {"mp4v.20.8", MimeUtil::MPEG4_SP}, {"mp4v.20.240", MimeUtil::MPEG4_ASP},
-       },
-       base::KEEP_FIRST_OF_DUPES);
+                 {"vorbis", MimeUtil::VORBIS}, {"opus", MimeUtil::OPUS},
+                 {"flac", MimeUtil::FLAC}, {"vp8", MimeUtil::VP8},
+                 {"vp8.0", MimeUtil::VP8}, {"theora", MimeUtil::THEORA},
++                {"dts", MimeUtil::DTS}, {"mp2", MimeUtil::MP2},
++                {"mp4v.20.8", MimeUtil::MPEG4_SP}, {"mp4v.20.240", MimeUtil::MPEG4_ASP},
+           },
+           base::KEEP_FIRST_OF_DUPES));
  
 @@ -172,6 +174,9 @@ VideoCodec MimeUtilToVideoCodec(MimeUtil
        return kCodecTheora;

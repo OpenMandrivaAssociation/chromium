@@ -9,8 +9,8 @@
 -      action='store_true',
 -      help='Download and build with the Debian sysroot.')
    parser.add_option('-v', '--verbose', help='ignored')
-   options, args = parser.parse_args(argv)
-   if args:
+   parser.add_option(
+       '--skip-generate-buildfiles',
 @@ -71,8 +67,6 @@
        '--no-last-commit-position',
        '--out-path=' + gn_build_dir,
