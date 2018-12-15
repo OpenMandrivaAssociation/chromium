@@ -1,0 +1,10 @@
+--- chromium-71.0.3578.94/base/bind_internal.h.orig	2018-12-15 10:28:03.152108414 +0000
++++ chromium-71.0.3578.94/base/bind_internal.h	2018-12-15 10:28:07.919108109 +0000
+@@ -749,6 +749,7 @@
+           functor, std::get<indices>(bound_args)...);
+   }
+   NOTREACHED();
++  return false;
+ }
+ 
+ // Relays |base| to corresponding CallbackCancellationTraits<>::Run(). Returns

@@ -47,7 +47,7 @@
 Name: 		chromium-browser-%{channel}
 # Working version numbers can be found at
 # http://omahaproxy.appspot.com/
-Version: 	70.0.3538.110
+Version: 	71.0.3578.94
 Release: 	1%{?extrarelsuffix}
 Summary: 	A fast webkit-based web browser
 Group: 		Networking/WWW
@@ -147,16 +147,11 @@ Patch98:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-69.0.
 # Don't build in a Debian chroot
 Patch99:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-69.0.3497.81-build-sanely-please.patch
 
-Patch100: 	chromium-gcc8-r589614.patch
-Patch101:	chromium-gcc8-r591015.patch
-Patch102:	chromium-gcc8-r588316.patch
-Patch103:	chromium-gcc8-r588547.patch
-
 ### Chromium Tests Patches ###
 # suse, system libs
 Patch200:	arm_use_right_compiler.patch
 # Gentoo, fix widevine
-Patch201:	https://gitweb.gentoo.org/repo/gentoo.git/plain/www-client/chromium/files/chromium-widevine-r2.patch
+Patch201:	https://gitweb.gentoo.org/repo/gentoo.git/plain/www-client/chromium/files/chromium-widevine.patch
 # Arch Linux, fix for compile error with system ICU
 Patch202:	https://raw.githubusercontent.com/archlinuxarm/PKGBUILDs/master/extra/chromium/chromium-system-icu.patch
 
@@ -174,6 +169,9 @@ Patch504:	chromium-70.0.3538.77-gcc7.patch
 
 # fixed upstream
 Patch505:	chromium-70.0.3538.102-sysroot.patch
+
+# stop so many build warnings
+Patch506:	chromium-71.0.3578.94-quieten.patch
 
 Provides: 	%{crname}
 Obsoletes: 	chromium-browser-unstable < 26.0.1410.51
@@ -408,6 +406,7 @@ python2 build/linux/unbundle/remove_bundled_libraries.py \
 	'third_party/inspector_protocol' \
 	'third_party/jinja2' \
 	'third_party/jstemplate' \
+        'third_party/jsoncpp' \
 	'third_party/khronos' \
 	'third_party/leveldatabase' \
 	'third_party/libXNVCtrl' \
@@ -479,6 +478,7 @@ python2 build/linux/unbundle/remove_bundled_libraries.py \
 	'third_party/speech-dispatcher' \
 	'third_party/spirv-headers' \
 	'third_party/spirv-tools-angle' \
+        'third_party/SPIRV-Tools' \
 	'third_party/sqlite' \
 	'third_party/swiftshader' \
 	'third_party/swiftshader/third_party/subzero' \

@@ -39,9 +39,9 @@ diff -up chromium-69.0.3497.81/chrome/common/safe_browsing/BUILD.gn.nounrar chro
 -      "//components/safe_browsing:csd_proto",
 -    ]
 -  }
- }
  
- source_set("safe_browsing") {
+   source_set("disk_image_type_sniffer_mac") {
+     sources = [
 @@ -121,7 +87,6 @@ source_set("safe_browsing") {
      deps += [
        ":archive_analyzer_results",
