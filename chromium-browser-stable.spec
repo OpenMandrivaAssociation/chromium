@@ -181,6 +181,7 @@ BuildRequires: 	bison
 BuildRequires: 	re2c
 BuildRequires: 	flex
 #BuildRequires: 	v8-devel
+BuildRequires:	java-1.8.0-openjdk-devel
 BuildRequires:	pkgconfig(alsa)
 BuildRequires:	pkgconfig(krb5)
 BuildRequires:	pkgconfig(re2)
