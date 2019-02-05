@@ -115,27 +115,3 @@
  
  bool AccountInfo::IsEmpty() const {
    return account_id.empty() && email.empty() && gaia.empty() &&
-diff --git a/components/google/core/common/google_util.cc b/components/google/core/common/google_util.cc
-index a44c843..7733848 100644
---- a/components/google/core/common/google_util.cc
-+++ b/components/google/core/common/google_util.cc
-
-@@ -117,7 +117,7 @@
-   StripTrailingDot(&tld);
- 
-   static base::NoDestructor<std::set<std::string>> google_tlds(
--      {GOOGLE_TLD_LIST});
-+      std::initializer_list<std::string>({GOOGLE_TLD_LIST}));
-   return base::ContainsKey(*google_tlds, tld.as_string());
- }
- 
-@@ -132,7 +132,8 @@
-   StripTrailingDot(&host);
- 
-   static base::NoDestructor<std::set<std::string>> google_subdomains(
--      {"ipv4.google.com", "ipv6.google.com"});
-+      std::initializer_list<std::string>(
-+          {"ipv4.google.com", "ipv6.google.com"}));
- 
-   return base::ContainsKey(*google_subdomains, host.as_string());
- }
