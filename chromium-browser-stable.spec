@@ -166,6 +166,7 @@ Patch302:	chromium-55-flac.patch
 Patch500:	chromium-59-clang-workaround.patch
 Patch501:	chromium-64-system-curl.patch
 Patch502:	chromium-69-no-static-libstdc++.patch
+Patch505:	chromium-72.0.3626.81-memset.patch
 
 # stop so many build warnings
 Patch506:	chromium-71.0.3578.94-quieten.patch
