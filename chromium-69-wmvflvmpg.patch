@@ -129,7 +129,7 @@ diff -up chromium-69.0.3497.100/net/base/mime_util.cc.38~ chromium-69.0.3497.100
 +    {"video/mpeg", "mpg,mpeg"}
  };
  
- static const MimeInfo kSecondaryMappings[] = {
+ // See comments above for details on how this list is used.
 @@ -510,6 +514,7 @@ static const char* const kStandardVideoT
    "video/sd-video",
    "video/webm",

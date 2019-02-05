@@ -167,9 +167,6 @@ Patch502:	chromium-69-no-static-libstdc++.patch
 Patch503:	revert-Xclang-instcombine-lower-dbg-declare.patch
 Patch504:	chromium-70.0.3538.77-gcc7.patch
 
-# fixed upstream
-Patch505:	chromium-70.0.3538.102-sysroot.patch
-
 # stop so many build warnings
 Patch506:	chromium-71.0.3578.94-quieten.patch
 
@@ -339,13 +336,12 @@ python2 build/linux/unbundle/remove_bundled_libraries.py \
 	'net/third_party/quic' \
 	'net/third_party/spdy' \
         'net/third_party/uri_template' \
-	'third_party/WebKit' \
 	'third_party/abseil-cpp' \
 	'third_party/adobe' \
-	'third_party/analytics' \
 	'third_party/angle' \
 	'third_party/angle/src/common/third_party/base' \
 	'third_party/angle/src/common/third_party/smhasher' \
+        'third_party/angle/src/common/third_party/xxhash' \
 	'third_party/angle/src/third_party/compiler' \
 	'third_party/angle/src/third_party/libXNVCtrl' \
 	'third_party/angle/src/third_party/trace_event' \
@@ -380,6 +376,7 @@ python2 build/linux/unbundle/remove_bundled_libraries.py \
 	'third_party/catapult/tracing/third_party/pako' \
         'third_party/ced' \
 	'third_party/cld_3' \
+        'third_party/closure_compiler' \
 	'third_party/crashpad' \
 	'third_party/crashpad/crashpad/third_party/zlib/' \
 	'third_party/crc32c' \
@@ -394,7 +391,6 @@ python2 build/linux/unbundle/remove_bundled_libraries.py \
 	'third_party/flot' \
 	'third_party/fontconfig' \
 	'third_party/freetype' \
-	'third_party/glslang-angle' \
 	'third_party/google_input_tools' \
 	'third_party/google_input_tools/third_party/closure_library' \
 	'third_party/google_input_tools/third_party/closure_library/third_party/closure' \
@@ -477,7 +473,6 @@ python2 build/linux/unbundle/remove_bundled_libraries.py \
 	'third_party/snappy' \
 	'third_party/speech-dispatcher' \
 	'third_party/spirv-headers' \
-	'third_party/spirv-tools-angle' \
         'third_party/SPIRV-Tools' \
 	'third_party/sqlite' \
 	'third_party/swiftshader' \
@@ -489,7 +484,6 @@ python2 build/linux/unbundle/remove_bundled_libraries.py \
         'third_party/usb_ids' \
 	'third_party/usrsctp' \
 	'third_party/vulkan' \
-	'third_party/vulkan-validation-layers' \
 	'third_party/web-animations-js' \
 	'third_party/webdriver' \
 	'third_party/webrtc' \
