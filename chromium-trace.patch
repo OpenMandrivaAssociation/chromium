@@ -1,0 +1,16 @@
+--- chromium-72.0.3626.81/base/trace_event/trace_log.h.orig	2019-01-30 01:17:39.000000000 +0000
++++ chromium-72.0.3626.81/base/trace_event/trace_log.h	2019-02-05 13:57:04.588925314 +0000
+@@ -210,10 +210,9 @@
+       const unsigned char* category_group_enabled);
+   static constexpr const unsigned char* GetBuiltinCategoryEnabled(
+       const char* name) {
+-    TraceCategory* builtin_category =
+-        CategoryRegistry::GetBuiltinCategoryByName(name);
+-    if (builtin_category)
+-      return builtin_category->state_ptr();
++    //TraceCategory* builtin_category = CategoryRegistry::GetBuiltinCategoryByName(name);
++    //if(builtin_category)
++    //  return builtin_category->state_ptr();
+     return nullptr;
+   }
+ 

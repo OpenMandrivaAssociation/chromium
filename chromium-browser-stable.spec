@@ -169,6 +169,7 @@ Patch504:	chromium-70.0.3538.77-gcc7.patch
 
 # stop so many build warnings
 Patch506:	chromium-71.0.3578.94-quieten.patch
+Patch507:	chromium-trace.patch
 
 Provides: 	%{crname}
 Obsoletes: 	chromium-browser-unstable < 26.0.1410.51
