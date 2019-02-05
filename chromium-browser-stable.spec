@@ -169,6 +169,7 @@ Patch502:	chromium-69-no-static-libstdc++.patch
 
 # stop so many build warnings
 Patch506:	chromium-71.0.3578.94-quieten.patch
+Patch507:	chromium-trace.patch
 
 Provides: 	%{crname}
 Obsoletes: 	chromium-browser-unstable < 26.0.1410.51
