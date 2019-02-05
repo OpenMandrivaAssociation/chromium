@@ -61,15 +61,17 @@ diff -up chromium-69.0.3497.100/media/base/decode_capabilities.cc.37~ chromium-6
 diff -up chromium-69.0.3497.100/media/base/mime_util_internal.cc.37~ chromium-69.0.3497.100/media/base/mime_util_internal.cc
 --- chromium-69.0.3497.100/media/base/mime_util_internal.cc.37~	2018-09-17 21:10:16.000000000 +0200
 +++ chromium-69.0.3497.100/media/base/mime_util_internal.cc	2018-10-02 22:31:21.254548374 +0200
-@@ -74,6 +74,8 @@ const base::flat_map<std::string, MimeUt
-                 {"vorbis", MimeUtil::VORBIS}, {"opus", MimeUtil::OPUS},
-                 {"flac", MimeUtil::FLAC}, {"vp8", MimeUtil::VP8},
-                 {"vp8.0", MimeUtil::VP8}, {"theora", MimeUtil::THEORA},
-+                {"dts", MimeUtil::DTS}, {"mp2", MimeUtil::MP2},
-+                {"mp4v.20.8", MimeUtil::MPEG4_SP}, {"mp4v.20.240", MimeUtil::MPEG4_ASP},
-           },
-           base::KEEP_FIRST_OF_DUPES));
+@@ -87,6 +87,10 @@
+       {"vp8", MimeUtil::VP8},
+       {"vp8.0", MimeUtil::VP8},
+       {"theora", MimeUtil::THEORA},
++      {"dts", MimeUtil::DTS},
++      {"mp2", MimeUtil::MP2},
++      {"mp4v.20.8", MimeUtil::MPEG4_SP},
++      {"mp4v.20.240", MimeUtil::MPEG4_ASP},
+   });
  
+   return *kStringToCodecMap;
 @@ -172,6 +174,9 @@ VideoCodec MimeUtilToVideoCodec(MimeUtil
        return kCodecTheora;
      case MimeUtil::DOLBY_VISION:
@@ -195,21 +197,21 @@ diff -up chromium-69.0.3497.100/media/filters/ffmpeg_video_decoder.cc.37~ chromi
 --- chromium-69.0.3497.100/media/filters/ffmpeg_video_decoder.cc.37~	2018-09-17 21:10:16.000000000 +0200
 +++ chromium-69.0.3497.100/media/filters/ffmpeg_video_decoder.cc	2018-10-02 22:30:05.031093090 +0200
 @@ -58,7 +58,6 @@ static int GetThreadCount(const VideoDec
-       case kUnknownVideoCodec:
-       case kCodecVC1:
-       case kCodecMPEG2:
--      case kCodecHEVC:
-       case kCodecVP9:
-       case kCodecAV1:
-       case kCodecDolbyVision:
+     case kUnknownVideoCodec:
+     case kCodecVC1:
+     case kCodecMPEG2:
+-    case kCodecHEVC:
+     case kCodecVP9:
+     case kCodecAV1:
+     case kCodecDolbyVision:
 @@ -72,6 +71,7 @@ static int GetThreadCount(const VideoDec
-       case kCodecH264:
-       case kCodecMPEG4:
-       case kCodecVP8:
-+      case kCodecHEVC:
-         // Normalize to three threads for 1080p content, then scale linearly
-         // with number of pixels.
-         // Examples:
+ 
+     case kCodecH264:
+     case kCodecVP8:
++    case kCodecHEVC:
+       // Normalize to three threads for 1080p content, then scale linearly
+       // with number of pixels.
+       // Examples:
 diff -up chromium-69.0.3497.100/media/remoting/proto_enum_utils.cc.37~ chromium-69.0.3497.100/media/remoting/proto_enum_utils.cc
 --- chromium-69.0.3497.100/media/remoting/proto_enum_utils.cc.37~	2018-09-17 21:10:16.000000000 +0200
 +++ chromium-69.0.3497.100/media/remoting/proto_enum_utils.cc	2018-10-02 22:30:05.031093090 +0200
@@ -252,7 +254,7 @@ diff -up chromium-69.0.3497.100/net/base/mime_util.cc.37~ chromium-69.0.3497.100
 +    {"video/x-msvideo", "avi"},
  };
  
- static const MimeInfo kSecondaryMappings[] = {
+ // See comments above for details on how this list is used.
 @@ -490,6 +493,7 @@ static const char* const kStandardAudioT
    "audio/vorbis",
    "audio/wav",

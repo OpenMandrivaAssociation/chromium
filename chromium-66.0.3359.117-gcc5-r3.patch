@@ -33,6 +33,6 @@ diff -up chromium-66.0.3359.117/third_party/webrtc/modules/audio_processing/aec3
  
 -#include <math.h>
 +#include <cmath>
- 
+ #include <algorithm>
  #include <numeric>
  #include <vector>
