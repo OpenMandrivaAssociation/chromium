@@ -166,6 +166,7 @@ Patch501:	chromium-64-system-curl.patch
 Patch502:	chromium-69-no-static-libstdc++.patch
 Patch503:	revert-Xclang-instcombine-lower-dbg-declare.patch
 Patch504:	chromium-70.0.3538.77-gcc7.patch
+Patch505:	chromium-72.0.3626.81-memset.patch
 
 # stop so many build warnings
 Patch506:	chromium-71.0.3578.94-quieten.patch
