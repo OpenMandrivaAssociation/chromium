@@ -14,7 +14,7 @@ diff -up chromium-69.0.3497.81/chrome/common/safe_browsing/BUILD.gn.nounrar chro
 -
 -    deps = [
 -      ":archive_analyzer_results",
--      ":download_protection_util",
+-      ":download_type_util",
 -      ":file_type_policies",
 -      "//base",
 -      "//base:i18n",
@@ -45,7 +45,7 @@ diff -up chromium-69.0.3497.81/chrome/common/safe_browsing/BUILD.gn.nounrar chro
 @@ -121,7 +87,6 @@ source_set("safe_browsing") {
      deps += [
        ":archive_analyzer_results",
-       ":download_protection_util",
+       ":download_type_util",
 -      ":rar_analyzer",
        "//components/safe_browsing:features",
      ]
