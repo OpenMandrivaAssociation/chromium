@@ -604,7 +604,6 @@ gn_system_libraries="
     flac
     fontconfig
     freetype
-    harfbuzz-ng
     libdrm
     libjpeg
     libusb
@@ -620,6 +619,11 @@ gn_system_libraries="
 #    opus
 # cb - chrome 58
 # libevent as system lib causes some hanging issues particularly with extensions
+
+# harfbuzz 2 required
+%if %{mdvver} > 3000000
+gn_system_libraries+=" harfbuzz-ng"
+%endif
 
 %if %{with system_minizip}
 gn_system_libraries+=" zlib"
