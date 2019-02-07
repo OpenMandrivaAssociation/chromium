@@ -8,4 +8,4 @@ diff -up chromium-69.0.3497.100/tools/gn/build/gen.py.omv~ chromium-69.0.3497.10
 -          '-static-libstdc++',
            '-Wl,--as-needed',
        ])
-       libs.extend([
+       # This is needed by libc++.
