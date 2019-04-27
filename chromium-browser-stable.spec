@@ -92,7 +92,7 @@ Patch24:        https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromiu
 Patch25:        https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-54.0.2840.59-jpeg-include-dir.patch
 # On i686, pass --no-keep-memory --reduce-memory-overheads to ld.
 Patch26:        https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-59.0.3071.86-i686-ld-memory-tricks.patch
-Patch32:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-69.0.3497.81-norar.patch
+Patch32:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-73.0.3683.75-norar.patch
 Patch33:	chromium-50-system-ffmpeg-3.patch
 Patch36:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-58.0.3029.96-revert-b794998819088f76b4cf44c8db6940240c563cf4.patch
 # Correctly compile the stdatomic.h in ffmpeg with gcc 4.8
@@ -126,7 +126,7 @@ Patch67:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-65.0.
 # From Debian
 Patch86:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-67.0.3396.62-skia-aarch64-buildfix.patch
 # Use lstdc++ on EPEL7 only
-Patch87:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-65.0.3325.162-epel7-stdc++.patch
+#Patch87:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-65.0.3325.162-epel7-stdc++.patch
 # Missing files in tarball
 Patch88:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-66.0.3359.117-missing-files.patch
 # https://chromium.googlesource.com/chromium/src/+/ba4141e451f4e0b1b19410b1b503bd32e150df06%5E%21/#F0
@@ -159,7 +159,7 @@ Patch202:	https://raw.githubusercontent.com/archlinuxarm/PKGBUILDs/master/extra/
 # mga
 Patch300:	chromium-69-extra-media.patch
 Patch301:	chromium-69-wmvflvmpg.patch
-Patch302:	chromium-55-flac.patch
+#Patch302:	chromium-55-flac.patch
 
 # omv
 Patch500:	chromium-59-clang-workaround.patch
@@ -167,7 +167,6 @@ Patch501:	chromium-64-system-curl.patch
 Patch502:	chromium-69-no-static-libstdc++.patch
 Patch503:	revert-Xclang-instcombine-lower-dbg-declare.patch
 Patch504:	chromium-70.0.3538.77-gcc7.patch
-Patch505:	chromium-72.0.3626.81-memset.patch
 
 # stop so many build warnings
 Patch506:	chromium-71.0.3578.94-quieten.patch
@@ -336,11 +335,9 @@ python2 build/linux/unbundle/remove_bundled_libraries.py \
 	'base/third_party/xdg_user_dirs' \
 	'chrome/third_party/mozilla_security_manager' \
 	'courgette/third_party' \
-	'net/third_party/http2' \
 	'net/third_party/mozilla_security_manager' \
 	'net/third_party/nss' \
 	'net/third_party/quic' \
-	'net/third_party/spdy' \
         'net/third_party/uri_template' \
 	'third_party/abseil-cpp' \
 	'third_party/adobe' \
@@ -387,6 +384,7 @@ python2 build/linux/unbundle/remove_bundled_libraries.py \
 	'third_party/crashpad/crashpad/third_party/zlib/' \
 	'third_party/crc32c' \
 	'third_party/cros_system_api' \
+        'third_party/dav1d' \
 	'third_party/devscripts' \
 	'third_party/dom_distiller_js' \
 	'third_party/expat' \
@@ -397,6 +395,7 @@ python2 build/linux/unbundle/remove_bundled_libraries.py \
 	'third_party/flot' \
 	'third_party/fontconfig' \
 	'third_party/freetype' \
+        'third_party/glslang' \
 	'third_party/google_input_tools' \
 	'third_party/google_input_tools/third_party/closure_library' \
 	'third_party/google_input_tools/third_party/closure_library/third_party/closure' \
@@ -441,6 +440,7 @@ python2 build/linux/unbundle/remove_bundled_libraries.py \
 	'third_party/mesa' \
 	'third_party/metrics_proto' \
 	'third_party/modp_b64' \
+        'third_party/nasm' \
 	'third_party/node' \
 	'third_party/node/node_modules/polymer-bundler/lib/third_party/UglifyJS2' \
 	'third_party/openh264' \
@@ -472,6 +472,7 @@ python2 build/linux/unbundle/remove_bundled_libraries.py \
 	'third_party/simplejson' \
 	'third_party/sinonjs' \
 	'third_party/skia' \
+        'third_party/skia/include/third_party/vulkan' \
 	'third_party/skia/third_party/gif' \
 	'third_party/skia/third_party/skcms' \
 	'third_party/skia/third_party/vulkan' \
@@ -508,6 +509,7 @@ python2 build/linux/unbundle/remove_bundled_libraries.py \
 	'third_party/zlib/google' \
 	'tools/gn/base/third_party/icu' \
 	'url/third_party/mozilla' \
+        'v8/src/third_party/siphash' \
 	'v8/src/third_party/utf8-decoder' \
 	'v8/src/third_party/valgrind' \
 	'v8/third_party/v8' \

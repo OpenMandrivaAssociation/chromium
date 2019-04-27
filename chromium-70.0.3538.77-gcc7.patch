@@ -62,15 +62,21 @@
    const MediaSink::Id& id() const { return sink_id_; }
 --- chromium-70.0.3538.77/chrome/common/media_router/media_sink.cc.orig	2018-11-08 23:17:22.962379907 +0000
 +++ chromium-70.0.3538.77/chrome/common/media_router/media_sink.cc	2018-11-08 23:17:36.625379033 +0000
-@@ -24,7 +24,7 @@
+@@ -19,12 +19,12 @@ MediaSink::MediaSink(const MediaSink::Id
+       provider_id_(provider_id) {}
+ 
+ MediaSink::MediaSink(const MediaSink& other) = default;
+-MediaSink::MediaSink(MediaSink&& other) noexcept = default;
++MediaSink::MediaSink(MediaSink&& other) = default;
+ MediaSink::MediaSink() = default;
  MediaSink::~MediaSink() = default;
  
  MediaSink& MediaSink::operator=(const MediaSink& other) = default;
 -MediaSink& MediaSink::operator=(MediaSink&& other) noexcept = default;
 +MediaSink& MediaSink::operator=(MediaSink&& other) = default;
  
- bool MediaSink::Equals(const MediaSink& other) const {
-   return sink_id_ == other.sink_id_;
+ bool MediaSink::IsMaybeCloudSink() const {
+   switch (icon_type_) {
 --- chromium-70.0.3538.77/components/policy/core/common/policy_map.cc.orig	2018-11-08 23:55:51.325232293 +0000
 +++ chromium-70.0.3538.77/components/policy/core/common/policy_map.cc	2018-11-08 23:56:17.654230610 +0000
 @@ -18,7 +18,7 @@
@@ -93,20 +99,9 @@
  
      // Returns a copy of |this|.
      Entry DeepCopy() const;
---- chromium-70.0.3538.77/components/signin/core/browser/account_info.h.orig	2018-11-09 00:03:20.709203557 +0000
-+++ chromium-70.0.3538.77/components/signin/core/browser/account_info.h	2018-11-09 00:03:59.284201090 +0000
-@@ -20,7 +20,7 @@
-   AccountInfo(AccountInfo&& other) noexcept;
- 
-   AccountInfo& operator=(const AccountInfo& other);
--  AccountInfo& operator=(AccountInfo&& other) noexcept;
-+  AccountInfo& operator=(AccountInfo&& other);
- 
-   std::string account_id;  // The account ID used by OAuth2TokenService.
-   std::string gaia;
 --- chromium-70.0.3538.77/components/signin/core/browser/account_info.cc.orig	2018-11-09 00:03:15.789203871 +0000
 +++ chromium-70.0.3538.77/components/signin/core/browser/account_info.cc	2018-11-09 00:03:52.644201514 +0000
-@@ -32,7 +32,7 @@
+@@ -50,7 +50,7 @@ AccountInfo::AccountInfo(AccountInfo&& o
  
  AccountInfo& AccountInfo::operator=(const AccountInfo& other) = default;
  
@@ -114,4 +109,4 @@
 +AccountInfo& AccountInfo::operator=(AccountInfo&& other) = default;
  
  bool AccountInfo::IsEmpty() const {
-   return account_id.empty() && email.empty() && gaia.empty() &&
+   return CoreAccountInfo::IsEmpty() && hosted_domain.empty() &&
