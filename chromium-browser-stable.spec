@@ -147,6 +147,8 @@ Patch94:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-66.0.
 Patch98:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-69.0.3497.81-gcc8-alignof.patch
 # Don't build in a Debian chroot
 Patch99:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-69.0.3497.81-build-sanely-please.patch
+# Debian fix gcc failure
+Patch100:	quic.patch
 
 ### Chromium Tests Patches ###
 # suse, system libs
@@ -159,6 +161,7 @@ Patch202:	https://raw.githubusercontent.com/archlinuxarm/PKGBUILDs/master/extra/
 # mga
 Patch300:	chromium-69-extra-media.patch
 Patch301:	chromium-69-wmvflvmpg.patch
+Patch302:	chromium-40-sorenson-spark.patch
 #Patch302:	chromium-55-flac.patch
 
 # omv
@@ -171,6 +174,8 @@ Patch504:	chromium-70.0.3538.77-gcc7.patch
 # stop so many build warnings
 Patch506:	chromium-71.0.3578.94-quieten.patch
 Patch507:	chromium-trace.patch
+
+Patch508:	chromium-74.0.3729.108-revert_values.patch
 
 Provides: 	%{crname}
 Obsoletes: 	chromium-browser-unstable < 26.0.1410.51
