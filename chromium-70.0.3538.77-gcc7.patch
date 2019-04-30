@@ -101,7 +101,16 @@
      Entry DeepCopy() const;
 --- chromium-70.0.3538.77/components/signin/core/browser/account_info.cc.orig	2018-11-09 00:03:15.789203871 +0000
 +++ chromium-70.0.3538.77/components/signin/core/browser/account_info.cc	2018-11-09 00:03:52.644201514 +0000
-@@ -50,7 +50,7 @@ AccountInfo::AccountInfo(AccountInfo&& o
+@@ -51,7 +51,7 @@
+ CoreAccountInfo& CoreAccountInfo::operator=(const CoreAccountInfo& other) =
+     default;
+ 
+-CoreAccountInfo& CoreAccountInfo::operator=(CoreAccountInfo&& other) noexcept =
++CoreAccountInfo& CoreAccountInfo::operator=(CoreAccountInfo&& other) =
+     default;
+ 
+ bool CoreAccountInfo::IsEmpty() const {
+@@ -64,7 +64,7 @@ AccountInfo::AccountInfo(AccountInfo&& o
  
  AccountInfo& AccountInfo::operator=(const AccountInfo& other) = default;
  

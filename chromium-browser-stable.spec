@@ -149,6 +149,9 @@ Patch98:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-69.0.
 Patch99:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-69.0.3497.81-build-sanely-please.patch
 # Debian fix gcc failure
 Patch100:	quic.patch
+# debian - constexpr fixes
+Patch101:	not-constexpr.patch
+Patch102:	move-required.patch
 
 ### Chromium Tests Patches ###
 # suse, system libs
@@ -176,6 +179,7 @@ Patch506:	chromium-71.0.3578.94-quieten.patch
 Patch507:	chromium-trace.patch
 
 Patch508:	chromium-74.0.3729.108-revert_values.patch
+Patch509:	trace_fix.patch
 
 Provides: 	%{crname}
 Obsoletes: 	chromium-browser-unstable < 26.0.1410.51
@@ -392,6 +396,7 @@ python2 build/linux/unbundle/remove_bundled_libraries.py \
         'third_party/dav1d' \
 	'third_party/devscripts' \
 	'third_party/dom_distiller_js' \
+        'third_party/emoji-segmenter' \
 	'third_party/expat' \
 	'third_party/ffmpeg' \
 	'third_party/fips181' \
