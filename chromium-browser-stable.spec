@@ -91,7 +91,7 @@ Patch24:        https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromiu
 Patch25:        https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-54.0.2840.59-jpeg-include-dir.patch
 # On i686, pass --no-keep-memory --reduce-memory-overheads to ld.
 Patch26:        https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-59.0.3071.86-i686-ld-memory-tricks.patch
-Patch32:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-69.0.3497.81-norar.patch
+Patch32:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-73.0.3683.75-norar.patch
 Patch33:	chromium-50-system-ffmpeg-3.patch
 Patch36:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-58.0.3029.96-revert-b794998819088f76b4cf44c8db6940240c563cf4.patch
 # Correctly compile the stdatomic.h in ffmpeg with gcc 4.8
@@ -125,7 +125,7 @@ Patch67:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-65.0.
 # From Debian
 Patch86:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-67.0.3396.62-skia-aarch64-buildfix.patch
 # Use lstdc++ on EPEL7 only
-Patch87:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-65.0.3325.162-epel7-stdc++.patch
+# Patch87:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-65.0.3325.162-epel7-stdc++.patch
 # Missing files in tarball
 Patch88:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-66.0.3359.117-missing-files.patch
 # https://chromium.googlesource.com/chromium/src/+/ba4141e451f4e0b1b19410b1b503bd32e150df06%5E%21/#F0
@@ -158,13 +158,13 @@ Patch202:	https://raw.githubusercontent.com/archlinuxarm/PKGBUILDs/master/extra/
 # mga
 Patch300:	chromium-69-extra-media.patch
 Patch301:	chromium-69-wmvflvmpg.patch
-Patch302:	chromium-55-flac.patch
+#Patch302:	chromium-55-flac.patch
+Patch302:	chromium-40-sorenson-spark.patch
 
 # omv
 Patch500:	chromium-59-clang-workaround.patch
 Patch501:	chromium-64-system-curl.patch
 Patch502:	chromium-69-no-static-libstdc++.patch
-Patch505:	chromium-72.0.3626.81-memset.patch
 
 # stop so many build warnings
 Patch506:	chromium-71.0.3578.94-quieten.patch
