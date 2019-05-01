@@ -331,11 +331,9 @@ python2 build/linux/unbundle/remove_bundled_libraries.py \
 	'base/third_party/xdg_user_dirs' \
 	'chrome/third_party/mozilla_security_manager' \
 	'courgette/third_party' \
-	'net/third_party/http2' \
 	'net/third_party/mozilla_security_manager' \
 	'net/third_party/nss' \
 	'net/third_party/quic' \
-	'net/third_party/spdy' \
         'net/third_party/uri_template' \
 	'third_party/abseil-cpp' \
 	'third_party/adobe' \
@@ -379,8 +377,10 @@ python2 build/linux/unbundle/remove_bundled_libraries.py \
 	'third_party/crashpad/crashpad/third_party/zlib/' \
 	'third_party/crc32c' \
 	'third_party/cros_system_api' \
+        'third_party/dav1d' \
 	'third_party/devscripts' \
 	'third_party/dom_distiller_js' \
+        'third_party/emoji-segmenter' \
 	'third_party/expat' \
 	'third_party/ffmpeg' \
 	'third_party/fips181' \
@@ -389,6 +389,7 @@ python2 build/linux/unbundle/remove_bundled_libraries.py \
 	'third_party/flot' \
 	'third_party/fontconfig' \
 	'third_party/freetype' \
+        'third_party/glslang' \
 	'third_party/google_input_tools' \
 	'third_party/google_input_tools/third_party/closure_library' \
 	'third_party/google_input_tools/third_party/closure_library/third_party/closure' \
@@ -429,9 +430,11 @@ python2 build/linux/unbundle/remove_bundled_libraries.py \
 	'third_party/llvm-build' \
 	'third_party/lss' \
 	'third_party/lzma_sdk' \
+        'third_party/markupsafe' \
 	'third_party/mesa' \
 	'third_party/metrics_proto' \
 	'third_party/modp_b64' \
+        'third_party/nasm' \
 	'third_party/node' \
 	'third_party/node/node_modules/polymer-bundler/lib/third_party/UglifyJS2' \
 	'third_party/openh264' \
@@ -461,6 +464,7 @@ python2 build/linux/unbundle/remove_bundled_libraries.py \
 	'third_party/sfntly' \
 	'third_party/sinonjs' \
 	'third_party/skia' \
+        'third_party/skia/include/third_party/vulkan' \
 	'third_party/skia/third_party/gif' \
 	'third_party/skia/third_party/skcms' \
 	'third_party/skia/third_party/vulkan' \
@@ -497,6 +501,7 @@ python2 build/linux/unbundle/remove_bundled_libraries.py \
 	'third_party/zlib/google' \
 	'tools/gn/base/third_party/icu' \
 	'url/third_party/mozilla' \
+        'v8/src/third_party/siphash' \
 	'v8/src/third_party/utf8-decoder' \
 	'v8/src/third_party/valgrind' \
 	'v8/third_party/v8' \
