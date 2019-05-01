@@ -547,6 +547,9 @@ export PATH=$PWD/bfd:$PATH
 %global ldflags %{ldflags} -fuse-ld=bfd -Wl,--no-keep-memory -Wl,--reduce-memory-overheads
 %endif
 
+# cb chromium 74 fails with malformed archive at link stage if ulimit not increased
+ulimit -n 4096
+
 export CC=gcc
 export CXX=g++
 
