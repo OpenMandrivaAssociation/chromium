@@ -659,7 +659,7 @@ gn_system_libraries+=" ffmpeg"
 %endif
 python2 build/linux/unbundle/replace_gn_files.py --system-libraries ${gn_system_libraries}
 
-python2 tools/gn/bootstrap/bootstrap.py -v --skip-generate-buildfiles"
+python2 tools/gn/bootstrap/bootstrap.py -v --skip-generate-buildfiles
 
 python2 third_party/libaddressinput/chromium/tools/update-strings.py
 
