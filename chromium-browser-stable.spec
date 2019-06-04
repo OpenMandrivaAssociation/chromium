@@ -36,6 +36,7 @@
 %bcond_without	system_minizip
 # chromium 58 fails with system vpx 1.6.1
 %bcond_with	system_vpx
+%bcond_with	system_re2
 
 # Always support proprietary codecs
 # or html5 does not work
@@ -185,7 +186,9 @@ BuildRequires: 	flex
 BuildRequires:	java-1.8.0-openjdk-devel
 BuildRequires:	pkgconfig(alsa)
 BuildRequires:	pkgconfig(krb5)
+%if %{with system_re2}
 BuildRequires:	pkgconfig(re2)
+%endif
 BuildRequires:	pkgconfig(com_err)
 BuildRequires:	python2dist(json5)
 BuildRequires: 	alsa-oss-devel
@@ -462,7 +465,9 @@ python2 build/linux/unbundle/remove_bundled_libraries.py \
 	'third_party/protobuf/third_party/six' \
 	'third_party/qcms' \
 	'third_party/qunit' \
+%if %{without system_re2}
 	'third_party/re2' \
+%endif
 	'third_party/rnnoise' \
 	'third_party/s2cellid' \
 	'third_party/sfntly' \
@@ -607,7 +612,6 @@ gn_system_libraries="
     libwebp
     libxml
     libxslt
-    re2
     snappy
     yasm
 "
@@ -615,6 +619,9 @@ gn_system_libraries="
 #    opus
 # cb - chrome 58
 # libevent as system lib causes some hanging issues particularly with extensions
+%if %{with_system_re2}
+gn_system_libraries+=" re2"
+%endif
 
 %if %{with system_minizip}
 gn_system_libraries+=" zlib"
