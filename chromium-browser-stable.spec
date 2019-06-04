@@ -170,9 +170,6 @@ Patch502:	chromium-69-no-static-libstdc++.patch
 Patch506:	chromium-71.0.3578.94-quieten.patch
 Patch507:	chromium-trace.patch
 
-Patch508:	chromium-74.0.3729.108-revert_values.patch
-Patch509:	trace_fix.patch
-
 Patch510:	revert-gn-4980.patch
 Patch511:	revert-gn-4960.patch
 
