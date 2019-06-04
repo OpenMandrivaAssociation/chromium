@@ -1,0 +1,134 @@
+Description: revert https://gn.googlesource.com/gn/+/8730b0feb6b991fa47368566501ab9ccfb453c92, which breaks the chromium build
+
+--- a/tools/gn/tools/gn/binary_target_generator.cc
++++ b/tools/gn/tools/gn/binary_target_generator.cc
+@@ -68,38 +68,6 @@ void BinaryTargetGenerator::DoRun() {
+     return;
+ }
+ 
+-bool BinaryTargetGenerator::FillSources() {
+-  bool ret = TargetGenerator::FillSources();
+-  for (std::size_t i = 0; i < target_->sources().size(); ++i) {
+-    const auto& source = target_->sources()[i];
+-    switch (source.type()) {
+-      case SourceFile::SOURCE_CPP:
+-      case SourceFile::SOURCE_H:
+-      case SourceFile::SOURCE_C:
+-      case SourceFile::SOURCE_M:
+-      case SourceFile::SOURCE_MM:
+-      case SourceFile::SOURCE_S:
+-      case SourceFile::SOURCE_ASM:
+-      case SourceFile::SOURCE_O:
+-        // These are allowed.
+-        break;
+-      case SourceFile::SOURCE_RC:
+-      case SourceFile::SOURCE_DEF:
+-      case SourceFile::SOURCE_RS:
+-      case SourceFile::SOURCE_GO:
+-      case SourceFile::SOURCE_UNKNOWN:
+-      case SourceFile::SOURCE_NUMTYPES:
+-        *err_ =
+-            Err(scope_->GetValue(variables::kSources, true)->list_value()[i],
+-                std::string("Only source, header, and object files belong in "
+-                            "the sources of a ") +
+-                    Target::GetStringForOutputType(target_->output_type()) +
+-                    ". " + source.value() + " is not one of the valid types.");
+-    }
+-  }
+-  return ret;
+-}
+-
+ bool BinaryTargetGenerator::FillCompleteStaticLib() {
+   if (target_->output_type() == Target::STATIC_LIBRARY) {
+     const Value* value = scope_->GetValue(variables::kCompleteStaticLib, true);
+--- a/tools/gn/tools/gn/binary_target_generator.h
++++ b/tools/gn/tools/gn/binary_target_generator.h
+@@ -22,7 +22,6 @@ class BinaryTargetGenerator : public Tar
+ 
+  protected:
+   void DoRun() override;
+-  bool FillSources() override;
+ 
+  private:
+   bool FillCompleteStaticLib();
+--- a/tools/gn/tools/gn/source_dir.cc
++++ b/tools/gn/tools/gn/source_dir.cc
+@@ -98,10 +98,10 @@ SourceFile SourceDir::ResolveRelativeFil
+     return ret;
+ 
+   const std::string& input_string = p.string_value();
+-  if (!ValidateResolveInput<std::string>(true, p, input_string, err))
++  if (!ValidateResolveInput<std::string>(true, p, input_string, err)) {
+     return ret;
+-
+-  ret.SetValue(ResolveRelative(input_string, value_, true, source_root));
++  }
++  ret.value_ = ResolveRelative(input_string, value_, true, source_root);
+   return ret;
+ }
+ 
+--- a/tools/gn/tools/gn/source_file.cc
++++ b/tools/gn/tools/gn/source_file.cc
+@@ -55,19 +55,18 @@ SourceFile::Type GetSourceFileType(const
+ SourceFile::SourceFile() : type_(SOURCE_UNKNOWN) {}
+ 
+ SourceFile::SourceFile(const base::StringPiece& p)
+-    : value_(p.data(), p.size()) {
++    : value_(p.data(), p.size()), type_(GetSourceFileType(value_)) {
+   DCHECK(!value_.empty());
+   AssertValueSourceFileString(value_);
+   NormalizePath(&value_);
+-  type_ = GetSourceFileType(value_);
+ }
+ 
+-SourceFile::SourceFile(SwapIn, std::string* value) {
++SourceFile::SourceFile(SwapIn, std::string* value)
++    : type_(GetSourceFileType(*value)) {
+   value_.swap(*value);
+   DCHECK(!value_.empty());
+   AssertValueSourceFileString(value_);
+   NormalizePath(&value_);
+-  type_ = GetSourceFileType(value_);
+ }
+ 
+ SourceFile::~SourceFile() = default;
+@@ -93,8 +92,3 @@ SourceDir SourceFile::GetDir() const {
+ base::FilePath SourceFile::Resolve(const base::FilePath& source_root) const {
+   return ResolvePath(value_, true, source_root);
+ }
+-
+-void SourceFile::SetValue(const std::string& value) {
+-  value_ = value;
+-  type_ = GetSourceFileType(value_);
+-}
+--- a/tools/gn/tools/gn/source_file.h
++++ b/tools/gn/tools/gn/source_file.h
+@@ -97,16 +97,11 @@ class SourceFile {
+     return value_ < other.value_;
+   }
+ 
+-  void swap(SourceFile& other) {
+-    value_.swap(other.value_);
+-    std::swap(type_, other.type_);
+-  }
++  void swap(SourceFile& other) { value_.swap(other.value_); }
+ 
+  private:
+   friend class SourceDir;
+ 
+-  void SetValue(const std::string& value);
+-
+   std::string value_;
+   Type type_;
+ 
+--- a/tools/gn/tools/gn/target_generator.h
++++ b/tools/gn/tools/gn/target_generator.h
+@@ -47,7 +47,7 @@ class TargetGenerator {
+ 
+   const BuildSettings* GetBuildSettings() const;
+ 
+-  virtual bool FillSources();
++  bool FillSources();
+   bool FillPublic();
+   bool FillConfigs();
+   bool FillOutputs(bool allow_substitutions);
