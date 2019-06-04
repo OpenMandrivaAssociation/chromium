@@ -619,7 +619,7 @@ gn_system_libraries="
 #    opus
 # cb - chrome 58
 # libevent as system lib causes some hanging issues particularly with extensions
-%if %{with_system_re2}
+%if %{with system_re2}
 gn_system_libraries+=" re2"
 %endif
 
