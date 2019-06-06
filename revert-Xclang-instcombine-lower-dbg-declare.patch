@@ -1,13 +1,13 @@
-Author: Olivier Tilloy <olivier.tilloy@canonical.com>
-Description: revert of 074fa51f85b15ad2e2d6c804a03825d48dbeb063, which requires Clang r313108 (unreleased yet)
-
---- a/build/config/compiler/BUILD.gn
-+++ b/build/config/compiler/BUILD.gn
-@@ -466,17 +466,6 @@ config("compiler") {
+--- chromium-75.0.3770.80/build/config/compiler/BUILD.gn.0503~	2019-06-06 20:50:40.560385017 +0100
++++ chromium-75.0.3770.80/build/config/compiler/BUILD.gn	2019-06-06 20:52:39.417377417 +0100
+@@ -471,20 +471,6 @@
      }
    }
-
+ 
 -  if (is_clang && !is_nacl && !use_xcode_clang) {
+-    cflags += [ "-fcrash-diagnostics-dir=" +
+-                rebase_path("//tools/clang/crashreports", root_build_dir) ]
+-
 -    cflags += [
 -      # TODO(hans): Remove this once Clang generates better optimized debug info
 -      # by default. https://crbug.com/765793
@@ -18,6 +18,6 @@ Description: revert of 074fa51f85b15ad2e2d6c804a03825d48dbeb063, which requires 
 -    ]
 -  }
 -
-   # Print absolute paths in diagnostics. There is no precedent for doing this
-   # on Linux/Mac (GCC doesn't support it), but MSVC does this with /FC and
-   # Windows developers rely on it (crbug.com/636109) so only do this on Windows.
+   # C11/C++11 compiler flags setup.
+   # ---------------------------
+   if (is_linux || is_android || (is_nacl && is_clang) || current_os == "aix") {

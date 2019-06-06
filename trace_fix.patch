@@ -1,0 +1,15 @@
+--- chromium-74.0.3729.108/chrome/browser/tracing/trace_event_system_stats_monitor.cc.orig	2019-04-29 23:28:08.069667734 +0100
++++ chromium-74.0.3729.108/chrome/browser/tracing/trace_event_system_stats_monitor.cc	2019-04-29 23:32:49.165649758 +0100
+@@ -84,8 +84,10 @@
+   is_profiling_ = true;
+   DCHECK(performance_monitor::SystemMonitor::Get());
+   performance_monitor::SystemMonitor::Get()->AddOrUpdateObserver(
+-      this, {.system_metrics_sampling_frequency =
+-                 SamplingFrequency::kDefaultFrequency});
++      this, {.free_phys_memory_mb_frequency = SamplingFrequency::kNoSampling,
++             .disk_idle_time_percent_frequency = SamplingFrequency::kNoSampling,
++             .system_metrics_sampling_frequency =
++                 SamplingFrequency::kDefaultFrequency });
+ }
+ 
+ void TraceEventSystemStatsMonitor::OnSystemMetricsStruct(

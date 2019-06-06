@@ -18,7 +18,7 @@ diff -up chromium-51.0.2687.0/third_party/webrtc/modules/video_coding/codecs/h26
 --- chromium-51.0.2687.0/third_party/webrtc/modules/video_coding/codecs/h264/h264_decoder_impl.h.system-ffmpeg-3	2016-03-23 18:55:39.080894319 +0100
 +++ chromium-51.0.2687.0/third_party/webrtc/modules/video_coding/codecs/h264/h264_decoder_impl.h	2016-03-23 18:54:32.178123691 +0100
 @@ -17,7 +17,7 @@
- #include "modules/video_coding/codecs/h264/include/h264.h"
+ // passed to ffmpeg.
  
  extern "C" {
 -#include "third_party/ffmpeg/libavcodec/avcodec.h"
