@@ -48,7 +48,7 @@
 Name: 		chromium-browser-%{channel}
 # Working version numbers can be found at
 # http://omahaproxy.appspot.com/
-Version: 	74.0.3729.169
+Version: 	75.0.3770.80
 Release: 	1%{?extrarelsuffix}
 Summary: 	A fast webkit-based web browser
 Group: 		Networking/WWW
@@ -104,7 +104,7 @@ Patch42:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-60.0.
 # Do not mangle libjpeg
 Patch43:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-60.0.3112.78-jpeg-nomangle.patch
 # Do not mangle zlib
-Patch45:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-60.0.3112.78-no-zlib-mangle.patch
+#Patch45:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-60.0.3112.78-no-zlib-mangle.patch
 # Apply these changes to work around EPEL7 compiler issues
 Patch46:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-62.0.3202.62-kmaxskip-constexpr.patch
 #Patch47:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-60.0.3112.90-vulkan-force-c99.patch
@@ -144,11 +144,11 @@ Patch94:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-66.0.
 # GCC8 has changed the alignof operator to return the minimal alignment required by the target ABI
 # instead of the preferred alignment. This means int64_t is now 4 on i686 (instead of 8).
 # Use __alignof__ to get the value we expect (and chromium checks for).
-Patch98:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-69.0.3497.81-gcc8-alignof.patch
+#Patch98:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-69.0.3497.81-gcc8-alignof.patch
 # Don't build in a Debian chroot
 Patch99:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-69.0.3497.81-build-sanely-please.patch
 # Debian fix gcc failure
-Patch100:	quic.patch
+#Patch100:	quic.patch
 # debian - constexpr fixes
 Patch101:	not-constexpr.patch
 Patch102:	move-required.patch
@@ -178,11 +178,11 @@ Patch504:	chromium-70.0.3538.77-gcc7.patch
 Patch506:	chromium-71.0.3578.94-quieten.patch
 Patch507:	chromium-trace.patch
 
-Patch508:	chromium-74.0.3729.108-revert_values.patch
+#Patch508:	chromium-74.0.3729.108-revert_values.patch
 Patch509:	trace_fix.patch
 
-Patch510:	revert-gn-4980.patch
-Patch511:	revert-gn-4960.patch
+#Patch510:	revert-gn-4980.patch
+#Patch511:	revert-gn-4960.patch
 
 Provides: 	%{crname}
 Obsoletes: 	chromium-browser-unstable < 26.0.1410.51
@@ -397,12 +397,12 @@ python2 build/linux/unbundle/remove_bundled_libraries.py \
 	'third_party/crc32c' \
 	'third_party/cros_system_api' \
         'third_party/dav1d' \
+        'third_party/dawn' \
 	'third_party/devscripts' \
 	'third_party/dom_distiller_js' \
         'third_party/emoji-segmenter' \
 	'third_party/expat' \
 	'third_party/ffmpeg' \
-	'third_party/fips181' \
 	'third_party/flac' \
         'third_party/flatbuffers' \
 	'third_party/flot' \
@@ -471,6 +471,7 @@ python2 build/linux/unbundle/remove_bundled_libraries.py \
         'third_party/pdfium/third_party/libtiff' \
 	'third_party/pdfium/third_party/skia_shared' \
 	'third_party/perfetto' \
+        'third_party/pffft' \
         'third_party/ply' \
 	'third_party/polymer' \
 	'third_party/protobuf' \
