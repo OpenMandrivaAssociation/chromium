@@ -153,6 +153,11 @@ Patch99:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-69.0.
 Patch101:	not-constexpr.patch
 Patch102:	move-required.patch
 
+Patch103:	chromium-75.0.3770.80-aeed4d-gcc-dcheck_ne-fix.patch
+Patch104:	chromium-75.0.3770.80-gcc-no-assume.patch
+Patch105:	chromium-75.0.3770.80-revert-daff6b.patch
+Patch106:	chromium-75.0.3770.80-pure-virtual-crash-fix.patch
+
 ### Chromium Tests Patches ###
 # suse, system libs
 Patch200:	arm_use_right_compiler.patch
@@ -181,8 +186,7 @@ Patch507:	chromium-trace.patch
 #Patch508:	chromium-74.0.3729.108-revert_values.patch
 Patch509:	trace_fix.patch
 
-#Patch510:	revert-gn-4980.patch
-#Patch511:	revert-gn-4960.patch
+Patch510:	json_exporter.patch
 
 Provides: 	%{crname}
 Obsoletes: 	chromium-browser-unstable < 26.0.1410.51
@@ -368,6 +372,7 @@ python2 build/linux/unbundle/remove_bundled_libraries.py \
 	'third_party/angle/third_party/vulkan-tools' \
 	'third_party/angle/third_party/vulkan-validation-layers' \
 	'third_party/apple_apsl' \
+	'third_party/axe-core' \
 	'third_party/blanketjs' \
 	'third_party/blink' \
 	'third_party/boringssl' \
@@ -393,6 +398,7 @@ python2 build/linux/unbundle/remove_bundled_libraries.py \
 	'third_party/cld_3' \
         'third_party/closure_compiler' \
 	'third_party/crashpad' \
+        'third_party/crashpad/crashpad/third_party/lss/' \
 	'third_party/crashpad/crashpad/third_party/zlib/' \
 	'third_party/crc32c' \
 	'third_party/cros_system_api' \
