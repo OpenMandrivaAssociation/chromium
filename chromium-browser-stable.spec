@@ -48,7 +48,7 @@
 Name: 		chromium-browser-%{channel}
 # Working version numbers can be found at
 # http://omahaproxy.appspot.com/
-Version: 	75.0.3770.80
+Version: 	75.0.3770.90
 Release: 	1%{?extrarelsuffix}
 Summary: 	A fast webkit-based web browser
 Group: 		Networking/WWW
@@ -177,6 +177,7 @@ Patch506:	chromium-71.0.3578.94-quieten.patch
 Patch507:	chromium-trace.patch
 
 Patch510:	json_exporter.patch
+Patch511:	const.patch
 
 Provides: 	%{crname}
 Obsoletes: 	chromium-browser-unstable < 26.0.1410.51
