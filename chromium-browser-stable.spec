@@ -104,7 +104,7 @@ Patch42:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-60.0.
 # Do not mangle libjpeg
 Patch43:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-60.0.3112.78-jpeg-nomangle.patch
 # Do not mangle zlib
-#Patch45:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-60.0.3112.78-no-zlib-mangle.patch
+Patch45:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-75.0.3770.80-no-zlib-mangle.patch
 # Apply these changes to work around EPEL7 compiler issues
 Patch46:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-62.0.3202.62-kmaxskip-constexpr.patch
 #Patch47:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-60.0.3112.90-vulkan-force-c99.patch
