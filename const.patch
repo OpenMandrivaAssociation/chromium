@@ -1,0 +1,11 @@
+--- chromium-75.0.3770.80/chrome/browser/ui/tabs/tab_strip_model_observer.h.orig	2019-06-15 10:20:16.818869647 +0100
++++ chromium-75.0.3770.80/chrome/browser/ui/tabs/tab_strip_model_observer.h	2019-06-15 10:20:34.105868542 +0100
+@@ -135,7 +135,7 @@
+ 
+  private:
+   const Type type_ = kSelectionOnly;
+-  const std::vector<Delta> deltas_;
++  std::vector<Delta> deltas_;
+ 
+   DISALLOW_COPY_AND_ASSIGN(TabStripModelChange);
+ };
