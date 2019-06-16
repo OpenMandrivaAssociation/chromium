@@ -152,6 +152,7 @@ Patch103:	chromium-75.0.3770.80-aeed4d-gcc-dcheck_ne-fix.patch
 Patch104:	chromium-75.0.3770.80-gcc-no-assume.patch
 Patch105:	chromium-75.0.3770.80-revert-daff6b.patch
 Patch106:	chromium-75.0.3770.80-pure-virtual-crash-fix.patch
+Patch107:	chromium-75.0.3770.80-SIOCGSTAMP.patch
 
 ### Chromium Tests Patches ###
 # suse, system libs
