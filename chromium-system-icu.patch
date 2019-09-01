@@ -14,6 +14,6 @@ index 28fb6a9..bb4dbd7 100644
 +static const UChar32 kIsHangulArray[] = {
 +  0xFFDC,
 +};
- 
- #if !defined(USING_SYSTEM_ICU)
+
  // Freezed trie tree, see character_property_data_generator.cc.
+ extern const int32_t kSerializedCharacterDataSize;

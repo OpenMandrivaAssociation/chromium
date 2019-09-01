@@ -48,7 +48,7 @@
 Name: 		chromium-browser-%{channel}
 # Working version numbers can be found at
 # http://omahaproxy.appspot.com/
-Version: 	75.0.3770.90
+Version: 	76.0.3809.132
 Release: 	1%{?extrarelsuffix}
 Summary: 	A fast webkit-based web browser
 Group: 		Networking/WWW
@@ -148,8 +148,8 @@ Patch94:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-66.0.
 # Don't build in a Debian chroot
 Patch99:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-69.0.3497.81-build-sanely-please.patch
 
-Patch103:	chromium-75.0.3770.80-aeed4d-gcc-dcheck_ne-fix.patch
-Patch104:	chromium-75.0.3770.80-gcc-no-assume.patch
+#Patch103:	chromium-75.0.3770.80-aeed4d-gcc-dcheck_ne-fix.patch
+#Patch104:	chromium-75.0.3770.80-gcc-no-assume.patch
 Patch105:	chromium-75.0.3770.80-revert-daff6b.patch
 Patch106:	chromium-75.0.3770.80-pure-virtual-crash-fix.patch
 Patch107:	chromium-75.0.3770.80-SIOCGSTAMP.patch
@@ -178,7 +178,7 @@ Patch506:	chromium-71.0.3578.94-quieten.patch
 Patch507:	chromium-trace.patch
 
 Patch510:	json_exporter.patch
-Patch511:	const.patch
+#Patch511:	const.patch
 
 Provides: 	%{crname}
 Obsoletes: 	chromium-browser-unstable < 26.0.1410.51
@@ -332,6 +332,7 @@ ln -s /usr/bin/node third_party/node/linux/node-linux-x64/bin/
 python2 build/linux/unbundle/remove_bundled_libraries.py \
 	'buildtools/third_party/libc++' \
 	'buildtools/third_party/libc++abi' \
+        'base/third_party/cityhash' \
 	'base/third_party/dmg_fp' \
 	'base/third_party/dynamic_annotations' \
 	'base/third_party/icu' \
@@ -370,6 +371,8 @@ python2 build/linux/unbundle/remove_bundled_libraries.py \
 	'third_party/blink' \
 	'third_party/boringssl' \
 	'third_party/boringssl/src/third_party/fiat' \
+        'third_party/boringssl/src/third_party/sike' \
+        'third_party/boringssl/linux-x86_64/crypto/third_party/sike/' \
 	'third_party/breakpad' \
 	'third_party/breakpad/breakpad/src/third_party/curl' \
 	'third_party/brotli' \
@@ -453,7 +456,7 @@ python2 build/linux/unbundle/remove_bundled_libraries.py \
 	'third_party/node' \
 	'third_party/node/node_modules/polymer-bundler/lib/third_party/UglifyJS2' \
 	'third_party/openh264' \
-	'third_party/openmax_dl' \
+        'third_party/openscreen' \
 	'third_party/opus' \
 	'third_party/ots' \
 	'third_party/pdfium' \
@@ -483,6 +486,7 @@ python2 build/linux/unbundle/remove_bundled_libraries.py \
 	'third_party/sinonjs' \
 	'third_party/skia' \
         'third_party/skia/include/third_party/vulkan' \
+        'third_party/skia/include/third_party/skcms' \
 	'third_party/skia/third_party/gif' \
 	'third_party/skia/third_party/skcms' \
 	'third_party/skia/third_party/vulkan' \
@@ -494,7 +498,6 @@ python2 build/linux/unbundle/remove_bundled_libraries.py \
 	'third_party/sqlite' \
 	'third_party/swiftshader' \
 	'third_party/swiftshader/third_party/subzero' \
-	'third_party/swiftshader/third_party/LLVM' \
 	'third_party/swiftshader/third_party/llvm-subzero' \
 	'third_party/tcmalloc' \
 	'third_party/test_fonts' \
