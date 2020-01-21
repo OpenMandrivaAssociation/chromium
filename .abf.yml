@@ -1,7 +1,2 @@
-removed_sources:
-  chromium-74.0.3729.157.tar.xz: 6a6c63959f59746afb1074df66fc1e490b7ce66d
-  chromium-74.0.3729.169.tar.xz: bcbb3fa78f041d5b6e3d1c600739692c35e39385
-  chromium-75.0.3770.80.tar.xz: 172b675cf904dda63717e11da4decd1b31fecc11
-  chromium-75.0.3770.90.tar.xz: db7ca57d0428991b2a16a3bd04adc3fbe872ee57
 sources:
-  chromium-76.0.3809.132.tar.xz: d8cf329fbfbe899207ea388fdecfefed240bc404
+  chromium-79.0.3945.130.tar.xz: 11407561c425daf34f04d9f59be30547bb2b4e27

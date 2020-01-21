@@ -1,0 +1,11 @@
+diff -up chromium-79.0.3945.56/ui/base/cursor/ozone/bitmap_cursor_factory_ozone.h.fix-find_if chromium-79.0.3945.56/ui/base/cursor/ozone/bitmap_cursor_factory_ozone.h
+--- chromium-79.0.3945.56/ui/base/cursor/ozone/bitmap_cursor_factory_ozone.h.fix-find_if	2019-12-03 15:32:07.315635750 -0500
++++ chromium-79.0.3945.56/ui/base/cursor/ozone/bitmap_cursor_factory_ozone.h	2019-12-03 15:32:33.085054770 -0500
+@@ -5,6 +5,7 @@
+ #ifndef UI_BASE_CURSOR_OZONE_BITMAP_CURSOR_FACTORY_OZONE_H_
+ #define UI_BASE_CURSOR_OZONE_BITMAP_CURSOR_FACTORY_OZONE_H_
+ 
++#include <algorithm>
+ #include <map>
+ 
+ #include "base/macros.h"

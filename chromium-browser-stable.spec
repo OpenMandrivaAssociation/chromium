@@ -48,7 +48,7 @@
 Name: 		chromium-browser-%{channel}
 # Working version numbers can be found at
 # http://omahaproxy.appspot.com/
-Version: 	76.0.3809.132
+Version: 	79.0.3945.130
 Release: 	1%{?extrarelsuffix}
 Summary: 	A fast webkit-based web browser
 Group: 		Networking/WWW
@@ -61,124 +61,104 @@ Source3:	master_preferences
 Source100:	%{name}.rpmlintrc
 
 ### Chromium Fedora Patches ###
-Patch0:         https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-67.0.3396.62-gcc5.patch
-Patch1:         https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-45.0.2454.101-linux-path-max.patch
-Patch2:         https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-55.0.2883.75-addrfix.patch
-Patch4:         https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-46.0.2490.71-notest.patch
-#Patch6:		https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-47.0.2526.80-pnacl-fgnu-inline-asm.patch
-# Ignore broken nacl open fd counter
-Patch7:         https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-47.0.2526.80-nacl-ignore-broken-fd-counter.patch
-# Use libusb_interrupt_event_handler from current libusbx (1.0.21-0.1.git448584a)
-Patch9:         https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-48.0.2564.116-libusb_interrupt_event_handler.patch
-# Ignore deprecations in cups 2.2
-# https://bugs.chromium.org/p/chromium/issues/detail?id=622493
-Patch12:        https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-55.0.2883.75-cups22.patch
-# Use PIE in the Linux sandbox (from openSUSE via Russian Fedora)
-Patch15:        https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-70.0.3538.67-sandbox-pie.patch
-# Enable ARM CPU detection for webrtc (from archlinux via Russian Fedora)
-#Patch16:        chromium-52.0.2743.82-arm-webrtc.patch
+Patch0:		https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-70.0.3538.67-sandbox-pie.patch
 # Use /etc/chromium for master_prefs
-Patch18:        https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-52.0.2743.82-master-prefs-path.patch
+Patch1:		https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-68.0.3440.106-master-prefs-path.patch
 # Use gn system files
-Patch20:        https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-67.0.3396.62-gn-system.patch
-# Fix last commit position issue
-# https://groups.google.com/a/chromium.org/forum/#!topic/gn-dev/7nlJv486bD4
-# Patch21:        https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-60.0.3112.78-last-commit-position.patch
-# Fix issue where timespec is not defined when sys/stat.h is included.
-Patch22:        https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-53.0.2785.92-boringssl-time-fix.patch
-# I wouldn't have to do this if there was a standard way to append extra compiler flags
-Patch24:        https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-59.0.3071.86-nullfix.patch
-# Add explicit includedir for jpeglib.h
-Patch25:        https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-54.0.2840.59-jpeg-include-dir.patch
-# On i686, pass --no-keep-memory --reduce-memory-overheads to ld.
-Patch26:        https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-59.0.3071.86-i686-ld-memory-tricks.patch
-Patch32:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-73.0.3683.75-norar.patch
-Patch33:	chromium-50-system-ffmpeg-3.patch
-Patch36:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-58.0.3029.96-revert-b794998819088f76b4cf44c8db6940240c563cf4.patch
-# Correctly compile the stdatomic.h in ffmpeg with gcc 4.8
-Patch37:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-64.0.3282.119-ffmpeg-stdatomic.patch
-# Nacl can't die soon enough
-Patch39:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-66.0.3359.117-system-clang.patch
+Patch2:		https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-67.0.3396.62-gn-system.patch
+# Revert https://chromium.googlesource.com/chromium/src/+/b794998819088f76b4cf44c8db6940240c563cf4%5E%21/#F0
+# https://bugs.chromium.org/p/chromium/issues/detail?id=712737
+# https://bugzilla.redhat.com/show_bug.cgi?id=1446851
+Patch3:		https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-58.0.3029.96-revert-b794998819088f76b4cf44c8db6940240c563cf4.patch
 # Do not prefix libpng functions
-Patch42:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-60.0.3112.78-no-libpng-prefix.patch
+Patch4:		https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-60.0.3112.78-no-libpng-prefix.patch
 # Do not mangle libjpeg
-Patch43:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-60.0.3112.78-jpeg-nomangle.patch
+Patch5:		https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-60.0.3112.78-jpeg-nomangle.patch
 # Do not mangle zlib
-Patch45:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-75.0.3770.80-no-zlib-mangle.patch
-# Apply these changes to work around EPEL7 compiler issues
-Patch46:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-62.0.3202.62-kmaxskip-constexpr.patch
-#Patch47:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-60.0.3112.90-vulkan-force-c99.patch
-# Fix libavutil include pathing to find arch specific timer.h
-# For some reason, this only fails on aarch64. No idea why.
-Patch50:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-60.0.3112.113-libavutil-timer-include-path-fix.patch
-# from gentoo
-Patch53:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-61.0.3163.79-gcc-no-opt-safe-math.patch
-# Only needed when glibc 2.26.90 or later is used
-Patch57:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-63.0.3289.84-aarch64-glibc-2.26.90.patch
-# From gentoo
-Patch62:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-66.0.3359.117-gcc5-r3.patch
-# Do not try to use libc++ in the remoting stack
-# Patch63:	chromium-63.0.3289.84-nolibc++.patch
-# To use round with gcc, you need to #include <cmath>
-Patch65:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-65.0.3325.146-gcc-round-fix.patch
-# Include proper headers to invoke memcpy()
-Patch67:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-65.0.3325.146-memcpy-fix.patch
-# From Debian
-Patch86:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-67.0.3396.62-skia-aarch64-buildfix.patch
-# Use lstdc++ on EPEL7 only
-# Patch87:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-65.0.3325.162-epel7-stdc++.patch
-# Missing files in tarball
-Patch88:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-66.0.3359.117-missing-files.patch
-# https://chromium.googlesource.com/chromium/src/+/ba4141e451f4e0b1b19410b1b503bd32e150df06%5E%21/#F0
-# Patch89:	chromium-66.0.3359.117-gcc-optional-move-fixes.patch
-# https://chromium.googlesource.com/chromium/src/+/4f2b52281ce1649ea8347489443965ad33262ecc%5E%21
-# Patch90:	chromium-66.0.3359.117-gcc-copy-constructor-fix.patch
-# https://bugs.chromium.org/p/chromium/issues/detail?id=816952
-# Patch91:	chromium-66.0.3359.117-gcc-vector-copy-constructor-fix.patch
-Patch94:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-66.0.3359.117-GCC-fully-declare-ConfigurationPolicyProvider.patch
-# Patch95:	chromium-65.0.3325.146-GCC-IDB-methods-String-renamed-to-GetString.patch
-# https://github.com/archlinuxarm/PKGBUILDs/blob/master/extra/chromium/0006-GCC-do-not-use-initializer-list-for-NoDestructor-of-.patch
-# Patch96:	chromium-66.0.3359.117-GCC-do-not-use-initializer-list-for-NoDestructor-of-.patch
-# https://chromium.googlesource.com/chromium/src/+/b84682f31dc99b9c90f5a04947075815697c68d9%5E%21/#F0
-# Patch97:	chromium-66.0.3359.139-arm-init-fix.patch
-# GCC8 has changed the alignof operator to return the minimal alignment required by the target ABI
-# instead of the preferred alignment. This means int64_t is now 4 on i686 (instead of 8).
-# Use __alignof__ to get the value we expect (and chromium checks for).
-#Patch98:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-69.0.3497.81-gcc8-alignof.patch
-# Don't build in a Debian chroot
-Patch99:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-69.0.3497.81-build-sanely-please.patch
+Patch6:		https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-77.0.3865.75-no-zlib-mangle.patch
+# Do not use unrar code, it is non-free
+Patch7:		https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-73.0.3683.75-norar.patch
+# Use Gentoo's Widevine hack
+# https://gitweb.gentoo.org/repo/gentoo.git/tree/www-client/chromium/files/chromium-widevine-r3.patch
+Patch8:		https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-71.0.3578.98-widevine-r3.patch
+# Disable fontconfig cache magic that breaks remoting
+Patch9:		https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-70.0.3538.67-disable-fontconfig-cache-magic.patch
+# drop rsp clobber, which breaks gcc9 (thanks to Jeff Law)
+Patch10:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-78.0.3904.70-gcc9-drop-rsp-clobber.patch
+# Try to load widevine from other places
+Patch11:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-79.0.3945.56-widevine-other-locations.patch
+# Try to fix version.py for Rawhide
+Patch12:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-71.0.3578.98-py2-bootstrap.patch
+# Add "Fedora" to the user agent string
+#Patch13:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-79.0.3945.56-fedora-user-agent.patch
+# rename function to avoid conflict with rawhide glibc "gettid()"
+Patch50:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-75.0.3770.80-grpc-gettid-fix.patch
+# Needs to be submitted..
+Patch51:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-76.0.3809.100-gcc-remoting-constexpr.patch
+# Needs to be submitted.. (ugly hack, needs to be added properly to GN files)
+Patch52:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-78.0.3904.70-vtable-symbol-undefined.patch
+# https://gitweb.gentoo.org/repo/gentoo.git/tree/www-client/chromium/files/chromium-unbundle-zlib.patch
+Patch53:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-78.0.3904.70-unbundle-zlib.patch
+# Needs to be submitted..
+Patch54:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-77.0.3865.75-gcc-include-memory.patch
+# https://chromium.googlesource.com/chromium/src/+/6b633c4b14850df376d5cec571699018772f358e
+# https://gitweb.gentoo.org/repo/gentoo.git/tree/www-client/chromium/files/chromium-78-gcc-alignas.patch
+Patch55:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-79.0.3945.56-base-gcc-no-alignas.patch
+# https://chromium.googlesource.com/chromium/src/+/af77dc4014ead3d898fdc8a7a70fe5063ac9b102
+Patch56:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-79-gcc-ambiguous-nodestructor.patch
+# https://gitweb.gentoo.org/repo/gentoo.git/tree/www-client/chromium/files/chromium-78-protobuf-export.patch
+Patch57:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-78-protobuf-export.patch
+# https://gitweb.gentoo.org/repo/gentoo.git/plain/www-client/chromium/files/chromium-79-include.patch
+Patch58:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-79-include.patch
+# https://gitweb.gentoo.org/repo/gentoo.git/plain/www-client/chromium/files/chromium-77-clang.patch
+Patch59:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-77-clang.patch
+# https://chromium.googlesource.com/chromium/src.git/+/54407b422a9cbf775a68c1d57603c0ecac8ce0d7
+Patch60:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-79.0.3945.56-glibc-clock-nanosleep.patch
+# https://chromium.googlesource.com/chromium/src/+/e925deab264e5ebc3c5c13415aa3d44a746e8d45
+Patch61:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-79.0.3945.56-gcc-name-clash.patch
+# https://chromium.googlesource.com/chromium/src/+/528e9a3e1f25bd264549c4c7779748abfd16bb1c
+Patch62:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-79-gcc-permissive.patch
+# /../../ui/base/cursor/ozone/bitmap_cursor_factory_ozone.cc:53:15: error: 'find_if' is not a member of 'std'; did you mean 'find'? 
+Patch63:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-79.0.3945.56-fix-find_if.patch
 
-#Patch103:	chromium-75.0.3770.80-aeed4d-gcc-dcheck_ne-fix.patch
-#Patch104:	chromium-75.0.3770.80-gcc-no-assume.patch
-Patch105:	chromium-75.0.3770.80-revert-daff6b.patch
-Patch106:	chromium-75.0.3770.80-pure-virtual-crash-fix.patch
-Patch107:	chromium-75.0.3770.80-SIOCGSTAMP.patch
+
+# Use lstdc++ on EPEL7 only
+#Patch101:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-75.0.3770.100-epel7-stdc++.patch
+# el7 only patch
+#Patch102:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-79.0.3945.56-el7-noexcept.patch
+
+# Enable VAAPI support on Linux
+# NOTE: This patch will never land upstream
+Patch202:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/enable-vaapi.patch
+Patch203:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-75.0.3770.80-vaapi-i686-fpermissive.patch
+# Fix compatibility with VA-API library (libva) version 1
+#Patch204:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-75.0.3770.80-vaapi-libva1-compatibility.patch
+
+# Apply these patches to work around EPEL8 issues
+#Patch300:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-76.0.3809.132-rhel8-force-disable-use_gnome_keyring.patch
+
+Patch500:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-75.0.3770.80-revert-daff6b.patch
+Patch501:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-75.0.3770.80-SIOCGSTAMP.patch
 
 ### Chromium Tests Patches ###
 # suse, system libs
-Patch200:	arm_use_right_compiler.patch
-# Gentoo, fix widevine
-Patch201:	https://gitweb.gentoo.org/repo/gentoo.git/plain/www-client/chromium/files/chromium-widevine.patch
+Patch600:	arm_use_right_compiler.patch
 # Arch Linux, fix for compile error with system ICU
-Patch202:	https://raw.githubusercontent.com/archlinuxarm/PKGBUILDs/master/extra/chromium/chromium-system-icu.patch
+Patch602:	https://raw.githubusercontent.com/archlinuxarm/PKGBUILDs/master/extra/chromium/chromium-system-icu.patch
 
 # mga
-Patch300:	chromium-69-extra-media.patch
-Patch301:	chromium-69-wmvflvmpg.patch
-#Patch302:	chromium-55-flac.patch
-Patch302:	chromium-40-sorenson-spark.patch
+Patch700:	chromium-69-extra-media.patch
+Patch701:	chromium-69-wmvflvmpg.patch
+Patch702:	chromium-40-sorenson-spark.patch
 
 # omv
-Patch500:	chromium-59-clang-workaround.patch
-Patch501:	chromium-64-system-curl.patch
-Patch502:	chromium-69-no-static-libstdc++.patch
+Patch1000:	chromium-59-clang-workaround.patch
+Patch1001:	chromium-64-system-curl.patch
+Patch1002:	chromium-69-no-static-libstdc++.patch
 
 # stop so many build warnings
-Patch506:	chromium-71.0.3578.94-quieten.patch
-Patch507:	chromium-trace.patch
-
-Patch510:	json_exporter.patch
-#Patch511:	const.patch
+Patch1006:	chromium-71.0.3578.94-quieten.patch
+Patch1007:	chromium-trace.patch
 
 Provides: 	%{crname}
 Obsoletes: 	chromium-browser-unstable < 26.0.1410.51
@@ -305,8 +285,7 @@ members of the Chromium and WebDriver teams.
 
 
 %prep
-%setup -q -n chromium-%{version}
-%apply_patches
+%autosetup -p1 -n chromium-%{version}
 
 rm -rf third_party/binutils/
 
@@ -330,10 +309,8 @@ ln -s /usr/bin/node third_party/node/linux/node-linux-x64/bin/
 
 # Remove bundled libs
 python2 build/linux/unbundle/remove_bundled_libraries.py \
-	'buildtools/third_party/libc++' \
-	'buildtools/third_party/libc++abi' \
-        'base/third_party/cityhash' \
-	'base/third_party/dmg_fp' \
+	'base/third_party/cityhash' \
+	'base/third_party/double_conversion' \
 	'base/third_party/dynamic_annotations' \
 	'base/third_party/icu' \
 	'base/third_party/libevent' \
@@ -343,26 +320,28 @@ python2 build/linux/unbundle/remove_bundled_libraries.py \
 	'base/third_party/valgrind' \
 	'base/third_party/xdg_mime' \
 	'base/third_party/xdg_user_dirs' \
+	'buildtools/third_party/libc++' \
+	'buildtools/third_party/libc++abi' \
 	'chrome/third_party/mozilla_security_manager' \
 	'courgette/third_party' \
 	'net/third_party/mozilla_security_manager' \
 	'net/third_party/nss' \
 	'net/third_party/quic' \
-        'net/third_party/uri_template' \
+	'net/third_party/uri_template' \
 	'third_party/abseil-cpp' \
 	'third_party/adobe' \
 	'third_party/angle' \
 	'third_party/angle/src/common/third_party/base' \
 	'third_party/angle/src/common/third_party/smhasher' \
-        'third_party/angle/src/common/third_party/xxhash' \
+	'third_party/angle/src/common/third_party/xxhash' \
 	'third_party/angle/src/third_party/compiler' \
 	'third_party/angle/src/third_party/libXNVCtrl' \
 	'third_party/angle/src/third_party/trace_event' \
-	'third_party/angle/third_party/vulkan-loader' \
 	'third_party/angle/third_party/glslang' \
 	'third_party/angle/third_party/spirv-headers' \
 	'third_party/angle/third_party/spirv-tools' \
 	'third_party/angle/third_party/vulkan-headers' \
+	'third_party/angle/third_party/vulkan-loader' \
 	'third_party/angle/third_party/vulkan-tools' \
 	'third_party/angle/third_party/vulkan-validation-layers' \
 	'third_party/apple_apsl' \
@@ -371,8 +350,9 @@ python2 build/linux/unbundle/remove_bundled_libraries.py \
 	'third_party/blink' \
 	'third_party/boringssl' \
 	'third_party/boringssl/src/third_party/fiat' \
-        'third_party/boringssl/src/third_party/sike' \
-        'third_party/boringssl/linux-x86_64/crypto/third_party/sike/' \
+	'third_party/boringssl/src/third_party/sike' \
+	'third_party/boringssl/linux-x86_64/crypto/third_party/sike' \
+        'third_party/boringssl/linux-aarch64/crypto/third_party/sike' \
 	'third_party/breakpad' \
 	'third_party/breakpad/breakpad/src/third_party/curl' \
 	'third_party/brotli' \
@@ -380,26 +360,31 @@ python2 build/linux/unbundle/remove_bundled_libraries.py \
 	'third_party/catapult' \
 	'third_party/catapult/common/py_vulcanize/third_party/rcssmin' \
 	'third_party/catapult/common/py_vulcanize/third_party/rjsmin' \
+	'third_party/catapult/third_party/beautifulsoup4' \
+	'third_party/catapult/third_party/html5lib-python' \
 	'third_party/catapult/third_party/polymer' \
+	'third_party/catapult/third_party/six' \
 	'third_party/catapult/tracing/third_party/d3' \
 	'third_party/catapult/tracing/third_party/gl-matrix' \
+	'third_party/catapult/tracing/third_party/jpeg-js' \
 	'third_party/catapult/tracing/third_party/jszip' \
 	'third_party/catapult/tracing/third_party/mannwhitneyu' \
 	'third_party/catapult/tracing/third_party/oboe' \
 	'third_party/catapult/tracing/third_party/pako' \
         'third_party/ced' \
 	'third_party/cld_3' \
-        'third_party/closure_compiler' \
+	'third_party/closure_compiler' \
 	'third_party/crashpad' \
-        'third_party/crashpad/crashpad/third_party/lss/' \
+	'third_party/crashpad/crashpad/third_party/lss' \
 	'third_party/crashpad/crashpad/third_party/zlib/' \
 	'third_party/crc32c' \
 	'third_party/cros_system_api' \
-        'third_party/dav1d' \
-        'third_party/dawn' \
+	'third_party/dav1d' \
+	'third_party/dawn' \
+	'third_party/depot_tools' \
 	'third_party/devscripts' \
 	'third_party/dom_distiller_js' \
-        'third_party/emoji-segmenter' \
+	'third_party/emoji-segmenter' \
 	'third_party/expat' \
 	'third_party/ffmpeg' \
 	'third_party/flac' \
@@ -407,26 +392,29 @@ python2 build/linux/unbundle/remove_bundled_libraries.py \
 	'third_party/flot' \
 	'third_party/fontconfig' \
 	'third_party/freetype' \
-        'third_party/glslang' \
+	'third_party/glslang' \
 	'third_party/google_input_tools' \
 	'third_party/google_input_tools/third_party/closure_library' \
 	'third_party/google_input_tools/third_party/closure_library/third_party/closure' \
+	'third_party/google_trust_services' \
 	'third_party/googletest' \
+	'third_party/grpc' \
+	'third_party/grpc/src/third_party/nanopb' \
 	'third_party/harfbuzz-ng' \
 	'third_party/hunspell' \
 	'third_party/iccjpeg' \
 	'third_party/icu' \
 	'third_party/inspector_protocol' \
 	'third_party/jinja2' \
+	'third_party/jsoncpp' \
 	'third_party/jstemplate' \
-        'third_party/jsoncpp' \
 	'third_party/khronos' \
 	'third_party/leveldatabase' \
 	'third_party/libXNVCtrl' \
 	'third_party/libaddressinput' \
 	'third_party/libaom' \
-        'third_party/libaom/source/libaom/third_party/vector' \
-        'third_party/libaom/source/libaom/third_party/x86inc' \
+	'third_party/libaom/source/libaom/third_party/vector' \
+	'third_party/libaom/source/libaom/third_party/x86inc' \
 	'third_party/libdrm' \
 	'third_party/libjingle' \
 	'third_party/libjpeg_turbo' \
@@ -439,24 +427,25 @@ python2 build/linux/unbundle/remove_bundled_libraries.py \
 	'third_party/libusb' \
 	'third_party/libvpx' \
 	'third_party/libvpx/source/libvpx/third_party/x86inc' \
+	'third_party/libwebm' \
+	'third_party/libwebp' \
 	'third_party/libxml' \
 	'third_party/libxml/chromium' \
 	'third_party/libxslt' \
-	'third_party/libwebm' \
-	'third_party/libwebp' \
 	'third_party/libyuv' \
-	'third_party/llvm-build' \
 	'third_party/lss' \
 	'third_party/lzma_sdk' \
-        'third_party/markupsafe' \
+	'third_party/markupsafe' \
 	'third_party/mesa' \
 	'third_party/metrics_proto' \
 	'third_party/modp_b64' \
-        'third_party/nasm' \
+	'third_party/nasm' \
 	'third_party/node' \
 	'third_party/node/node_modules/polymer-bundler/lib/third_party/UglifyJS2' \
+	'third_party/one_euro_filter' \
 	'third_party/openh264' \
-        'third_party/openscreen' \
+	'third_party/openscreen' \
+	'third_party/openscreen/src/third_party/tinycbor' \
 	'third_party/opus' \
 	'third_party/ots' \
 	'third_party/pdfium' \
@@ -470,23 +459,26 @@ python2 build/linux/unbundle/remove_bundled_libraries.py \
         'third_party/pdfium/third_party/libtiff' \
 	'third_party/pdfium/third_party/skia_shared' \
 	'third_party/perfetto' \
-        'third_party/pffft' \
+	'third_party/pffft' \
         'third_party/ply' \
 	'third_party/polymer' \
+	'third_party/private-join-and-compute' \
 	'third_party/protobuf' \
 	'third_party/protobuf/third_party/six' \
+	'third_party/pyjson5' \
 	'third_party/qcms' \
 	'third_party/qunit' \
-%if %{without system_re2}
+%if ! %{with system_re2}
 	'third_party/re2' \
 %endif
 	'third_party/rnnoise' \
 	'third_party/s2cellid' \
 	'third_party/sfntly' \
+	'third_party/simplejson' \
 	'third_party/sinonjs' \
 	'third_party/skia' \
-        'third_party/skia/include/third_party/vulkan' \
-        'third_party/skia/include/third_party/skcms' \
+	'third_party/skia/include/third_party/skcms' \
+	'third_party/skia/include/third_party/vulkan' \
 	'third_party/skia/third_party/gif' \
 	'third_party/skia/third_party/skcms' \
 	'third_party/skia/third_party/vulkan' \
@@ -494,11 +486,14 @@ python2 build/linux/unbundle/remove_bundled_libraries.py \
 	'third_party/snappy' \
 	'third_party/speech-dispatcher' \
 	'third_party/spirv-headers' \
-        'third_party/SPIRV-Tools' \
+	'third_party/SPIRV-Tools' \
 	'third_party/sqlite' \
 	'third_party/swiftshader' \
-	'third_party/swiftshader/third_party/subzero' \
 	'third_party/swiftshader/third_party/llvm-subzero' \
+	'third_party/swiftshader/third_party/llvm-7.0' \
+	'third_party/swiftshader/third_party/marl' \
+	'third_party/swiftshader/third_party/subzero' \
+	'third_party/swiftshader/third_party/SPIRV-Headers' \
 	'third_party/tcmalloc' \
 	'third_party/test_fonts' \
         'third_party/usb_ids' \
@@ -507,13 +502,13 @@ python2 build/linux/unbundle/remove_bundled_libraries.py \
 	'third_party/web-animations-js' \
 	'third_party/webdriver' \
 	'third_party/webrtc' \
-        'third_party/webrtc/common_audio/third_party/fft4g' \
-        'third_party/webrtc/common_audio/third_party/spl_sqrt_floor' \
-        'third_party/webrtc/modules/third_party/fft' \
-        'third_party/webrtc/modules/third_party/g711' \
-        'third_party/webrtc/modules/third_party/g722' \
-        'third_party/webrtc/rtc_base/third_party/base64' \
-        'third_party/webrtc/rtc_base/third_party/sigslot' \
+	'third_party/webrtc/common_audio/third_party/fft4g' \
+	'third_party/webrtc/common_audio/third_party/spl_sqrt_floor' \
+	'third_party/webrtc/modules/third_party/fft' \
+	'third_party/webrtc/modules/third_party/g711' \
+	'third_party/webrtc/modules/third_party/g722' \
+	'third_party/webrtc/rtc_base/third_party/base64' \
+	'third_party/webrtc/rtc_base/third_party/sigslot' \
 	'third_party/widevine' \
         'third_party/woff2' \
         'third_party/xdg-utils' \
@@ -521,13 +516,15 @@ python2 build/linux/unbundle/remove_bundled_libraries.py \
         'third_party/zlib' \
 	'third_party/zlib/google' \
 	'tools/gn/base/third_party/icu' \
+	'tools/grit/third_party/six' \
 	'url/third_party/mozilla' \
-        'v8/src/third_party/siphash' \
+	'v8/src/third_party/siphash' \
 	'v8/src/third_party/utf8-decoder' \
 	'v8/src/third_party/valgrind' \
 	'v8/third_party/v8' \
 	'v8/third_party/inspector_protocol' \
 	--do-remove
+
 
 # Look, I don't know. This package is spit and chewing gum. Sorry.
 rm -rf third_party/markupsafe
@@ -689,7 +686,7 @@ mkdir -p %{buildroot}%{_datadir}/applications
 install -m 644 %{SOURCE2} %{buildroot}%{_datadir}/applications/
 
 # icon
-for i in 22 24 48 64 128 256; do
+for i in 24 48 64 128 256; do
         mkdir -p %{buildroot}%{_datadir}/icons/hicolor/${i}x${i}/apps
         install -m 644 chrome/app/theme/chromium/product_logo_$i.png \
                 %{buildroot}%{_datadir}/icons/hicolor/${i}x${i}/apps/%{name}.png

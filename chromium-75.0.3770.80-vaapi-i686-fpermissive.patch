@@ -1,0 +1,23 @@
+diff -up chromium-79.0.3945.130/media/gpu/vaapi/BUILD.gn.29~ chromium-79.0.3945.130/media/gpu/vaapi/BUILD.gn
+--- chromium-79.0.3945.130/media/gpu/vaapi/BUILD.gn.29~	2020-01-16 22:51:03.000000000 +0100
++++ chromium-79.0.3945.130/media/gpu/vaapi/BUILD.gn	2020-01-20 22:32:32.507476215 +0100
+@@ -11,6 +11,10 @@ import("//ui/ozone/ozone.gni")
+ 
+ assert(use_vaapi)
+ 
++config("vaapi_permissive") {
++  cflags = [ "-fpermissive" ]
++}
++
+ generate_stubs("libva_stubs") {
+   extra_header = "va_stub_header.fragment"
+   sigs = [ "va.sigs" ]
+@@ -119,6 +123,8 @@ source_set("vaapi") {
+     ]
+   }
+ 
++  configs += [ ":vaapi_permissive" ]
++
+   if (use_x11) {
+     configs += [ "//build/config/linux:x11" ]
+     deps += [ "//ui/gfx/x" ]
