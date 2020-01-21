@@ -188,6 +188,8 @@ BuildRequires: 	pkgconfig(glib-2.0)
 BuildRequires: 	pkgconfig(wayland-egl)
 BuildRequires: 	pkgconfig(nss)
 BuildRequires:	pkgconfig(libdrm)
+BuildRequires:	pkgconfig(libglvnd)
+BuildRequires:	pkgconfig(dri)
 BuildRequires: 	bzip2-devel
 BuildRequires: 	jpeg-devel
 BuildRequires: 	pkgconfig(libpng)
