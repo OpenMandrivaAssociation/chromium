@@ -190,6 +190,7 @@ BuildRequires: 	pkgconfig(nss)
 BuildRequires:	pkgconfig(libdrm)
 BuildRequires:	pkgconfig(libglvnd)
 BuildRequires:	pkgconfig(dri)
+BuildRequires:	%{_lib}GL-devel
 BuildRequires: 	bzip2-devel
 BuildRequires: 	jpeg-devel
 BuildRequires: 	pkgconfig(libpng)
