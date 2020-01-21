@@ -30,7 +30,7 @@
 %bcond_with	plf
 # crisb - ozone causes a segfault on startup as of 57.0.2987.133
 %bcond_with	ozone
-%bcond_with	system_icu
+%bcond_without	system_icu
 %bcond_without	system_ffmpeg
 # Temporarily broken, cr_z_* symbols used even when we're supposed to use system minizip
 %bcond_without	system_minizip
@@ -607,6 +607,7 @@ CHROMIUM_BROWSER_GN_DEFINES+=" enable_hangout_services_extension=true"
 CHROMIUM_BROWSER_GN_DEFINES+=" use_aura=true"
 CHROMIUM_BROWSER_GN_DEFINES+=" enable_widevine=true"
 CHROMIUM_BROWSER_GN_DEFINES+=" enable_webrtc=true"
+CHROMIUM_BROWSER_GN_DEFINES+=" use_vaapi=true"
 
 CHROMIUM_HEADLESS_GN_DEFINES=' use_ozone=true ozone_auto_platforms=false ozone_platform="headless" ozone_platform_headless=true'
 CHROMIUM_HEADLESS_GN_DEFINES+=' headless_use_embedded_resources=true icu_use_data_file=false v8_use_external_startup_data=false'
