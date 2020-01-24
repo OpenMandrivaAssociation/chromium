@@ -190,6 +190,9 @@ BuildRequires: 	pkgconfig(nss)
 BuildRequires:	pkgconfig(libdrm)
 BuildRequires:	pkgconfig(libglvnd)
 BuildRequires:  pkgconfig(libva)
+BuildRequires:  pkgconfig(libva-drm)
+BuildRequires:  pkgconfig(libva-glx)
+BuildRequires:  pkgconfig(libva-x11)
 BuildRequires:	pkgconfig(dri)
 BuildRequires:	%{_lib}GL-devel
 BuildRequires: 	bzip2-devel
@@ -559,7 +562,7 @@ export CXX=clang++
 # sure it sees python2 when it calls python
 export PATH=`pwd`:$PATH
 
-CHROMIUM_CORE_GN_DEFINES=" use_sysroot=false is_debug=false fieldtrial_testing_like_official_build=true use_lld=false use_gold=true"
+CHROMIUM_CORE_GN_DEFINES="use_sysroot=false is_debug=false fieldtrial_testing_like_official_build=true use_lld=false use_gold=true"
 CHROMIUM_CORE_GN_DEFINES+=" is_clang=true clang_base_path=\"%{_prefix}\" clang_use_chrome_plugins=false "
 CHROMIUM_CORE_GN_DEFINES+=" treat_warnings_as_errors=false use_custom_libcxx=false "
 CHROMIUM_CORE_GN_DEFINES+=" use_system_libjpeg=true "
@@ -656,7 +659,7 @@ python2 tools/gn/bootstrap/bootstrap.py --skip-generate-buildfiles
 
 python2 third_party/libaddressinput/chromium/tools/update-strings.py
 
-out/Release/gn gen --args="${CHROMIUM_CORE_GN_DEFINES}" out/Release
+out/Release/gn gen --script-executable=/usr/bin/python2 --args="${CHROMIUM_CORE_GN_DEFINES} ${CHROMIUM_BROWSER_GN_DEFINES}" out/Release
 
 # Note: DON'T use system sqlite (3.7.3) -- it breaks history search
 # As of 36.0.1985.143, use_system_icu breaks the build.
