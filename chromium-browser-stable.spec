@@ -49,7 +49,7 @@ Name: 		chromium-browser-%{channel}
 # Working version numbers can be found at
 # http://omahaproxy.appspot.com/
 Version: 	79.0.3945.130
-Release: 	2%{?extrarelsuffix}
+Release: 	3%{?extrarelsuffix}
 Summary: 	A fast webkit-based web browser
 Group: 		Networking/WWW
 License: 	BSD, LGPL
@@ -606,7 +606,7 @@ CHROMIUM_CORE_GN_DEFINES+=' use_jumbo_build=true jumbo_file_merge_limit=12'
 
 CHROMIUM_BROWSER_GN_DEFINES="use_pulseaudio=true icu_use_data_file=true"
 CHROMIUM_BROWSER_GN_DEFINES+=" enable_nacl=false"
-CHROMIUM_BROWSER_GN_DEFINES+=" is_component_ffmpeg=true is_component_build=true"
+CHROMIUM_BROWSER_GN_DEFINES+=" is_component_ffmpeg=true"
 CHROMIUM_BROWSER_GN_DEFINES+=" enable_hangout_services_extension=true"
 CHROMIUM_BROWSER_GN_DEFINES+=" use_aura=true"
 CHROMIUM_BROWSER_GN_DEFINES+=" enable_widevine=true"
