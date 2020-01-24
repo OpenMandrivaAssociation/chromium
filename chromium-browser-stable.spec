@@ -189,6 +189,7 @@ BuildRequires: 	pkgconfig(wayland-egl)
 BuildRequires: 	pkgconfig(nss)
 BuildRequires:	pkgconfig(libdrm)
 BuildRequires:	pkgconfig(libglvnd)
+BuildRequires:  pkgconfig(libva)
 BuildRequires:	pkgconfig(dri)
 BuildRequires:	%{_lib}GL-devel
 BuildRequires: 	bzip2-devel
