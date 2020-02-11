@@ -49,7 +49,7 @@ Name: 		chromium-browser-%{channel}
 # Working version numbers can be found at
 # http://omahaproxy.appspot.com/
 Version: 	79.0.3945.130
-Release: 	3%{?extrarelsuffix}
+Release: 	4%{?extrarelsuffix}
 Summary: 	A fast webkit-based web browser
 Group: 		Networking/WWW
 License: 	BSD, LGPL
@@ -155,6 +155,7 @@ Patch702:	chromium-40-sorenson-spark.patch
 Patch1000:	chromium-59-clang-workaround.patch
 Patch1001:	chromium-64-system-curl.patch
 Patch1002:	chromium-69-no-static-libstdc++.patch
+Patch1003:	chromium-79.0.3945.130-clang10-libstdc++10.patch
 
 # stop so many build warnings
 Patch1006:	chromium-71.0.3578.94-quieten.patch

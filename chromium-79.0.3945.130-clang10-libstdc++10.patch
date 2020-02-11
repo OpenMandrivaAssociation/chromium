@@ -1,0 +1,120 @@
+diff -up chromium-79.0.3945.130/cc/base/list_container.h.omv~ chromium-79.0.3945.130/cc/base/list_container.h
+diff -up chromium-79.0.3945.130/chrome/browser/search/background/ntp_backgrounds.h.omv~ chromium-79.0.3945.130/chrome/browser/search/background/ntp_backgrounds.h
+--- chromium-79.0.3945.130/chrome/browser/search/background/ntp_backgrounds.h.omv~	2020-02-11 02:53:07.247194208 +0100
++++ chromium-79.0.3945.130/chrome/browser/search/background/ntp_backgrounds.h	2020-02-11 02:53:11.123193955 +0100
+@@ -9,7 +9,7 @@
+ 
+ class GURL;
+ 
+-const size_t kNtpBackgroundsCount = 5;
++const std::size_t kNtpBackgroundsCount = 5;
+ std::array<GURL, kNtpBackgroundsCount> GetNtpBackgrounds();
+ 
+ #endif  // CHROME_BROWSER_SEARCH_BACKGROUND_NTP_BACKGROUNDS_H_
+diff -up chromium-79.0.3945.130/components/viz/common/quads/render_pass.h.omv~ chromium-79.0.3945.130/components/viz/common/quads/render_pass.h
+--- chromium-79.0.3945.130/components/viz/common/quads/render_pass.h.omv~	2020-02-11 03:32:45.630038468 +0100
++++ chromium-79.0.3945.130/components/viz/common/quads/render_pass.h	2020-02-11 03:32:55.010037854 +0100
+@@ -42,6 +42,7 @@ class VIZ_COMMON_EXPORT QuadList : publi
+  public:
+   QuadList();
+   explicit QuadList(size_t default_size_to_reserve);
++  ~QuadList() = default;
+ 
+   typedef QuadList::ReverseIterator BackToFrontIterator;
+   typedef QuadList::ConstReverseIterator ConstBackToFrontIterator;
+diff -up chromium-79.0.3945.130/components/viz/service/display/overlay_strategy_fullscreen.cc.omv~ chromium-79.0.3945.130/components/viz/service/display/overlay_strategy_fullscreen.cc
+--- chromium-79.0.3945.130/components/viz/service/display/overlay_strategy_fullscreen.cc.omv~	2020-02-11 03:33:16.594036440 +0100
++++ chromium-79.0.3945.130/components/viz/service/display/overlay_strategy_fullscreen.cc	2020-02-11 03:33:26.461035794 +0100
+@@ -69,7 +69,7 @@ bool OverlayStrategyFullscreen::Attempt(
+ 
+   candidate_list->swap(new_candidate_list);
+ 
+-  render_pass->quad_list = QuadList();  // Remove all the quads
++  render_pass->quad_list.clear(); // = QuadList();  // Remove all the quads
+   return true;
+ }
+ 
+diff -up chromium-79.0.3945.130/media/cdm/supported_cdm_versions.h.omv~ chromium-79.0.3945.130/media/cdm/supported_cdm_versions.h
+--- chromium-79.0.3945.130/media/cdm/supported_cdm_versions.h.omv~	2020-02-10 01:44:37.326120949 +0100
++++ chromium-79.0.3945.130/media/cdm/supported_cdm_versions.h	2020-02-10 01:44:46.371120357 +0100
+@@ -52,7 +52,7 @@ constexpr bool IsSupportedCdmModuleVersi
+ // Returns whether the CDM interface of |version| is supported in the
+ // implementation.
+ constexpr bool IsSupportedCdmInterfaceVersion(int version) {
+-  for (size_t i = 0; i < kSupportedCdmInterfaceVersions.size(); ++i) {
++  for (std::size_t i = 0; i < kSupportedCdmInterfaceVersions.size(); ++i) {
+     if (kSupportedCdmInterfaceVersions[i].version == version)
+       return true;
+   }
+@@ -70,7 +70,7 @@ constexpr bool IsSupportedCdmHostVersion
+ 
+ // Returns whether the CDM interface of |version| is enabled by default.
+ constexpr bool IsCdmInterfaceVersionEnabledByDefault(int version) {
+-  for (size_t i = 0; i < kSupportedCdmInterfaceVersions.size(); ++i) {
++  for (std::size_t i = 0; i < kSupportedCdmInterfaceVersions.size(); ++i) {
+     if (kSupportedCdmInterfaceVersions[i].version == version)
+       return kSupportedCdmInterfaceVersions[i].enabled;
+   }
+diff -up chromium-79.0.3945.130/third_party/angle/include/platform/Platform.h.omv~ chromium-79.0.3945.130/third_party/angle/include/platform/Platform.h
+--- chromium-79.0.3945.130/third_party/angle/include/platform/Platform.h.omv~	2020-02-09 22:47:07.120818342 +0100
++++ chromium-79.0.3945.130/third_party/angle/include/platform/Platform.h	2020-02-09 22:47:17.652817652 +0100
+@@ -230,11 +230,11 @@ inline void DefaultOverrideFeaturesVk(Pl
+ using ProgramKeyType   = std::array<uint8_t, 20>;
+ using CacheProgramFunc = void (*)(PlatformMethods *platform,
+                                   const ProgramKeyType &key,
+-                                  size_t programSize,
++                                  std::size_t programSize,
+                                   const uint8_t *programBytes);
+ inline void DefaultCacheProgram(PlatformMethods *platform,
+                                 const ProgramKeyType &key,
+-                                size_t programSize,
++                                std::size_t programSize,
+                                 const uint8_t *programBytes)
+ {}
+ 
+diff -up chromium-79.0.3945.130/third_party/glslang/src/glslang/Include/PoolAlloc.h.omv~ chromium-79.0.3945.130/third_party/glslang/src/glslang/Include/PoolAlloc.h
+--- chromium-79.0.3945.130/third_party/glslang/src/glslang/Include/PoolAlloc.h.omv~	2020-02-09 22:55:19.297786114 +0100
++++ chromium-79.0.3945.130/third_party/glslang/src/glslang/Include/PoolAlloc.h	2020-02-09 22:58:56.439771895 +0100
+@@ -240,7 +240,7 @@ protected:
+ 
+     int numCalls;           // just an interesting statistic
+     size_t totalBytes;      // just an interesting statistic
+-private:
++public: // This is wrong, should be private, but needed by line 307 with clang 10...
+     TPoolAllocator& operator=(const TPoolAllocator&);  // don't allow assignment operator
+     TPoolAllocator(const TPoolAllocator&);  // don't allow default copy constructor
+ };
+diff -up chromium-79.0.3945.130/third_party/perfetto/include/perfetto/base/task_runner.h.omv~ chromium-79.0.3945.130/third_party/perfetto/include/perfetto/base/task_runner.h
+--- chromium-79.0.3945.130/third_party/perfetto/include/perfetto/base/task_runner.h.omv~	2020-02-09 23:12:22.230719130 +0100
++++ chromium-79.0.3945.130/third_party/perfetto/include/perfetto/base/task_runner.h	2020-02-09 23:12:30.030718619 +0100
+@@ -18,6 +18,7 @@
+ #define INCLUDE_PERFETTO_BASE_TASK_RUNNER_H_
+ 
+ #include <functional>
++#include <cstdint>
+ 
+ #include "perfetto/base/export.h"
+ 
+diff -up chromium-79.0.3945.130/third_party/webrtc/call/rtx_receive_stream.h.omv~ chromium-79.0.3945.130/third_party/webrtc/call/rtx_receive_stream.h
+--- chromium-79.0.3945.130/third_party/webrtc/call/rtx_receive_stream.h.omv~	2020-02-09 23:37:48.304619200 +0100
++++ chromium-79.0.3945.130/third_party/webrtc/call/rtx_receive_stream.h	2020-02-09 23:37:55.432618734 +0100
+@@ -12,6 +12,7 @@
+ #define CALL_RTX_RECEIVE_STREAM_H_
+ 
+ #include <map>
++#include <cstdint>
+ 
+ #include "call/rtp_packet_sink_interface.h"
+ 
+diff -up chromium-79.0.3945.130/third_party/webrtc/modules/audio_processing/aec3/clockdrift_detector.h.omv~ chromium-79.0.3945.130/third_party/webrtc/modules/audio_processing/aec3/clockdrift_detector.h
+--- chromium-79.0.3945.130/third_party/webrtc/modules/audio_processing/aec3/clockdrift_detector.h.omv~	2020-02-09 23:44:28.839592973 +0100
++++ chromium-79.0.3945.130/third_party/webrtc/modules/audio_processing/aec3/clockdrift_detector.h	2020-02-09 23:45:53.434587433 +0100
+@@ -31,7 +31,7 @@ class ClockdriftDetector {
+  private:
+   std::array<int, 3> delay_history_;
+   Level level_;
+-  size_t stability_counter_;
++  std::size_t stability_counter_;
+ };
+ }  // namespace webrtc
+ 
