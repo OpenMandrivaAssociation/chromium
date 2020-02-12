@@ -1,0 +1,275 @@
+diff -up chromium-80.0.3987.87/chrome/browser/search/background/ntp_backgrounds.h.omv~ chromium-80.0.3987.87/chrome/browser/search/background/ntp_backgrounds.h
+--- chromium-80.0.3987.87/chrome/browser/search/background/ntp_backgrounds.h.omv~	2020-02-11 22:04:43.097161703 +0100
++++ chromium-80.0.3987.87/chrome/browser/search/background/ntp_backgrounds.h	2020-02-11 22:04:46.836161521 +0100
+@@ -9,7 +9,7 @@
+ 
+ class GURL;
+ 
+-const size_t kNtpBackgroundsCount = 5;
++const std::size_t kNtpBackgroundsCount = 5;
+ std::array<GURL, kNtpBackgroundsCount> GetNtpBackgrounds();
+ 
+ #endif  // CHROME_BROWSER_SEARCH_BACKGROUND_NTP_BACKGROUNDS_H_
+diff -up chromium-80.0.3987.87/chrome/common/string_matching/fuzzy_tokenized_string_match.cc.omv~ chromium-80.0.3987.87/chrome/common/string_matching/fuzzy_tokenized_string_match.cc
+--- chromium-80.0.3987.87/chrome/common/string_matching/fuzzy_tokenized_string_match.cc.omv~	2020-02-11 21:49:10.752206937 +0100
++++ chromium-80.0.3987.87/chrome/common/string_matching/fuzzy_tokenized_string_match.cc	2020-02-11 21:49:16.265206669 +0100
+@@ -6,6 +6,7 @@
+ 
+ #include <algorithm>
+ #include <iterator>
++#include <cmath>
+ 
+ #include "base/i18n/case_conversion.h"
+ #include "base/metrics/field_trial_params.h"
+diff -up chromium-80.0.3987.87/components/sync_bookmarks/bookmark_model_merger.cc.omv~ chromium-80.0.3987.87/components/sync_bookmarks/bookmark_model_merger.cc
+--- chromium-80.0.3987.87/components/sync_bookmarks/bookmark_model_merger.cc.omv~	2020-02-11 23:42:25.346877288 +0100
++++ chromium-80.0.3987.87/components/sync_bookmarks/bookmark_model_merger.cc	2020-02-12 00:10:09.299796560 +0100
+@@ -56,10 +56,6 @@ const char kBookmarkBarTag[] = "bookmark
+ const char kMobileBookmarksTag[] = "synced_bookmarks";
+ const char kOtherBookmarksTag[] = "other_bookmarks";
+ 
+-using UpdatesPerParentId = std::unordered_map<base::StringPiece,
+-                                              syncer::UpdateResponseDataList,
+-                                              base::StringPieceHash>;
+-
+ // Gets the bookmark node corresponding to a permanent folder identified by
+ // |server_defined_unique_tag|. |bookmark_model| must not be null.
+ const bookmarks::BookmarkNode* GetPermanentFolder(
+@@ -162,6 +158,11 @@ void ResolveDuplicateRemoteGUIDs(syncer:
+   }
+ }
+ 
++
++using UpdatesPerParentId = std::unordered_map<base::StringPiece,
++                                              syncer::UpdateResponseDataList,
++                                              base::StringPieceHash>;
++
+ // Groups all valid updates by the server ID of their parent and moves them away
+ // from |*updates|. |updates| must not be null.
+ UpdatesPerParentId GroupValidUpdatesByParentId(
+@@ -203,66 +204,35 @@ UpdatesPerParentId GroupValidUpdatesByPa
+ 
+ }  // namespace
+ 
+-class BookmarkModelMerger::RemoteTreeNode final {
+- public:
+-  // Constructs a tree given |update| as root and recursively all descendants by
+-  // traversing |*updates_per_parent_id|. |update| and |updates_per_parent_id|
+-  // must not be null. All updates |*updates_per_parent_id| must represent valid
+-  // updates. Updates corresponding from descendant nodes are moved away from
+-  // |*updates_per_parent_id|.
+-  static RemoteTreeNode BuildTree(
+-      std::unique_ptr<syncer::UpdateResponseData> update,
+-      UpdatesPerParentId* updates_per_parent_id);
+-
+-  ~RemoteTreeNode() = default;
+-
+-  // Allow moves, useful during construction.
+-  RemoteTreeNode(RemoteTreeNode&&) = default;
+-  RemoteTreeNode& operator=(RemoteTreeNode&&) = default;
+-
+-  const syncer::EntityData& entity() const { return *update_->entity; }
+-  int64_t response_version() const { return update_->response_version; }
+-
+-  // Direct children nodes, sorted by ascending unique position. These are
+-  // guaranteed to be valid updates (e.g. IsValidBookmarkSpecifics()).
+-  const std::vector<RemoteTreeNode>& children() const { return children_; }
+-
+-  // Recursively emplaces all GUIDs (this node and descendants) into
+-  // |*guid_to_remote_node_map|, which must not be null.
+-  void EmplaceSelfAndDescendantsByGUID(
+-      std::unordered_map<std::string, const RemoteTreeNode*>*
+-          guid_to_remote_node_map) const {
+-    DCHECK(guid_to_remote_node_map);
+-
+-    const std::string& guid = entity().specifics.bookmark().guid();
+-    if (!guid.empty()) {
+-      DCHECK(base::IsValidGUID(guid));
+-
+-      // Duplicate GUIDs have been sorted out before.
+-      bool success = guid_to_remote_node_map->emplace(guid, this).second;
+-      DCHECK(success);
+-    }
+-
+-    for (const RemoteTreeNode& child : children_) {
+-      child.EmplaceSelfAndDescendantsByGUID(guid_to_remote_node_map);
+-    }
++// Recursively emplaces all GUIDs (this node and descendants) into
++// |*guid_to_remote_node_map|, which must not be null.
++void BookmarkModelMerger::RemoteTreeNode::EmplaceSelfAndDescendantsByGUID(
++    std::unordered_map<std::string, const RemoteTreeNode*>*
++        guid_to_remote_node_map) const {
++  DCHECK(guid_to_remote_node_map);
++
++  const std::string& guid = entity().specifics.bookmark().guid();
++  if (!guid.empty()) {
++    DCHECK(base::IsValidGUID(guid));
++
++    // Duplicate GUIDs have been sorted out before.
++    bool success = guid_to_remote_node_map->emplace(guid, this).second;
++    DCHECK(success);
+   }
+ 
+- private:
+-  static bool UniquePositionLessThan(const RemoteTreeNode& lhs,
+-                                     const RemoteTreeNode& rhs) {
+-    const syncer::UniquePosition a_pos =
+-        syncer::UniquePosition::FromProto(lhs.entity().unique_position);
+-    const syncer::UniquePosition b_pos =
+-        syncer::UniquePosition::FromProto(rhs.entity().unique_position);
+-    return a_pos.LessThan(b_pos);
+-  }
+-
+-  RemoteTreeNode() = default;
+-
+-  std::unique_ptr<syncer::UpdateResponseData> update_;
+-  std::vector<RemoteTreeNode> children_;
+-};
++  for (const RemoteTreeNode& child : children_) {
++    child.EmplaceSelfAndDescendantsByGUID(guid_to_remote_node_map);
++  }
++}
++
++bool BookmarkModelMerger::RemoteTreeNode::UniquePositionLessThan(const RemoteTreeNode& lhs,
++                                   const RemoteTreeNode& rhs) {
++  const syncer::UniquePosition a_pos =
++      syncer::UniquePosition::FromProto(lhs.entity().unique_position);
++  const syncer::UniquePosition b_pos =
++      syncer::UniquePosition::FromProto(rhs.entity().unique_position);
++  return a_pos.LessThan(b_pos);
++}
+ 
+ // static
+ BookmarkModelMerger::RemoteTreeNode
+diff -up chromium-80.0.3987.87/components/sync_bookmarks/bookmark_model_merger.g.omv~ chromium-80.0.3987.87/components/sync_bookmarks/bookmark_model_merger.g
+diff -up chromium-80.0.3987.87/components/sync_bookmarks/bookmark_model_merger.h.omv~ chromium-80.0.3987.87/components/sync_bookmarks/bookmark_model_merger.h
+--- chromium-80.0.3987.87/components/sync_bookmarks/bookmark_model_merger.h.omv~	2020-02-11 23:44:42.539870632 +0100
++++ chromium-80.0.3987.87/components/sync_bookmarks/bookmark_model_merger.h	2020-02-12 00:09:20.970798904 +0100
+@@ -51,6 +51,49 @@ class BookmarkModelMerger {
+  private:
+   // Internal representation of a remote tree, composed of nodes.
+   class RemoteTreeNode;
++class RemoteTreeNode final {
++ public:
++  // Constructs a tree given |update| as root and recursively all descendants by
++  // traversing |*updates_per_parent_id|. |update| and |updates_per_parent_id|
++  // must not be null. All updates |*updates_per_parent_id| must represent valid
++  // updates. Updates corresponding from descendant nodes are moved away from
++  // |*updates_per_parent_id|.
++
++  using UpdatesPerParentId = std::unordered_map<base::StringPiece,
++                                              syncer::UpdateResponseDataList,
++                                              base::StringPieceHash>;
++
++  static RemoteTreeNode BuildTree(
++      std::unique_ptr<syncer::UpdateResponseData> update,
++      UpdatesPerParentId* updates_per_parent_id);
++
++  ~RemoteTreeNode() = default;
++
++  // Allow moves, useful during construction.
++  RemoteTreeNode(RemoteTreeNode&&) = default;
++  RemoteTreeNode& operator=(RemoteTreeNode&&) = default;
++
++  const syncer::EntityData& entity() const { return *update_->entity; }
++  int64_t response_version() const { return update_->response_version; }
++
++  // Direct children nodes, sorted by ascending unique position. These are
++  // guaranteed to be valid updates (e.g. IsValidBookmarkSpecifics()).
++  const std::vector<RemoteTreeNode>& children() const { return children_; }
++
++  // Recursively emplaces all GUIDs (this node and descendants) into
++  // |*guid_to_remote_node_map|, which must not be null.
++  void EmplaceSelfAndDescendantsByGUID(
++      std::unordered_map<std::string, const RemoteTreeNode*>*
++          guid_to_remote_node_map) const;
++
++ private:
++  static bool UniquePositionLessThan(const RemoteTreeNode& lhs,
++                                     const RemoteTreeNode& rhs);
++  RemoteTreeNode() = default;
++
++  std::unique_ptr<syncer::UpdateResponseData> update_;
++  std::vector<RemoteTreeNode> children_;
++};
+ 
+   // A forest composed of multiple trees where the root of each tree represents
+   // a permanent node, keyed by server-defined unique tag of the root.
+diff -up chromium-80.0.3987.87/components/viz/common/quads/render_pass.h.omv~ chromium-80.0.3987.87/components/viz/common/quads/render_pass.h
+--- chromium-80.0.3987.87/components/viz/common/quads/render_pass.h.omv~	2020-02-12 00:13:44.103786138 +0100
++++ chromium-80.0.3987.87/components/viz/common/quads/render_pass.h	2020-02-12 00:13:51.784785765 +0100
+@@ -42,6 +42,7 @@ class VIZ_COMMON_EXPORT QuadList : publi
+  public:
+   QuadList();
+   explicit QuadList(size_t default_size_to_reserve);
++  ~QuadList() = default;
+ 
+   typedef QuadList::ReverseIterator BackToFrontIterator;
+   typedef QuadList::ConstReverseIterator ConstBackToFrontIterator;
+diff -up chromium-80.0.3987.87/components/viz/service/display/overlay_strategy_fullscreen.cc.omv~ chromium-80.0.3987.87/components/viz/service/display/overlay_strategy_fullscreen.cc
+--- chromium-80.0.3987.87/components/viz/service/display/overlay_strategy_fullscreen.cc.omv~	2020-02-12 00:17:02.959776490 +0100
++++ chromium-80.0.3987.87/components/viz/service/display/overlay_strategy_fullscreen.cc	2020-02-12 00:17:10.092776144 +0100
+@@ -69,7 +69,7 @@ bool OverlayStrategyFullscreen::Attempt(
+ 
+   candidate_list->swap(new_candidate_list);
+ 
+-  render_pass->quad_list = QuadList();  // Remove all the quads
++  render_pass->quad_list.clear(); // = QuadList();  // Remove all the quads
+   return true;
+ }
+ 
+diff -up chromium-80.0.3987.87/media/cdm/supported_cdm_versions.h.omv~ chromium-80.0.3987.87/media/cdm/supported_cdm_versions.h
+--- chromium-80.0.3987.87/media/cdm/supported_cdm_versions.h.omv~	2020-02-12 01:33:42.476553339 +0100
++++ chromium-80.0.3987.87/media/cdm/supported_cdm_versions.h	2020-02-12 01:33:52.045552875 +0100
+@@ -52,7 +52,7 @@ constexpr bool IsSupportedCdmModuleVersi
+ // Returns whether the CDM interface of |version| is supported in the
+ // implementation.
+ constexpr bool IsSupportedCdmInterfaceVersion(int version) {
+-  for (size_t i = 0; i < kSupportedCdmInterfaceVersions.size(); ++i) {
++  for (std::size_t i = 0; i < kSupportedCdmInterfaceVersions.size(); ++i) {
+     if (kSupportedCdmInterfaceVersions[i].version == version)
+       return true;
+   }
+@@ -70,7 +70,7 @@ constexpr bool IsSupportedCdmHostVersion
+ 
+ // Returns whether the CDM interface of |version| is enabled by default.
+ constexpr bool IsCdmInterfaceVersionEnabledByDefault(int version) {
+-  for (size_t i = 0; i < kSupportedCdmInterfaceVersions.size(); ++i) {
++  for (std::size_t i = 0; i < kSupportedCdmInterfaceVersions.size(); ++i) {
+     if (kSupportedCdmInterfaceVersions[i].version == version)
+       return kSupportedCdmInterfaceVersions[i].enabled;
+   }
+diff -up chromium-80.0.3987.87/third_party/perfetto/include/perfetto/base/task_runner.h.omv~ chromium-80.0.3987.87/third_party/perfetto/include/perfetto/base/task_runner.h
+--- chromium-80.0.3987.87/third_party/perfetto/include/perfetto/base/task_runner.h.omv~	2020-02-11 19:56:28.731173537 +0100
++++ chromium-80.0.3987.87/third_party/perfetto/include/perfetto/base/task_runner.h	2020-02-11 19:56:38.745172881 +0100
+@@ -18,6 +18,7 @@
+ #define INCLUDE_PERFETTO_BASE_TASK_RUNNER_H_
+ 
+ #include <functional>
++#include <cstdint>
+ 
+ #include "perfetto/base/export.h"
+ 
+diff -up chromium-80.0.3987.87/third_party/webrtc/call/rtx_receive_stream.h.omv~ chromium-80.0.3987.87/third_party/webrtc/call/rtx_receive_stream.h
+--- chromium-80.0.3987.87/third_party/webrtc/call/rtx_receive_stream.h.omv~	2020-02-11 20:38:51.912007005 +0100
++++ chromium-80.0.3987.87/third_party/webrtc/call/rtx_receive_stream.h	2020-02-11 20:39:02.242006329 +0100
+@@ -12,6 +12,7 @@
+ #define CALL_RTX_RECEIVE_STREAM_H_
+ 
+ #include <map>
++#include <cstdint>
+ 
+ #include "call/rtp_packet_sink_interface.h"
+ 
+diff -up chromium-80.0.3987.87/third_party/webrtc/modules/audio_processing/aec3/clockdrift_detector.h.omv~ chromium-80.0.3987.87/third_party/webrtc/modules/audio_processing/aec3/clockdrift_detector.h
+--- chromium-80.0.3987.87/third_party/webrtc/modules/audio_processing/aec3/clockdrift_detector.h.omv~	2020-02-11 20:44:39.720984230 +0100
++++ chromium-80.0.3987.87/third_party/webrtc/modules/audio_processing/aec3/clockdrift_detector.h	2020-02-11 20:44:48.748983639 +0100
+@@ -31,7 +31,7 @@ class ClockdriftDetector {
+  private:
+   std::array<int, 3> delay_history_;
+   Level level_;
+-  size_t stability_counter_;
++  std::size_t stability_counter_;
+ };
+ }  // namespace webrtc
+ 

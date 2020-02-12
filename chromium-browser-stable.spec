@@ -48,8 +48,8 @@
 Name: 		chromium-browser-%{channel}
 # Working version numbers can be found at
 # http://omahaproxy.appspot.com/
-Version: 	79.0.3945.130
-Release: 	4%{?extrarelsuffix}
+Version: 	80.0.3987.100
+Release: 	1%{?extrarelsuffix}
 Summary: 	A fast webkit-based web browser
 Group: 		Networking/WWW
 License: 	BSD, LGPL
@@ -104,20 +104,10 @@ Patch54:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-77.0.
 # https://chromium.googlesource.com/chromium/src/+/6b633c4b14850df376d5cec571699018772f358e
 # https://gitweb.gentoo.org/repo/gentoo.git/tree/www-client/chromium/files/chromium-78-gcc-alignas.patch
 Patch55:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-79.0.3945.56-base-gcc-no-alignas.patch
-# https://chromium.googlesource.com/chromium/src/+/af77dc4014ead3d898fdc8a7a70fe5063ac9b102
-Patch56:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-79-gcc-ambiguous-nodestructor.patch
 # https://gitweb.gentoo.org/repo/gentoo.git/tree/www-client/chromium/files/chromium-78-protobuf-export.patch
 Patch57:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-78-protobuf-export.patch
-# https://gitweb.gentoo.org/repo/gentoo.git/plain/www-client/chromium/files/chromium-79-include.patch
-Patch58:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-79-include.patch
 # https://gitweb.gentoo.org/repo/gentoo.git/plain/www-client/chromium/files/chromium-77-clang.patch
 Patch59:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-77-clang.patch
-# https://chromium.googlesource.com/chromium/src.git/+/54407b422a9cbf775a68c1d57603c0ecac8ce0d7
-Patch60:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-79.0.3945.56-glibc-clock-nanosleep.patch
-# https://chromium.googlesource.com/chromium/src/+/e925deab264e5ebc3c5c13415aa3d44a746e8d45
-Patch61:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-79.0.3945.56-gcc-name-clash.patch
-# https://chromium.googlesource.com/chromium/src/+/528e9a3e1f25bd264549c4c7779748abfd16bb1c
-Patch62:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-79-gcc-permissive.patch
 # /../../ui/base/cursor/ozone/bitmap_cursor_factory_ozone.cc:53:15: error: 'find_if' is not a member of 'std'; did you mean 'find'? 
 Patch63:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-79.0.3945.56-fix-find_if.patch
 
@@ -152,10 +142,10 @@ Patch701:	chromium-69-wmvflvmpg.patch
 Patch702:	chromium-40-sorenson-spark.patch
 
 # omv
-Patch1000:	chromium-59-clang-workaround.patch
 Patch1001:	chromium-64-system-curl.patch
 Patch1002:	chromium-69-no-static-libstdc++.patch
-Patch1003:	chromium-79.0.3945.130-clang10-libstdc++10.patch
+Patch1003:	chromium-80-libstdc++10.patch
+Patch1004:	chromium-80-clang10-libstdc++10.patch
 
 # stop so many build warnings
 Patch1006:	chromium-71.0.3578.94-quieten.patch
@@ -359,9 +349,6 @@ python2 build/linux/unbundle/remove_bundled_libraries.py \
 	'third_party/blink' \
 	'third_party/boringssl' \
 	'third_party/boringssl/src/third_party/fiat' \
-	'third_party/boringssl/src/third_party/sike' \
-	'third_party/boringssl/linux-x86_64/crypto/third_party/sike' \
-        'third_party/boringssl/linux-aarch64/crypto/third_party/sike' \
 	'third_party/breakpad' \
 	'third_party/breakpad/breakpad/src/third_party/curl' \
 	'third_party/brotli' \
@@ -392,13 +379,15 @@ python2 build/linux/unbundle/remove_bundled_libraries.py \
 	'third_party/dawn' \
 	'third_party/depot_tools' \
 	'third_party/devscripts' \
+	'third_party/devtools-frontend' \
+	'third_party/devtools-frontend/src/third_party/typescript' \
+	'third_party/devtools-frontend/src/third_party/axe-core' \
 	'third_party/dom_distiller_js' \
 	'third_party/emoji-segmenter' \
 	'third_party/expat' \
 	'third_party/ffmpeg' \
 	'third_party/flac' \
         'third_party/flatbuffers' \
-	'third_party/flot' \
 	'third_party/fontconfig' \
 	'third_party/freetype' \
 	'third_party/glslang' \
@@ -425,6 +414,7 @@ python2 build/linux/unbundle/remove_bundled_libraries.py \
 	'third_party/libaom/source/libaom/third_party/vector' \
 	'third_party/libaom/source/libaom/third_party/x86inc' \
 	'third_party/libdrm' \
+	'third_party/libgifcodec' \
 	'third_party/libjingle' \
 	'third_party/libjpeg_turbo' \
 	'third_party/libphonenumber' \
@@ -488,7 +478,6 @@ python2 build/linux/unbundle/remove_bundled_libraries.py \
 	'third_party/skia' \
 	'third_party/skia/include/third_party/skcms' \
 	'third_party/skia/include/third_party/vulkan' \
-	'third_party/skia/third_party/gif' \
 	'third_party/skia/third_party/skcms' \
 	'third_party/skia/third_party/vulkan' \
 	'third_party/smhasher' \
@@ -524,8 +513,8 @@ python2 build/linux/unbundle/remove_bundled_libraries.py \
         'third_party/yasm' \
         'third_party/zlib' \
 	'third_party/zlib/google' \
-	'tools/gn/base/third_party/icu' \
 	'tools/grit/third_party/six' \
+	'tools/gn/base/third_party/icu' \
 	'url/third_party/mozilla' \
 	'v8/src/third_party/siphash' \
 	'v8/src/third_party/utf8-decoder' \
@@ -583,7 +572,6 @@ CHROMIUM_CORE_GN_DEFINES+=" use_ozone=true "
 CHROMIUM_CORE_GN_DEFINES+=" enable_nacl=false "
 CHROMIUM_CORE_GN_DEFINES+=" proprietary_codecs=true "
 CHROMIUM_CORE_GN_DEFINES+=" ffmpeg_branding=\"ChromeOS\" "
-CHROMIUM_CORE_GN_DEFINES+=" enable_ac3_eac3_audio_demuxing=true "
 CHROMIUM_CORE_GN_DEFINES+=" enable_hevc_demuxing=true "
 CHROMIUM_CORE_GN_DEFINES+=" enable_mse_mpeg2ts_stream_parser=true "
 %ifarch %{ix86}
@@ -603,7 +591,6 @@ CHROMIUM_CORE_GN_DEFINES+=" target_cpu=\"arm64\""
 CHROMIUM_CORE_GN_DEFINES+=" google_api_key=\"%{google_api_key}\""
 CHROMIUM_CORE_GN_DEFINES+=" google_default_client_id=\"%{google_default_client_id}\""
 CHROMIUM_CORE_GN_DEFINES+=" google_default_client_secret=\"%{google_default_client_secret}\""
-CHROMIUM_CORE_GN_DEFINES+=' use_jumbo_build=true jumbo_file_merge_limit=12'
 
 CHROMIUM_BROWSER_GN_DEFINES="use_pulseaudio=true icu_use_data_file=true"
 CHROMIUM_BROWSER_GN_DEFINES+=" enable_nacl=false"
@@ -629,7 +616,6 @@ gn_system_libraries="
     libjpeg
     libusb
     libwebp
-    libxml
     libxslt
     snappy
     yasm
