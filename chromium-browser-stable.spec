@@ -30,15 +30,15 @@
 %define    google_default_client_secret RDdr-pHq2gStY4uw0m-zxXeo
 
 %bcond_with	plf
-# crisb - ozone causes a segfault on startup as of 57.0.2987.133
+# crisb - ozone causes a segfault on startup as of 57.0.2987.133, doesn't compile in 80.x
 %bcond_with	ozone
-%bcond_with	system_icu
+%bcond_without	system_icu
 %bcond_without	system_ffmpeg
 # Temporarily broken, cr_z_* symbols used even when we're supposed to use system minizip
 %bcond_without	system_minizip
 # chromium 58 fails with system vpx 1.6.1
-%bcond_with	system_vpx
-%bcond_with	system_re2
+%bcond_without	system_vpx
+%bcond_without	system_re2
 
 # Always support proprietary codecs
 # or html5 does not work
@@ -50,7 +50,7 @@
 Name: 		chromium-browser-%{channel}
 # Working version numbers can be found at
 # http://omahaproxy.appspot.com/
-Version: 	80.0.3987.116
+Version: 	80.0.3987.132
 Release: 	2%{?extrarelsuffix}
 Summary: 	A fast webkit-based web browser
 Group: 		Networking/WWW
@@ -403,7 +403,9 @@ python2 build/linux/unbundle/remove_bundled_libraries.py \
 	'third_party/harfbuzz-ng' \
 	'third_party/hunspell' \
 	'third_party/iccjpeg' \
+%if ! %{with system_icu}
 	'third_party/icu' \
+%endif
 	'third_party/inspector_protocol' \
 	'third_party/jinja2' \
 	'third_party/jsoncpp' \
@@ -439,6 +441,9 @@ python2 build/linux/unbundle/remove_bundled_libraries.py \
 	'third_party/markupsafe' \
 	'third_party/mesa' \
 	'third_party/metrics_proto' \
+%if %{with ozone}
+	'third_party/minigbm' \
+%endif
 	'third_party/modp_b64' \
 	'third_party/nasm' \
 	'third_party/node' \
@@ -499,6 +504,9 @@ python2 build/linux/unbundle/remove_bundled_libraries.py \
         'third_party/usb_ids' \
 	'third_party/usrsctp' \
 	'third_party/vulkan' \
+%if %{with ozone}
+	'third_party/wayland' \
+%endif
 	'third_party/web-animations-js' \
 	'third_party/webdriver' \
 	'third_party/webrtc' \
@@ -561,13 +569,23 @@ CHROMIUM_CORE_GN_DEFINES+=" use_system_libjpeg=true "
 CHROMIUM_CORE_GN_DEFINES+=" use_system_lcms2=true "
 CHROMIUM_CORE_GN_DEFINES+=" use_system_libpng=true "
 CHROMIUM_CORE_GN_DEFINES+=" use_system_harfbuzz=true "
+CHROMIUM_CORE_GN_DEFINES+=" use_system_libdrm=true "
+CHROMIUM_CORE_GN_DEFINES+=" use_system_minigbm=true "
+CHROMIUM_CORE_GN_DEFINES+=" use_system_wayland=true "
+CHROMIUM_CORE_GN_DEFINES+=" use_xkbcommon=true "
+#CHROMIUM_CORE_GN_DEFINES+=" use_glib=false use_atk=false "
+#CHROMIUM_CORE_GN_DEFINES+=" use_gtk=false "
+%if %{with system_icu}
+CHROMIUM_CORE_GN_DEFINES+=" use_system_icu=true "
+%else
+CHROMIUM_CORE_GN_DEFINES+=" icu_use_data_file=true"
+%endif
 CHROMIUM_CORE_GN_DEFINES+=" use_gnome_keyring=false "
 CHROMIUM_CORE_GN_DEFINES+=" fatal_linker_warnings=false "
 CHROMIUM_CORE_GN_DEFINES+=" system_libdir=\"%{_lib}\""
 CHROMIUM_CORE_GN_DEFINES+=" use_allocator=\"none\""
 CHROMIUM_CORE_GN_DEFINES+=" use_aura=true "
 #CHROMIUM_CORE_GN_DEFINES+=" use_gio=true"
-CHROMIUM_CORE_GN_DEFINES+=" icu_use_data_file=true"
 %if %{with ozone}
 CHROMIUM_CORE_GN_DEFINES+=" use_ozone=true "
 %endif
@@ -598,7 +616,7 @@ CHROMIUM_CORE_GN_DEFINES+=" custom_toolchain=\"//build/toolchain/linux/unbundle:
 CHROMIUM_CORE_GN_DEFINES+=" host_toolchain=\"//build/toolchain/linux/unbundle:default\""
 CHROMIUM_CORE_GN_DEFINES+=" v8_snapshot_toolchain=\"//build/toolchain/linux/unbundle:default\""
 
-CHROMIUM_BROWSER_GN_DEFINES="use_pulseaudio=true icu_use_data_file=true"
+CHROMIUM_BROWSER_GN_DEFINES="use_pulseaudio=true"
 CHROMIUM_BROWSER_GN_DEFINES+=" enable_nacl=false"
 CHROMIUM_BROWSER_GN_DEFINES+=" is_component_ffmpeg=true"
 CHROMIUM_BROWSER_GN_DEFINES+=" enable_hangout_services_extension=true"
@@ -606,12 +624,6 @@ CHROMIUM_BROWSER_GN_DEFINES+=" use_aura=true"
 CHROMIUM_BROWSER_GN_DEFINES+=" enable_widevine=true"
 CHROMIUM_BROWSER_GN_DEFINES+=" enable_webrtc=true"
 CHROMIUM_BROWSER_GN_DEFINES+=" use_vaapi=true"
-
-CHROMIUM_HEADLESS_GN_DEFINES=' use_ozone=true ozone_auto_platforms=false ozone_platform="headless" ozone_platform_headless=true'
-CHROMIUM_HEADLESS_GN_DEFINES+=' headless_use_embedded_resources=true icu_use_data_file=false v8_use_external_startup_data=false'
-CHROMIUM_HEADLESS_GN_DEFINES+=' enable_nacl=false enable_print_preview=false enable_remoting=false use_alsa=false'
-CHROMIUM_HEADLESS_GN_DEFINES+=' use_cups=false use_dbus=false use_gio=false use_kerberos=false use_libpci=false'
-CHROMIUM_HEADLESS_GN_DEFINES+=' use_pulseaudio=false use_udev=false'
 
 gn_system_libraries="
     flac

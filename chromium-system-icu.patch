@@ -17,3 +17,31 @@ index 28fb6a9..bb4dbd7 100644
 
  // Freezed trie tree, see character_property_data_generator.cc.
  extern const int32_t kSerializedCharacterDataSize;
+diff -up chromium-80.0.3987.132/base/BUILD.gn.omv~ chromium-80.0.3987.132/base/BUILD.gn
+--- chromium-80.0.3987.132/base/BUILD.gn.omv~	2020-03-11 21:57:54.959321632 +0100
++++ chromium-80.0.3987.132/base/BUILD.gn	2020-03-11 21:58:24.750320187 +0100
+@@ -2945,7 +2945,7 @@ test("base_unittests") {
+     ]
+   }
+ 
+-  if (icu_use_data_file) {
++  if (false) {
+     if (is_android) {
+       deps += [ "//third_party/icu:icu_extra_assets" ]
+     } else {
+diff -up chromium-80.0.3987.132/chrome/browser/ui/views/native_file_system/native_file_system_usage_bubble_view.cc.omv~ chromium-80.0.3987.132/chrome/browser/ui/views/native_file_system/native_file_system_usage_bubble_view.cc
+--- chromium-80.0.3987.132/chrome/browser/ui/views/native_file_system/native_file_system_usage_bubble_view.cc.omv~	2020-03-12 04:13:35.334228057 +0100
++++ chromium-80.0.3987.132/chrome/browser/ui/views/native_file_system/native_file_system_usage_bubble_view.cc	2020-03-12 04:13:53.916227156 +0100
+@@ -26,9 +26,9 @@
+ #include "content/public/browser/render_frame_host.h"
+ #include "content/public/browser/render_process_host.h"
+ #include "content/public/browser/web_contents.h"
+-#include "third_party/icu/source/common/unicode/unistr.h"
+-#include "third_party/icu/source/common/unicode/utypes.h"
+-#include "third_party/icu/source/i18n/unicode/listformatter.h"
++#include <unicode/unistr.h>
++#include <unicode/utypes.h>
++#include <unicode/listformatter.h>
+ #include "ui/base/l10n/l10n_util.h"
+ #include "ui/gfx/paint_vector_icon.h"
+ #include "ui/views/controls/button/image_button.h"
