@@ -244,6 +244,7 @@ BuildRequires:	python2-ply
 BuildRequires:	python2-beautifulsoup4
 BuildRequires:	python2-simplejson
 BuildRequires:	python2-html5lib
+BuildRequires:	jdk-current
 
 %description
 Chromium is a browser that combines a minimal design with sophisticated
@@ -544,6 +545,8 @@ if [ ! -f chrome/test/data/webui/i18n_process_css_test.html ]; then
 fi
 
 %build
+. %{_sysconfdir}/profile.d/90java.sh
+
 %ifarch %{arm}
 # Use linker flags to reduce memory consumption on low-mem architectures
 %global optflags %(echo %{optflags} | sed -e 's/-g /-g0 /' -e 's/-gdwarf-4//')
