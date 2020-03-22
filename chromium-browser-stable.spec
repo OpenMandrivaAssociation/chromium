@@ -50,8 +50,8 @@
 Name: 		chromium-browser-%{channel}
 # Working version numbers can be found at
 # http://omahaproxy.appspot.com/
-Version: 	80.0.3987.132
-Release: 	2%{?extrarelsuffix}
+Version: 	80.0.3987.149
+Release: 	1%{?extrarelsuffix}
 Summary: 	A fast webkit-based web browser
 Group: 		Networking/WWW
 License: 	BSD, LGPL
@@ -161,8 +161,6 @@ BuildRequires: 	gperf
 BuildRequires: 	bison
 BuildRequires: 	re2c
 BuildRequires: 	flex
-#BuildRequires: 	v8-devel
-BuildRequires:	java-1.8.0-openjdk-devel
 BuildRequires:	pkgconfig(alsa)
 BuildRequires:	pkgconfig(krb5)
 %if %{with system_re2}
