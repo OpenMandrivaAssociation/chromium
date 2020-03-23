@@ -556,6 +556,10 @@ export PATH=$PWD/bfd:$PATH
 # Use linker flags to reduce memory consumption
 %global ldflags %{ldflags} -fuse-ld=bfd -Wl,--no-keep-memory -Wl,--reduce-memory-overheads
 %endif
+%ifarch %{ix86}
+# Workaround for build failure
+%global ldflags %{ldflags} -Wl,-z,notext
+%endif
 
 export CC=clang
 export CXX=clang++
