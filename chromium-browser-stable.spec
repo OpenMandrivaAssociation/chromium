@@ -51,7 +51,7 @@ Name: 		chromium-browser-%{channel}
 # Working version numbers can be found at
 # http://omahaproxy.appspot.com/
 Version: 	81.0.4044.113
-Release: 	1%{?extrarelsuffix}
+Release: 	2%{?extrarelsuffix}
 Summary: 	A fast webkit-based web browser
 Group: 		Networking/WWW
 License: 	BSD, LGPL
