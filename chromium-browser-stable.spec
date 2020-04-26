@@ -50,7 +50,7 @@
 Name: 		chromium-browser-%{channel}
 # Working version numbers can be found at
 # http://omahaproxy.appspot.com/
-Version: 	81.0.4044.113
+Version: 	81.0.4044.122
 Release: 	1%{?extrarelsuffix}
 Summary: 	A fast webkit-based web browser
 Group: 		Networking/WWW
@@ -129,11 +129,12 @@ Patch63:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-79.0.
 Patch500:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-75.0.3770.80-revert-daff6b.patch
 Patch501:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-75.0.3770.80-SIOCGSTAMP.patch
 
-### Chromium Tests Patches ###
 # suse, system libs
 Patch600:	arm_use_right_compiler.patch
 # Arch Linux, fix for compile error with system ICU
 Patch602:	https://raw.githubusercontent.com/archlinuxarm/PKGBUILDs/master/extra/chromium/chromium-system-icu.patch
+# Upstream, fix build with ICU 67
+Patch603:	chromium-81-icu-67.patch
 
 # Enable VAAPI support on Linux
 # From https://aur.archlinux.org/packages/chromium-vaapi/
