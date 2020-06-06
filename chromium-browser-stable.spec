@@ -32,7 +32,8 @@
 %bcond_with	plf
 # crisb - ozone causes a segfault on startup as of 57.0.2987.133, doesn't compile in 80.x
 %bcond_with	ozone
-%bcond_without	system_icu
+# Breaks the build as of chromium 83, icu 66.1
+%bcond_with	system_icu
 %bcond_without	system_ffmpeg
 # Temporarily broken, cr_z_* symbols used even when we're supposed to use system minizip
 %bcond_without	system_minizip
@@ -50,7 +51,7 @@
 Name: 		chromium-browser-%{channel}
 # Working version numbers can be found at
 # http://omahaproxy.appspot.com/
-Version: 	81.0.4044.138
+Version: 	83.0.4103.97
 Release: 	1%{?extrarelsuffix}
 Summary: 	A fast webkit-based web browser
 Group: 		Networking/WWW
@@ -82,13 +83,11 @@ Patch4:		https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-60.0.
 Patch5:		https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-60.0.3112.78-jpeg-nomangle.patch
 # Do not mangle zlib
 Patch6:		https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-77.0.3865.75-no-zlib-mangle.patch
-# Do not use unrar code, it is non-free (originally from Fedora, ported to 81 code base)
-Patch7:		chromium-81-norar.patch
 # Use Gentoo's Widevine hack
 # https://gitweb.gentoo.org/repo/gentoo.git/tree/www-client/chromium/files/chromium-widevine-r3.patch
 Patch8:		https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-71.0.3578.98-widevine-r3.patch
 # Disable fontconfig cache magic that breaks remoting (originally from Fedora, ported to 81 code base)
-Patch9:		chromium-81-disable-fontconfig-cache-magic.patch
+Patch9:		chromium-83-disable-fontconfig-cache-magic.patch
 # drop rsp clobber, which breaks gcc9 (thanks to Jeff Law)
 Patch10:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-78.0.3904.70-gcc9-drop-rsp-clobber.patch
 # Try to load widevine from other places
@@ -129,18 +128,15 @@ Patch63:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-79.0.
 Patch500:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-75.0.3770.80-revert-daff6b.patch
 Patch501:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-75.0.3770.80-SIOCGSTAMP.patch
 
+### Chromium Tests Patches ###
 # suse, system libs
 Patch600:	arm_use_right_compiler.patch
 # Arch Linux, fix for compile error with system ICU
 Patch602:	https://raw.githubusercontent.com/archlinuxarm/PKGBUILDs/master/extra/chromium/chromium-system-icu.patch
-# Upstream, fix build with ICU 67
-Patch603:	chromium-81-icu-67.patch
 
 # Enable VAAPI support on Linux
-# From https://aur.archlinux.org/packages/chromium-vaapi/
-Patch650:	vaapi-build-fix.patch
+# Partially based on https://aur.archlinux.org/packages/chromium-vaapi/
 Patch651:	vdpau-support.patch
-Patch652:	rebuild-Linux-frame-button-cache-when-activation.patch
 Patch653:	chromium-skia-harmony.patch
 
 # mga
@@ -151,9 +147,9 @@ Patch702:	chromium-40-sorenson-spark.patch
 # omv
 Patch1001:	chromium-64-system-curl.patch
 Patch1002:	chromium-69-no-static-libstdc++.patch
-Patch1003:	chromium-80-libstdc++10.patch
+Patch1003:	chromium-83-norar.patch
 #Patch1004:	chromium-80-clang10-libstdc++10.patch
-Patch1005:	chromium-81-compile.patch
+Patch1005:	chromium-83-compile.patch
 Patch1006:	chromium-81-dont-pretend-vaapi-is-broken.patch
 Patch1007:	chromium-81-enable-gpu-features.patch
 
@@ -176,6 +172,7 @@ BuildRequires:	pkgconfig(re2)
 %endif
 BuildRequires:	pkgconfig(com_err)
 BuildRequires:	python2dist(json5)
+BuildRequires:	python2-pkg-resources
 BuildRequires: 	alsa-oss-devel
 BuildRequires:	atomic-devel
 BuildRequires:	harfbuzz-devel
@@ -393,8 +390,9 @@ python2 build/linux/unbundle/remove_bundled_libraries.py \
 	'third_party/devtools-frontend' \
 	'third_party/devtools-frontend/src/third_party/typescript' \
 	'third_party/devtools-frontend/src/third_party/axe-core' \
-	'third_party/devtools-frontend/src/front_end/third_party/wasmparser' \
 	'third_party/devtools-frontend/src/front_end/third_party/fabricjs' \
+	'third_party/devtools-frontend/src/front_end/third_party/lighthouse' \
+	'third_party/devtools-frontend/src/front_end/third_party/wasmparser' \
 	'third_party/dom_distiller_js' \
 	'third_party/emoji-segmenter' \
 	'third_party/expat' \
@@ -449,6 +447,7 @@ python2 build/linux/unbundle/remove_bundled_libraries.py \
 	'third_party/libyuv' \
 	'third_party/lss' \
 	'third_party/lzma_sdk' \
+	'third_party/mako' \
 	'third_party/markupsafe' \
 	'third_party/mesa' \
 	'third_party/metrics_proto' \
@@ -489,6 +488,7 @@ python2 build/linux/unbundle/remove_bundled_libraries.py \
 	'third_party/re2' \
 %endif
 	'third_party/rnnoise' \
+	'third_party/schema_org' \
 	'third_party/s2cellid' \
 	'third_party/simplejson' \
 	'third_party/sinonjs' \
@@ -504,6 +504,7 @@ python2 build/linux/unbundle/remove_bundled_libraries.py \
 	'third_party/SPIRV-Tools' \
 	'third_party/sqlite' \
 	'third_party/swiftshader' \
+	'third_party/swiftshader/third_party/astc-encoder' \
 	'third_party/swiftshader/third_party/llvm-subzero' \
 	'third_party/swiftshader/third_party/llvm-7.0' \
 	'third_party/swiftshader/third_party/marl' \

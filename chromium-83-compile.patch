@@ -1,0 +1,187 @@
+diff -up chromium-83.0.4103.7/extensions/browser/install/crx_install_error.cc.omv~ chromium-83.0.4103.7/extensions/browser/install/crx_install_error.cc
+--- chromium-83.0.4103.7/extensions/browser/install/crx_install_error.cc.omv~	2020-04-15 02:00:04.125064921 +0200
++++ chromium-83.0.4103.7/extensions/browser/install/crx_install_error.cc	2020-04-15 02:03:16.476574794 +0200
+@@ -76,10 +76,14 @@ bool CrxInstallError::IsCrxVerificationF
+     return false;
+   const SandboxedUnpackerFailureReason unpacker_failure_reason =
+       sandbox_failure_detail();
+-  return std::find(std::begin(kVerificationFailureReasons),
++  for(int i=0; i<sizeof(kVerificationFailureReasons)/sizeof(SandboxedUnpackerFailureReason); i++)
++    if(kVerificationFailureReasons[i] == unpacker_failure_reason)
++      return true;
++/*  return std::find(std::begin(kVerificationFailureReasons),
+                    std::end(kVerificationFailureReasons),
+                    unpacker_failure_reason) !=
+-         std::end(kVerificationFailureReasons);
++         std::end(kVerificationFailureReasons); */
++  return false;
+ }
+ 
+ }  // namespace extensions
+diff -up chromium-83.0.4103.7/ui/gfx/linux/drm_util_linux.h.omv~ chromium-83.0.4103.7/ui/gfx/linux/drm_util_linux.h
+--- chromium-83.0.4103.7/ui/gfx/linux/drm_util_linux.h.omv~	2020-04-15 02:03:37.801631329 +0200
++++ chromium-83.0.4103.7/ui/gfx/linux/drm_util_linux.h	2020-04-15 02:03:44.796649873 +0200
+@@ -6,6 +6,7 @@
+ #define UI_GFX_LINUX_DRM_UTIL_LINUX_H_
+ 
+ #include "ui/gfx/buffer_types.h"
++#include <cstdint>
+ 
+ namespace ui {
+ 
+diff -up chromium-83.0.4103.7/third_party/webrtc/call/rtx_receive_stream.h.omv~ chromium-83.0.4103.7/third_party/webrtc/call/rtx_receive_stream.h
+--- chromium-83.0.4103.7/third_party/webrtc/call/rtx_receive_stream.h.omv~	2020-04-15 22:28:18.663843345 +0200
++++ chromium-83.0.4103.7/third_party/webrtc/call/rtx_receive_stream.h	2020-04-15 22:28:29.857944267 +0200
+@@ -12,6 +12,7 @@
+ #define CALL_RTX_RECEIVE_STREAM_H_
+ 
+ #include <map>
++#include <cstdint>
+ 
+ #include "call/rtp_packet_sink_interface.h"
+ 
+diff -up chromium-83.0.4103.7/third_party/webrtc/modules/audio_processing/aec3/clockdrift_detector.h.omv~ chromium-83.0.4103.7/third_party/webrtc/modules/audio_processing/aec3/clockdrift_detector.h
+--- chromium-83.0.4103.7/third_party/webrtc/modules/audio_processing/aec3/clockdrift_detector.h.omv~	2020-04-15 22:28:51.655140762 +0200
++++ chromium-83.0.4103.7/third_party/webrtc/modules/audio_processing/aec3/clockdrift_detector.h	2020-04-15 22:28:54.212163813 +0200
+@@ -31,7 +31,7 @@ class ClockdriftDetector {
+  private:
+   std::array<int, 3> delay_history_;
+   Level level_;
+-  size_t stability_counter_;
++  std::size_t stability_counter_;
+ };
+ }  // namespace webrtc
+ 
+diff -up chromium-83.0.4103.7/base/strings/string16.h.omv~ chromium-83.0.4103.7/base/strings/string16.h
+diff -up chromium-83.0.4103.7/chrome/browser/performance_manager/graph/policies/background_tab_loading_policy_helpers.cc.omv~ chromium-83.0.4103.7/chrome/browser/performance_manager/graph/policies/background_tab_loading_policy_helpers.cc
+--- chromium-83.0.4103.7/chrome/browser/performance_manager/graph/policies/background_tab_loading_policy_helpers.cc.omv~	2020-04-16 01:08:39.294191150 +0200
++++ chromium-83.0.4103.7/chrome/browser/performance_manager/graph/policies/background_tab_loading_policy_helpers.cc	2020-04-16 01:09:05.740103071 +0200
+@@ -2,6 +2,7 @@
+ // Use of this source code is governed by a BSD-style license that can be
+ // found in the LICENSE file.
+ 
++#include <limits>
+ #include "chrome/browser/performance_manager/graph/policies/background_tab_loading_policy_helpers.h"
+ #include "base/logging.h"
+ 
+diff -up chromium-83.0.4103.7/chrome/browser/search/background/ntp_backgrounds.h.omv~ chromium-83.0.4103.7/chrome/browser/search/background/ntp_backgrounds.h
+--- chromium-83.0.4103.7/chrome/browser/search/background/ntp_backgrounds.h.omv~	2020-04-16 01:09:41.383772340 +0200
++++ chromium-83.0.4103.7/chrome/browser/search/background/ntp_backgrounds.h	2020-04-16 01:09:45.235637089 +0200
+@@ -9,7 +9,7 @@
+ 
+ class GURL;
+ 
+-const size_t kNtpBackgroundsCount = 5;
++const std::size_t kNtpBackgroundsCount = 5;
+ std::array<GURL, kNtpBackgroundsCount> GetNtpBackgrounds();
+ 
+ #endif  // CHROME_BROWSER_SEARCH_BACKGROUND_NTP_BACKGROUNDS_H_
+diff -up chromium-83.0.4103.7/components/printing/common/print_messages.cc.omv~ chromium-83.0.4103.7/components/printing/common/print_messages.cc
+diff -up chromium-83.0.4103.7/printing/common/metafile_utils.h.omv~ chromium-83.0.4103.7/printing/common/metafile_utils.h
+--- chromium-83.0.4103.7/printing/common/metafile_utils.h.omv~	2020-04-15 23:48:52.005519519 +0200
++++ chromium-83.0.4103.7/printing/common/metafile_utils.h	2020-04-15 23:49:03.044638136 +0200
+@@ -14,6 +14,7 @@
+ #include "third_party/skia/include/core/SkRefCnt.h"
+ #include "third_party/skia/include/core/SkSerialProcs.h"
+ #include "third_party/skia/include/core/SkStream.h"
++#include "ui/accessibility/ax_tree.h"
+ #include "ui/accessibility/ax_tree_update_forward.h"
+ 
+ namespace printing {
+diff -up chromium-83.0.4103.7/third_party/blink/public/common/user_agent/user_agent_metadata.h.omv~ chromium-83.0.4103.7/third_party/blink/public/common/user_agent/user_agent_metadata.h
+--- chromium-83.0.4103.7/third_party/blink/public/common/user_agent/user_agent_metadata.h.omv~	2020-04-16 02:35:12.287975120 +0200
++++ chromium-83.0.4103.7/third_party/blink/public/common/user_agent/user_agent_metadata.h	2020-04-16 02:35:17.575562336 +0200
+@@ -5,6 +5,7 @@
+ #ifndef THIRD_PARTY_BLINK_PUBLIC_COMMON_USER_AGENT_USER_AGENT_METADATA_H_
+ #define THIRD_PARTY_BLINK_PUBLIC_COMMON_USER_AGENT_USER_AGENT_METADATA_H_
+ 
++#include <iterator>
+ #include <string>
+ 
+ #include "base/optional.h"
+diff -up chromium-83.0.4103.7/third_party/blink/renderer/bindings/core/v8/serialization/serialized_script_value.h.omv~ chromium-83.0.4103.7/third_party/blink/renderer/bindings/core/v8/serialization/serialized_script_value.h
+--- chromium-83.0.4103.7/third_party/blink/renderer/bindings/core/v8/serialization/serialized_script_value.h.omv~	2020-04-16 17:42:21.913168530 +0200
++++ chromium-83.0.4103.7/third_party/blink/renderer/bindings/core/v8/serialization/serialized_script_value.h	2020-04-16 17:44:07.175860076 +0200
+@@ -270,10 +270,14 @@ class CORE_EXPORT SerializedScriptValue
+   bool IsLockedToAgentCluster() const {
+     return !wasm_modules_.IsEmpty() ||
+            !shared_array_buffers_contents_.IsEmpty() ||
++#if 0 // FIXME
+            std::any_of(attachments_.begin(), attachments_.end(),
+                        [](const auto& entry) {
+                          return entry.value->IsLockedToAgentCluster();
+                        });
++#else
++    0;
++#endif
+   }
+ 
+   // Returns true after serializing script values that remote origins cannot
+diff -up chromium-83.0.4103.7/third_party/blink/renderer/core/html/trust_token_attribute_parsing.h.omv~ chromium-83.0.4103.7/third_party/blink/renderer/core/html/trust_token_attribute_parsing.h
+--- chromium-83.0.4103.7/third_party/blink/renderer/core/html/trust_token_attribute_parsing.h.omv~	2020-04-16 19:39:30.411760144 +0200
++++ chromium-83.0.4103.7/third_party/blink/renderer/core/html/trust_token_attribute_parsing.h	2020-04-16 19:39:36.263974228 +0200
+@@ -5,6 +5,7 @@
+ #ifndef THIRD_PARTY_BLINK_RENDERER_CORE_HTML_TRUST_TOKEN_ATTRIBUTE_PARSING_H_
+ #define THIRD_PARTY_BLINK_RENDERER_CORE_HTML_TRUST_TOKEN_ATTRIBUTE_PARSING_H_
+ 
++#include <memory>
+ #include "base/optional.h"
+ #include "services/network/public/mojom/trust_tokens.mojom-blink-forward.h"
+ #include "third_party/blink/renderer/core/core_export.h"
+diff -up chromium-83.0.4103.7/third_party/blink/renderer/core/layout/ng/ng_physical_container_fragment.cc.omv~ chromium-83.0.4103.7/third_party/blink/renderer/core/layout/ng/ng_physical_container_fragment.cc
+--- chromium-83.0.4103.7/third_party/blink/renderer/core/layout/ng/ng_physical_container_fragment.cc.omv~	2020-04-16 21:07:13.133570379 +0200
++++ chromium-83.0.4103.7/third_party/blink/renderer/core/layout/ng/ng_physical_container_fragment.cc	2020-04-16 21:07:23.805265954 +0200
+@@ -112,6 +112,7 @@ void NGPhysicalContainerFragment::AddOut
+         }
+         DCHECK(item.IsText());
+       }
++#if 0
+       // Don't add |Children()|. If |this| has |NGFragmentItems|, children are
+       // either line box, which we already handled in items, or OOF, which we
+       // should ignore.
+@@ -120,6 +121,7 @@ void NGPhysicalContainerFragment::AddOut
+                            return child->IsLineBox() ||
+                                   child->IsOutOfFlowPositioned();
+                          }));
++#endif
+       return;
+     }
+   }
+diff -up chromium-83.0.4103.7/ui/accessibility/ax_tree.cc.omv~ chromium-83.0.4103.7/ui/accessibility/ax_tree.cc
+--- chromium-83.0.4103.7/ui/accessibility/ax_tree.cc.omv~	2020-04-15 23:52:11.058657504 +0200
++++ chromium-83.0.4103.7/ui/accessibility/ax_tree.cc	2020-04-15 23:52:24.700803972 +0200
+@@ -567,15 +567,6 @@ struct AXTreeUpdateState {
+   const AXTree& tree;
+ };
+ 
+-struct AXTree::NodeSetSizePosInSetInfo {
+-  NodeSetSizePosInSetInfo() = default;
+-  ~NodeSetSizePosInSetInfo() = default;
+-
+-  int32_t pos_in_set = 0;
+-  int32_t set_size = 0;
+-  base::Optional<int> lowest_hierarchical_level;
+-};
+-
+ struct AXTree::OrderedSetContent {
+   explicit OrderedSetContent(const AXNode* ordered_set = nullptr)
+       : ordered_set_(ordered_set) {}
+diff -up chromium-83.0.4103.7/ui/accessibility/ax_tree.h.omv~ chromium-83.0.4103.7/ui/accessibility/ax_tree.h
+--- chromium-83.0.4103.7/ui/accessibility/ax_tree.h.omv~	2020-04-15 23:51:24.248154880 +0200
++++ chromium-83.0.4103.7/ui/accessibility/ax_tree.h	2020-04-15 23:53:28.242486088 +0200
+@@ -328,7 +328,14 @@ class AX_EXPORT AXTree : public AXNode::
+   bool enable_extra_mac_nodes_ = false;
+ 
+   // Contains pos_in_set and set_size data for an AXNode.
+-  struct NodeSetSizePosInSetInfo;
++  struct NodeSetSizePosInSetInfo {
++    NodeSetSizePosInSetInfo() = default;
++    ~NodeSetSizePosInSetInfo() = default;
++
++    int32_t pos_in_set = 0;
++    int32_t set_size = 0;
++    base::Optional<int> lowest_hierarchical_level;
++  };
+ 
+   // Represents the content of an ordered set which includes the ordered set
+   // items and the ordered set container if it exists.
