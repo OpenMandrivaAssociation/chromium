@@ -230,6 +230,8 @@ BuildRequires: 	pkgconfig(udev)
 BuildRequires: 	pkgconfig(flac)
 BuildRequires: 	pkgconfig(opus)
 BuildRequires: 	pkgconfig(libwebp)
+BuildRequires:	pkgconfig(libwebpmux)
+BuildRequires:	pkgconfig(libwebpdemux)
 BuildRequires: 	pkgconfig(speex)
 BuildRequires:	pkgconfig(lcms2)
 %if %{with system_minizip}
