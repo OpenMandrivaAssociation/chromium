@@ -39,7 +39,18 @@
 %bcond_without	system_minizip
 # chromium 58 fails with system vpx 1.6.1
 %bcond_without	system_vpx
+%bcond_with	libcxx
+# As of 83.0.4103.116, chromium-browser-stable on znver1 crashes
+# on startup with libstdc++ and system libc++. Looks like it depends
+# on a custom_libc++ chanage.
+%bcond_without	custom_libcxx
+%if %{with custom_libcxx} || %{with libcxx}
+# system re2 uses libstdc++ -- we can't pull in libstdc++ and libc++ at the same time
+%bcond_with	system_re2
+%else
+# system re2 uses libstdc++ -- we can't pull in libstdc++ and libc++ at the same time
 %bcond_without	system_re2
+%endif
 
 # Always support proprietary codecs
 # or html5 does not work
@@ -52,7 +63,7 @@ Name: 		chromium-browser-%{channel}
 # Working version numbers can be found at
 # http://omahaproxy.appspot.com/
 Version: 	83.0.4103.116
-Release: 	1%{?extrarelsuffix}
+Release: 	2%{?extrarelsuffix}
 Summary: 	A fast webkit-based web browser
 Group: 		Networking/WWW
 License: 	BSD, LGPL
@@ -581,9 +592,20 @@ export CXX=clang++
 # sure it sees python2 when it calls python
 export PATH=`pwd`:$PATH
 
-CHROMIUM_CORE_GN_DEFINES="use_sysroot=false is_debug=false fieldtrial_testing_like_official_build=true use_lld=false use_gold=true"
+%if %{with libcxx}
+%global optflags %{optflags} -stdlib=libc++
+%global ldflags %{ldflags} -stdlib=libc++
+%global build_ldflags %{build_ldflags} -stdlib=libc++
+%endif
+
+CHROMIUM_CORE_GN_DEFINES="use_sysroot=false is_debug=false fieldtrial_testing_like_official_build=true use_lld=true use_gold=false"
 CHROMIUM_CORE_GN_DEFINES+=" is_clang=true clang_base_path=\"%{_prefix}\" clang_use_chrome_plugins=false "
-CHROMIUM_CORE_GN_DEFINES+=" treat_warnings_as_errors=false use_custom_libcxx=false "
+CHROMIUM_CORE_GN_DEFINES+=" treat_warnings_as_errors=false "
+%if %{with custom_libcxx}
+CHROMIUM_CORE_GN_DEFINES+=" use_custom_libcxx=true "
+%else
+CHROMIUM_CORE_GN_DEFINES+=" use_custom_libcxx=false "
+%endif
 CHROMIUM_CORE_GN_DEFINES+=" use_system_libjpeg=true "
 CHROMIUM_CORE_GN_DEFINES+=" use_system_lcms2=true "
 CHROMIUM_CORE_GN_DEFINES+=" use_system_libpng=true "
