@@ -1,0 +1,90 @@
+diff -up chromium-84.0.4147.38/cc/base/list_container_helper.h.omv~ chromium-84.0.4147.38/cc/base/list_container_helper.h
+--- chromium-84.0.4147.38/cc/base/list_container_helper.h.omv~	2020-06-07 01:12:11.313556607 +0200
++++ chromium-84.0.4147.38/cc/base/list_container_helper.h	2020-06-07 01:12:17.661637603 +0200
+@@ -8,6 +8,7 @@
+ #include <stddef.h>
+ 
+ #include <memory>
++#include <cstring>
+ 
+ #include "cc/base/base_export.h"
+ 
+diff -up chromium-84.0.4147.38/third_party/crashpad/crashpad/snapshot/minidump/minidump_context_converter.cc.omv~ chromium-84.0.4147.38/third_party/crashpad/crashpad/snapshot/minidump/minidump_context_converter.cc
+--- chromium-84.0.4147.38/third_party/crashpad/crashpad/snapshot/minidump/minidump_context_converter.cc.omv~	2020-06-07 01:12:58.624149554 +0200
++++ chromium-84.0.4147.38/third_party/crashpad/crashpad/snapshot/minidump/minidump_context_converter.cc	2020-06-07 01:13:05.710236305 +0200
+@@ -17,6 +17,8 @@
+ #include "base/stl_util.h"
+ #include "minidump/minidump_context.h"
+ 
++#include <cstring>
++
+ namespace crashpad {
+ namespace internal {
+ 
+diff -up chromium-84.0.4147.38/third_party/crashpad/crashpad/util/linux/ptrace_client.cc.omv~ chromium-84.0.4147.38/third_party/crashpad/crashpad/util/linux/ptrace_client.cc
+--- chromium-84.0.4147.38/third_party/crashpad/crashpad/util/linux/ptrace_client.cc.omv~	2020-06-07 01:17:27.739135789 +0200
++++ chromium-84.0.4147.38/third_party/crashpad/crashpad/util/linux/ptrace_client.cc	2020-06-07 01:17:33.895197878 +0200
+@@ -18,6 +18,7 @@
+ #include <stdio.h>
+ 
+ #include <string>
++#include <cstring>
+ 
+ #include "base/logging.h"
+ #include "base/stl_util.h"
+diff -up chromium-84.0.4147.38/third_party/crashpad/crashpad/util/net/http_multipart_builder.cc.omv~ chromium-84.0.4147.38/third_party/crashpad/crashpad/util/net/http_multipart_builder.cc
+--- chromium-84.0.4147.38/third_party/crashpad/crashpad/util/net/http_multipart_builder.cc.omv~	2020-06-07 01:14:20.813125474 +0200
++++ chromium-84.0.4147.38/third_party/crashpad/crashpad/util/net/http_multipart_builder.cc	2020-06-07 01:14:28.328211572 +0200
+@@ -16,6 +16,7 @@
+ 
+ #include <sys/types.h>
+ 
++#include <cstring>
+ #include <utility>
+ #include <vector>
+ 
+diff -up chromium-84.0.4147.38/third_party/crashpad/crashpad/util/net/http_transport_socket.cc.omv~ chromium-84.0.4147.38/third_party/crashpad/crashpad/util/net/http_transport_socket.cc
+--- chromium-84.0.4147.38/third_party/crashpad/crashpad/util/net/http_transport_socket.cc.omv~	2020-06-07 01:15:26.893866213 +0200
++++ chromium-84.0.4147.38/third_party/crashpad/crashpad/util/net/http_transport_socket.cc	2020-06-07 01:15:39.648005127 +0200
+@@ -19,6 +19,8 @@
+ #include <poll.h>
+ #include <sys/socket.h>
+ 
++#include <cstring>
++
+ #include "base/logging.h"
+ #include "base/macros.h"
+ #include "base/numerics/safe_conversions.h"
+diff -up chromium-84.0.4147.38/third_party/crashpad/crashpad/util/process/process_memory.cc.omv~ chromium-84.0.4147.38/third_party/crashpad/crashpad/util/process/process_memory.cc
+--- chromium-84.0.4147.38/third_party/crashpad/crashpad/util/process/process_memory.cc.omv~	2020-06-07 01:20:04.537651610 +0200
++++ chromium-84.0.4147.38/third_party/crashpad/crashpad/util/process/process_memory.cc	2020-06-07 01:20:13.332732998 +0200
+@@ -15,6 +15,7 @@
+ #include "util/process/process_memory.h"
+ 
+ #include <algorithm>
++#include <cstring>
+ 
+ #include "base/logging.h"
+ #include "util/numeric/safe_assignment.h"
+diff -up chromium-84.0.4147.38/third_party/crashpad/crashpad/util/stream/log_output_stream.cc.omv~ chromium-84.0.4147.38/third_party/crashpad/crashpad/util/stream/log_output_stream.cc
+--- chromium-84.0.4147.38/third_party/crashpad/crashpad/util/stream/log_output_stream.cc.omv~	2020-06-07 01:18:49.447941863 +0200
++++ chromium-84.0.4147.38/third_party/crashpad/crashpad/util/stream/log_output_stream.cc	2020-06-07 01:18:57.321017588 +0200
+@@ -15,6 +15,7 @@
+ #include "util/stream/log_output_stream.h"
+ 
+ #include <algorithm>
++#include <cstring>
+ 
+ #include "base/logging.h"
+ 
+diff -up chromium-84.0.4147.38/third_party/webrtc/modules/audio_processing/aec3/clockdrift_detector.h.omv~ chromium-84.0.4147.38/third_party/webrtc/modules/audio_processing/aec3/clockdrift_detector.h
+--- chromium-84.0.4147.38/third_party/webrtc/modules/audio_processing/aec3/clockdrift_detector.h.omv~	2020-06-07 01:08:00.747415156 +0200
++++ chromium-84.0.4147.38/third_party/webrtc/modules/audio_processing/aec3/clockdrift_detector.h	2020-06-07 01:10:22.962098318 +0200
+@@ -12,6 +12,7 @@
+ #define MODULES_AUDIO_PROCESSING_AEC3_CLOCKDRIFT_DETECTOR_H_
+ 
+ #include <array>
++#include <cstring>
+ 
+ namespace webrtc {
+ 
