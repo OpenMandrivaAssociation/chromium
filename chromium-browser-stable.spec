@@ -52,7 +52,7 @@ Name: 		chromium-browser-%{channel}
 # Working version numbers can be found at
 # http://omahaproxy.appspot.com/
 Version: 	84.0.4147.105
-Release: 	1%{?extrarelsuffix}
+Release: 	2%{?extrarelsuffix}
 Summary: 	A fast webkit-based web browser
 Group: 		Networking/WWW
 License: 	BSD, LGPL
@@ -81,13 +81,13 @@ Patch5:		https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-60.0.
 Patch6:		https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-77.0.3865.75-no-zlib-mangle.patch
 # Use Gentoo's Widevine hack
 # https://gitweb.gentoo.org/repo/gentoo.git/tree/www-client/chromium/files/chromium-widevine-r3.patch
-Patch8:		https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-71.0.3578.98-widevine-r3.patch
+#Patch8:		https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-71.0.3578.98-widevine-r3.patch
 # Disable fontconfig cache magic that breaks remoting (originally from Fedora, ported to 81 code base)
 Patch9:		chromium-83-disable-fontconfig-cache-magic.patch
 # drop rsp clobber, which breaks gcc9 (thanks to Jeff Law)
 Patch10:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-78.0.3904.70-gcc9-drop-rsp-clobber.patch
 # Try to load widevine from other places
-Patch11:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-79.0.3945.56-widevine-other-locations.patch
+#Patch11:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-79.0.3945.56-widevine-other-locations.patch
 # Try to fix version.py for Rawhide
 Patch12:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-71.0.3578.98-py2-bootstrap.patch
 # Add "Fedora" to the user agent string
@@ -131,21 +131,21 @@ Patch602:	https://raw.githubusercontent.com/archlinuxarm/PKGBUILDs/master/extra/
 
 # Enable VAAPI support on Linux
 # Partially based on https://aur.archlinux.org/packages/chromium-vaapi/
-Patch651:	vdpau-support.patch
+#Patch651:	vdpau-support.patch
 Patch653:	chromium-skia-harmony.patch
 
 # mga
-Patch700:	chromium-81-extra-media.patch
-Patch701:	chromium-69-wmvflvmpg.patch
-Patch702:	chromium-40-sorenson-spark.patch
+#Patch700:	chromium-81-extra-media.patch
+#Patch701:	chromium-69-wmvflvmpg.patch
+#Patch702:	chromium-40-sorenson-spark.patch
 
 # omv
 Patch1001:	chromium-64-system-curl.patch
 Patch1002:	chromium-69-no-static-libstdc++.patch
 Patch1003:	chromium-83-norar.patch
 #Patch1004:	chromium-80-clang10-libstdc++10.patch
-Patch1006:	chromium-81-dont-pretend-vaapi-is-broken.patch
-Patch1007:	chromium-81-enable-gpu-features.patch
+#Patch1006:	chromium-81-dont-pretend-vaapi-is-broken.patch
+#Patch1007:	chromium-81-enable-gpu-features.patch
 
 # stop so many build warnings
 Patch1008:	chromium-71.0.3578.94-quieten.patch
@@ -746,8 +746,8 @@ install -m 0644 %{SOURCE3} %{buildroot}%{_sysconfdir}/chromium
 # instead of looking in its own directory... But for now, symlinking
 # stuff where Chromium wants it will do
 mkdir -p %{buildroot}%{_libdir}/%{name}/swiftshader
-ln -s %{_libdir}/libGLESv2.so.2.0.0 %{buildroot}%{_libdir}/%{name}/swiftshader/libGLESv2.so
-ln -s %{_libdir}/libEGL.so.1.0.0 %{buildroot}%{_libdir}/%{name}/swiftshader/libEGL.so
+ln -s %{_libdir}/libGLESv2.so.2.1.0 %{buildroot}%{_libdir}/%{name}/swiftshader/libGLESv2.so
+ln -s %{_libdir}/libEGL.so.1.1.0 %{buildroot}%{_libdir}/%{name}/swiftshader/libEGL.so
 
 find %{buildroot} -name "*.nexe" -exec strip {} \;
 
