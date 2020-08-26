@@ -38,7 +38,8 @@
 # Temporarily broken, cr_z_* symbols used even when we're supposed to use system minizip
 %bcond_without	system_minizip
 # chromium 58 fails with system vpx 1.6.1
-%bcond_without	system_vpx
+%bcond_with	system_vpx
+# system re2 doesn't work with custom libcxx
 %bcond_with	system_re2
 
 # Always support proprietary codecs
@@ -51,7 +52,7 @@
 Name: 		chromium-browser-%{channel}
 # Working version numbers can be found at
 # http://omahaproxy.appspot.com/
-Version: 	84.0.4147.135
+Version: 	85.0.4183.83
 Release: 	1%{?extrarelsuffix}
 Summary: 	A fast webkit-based web browser
 Group: 		Networking/WWW
@@ -81,13 +82,13 @@ Patch5:		https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-60.0.
 Patch6:		https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-77.0.3865.75-no-zlib-mangle.patch
 # Use Gentoo's Widevine hack
 # https://gitweb.gentoo.org/repo/gentoo.git/tree/www-client/chromium/files/chromium-widevine-r3.patch
-#Patch8:		https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-71.0.3578.98-widevine-r3.patch
+Patch8:		https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-71.0.3578.98-widevine-r3.patch
 # Disable fontconfig cache magic that breaks remoting (originally from Fedora, ported to 81 code base)
 Patch9:		chromium-83-disable-fontconfig-cache-magic.patch
 # drop rsp clobber, which breaks gcc9 (thanks to Jeff Law)
 Patch10:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-78.0.3904.70-gcc9-drop-rsp-clobber.patch
 # Try to load widevine from other places
-#Patch11:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-79.0.3945.56-widevine-other-locations.patch
+Patch11:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-79.0.3945.56-widevine-other-locations.patch
 # Try to fix version.py for Rawhide
 Patch12:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-71.0.3578.98-py2-bootstrap.patch
 # Add "Fedora" to the user agent string
@@ -110,7 +111,7 @@ Patch57:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-78-pr
 # https://gitweb.gentoo.org/repo/gentoo.git/plain/www-client/chromium/files/chromium-77-clang.patch
 Patch59:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-77-clang.patch
 # /../../ui/base/cursor/ozone/bitmap_cursor_factory_ozone.cc:53:15: error: 'find_if' is not a member of 'std'; did you mean 'find'? 
-Patch63:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-79.0.3945.56-fix-find_if.patch
+#Patch63:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-79.0.3945.56-fix-find_if.patch
 
 
 # Use lstdc++ on EPEL7 only
@@ -131,26 +132,25 @@ Patch602:	https://raw.githubusercontent.com/archlinuxarm/PKGBUILDs/master/extra/
 
 # Enable VAAPI support on Linux
 # Partially based on https://aur.archlinux.org/packages/chromium-vaapi/
-#Patch651:	vdpau-support.patch
+Patch651:	vdpau-support.patch
 Patch653:	chromium-skia-harmony.patch
 
 # mga
-#Patch700:	chromium-81-extra-media.patch
-#Patch701:	chromium-69-wmvflvmpg.patch
-#Patch702:	chromium-40-sorenson-spark.patch
+Patch700:	chromium-81-extra-media.patch
+Patch701:	chromium-69-wmvflvmpg.patch
+Patch702:	chromium-40-sorenson-spark.patch
 
 # omv
 Patch1001:	chromium-64-system-curl.patch
 Patch1002:	chromium-69-no-static-libstdc++.patch
 Patch1003:	chromium-83-norar.patch
 #Patch1004:	chromium-80-clang10-libstdc++10.patch
-#Patch1006:	chromium-81-dont-pretend-vaapi-is-broken.patch
-#Patch1007:	chromium-81-enable-gpu-features.patch
+Patch1006:	chromium-81-dont-pretend-vaapi-is-broken.patch
+Patch1007:	chromium-81-enable-gpu-features.patch
 
 # stop so many build warnings
 Patch1008:	chromium-71.0.3578.94-quieten.patch
 Patch1009:	chromium-trace.patch
-Patch1010:	chromium-84-compile.patch
 
 Provides: 	%{crname}
 Obsoletes: 	chromium-browser-unstable < 26.0.1410.51
@@ -444,8 +444,8 @@ python2 build/linux/unbundle/remove_bundled_libraries.py \
 	'third_party/libxml/chromium' \
 	'third_party/libxslt' \
 	'third_party/libyuv' \
-	'third_party/lss' \
 	'third_party/lottie' \
+	'third_party/lss' \
 	'third_party/lzma_sdk' \
 	'third_party/mako' \
 	'third_party/markupsafe' \
@@ -463,6 +463,7 @@ python2 build/linux/unbundle/remove_bundled_libraries.py \
 	'third_party/openscreen' \
 	'third_party/openscreen/src/third_party/mozilla' \
 	'third_party/openscreen/src/third_party/tinycbor' \
+	'third_party/opencv' \
 	'third_party/opus' \
 	'third_party/ots' \
 	'third_party/pdfium' \
@@ -530,6 +531,7 @@ python2 build/linux/unbundle/remove_bundled_libraries.py \
 	'third_party/webrtc/rtc_base/third_party/sigslot' \
 	'third_party/widevine' \
         'third_party/woff2' \
+	'third_party/xcbproto' \
         'third_party/xdg-utils' \
         'third_party/zlib' \
 	'third_party/zlib/google' \
@@ -578,7 +580,7 @@ export CXX=clang++
 # sure it sees python2 when it calls python
 export PATH=`pwd`:$PATH
 
-CHROMIUM_CORE_GN_DEFINES="use_sysroot=false is_debug=false fieldtrial_testing_like_official_build=true use_lld=true use_gold=false"
+CHROMIUM_CORE_GN_DEFINES="use_sysroot=false is_debug=false fieldtrial_testing_like_official_build=true use_lld=false use_gold=true"
 CHROMIUM_CORE_GN_DEFINES+=" is_clang=true clang_base_path=\"%{_prefix}\" clang_use_chrome_plugins=false "
 CHROMIUM_CORE_GN_DEFINES+=" treat_warnings_as_errors=false use_custom_libcxx=true "
 CHROMIUM_CORE_GN_DEFINES+=" use_system_libjpeg=true "
@@ -745,8 +747,8 @@ install -m 0644 %{SOURCE3} %{buildroot}%{_sysconfdir}/chromium
 # instead of looking in its own directory... But for now, symlinking
 # stuff where Chromium wants it will do
 mkdir -p %{buildroot}%{_libdir}/%{name}/swiftshader
-ln -s %{_libdir}/libGLESv2.so.2.1.0 %{buildroot}%{_libdir}/%{name}/swiftshader/libGLESv2.so
-ln -s %{_libdir}/libEGL.so.1.1.0 %{buildroot}%{_libdir}/%{name}/swiftshader/libEGL.so
+ln -s %{_libdir}/libGLESv2.so.2.0.0 %{buildroot}%{_libdir}/%{name}/swiftshader/libGLESv2.so
+ln -s %{_libdir}/libEGL.so.1.0.0 %{buildroot}%{_libdir}/%{name}/swiftshader/libEGL.so
 
 find %{buildroot} -name "*.nexe" -exec strip {} \;
 

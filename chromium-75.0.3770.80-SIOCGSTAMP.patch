@@ -1,6 +1,6 @@
-diff -up chromium-75.0.3770.80/third_party/webrtc/rtc_base/physical_socket_server.h.SIOCGSTAMP chromium-75.0.3770.80/third_party/webrtc/rtc_base/physical_socket_server.h
---- chromium-75.0.3770.80/third_party/webrtc/rtc_base/physical_socket_server.h.SIOCGSTAMP	2019-06-06 10:04:57.050403639 -0400
-+++ chromium-75.0.3770.80/third_party/webrtc/rtc_base/physical_socket_server.h	2019-06-06 10:06:03.975121688 -0400
+diff -up chromium-85.0.4164.2/third_party/webrtc/rtc_base/physical_socket_server.h.21~ chromium-85.0.4164.2/third_party/webrtc/rtc_base/physical_socket_server.h
+--- chromium-85.0.4164.2/third_party/webrtc/rtc_base/physical_socket_server.h.21~	2020-06-06 21:46:54.580693608 +0200
++++ chromium-85.0.4164.2/third_party/webrtc/rtc_base/physical_socket_server.h	2020-06-06 22:45:32.047822449 +0200
 @@ -16,6 +16,11 @@
  #define WEBRTC_USE_EPOLL 1
  #endif
@@ -10,6 +10,6 @@ diff -up chromium-75.0.3770.80/third_party/webrtc/rtc_base/physical_socket_serve
 +#include <linux/sockios.h>
 +#endif
 +
+ #include <array>
  #include <memory>
  #include <set>
- #include <vector>
