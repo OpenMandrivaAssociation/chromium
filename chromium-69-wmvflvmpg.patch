@@ -1,7 +1,7 @@
 diff -up chromium-62.0.3192.0/media/base/mime_util_internal.cc.wmvflvmpg chromium-62.0.3192.0/media/base/mime_util_internal.cc
 --- chromium-62.0.3192.0/media/base/mime_util_internal.cc.wmvflvmpg	2017-08-30 15:52:00.602204610 +0200
 +++ chromium-62.0.3192.0/media/base/mime_util_internal.cc	2017-08-30 16:08:19.855437935 +0200
-@@ -91,6 +91,16 @@
+@@ -91,6 +91,17 @@
        {"mp2", MimeUtil::MP2},
        {"mp4v.20.8", MimeUtil::MPEG4_SP},
        {"mp4v.20.240", MimeUtil::MPEG4_ASP},
@@ -15,6 +15,7 @@ diff -up chromium-62.0.3192.0/media/base/mime_util_internal.cc.wmvflvmpg chromiu
 +      {"wma", MimeUtil::WMA},
 +      {"vp6", MimeUtil::VP6},
 +      {"mpeg1", MimeUtil::MPEG1},
++      {"flv", MimeUtil::FLV1},
    });
  
    return *kStringToCodecMap;
@@ -89,3 +90,26 @@ diff -up chromium-62.0.3192.0/net/base/mime_util.cc.wmvflvmpg chromium-62.0.3192
    "video/x-m4v",
    "video/x-matroska",
    "video/x-mpeg",
+diff -up chromium-86.0.4240.111/media/base/mime_util_internal.h.media~ chromium-86.0.4240.111/media/base/mime_util_internal.h
+--- chromium-86.0.4240.111/media/base/mime_util_internal.h.media~	2020-10-21 17:03:42.549720159 +0200
++++ chromium-86.0.4240.111/media/base/mime_util_internal.h	2020-10-21 17:06:08.631768545 +0200
+@@ -51,7 +51,18 @@ class MEDIA_EXPORT MimeUtil {
+     MP2,
+     MPEG4_SP,
+     MPEG4_ASP,
+-    LAST_CODEC = MPEG4_ASP
++    MSMPEG4v1,
++    MSMPEG4v2,
++    MSMPEG4v3,
++    WMV7,
++    WMV8,
++    WMV9,
++    VC1,
++    WMA,
++    VP6,
++    FLV1,
++    MPEG1,
++    LAST_CODEC = MPEG1
+   };
+ 
+   // Platform configuration structure.  Controls which codecs are supported at
