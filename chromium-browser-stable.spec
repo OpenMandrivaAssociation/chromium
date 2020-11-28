@@ -37,14 +37,14 @@
 # crisb - ozone causes a segfault on startup as of 57.0.2987.133, doesn't compile in 80.x
 %bcond_with	ozone
 # Breaks the build as of chromium 83, icu 66.1
-%bcond_with	system_icu
+%bcond_without	system_icu
 %bcond_without	system_ffmpeg
 # Temporarily broken, cr_z_* symbols used even when we're supposed to use system minizip
 %bcond_without	system_minizip
 # chromium 58 fails with system vpx 1.6.1
-%bcond_with	system_vpx
+%bcond_without	system_vpx
 # system re2 doesn't work with custom libcxx
-%bcond_with	system_re2
+%bcond_without	system_re2
 
 # Always support proprietary codecs
 # or html5 does not work
@@ -56,7 +56,7 @@
 Name: 		chromium-browser-%{channel}
 # Working version numbers can be found at
 # http://omahaproxy.appspot.com/
-Version: 	86.0.4240.183
+Version: 	87.0.4280.66
 Release: 	1%{?extrarelsuffix}
 Summary: 	A fast webkit-based web browser
 Group: 		Networking/WWW
@@ -117,14 +117,14 @@ Patch54:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-77.0.
 # Apply these patches to work around EPEL8 issues
 #Patch300:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-76.0.3809.132-rhel8-force-disable-use_gnome_keyring.patch
 
-Patch501:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-75.0.3770.80-SIOCGSTAMP.patch
+#Patch501:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-75.0.3770.80-SIOCGSTAMP.patch
 
 ### Chromium gcc/libstdc++ support ###
 # https://github.com/stha09/chromium-patches
 Patch550:	https://raw.githubusercontent.com/stha09/chromium-patches/master/chromium-86-ConsumeDurationNumber-constexpr.patch
 Patch551:	https://raw.githubusercontent.com/stha09/chromium-patches/master/chromium-86-ImageMemoryBarrierData-init.patch
-Patch552:	https://raw.githubusercontent.com/stha09/chromium-patches/master/chromium-86-ServiceWorkerRunningInfo-noexcept.patch
-Patch553:	https://raw.githubusercontent.com/stha09/chromium-patches/master/chromium-86-compiler.patch
+Patch552:	https://raw.githubusercontent.com/stha09/chromium-patches/master/chromium-87-CursorFactory-include.patch
+Patch553:	https://raw.githubusercontent.com/stha09/chromium-patches/master/chromium-87-compiler.patch
 Patch554:	https://raw.githubusercontent.com/stha09/chromium-patches/master/chromium-86-nearby-explicit.patch
 Patch555:	https://raw.githubusercontent.com/stha09/chromium-patches/master/chromium-86-nearby-include.patch
 Patch556:	https://raw.githubusercontent.com/stha09/chromium-patches/master/chromium-fix-char_traits.patch
@@ -132,6 +132,7 @@ Patch557:	https://raw.githubusercontent.com/stha09/chromium-patches/master/chrom
 Patch558:	https://raw.githubusercontent.com/stha09/chromium-patches/master/chromium-79-gcc-protobuf-alignas.patch
 Patch559:	https://raw.githubusercontent.com/stha09/chromium-patches/master/chromium-80-QuicStreamSendBuffer-deleted-move-constructor.patch
 Patch560:	https://raw.githubusercontent.com/stha09/chromium-patches/master/chromium-84-blink-disable-clang-format.patch
+Patch561:	https://raw.githubusercontent.com/stha09/chromium-patches/master/chromium-87-openscreen-include.patch
 
 ### Chromium Tests Patches ###
 # suse, system libs
@@ -143,11 +144,7 @@ Patch602:	https://raw.githubusercontent.com/archlinuxarm/PKGBUILDs/master/extra/
 # Partially based on https://aur.archlinux.org/packages/chromium-vaapi/
 Patch651:	vdpau-support.patch
 Patch652:	https://aur.archlinux.org/cgit/aur.git/plain/chromium-skia-harmony.patch
-Patch653:	https://aur.archlinux.org/cgit/aur.git/plain/check-for-enable-accelerated-video-decode-on-Linux.patch
-Patch654:	https://aur.archlinux.org/cgit/aur.git/plain/fix-invalid-end-iterator-usage-in-CookieMonster.patch
-Patch655:	https://aur.archlinux.org/cgit/aur.git/plain/only-fall-back-to-the-i965-driver-if-we-re-on-iHD.patch
-Patch656:	https://aur.archlinux.org/cgit/aur.git/plain/remove-dead-reloc-in-nonalloc-LD-flags.patch
-Patch657:	https://aur.archlinux.org/cgit/aur.git/plain/wayland-egl.patch
+Patch653:	https://aur.archlinux.org/cgit/aur.git/plain/wayland-egl.patch
 
 # mga
 Patch700:	chromium-81-extra-media.patch
@@ -174,6 +171,8 @@ BuildRequires: 	re2c
 BuildRequires: 	flex
 BuildRequires:	pkgconfig(alsa)
 BuildRequires:	pkgconfig(krb5)
+BuildRequires:	pkgconfig(openh264)
+BuildRequires:	pkgconfig(libunwind)
 %if %{with system_re2}
 BuildRequires:	pkgconfig(re2)
 %endif
@@ -531,6 +530,7 @@ cp %{S:4} %{buildroot}%{_datadir}/drirc.d/10-%{name}.conf
 %{_datadir}/drirc.d/10-%{name}.conf
 %{_bindir}/%{name}
 %{_libdir}/%{name}/*.bin
+%{_libdir}/%{name}/*.so
 %{_libdir}/%{name}/chromium-wrapper
 %{_libdir}/%{name}/chrome
 %{_libdir}/%{name}/chrome-sandbox
@@ -543,8 +543,6 @@ cp %{S:4} %{buildroot}%{_datadir}/drirc.d/10-%{name}.conf
 %{_libdir}/%{name}/default_apps
 %{_datadir}/applications/*.desktop
 %{_datadir}/icons/hicolor/*/apps/%{name}.png
-%{_libdir}/chromium-browser-stable/libEGL.so
-%{_libdir}/chromium-browser-stable/libGLESv2.so
 
 %files -n chromedriver%{namesuffix}
 %doc LICENSE AUTHORS
