@@ -1,34 +1,27 @@
-diff -up chromium-86.0.4238.0/gpu/config/gpu_finch_features.cc.29~ chromium-86.0.4238.0/gpu/config/gpu_finch_features.cc
---- chromium-86.0.4238.0/gpu/config/gpu_finch_features.cc.29~	2020-08-19 11:53:06.000000000 +0200
-+++ chromium-86.0.4238.0/gpu/config/gpu_finch_features.cc	2020-08-21 02:46:31.830136321 +0200
-@@ -32,9 +32,10 @@ const base::Feature kAImageReader{"AImag
+diff -up chromium-88.0.4324.150/gpu/config/gpu_finch_features.cc.39~ chromium-88.0.4324.150/gpu/config/gpu_finch_features.cc
+--- chromium-88.0.4324.150/gpu/config/gpu_finch_features.cc.39~	2021-02-11 22:29:29.131118899 +0100
++++ chromium-88.0.4324.150/gpu/config/gpu_finch_features.cc	2021-02-11 22:31:43.034834560 +0100
+@@ -78,11 +78,12 @@ const base::FeatureParam<std::string> kL
  // Enable GPU Rasterization by default. This can still be overridden by
- // --force-gpu-rasterization or --disable-gpu-rasterization.
- #if defined(OS_MAC) || defined(OS_WIN) || defined(OS_CHROMEOS) || \
--    defined(OS_ANDROID) || defined(OS_FUCHSIA)
-+    defined(OS_ANDROID) || defined(OS_FUCHSIA) || defined(OS_LINUX)
+ // --enable-gpu-rasterization or --disable-gpu-rasterization.
  // DefaultEnableGpuRasterization has launched on Mac, Windows, ChromeOS, and
 -// Android.
-+// Android. And of course it works on Linux too, just because Google hates Linux
-+// doesn't mean we have to.
++// Android. And of course it works on Linux too, just because Google hates
++// Linux doesn't mean we have to.
  const base::Feature kDefaultEnableGpuRasterization{
-     "DefaultEnableGpuRasterization", base::FEATURE_ENABLED_BY_DEFAULT};
+   "DefaultEnableGpuRasterization",
+ #if defined(OS_MAC) || defined(OS_WIN) || BUILDFLAG(IS_ASH) || \
+-    defined(OS_ANDROID) || defined(OS_FUCHSIA)
++    defined(OS_ANDROID) || defined(OS_FUCHSIA) || defined(OS_LINUX)
+       base::FEATURE_ENABLED_BY_DEFAULT
  #else
-@@ -45,7 +46,7 @@ const base::Feature kDefaultEnableGpuRas
- // Enable out of process rasterization by default.  This can still be overridden
- // by --enable-oop-rasterization or --disable-oop-rasterization.
- #if defined(OS_ANDROID) || defined(OS_CHROMEOS) || defined(OS_MAC) || \
--    defined(OS_WIN) || defined(OS_FUCHSIA)
-+    defined(OS_WIN) || defined(OS_FUCHSIA) || defined(OS_LINUX)
- const base::Feature kDefaultEnableOopRasterization{
-     "DefaultEnableOopRasterization", base::FEATURE_ENABLED_BY_DEFAULT};
- #else
-@@ -60,7 +61,7 @@ const base::Feature kGpuProcessHighPrior
- #endif
- 
+       base::FEATURE_DISABLED_BY_DEFAULT
+@@ -108,7 +109,7 @@ const base::Feature kDirectCompositionUs
  // Use ThreadPriority::DISPLAY for GPU main, viz compositor and IO threads.
--#if defined(OS_ANDROID) || defined(OS_CHROMEOS) || defined(OS_WIN)
-+#if defined(OS_ANDROID) || defined(OS_CHROMEOS) || defined(OS_WIN) || defined(OS_LINUX)
  const base::Feature kGpuUseDisplayThreadPriority{
-     "GpuUseDisplayThreadPriority", base::FEATURE_ENABLED_BY_DEFAULT};
+   "GpuUseDisplayThreadPriority",
+-#if defined(OS_ANDROID) || BUILDFLAG(IS_ASH) || defined(OS_WIN)
++#if defined(OS_ANDROID) || BUILDFLAG(IS_ASH) || defined(OS_WIN) || defined(OS_LINUX)
+       base::FEATURE_ENABLED_BY_DEFAULT
  #else
+       base::FEATURE_DISABLED_BY_DEFAULT

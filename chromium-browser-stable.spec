@@ -56,7 +56,7 @@
 Name: 		chromium-browser-%{channel}
 # Working version numbers can be found at
 # http://omahaproxy.appspot.com/
-Version: 	87.0.4280.141
+Version: 	88.0.4324.150
 Release: 	1%{?extrarelsuffix}
 Summary: 	A fast webkit-based web browser
 Group: 		Networking/WWW
@@ -141,10 +141,15 @@ Patch600:	arm_use_right_compiler.patch
 Patch602:	https://raw.githubusercontent.com/archlinuxarm/PKGBUILDs/master/extra/chromium/chromium-system-icu.patch
 
 # Enable VAAPI support on Linux
-# Partially based on https://aur.archlinux.org/packages/chromium-vaapi/
-Patch651:	vdpau-support.patch
-Patch652:	https://aur.archlinux.org/cgit/aur.git/plain/chromium-skia-harmony.patch
-Patch653:	https://aur.archlinux.org/cgit/aur.git/plain/wayland-egl.patch
+Patch650:	https://raw.githubusercontent.com/saiarcot895/chromium-ubuntu-build/6c16789cc4d8589734461da78ab40c720b25f6aa/debian/patches/enable-vaapi-on-linux.diff
+Patch651:	https://raw.githubusercontent.com/saiarcot895/chromium-ubuntu-build/6c16789cc4d8589734461da78ab40c720b25f6aa/debian/patches/vdpau-support.patch
+
+# Fixes from Arch
+Patch660:	https://aur.archlinux.org/cgit/aur.git/plain/chromium-skia-harmony.patch
+Patch661:	https://aur.archlinux.org/cgit/aur.git/plain/wayland-egl.patch
+Patch662:	https://aur.archlinux.org/cgit/aur.git/plain/chromium-glibc-2.33.patch
+Patch663:	https://aur.archlinux.org/cgit/aur.git/plain/subpixel-anti-aliasing-in-FreeType-2.8.1.patch
+
 
 # mga
 Patch700:	chromium-81-extra-media.patch
@@ -153,13 +158,9 @@ Patch701:	chromium-69-wmvflvmpg.patch
 # omv
 Patch1001:	chromium-64-system-curl.patch
 Patch1002:	chromium-69-no-static-libstdc++.patch
-Patch1003:	chromium-86-icu-68.patch
-#Patch1004:	chromium-80-clang10-libstdc++10.patch
+Patch1003:	chromium-88-buildfixes.patch
+Patch1004:	chromium-88-less-blacklist-nonsense.patch
 Patch1007:	chromium-81-enable-gpu-features.patch
-
-# stop so many build warnings
-Patch1008:	chromium-71.0.3578.94-quieten.patch
-#Patch1009:	chromium-trace.patch
 
 Provides: 	%{crname}
 Obsoletes: 	chromium-browser-unstable < 26.0.1410.51
@@ -513,6 +514,9 @@ install -m 0644 %{SOURCE3} %{buildroot}%{_sysconfdir}/chromium
 # stuff where Chromium wants it will do
 ln -s %{_libdir}/libGLESv2.so.2.1.0 %{buildroot}%{_libdir}/%{name}/libGLESv2.so
 ln -s %{_libdir}/libEGL.so.1.1.0 %{buildroot}%{_libdir}/%{name}/libEGL.so
+mkdir -p %{buildroot}%{_libdir}/%{name}/swiftshader
+ln -s %{_libdir}/libGLESv2.so.2.1.0 %{buildroot}%{_libdir}/%{name}/swiftshader/libGLESv2.so
+ln -s %{_libdir}/libEGL.so.1.1.0 %{buildroot}%{_libdir}/%{name}/swiftshader/libEGL.so
 
 find %{buildroot} -name "*.nexe" -exec strip {} \;
 
@@ -539,6 +543,7 @@ cp %{S:4} %{buildroot}%{_datadir}/drirc.d/10-%{name}.conf
 %{_libdir}/%{name}/chrome_100_percent.pak
 %{_libdir}/%{name}/resources.pak
 %{_libdir}/%{name}/resources
+%{_libdir}/%{name}/swiftshader
 %{_libdir}/%{name}/themes
 %{_libdir}/%{name}/default_apps
 %{_datadir}/applications/*.desktop

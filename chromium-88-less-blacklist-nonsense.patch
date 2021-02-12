@@ -1,0 +1,678 @@
+diff -up chromium-88.0.4324.150/gpu/config/gpu_control_list_testing.json.omv~ chromium-88.0.4324.150/gpu/config/gpu_control_list_testing.json
+diff -up chromium-88.0.4324.150/gpu/config/gpu_driver_bug_list.json.omv~ chromium-88.0.4324.150/gpu/config/gpu_driver_bug_list.json
+--- chromium-88.0.4324.150/gpu/config/gpu_driver_bug_list.json.omv~	2021-02-12 04:30:55.722803811 +0100
++++ chromium-88.0.4324.150/gpu/config/gpu_driver_bug_list.json	2021-02-12 04:36:26.327606645 +0100
+@@ -331,18 +331,6 @@
+       ]
+     },
+     {
+-      "id": 55,
+-      "cr_bugs": [333885],
+-      "description": "Mesa drivers in Linux handle varyings without static use incorrectly",
+-      "os": {
+-        "type": "linux"
+-      },
+-      "driver_vendor": "Mesa",
+-      "features": [
+-        "count_all_in_varyings_packing"
+-      ]
+-    },
+-    {
+       "id": 56,
+       "cr_bugs": [333885],
+       "description": "Mesa drivers in ChromeOS handle varyings without static use incorrectly",
+@@ -368,18 +356,6 @@
+       ]
+     },
+     {
+-      "id": 64,
+-      "description": "Linux AMD drivers incorrectly return initial value of 1 for TEXTURE_MAX_ANISOTROPY",
+-      "cr_bugs": [348237],
+-      "os": {
+-        "type": "linux"
+-      },
+-      "vendor_id": "0x1002",
+-      "features": [
+-        "init_texture_max_anisotropy"
+-      ]
+-    },
+-    {
+       "id": 65,
+       "description": "Linux NVIDIA drivers don't have the correct defaults for vertex attributes",
+       "cr_bugs": [351528],
+@@ -393,19 +369,6 @@
+       ]
+     },
+     {
+-      "id": 68,
+-      "description": "Disable partial swaps on Mesa drivers (detected with GL_RENDERER)",
+-      "cr_bugs": [339493],
+-      "os": {
+-        "type": "linux"
+-      },
+-      "gl_type": "gl",
+-      "gl_renderer": ".*Mesa.*",
+-      "features": [
+-        "disable_post_sub_buffers_for_onscreen_surfaces"
+-      ]
+-    },
+-    {
+       "id": 70,
+       "description": "Disable D3D11 on older nVidia drivers",
+       "cr_bugs": [349929],
+@@ -498,18 +461,6 @@
+       ]
+     },
+     {
+-      "id": 90,
+-      "description": "Linux AMD drivers handle struct scopes incorrectly",
+-      "cr_bugs": [403957],
+-      "os": {
+-        "type": "linux"
+-      },
+-      "vendor_id": "0x1002",
+-      "features": [
+-        "regenerate_struct_names"
+-      ]
+-    },
+-    {
+       "id": 91,
+       "cr_bugs": [150500, 414816],
+       "description": "ETC1 non-power-of-two sized textures crash older IMG drivers",
+@@ -960,22 +911,6 @@
+       ]
+     },
+     {
+-      "id": 131,
+-      "description": "Linux Mesa drivers crash on glTexSubImage2D() to texture storage bound to FBO",
+-      "cr_bugs": [521904],
+-      "os": {
+-        "type": "linux"
+-      },
+-      "driver_vendor": "Mesa",
+-      "driver_version": {
+-        "op": "<",
+-        "value": "10.6"
+-      },
+-      "features": [
+-        "disable_texture_storage"
+-      ]
+-    },
+-    {
+       "id": 132,
+       "description": "On Intel GPUs MSAA performance is not acceptable for GPU rasterization",
+       "cr_bugs": [527565],
+@@ -1049,27 +984,6 @@
+       "disabled_extensions": ["GL_NV_path_rendering"]
+     },
+     {
+-      "id": 139,
+-      "description": "Mesa drivers wrongly report supporting GL_EXT_texture_rg with GLES 2.0 prior version 11.1",
+-      "cr_bugs": [545904],
+-      "os": {
+-        "type": "linux"
+-      },
+-      "driver_vendor": "Mesa",
+-      "driver_version": {
+-        "op": "<",
+-        "value": "11.1"
+-      },
+-      "gl_type": "gles",
+-      "gl_version": {
+-        "op": "<",
+-        "value": "3.0"
+-      },
+-      "disabled_extensions": [
+-        "GL_EXT_texture_rg"
+-      ]
+-    },
+-    {
+       "id": 140,
+       "description": "glReadPixels fails on FBOs with SRGB_ALPHA textures, Nexus 5X",
+       "cr_bugs": [550292, 565179],
+@@ -1569,19 +1483,6 @@
+       ]
+     },
+     {
+-      "id": 190,
+-      "description": "Disable partial swaps on Mesa drivers (detected with GL_VERSION)",
+-      "cr_bugs": [339493],
+-      "os": {
+-        "type": "linux"
+-      },
+-      "gl_type": "gl",
+-      "gl_version_string": ".*Mesa.*",
+-      "features": [
+-        "disable_post_sub_buffers_for_onscreen_surfaces"
+-      ]
+-    },
+-    {
+       "id": 191,
+       "description": "Emulate GLSL function isnan() on Intel Mac",
+       "cr_bugs": [650547],
+@@ -1693,31 +1594,6 @@
+       ]
+     },
+     {
+-      "id": 199,
+-      "description": "adjust src/dst region if blitting pixels outside framebuffer on Linux AMD",
+-      "cr_bugs": [664740],
+-      "os": {
+-        "type": "linux"
+-      },
+-      "vendor_id": "0x1002",
+-      "features": [
+-        "adjust_src_dst_region_for_blitframebuffer"
+-      ]
+-    },
+-    {
+-      "id": 201,
+-      "cr_bugs": [659326,639760],
+-      "description": "AMD drivers in Linux require invariant qualifier to match between vertex and fragment shaders",
+-      "os": {
+-        "type": "linux"
+-      },
+-      "vendor_id": "0x1002",
+-      "features": [
+-        "dont_remove_invariant_for_fragment_input",
+-        "remove_invariant_and_centroid_for_essl3"
+-      ]
+-    },
+-    {
+       "id": 202,
+       "cr_bugs": [639760,641129],
+       "description": "Mac driver GL 4.1 requires invariant and centroid to match between shaders",
+@@ -1729,22 +1605,6 @@
+       ]
+     },
+     {
+-      "id": 203,
+-      "cr_bugs": [639760,641129],
+-      "description": "Mesa driver GL 3.3 requires invariant and centroid to match between shaders",
+-      "os": {
+-        "type": "linux"
+-      },
+-      "driver_vendor": "Mesa",
+-      "gl_version": {
+-        "op": "=",
+-        "value": "3.3"
+-      },
+-      "features": [
+-        "remove_invariant_and_centroid_for_essl3"
+-      ]
+-    },
+-    {
+       "id": 205,
+       "description": "Adreno 5xx support for EXT_multisampled_render_to_texture is buggy on Android 7.1",
+       "cr_bugs": [663811],
+@@ -1781,19 +1641,6 @@
+       ]
+     },
+     {
+-      "id": 208,
+-      "description": "Decode and Encode before generateMipmap for srgb format textures on Linux Mesa ANGLE path",
+-      "cr_bugs": [634519],
+-      "os": {
+-        "type": "linux"
+-      },
+-      "gl_renderer": "ANGLE.*",
+-      "vendor_id": "0x8086",
+-      "features": [
+-        "decode_encode_srgb_for_generatemipmap"
+-      ]
+-    },
+-    {
+       "id": 209,
+       "description": "Decode and Encode before generateMipmap for srgb format textures on Chromeos Intel",
+       "cr_bugs": [634519],
+@@ -1806,18 +1653,6 @@
+       ]
+     },
+     {
+-      "id": 210,
+-      "description": "Decode and Encode before generateMipmap for srgb format textures on Linux AMD",
+-      "cr_bugs": [634519],
+-      "os": {
+-        "type": "linux"
+-      },
+-      "vendor_id": "0x1002",
+-      "features": [
+-        "decode_encode_srgb_for_generatemipmap"
+-      ]
+-    },
+-    {
+       "id": 211,
+       "description": "Rewrite -float to 0.0 - float for Intel Mac",
+       "cr_bugs": [672380],
+@@ -1971,30 +1806,6 @@
+       ]
+     },
+     {
+-      "id": 222,
+-      "description": "Software to Accelerated canvas update breaks Linux AMD",
+-      "cr_bugs": [710029],
+-      "os": {
+-        "type": "linux"
+-      },
+-      "vendor_id": "0x1002",
+-      "features": [
+-        "disable_software_to_accelerated_canvas_upgrade"
+-      ]
+-    },
+-    {
+-      "id": 223,
+-      "description": "Force integer or srgb cube map texture complete on Linux AMD",
+-      "cr_bugs": [712117],
+-      "os": {
+-        "type": "linux"
+-      },
+-      "vendor_id": "0x1002",
+-      "features": [
+-        "force_int_or_srgb_cube_texture_complete"
+-      ]
+-    },
+-    {
+       "id": 224,
+       "description": "VPx decoding isn't supported well before Windows 10 creators update.",
+       "cr_bugs": [616318, 667532],
+@@ -2542,18 +2353,6 @@
+       ]
+     },
+     {
+-      "id": 270,
+-      "cr_bugs": [859998],
+-      "description": "AMD Linux driver crashes when copyTexImage2D is called with PIXEL_UNPACK_BUFFER set to an uninitialized buffer",
+-      "os": {
+-        "type": "linux"
+-      },
+-      "vendor_id": "0x1002",
+-      "features": [
+-        "clear_pixel_unpack_buffer_before_copyteximage"
+-      ]
+-    },
+-    {
+       "id": 271,
+       "cr_bugs": [860418],
+       "description": "Frequent crashes in glClear on Mali-T7xx on N with driver 12.1.01alp0",
+@@ -2679,27 +2478,6 @@
+       ]
+     },
+     {
+-      "id": 285,
+-      "cr_bugs": [914976, 1000113],
+-      "description": "Context flush ordering doesn't seem to work on AMD",
+-      "vendor_id": "0x1002",
+-      "os": {
+-        "type": "linux"
+-      },
+-      "features": [
+-        "use_virtualized_gl_contexts"
+-      ],
+-      "exceptions": [
+-        {
+-          "driver_vendor": "Mesa",
+-          "driver_version": {
+-            "op": ">=",
+-            "value": "19.0"
+-          }
+-        }
+-      ]
+-    },
+-    {
+       "id": 286,
+       "cr_bugs": [908069],
+       "description": "Video corruption on Intel HD 530 without hardware overlay support",
+@@ -2847,23 +2625,6 @@
+       ]
+     },
+     {
+-      "id": 301,
+-      "description": "Mesa hangs the system when allocating large textures",
+-      "cr_bugs": [927470],
+-      "os": {
+-        "type" : "linux",
+-        "version": {
+-          "op": "<",
+-          "value": "5.0"
+-        }
+-      },
+-      "vendor_id": "0x8086",
+-      "features": [
+-        "max_texture_size_limit_4096",
+-        "max_3d_array_texture_size_1024"
+-      ]
+-    },
+-    {
+       "id": 303,
+       "cr_bugs": [890227],
+       "description": "Dynamic texture map crashes on Intel drivers less than version 24",
+@@ -3214,24 +2975,6 @@
+       ]
+     },
+     {
+-      "id": 331,
+-      "cr_bugs": [1046462],
+-      "description": "GL and Vulkan interop doesn't work with AMD GPU properly",
+-      "os": {
+-        "type": "linux"
+-      },
+-      "driver_vendor": "Mesa",
+-      "driver_version": {
+-        "op": "<",
+-        "value": "19.3.5"
+-      },
+-      "vendor_id": "0x1002",
+-      "disabled_extensions": [
+-        "GL_EXT_memory_object_fd",
+-        "GL_EXT_semaphore_fd"
+-      ]
+-    },
+-    {
+       "id": 332,
+       "cr_bugs": [1045586],
+       "description": "Send empty video hdr metadata due to crashes on AMD",
+diff -up chromium-88.0.4324.150/gpu/config/software_rendering_list.json.omv~ chromium-88.0.4324.150/gpu/config/software_rendering_list.json
+--- chromium-88.0.4324.150/gpu/config/software_rendering_list.json.omv~	2021-02-12 04:37:06.059134377 +0100
++++ chromium-88.0.4324.150/gpu/config/software_rendering_list.json	2021-02-12 04:41:28.925449792 +0100
+@@ -40,41 +40,6 @@
+       ]
+     },
+     {
+-      "id": 5,
+-      "description": "ATI/AMD cards with older drivers in Linux are crash-prone",
+-      "cr_bugs": [71381, 76428, 73910, 101225, 136240, 357314, 719213],
+-      "os": {
+-        "type": "linux"
+-      },
+-      "vendor_id": "0x1002",
+-      "exceptions": [
+-        {
+-          "driver_vendor": ".*AMD.*",
+-          "driver_version": {
+-            "op": ">=",
+-            "style": "lexical",
+-            "value": "8.98"
+-          }
+-        },
+-        {
+-          "driver_vendor": "Mesa",
+-          "driver_version": {
+-            "op": ">=",
+-            "value": "10.0.4"
+-          }
+-        },
+-        {
+-          "driver_vendor": ".*ANGLE.*"
+-        },
+-        {
+-          "driver_vendor": ".*Brahma.*"
+-        }
+-      ],
+-      "features": [
+-        "all"
+-      ]
+-    },
+-    {
+       "id": 8,
+       "description": "NVIDIA GeForce FX Go5200 is assumed to be buggy",
+       "cr_bugs": [72938],
+@@ -100,60 +65,6 @@
+       ]
+     },
+     {
+-      "id": 17,
+-      "description": "Older Intel mesa drivers are crash-prone",
+-      "cr_bugs": [76703, 164555, 225200, 340886],
+-      "os": {
+-        "type": "linux"
+-      },
+-      "vendor_id": "0x8086",
+-      "driver_vendor": "Mesa",
+-      "driver_version": {
+-        "op": "<",
+-        "value": "10.1"
+-      },
+-      "exceptions": [
+-        {
+-          "device_id": ["0x0102", "0x0106", "0x0112", "0x0116", "0x0122", "0x0126", "0x010a", "0x0152", "0x0156", "0x015a", "0x0162", "0x0166"],
+-          "driver_version": {
+-            "op": ">=",
+-            "value": "8.0"
+-          }
+-        },
+-        {
+-          "device_id": ["0xa001", "0xa002", "0xa011", "0xa012", "0x29a2", "0x2992", "0x2982", "0x2972", "0x2a12", "0x2a42", "0x2e02", "0x2e12", "0x2e22", "0x2e32", "0x2e42", "0x2e92"],
+-          "driver_version": {
+-            "op": ">",
+-            "value": "8.0.2"
+-          }
+-        },
+-        {
+-          "device_id": ["0x0042", "0x0046"],
+-          "driver_version": {
+-            "op": ">",
+-            "value": "8.0.4"
+-          }
+-        },
+-        {
+-          "device_id": ["0x2a02"],
+-          "driver_version": {
+-            "op": ">=",
+-            "value": "9.1"
+-          }
+-        },
+-        {
+-          "device_id": ["0x0a16", "0x0a26"],
+-          "driver_version": {
+-            "op": ">=",
+-            "value": "10.0.1"
+-          }
+-        }
+-      ],
+-      "features": [
+-        "all"
+-      ]
+-    },
+-    {
+       "id": 18,
+       "description": "NVIDIA Quadro FX 1500 is buggy",
+       "cr_bugs": [84701],
+@@ -167,92 +78,6 @@
+       ]
+     },
+     {
+-      "id": 27,
+-      "description": "ATI/AMD cards with older drivers in Linux are crash-prone",
+-      "cr_bugs": [95934, 94973, 136240, 357314],
+-      "os": {
+-        "type": "linux"
+-      },
+-      "gl_vendor": "ATI.*",
+-      "exceptions": [
+-        {
+-          "driver_vendor": ".*AMD.*",
+-          "driver_version": {
+-            "op": ">=",
+-            "style": "lexical",
+-            "value": "8.98"
+-          }
+-        },
+-        {
+-          "driver_vendor": "Mesa",
+-          "driver_version": {
+-            "op": ">=",
+-            "value": "10.0.4"
+-          }
+-        }
+-      ],
+-      "features": [
+-        "all"
+-      ]
+-    },
+-    {
+-      "id": 28,
+-      "description": "ATI/AMD cards with third-party drivers in Linux are crash-prone",
+-      "cr_bugs": [95934, 94973, 357314],
+-      "os": {
+-        "type": "linux"
+-      },
+-      "gl_vendor": "X\\.Org.*",
+-      "gl_renderer": ".*AMD.*",
+-      "exceptions": [
+-        {
+-          "driver_vendor": "Mesa",
+-          "driver_version": {
+-            "op": ">=",
+-            "value": "10.0.4"
+-          }
+-        }
+-      ],
+-      "features": [
+-        "all"
+-      ]
+-    },
+-    {
+-      "id": 29,
+-      "description": "ATI/AMD cards with third-party drivers in Linux are crash-prone",
+-      "cr_bugs": [95934, 94973, 357314],
+-      "os": {
+-        "type": "linux"
+-      },
+-      "gl_vendor": "X\\.Org.*",
+-      "gl_renderer": ".*ATI.*",
+-      "exceptions": [
+-        {
+-          "driver_vendor": "Mesa",
+-          "driver_version": {
+-            "op": ">=",
+-            "value": "10.0.4"
+-          }
+-        }
+-      ],
+-      "features": [
+-        "all"
+-      ]
+-    },
+-    {
+-      "id": 30,
+-      "description": "NVIDIA cards with nouveau drivers in Linux are unstable",
+-      "cr_bugs": [94103, 876523],
+-      "os": {
+-        "type": "linux"
+-      },
+-      "vendor_id": "0x10de",
+-      "gl_vendor": "(?i)nouveau.*",
+-      "features": [
+-        "all"
+-      ]
+-    },
+-    {
+       "id": 34,
+       "description": "S3 Trio (used in Virtual PC) is not compatible",
+       "cr_bugs": [119948],
+@@ -582,21 +407,6 @@
+       ]
+     },
+     {
+-      "id": 93,
+-      "description": "GLX indirect rendering (X remoting) is not supported",
+-      "cr_bugs": [72373],
+-      "os": {
+-        "type": "linux"
+-      },
+-      "direct_rendering_version": {
+-        "op": "<",
+-        "value": "2"
+-      },
+-      "features": [
+-        "all"
+-      ]
+-    },
+-    {
+       "id": 94,
+       "description": "Intel driver version 8.15.10.1749 causes GPU process hangs.",
+       "cr_bugs": [350566],
+@@ -613,23 +423,6 @@
+       ]
+     },
+     {
+-      "id": 95,
+-      "description": "AMD driver version 13.101 is unstable on linux.",
+-      "cr_bugs": [363378],
+-      "os": {
+-        "type": "linux"
+-      },
+-      "vendor_id": "0x1002",
+-      "driver_vendor": ".*AMD.*",
+-      "driver_version": {
+-        "op": "=",
+-        "value": "13.101"
+-      },
+-      "features": [
+-        "all"
+-      ]
+-    },
+-    {
+       "id": 96,
+       "description": "Blocklist GPU raster/canvas on all except known good GPUs and newer Android releases",
+       "cr_bugs": [362779,424970],
+@@ -765,24 +558,6 @@
+       ]
+     },
+     {
+-      "id": 107,
+-      "description": "Haswell GT1 Intel drivers are buggy on kernels < 3.19.1",
+-      "cr_bugs": [463243],
+-      "os": {
+-        "type": "linux",
+-        "version": {
+-          "op": "<",
+-          "value": "3.19.1"
+-        }
+-      },
+-      "intel_gpu_series": [
+-        "haswell"
+-      ],
+-      "features": [
+-        "all"
+-      ]
+-    },
+-    {
+       "id": 108,
+       "description": "GPU rasterization image color broken on Vivante",
+       "cr_bugs": [560587],
+@@ -1075,33 +850,6 @@
+       "features": [
+         "all"
+       ]
+-    },
+-    {
+-      "id": 134,
+-      "description": "Mesa driver 10.1.3 renders incorrectly and crashes on multiple vendors",
+-      "cr_bugs": [629434],
+-      "os": {
+-        "type": "linux"
+-      },
+-      "driver_vendor": "Mesa",
+-      "driver_version": {
+-        "op": "<=",
+-        "value": "10.1.3"
+-      },
+-      "exceptions": [
+-        {
+-          "gl_renderer": ".*SVGA3D.*"
+-        },
+-        {
+-          "gl_renderer": ".*llvmpipe.*"
+-        },
+-        {
+-          "gl_renderer": "Mesa OffScreen"
+-        }
+-      ],
+-      "features": [
+-        "all"
+-      ]
+     },
+     {
+       "id": 136,
+diff -up chromium-88.0.4324.150/sandbox/policy/linux/sandbox_seccomp_bpf_linux.h.omv~ chromium-88.0.4324.150/sandbox/policy/linux/sandbox_seccomp_bpf_linux.h

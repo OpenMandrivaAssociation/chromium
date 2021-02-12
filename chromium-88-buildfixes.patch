@@ -1,0 +1,37 @@
+diff -up chromium-88.0.4324.150/cc/metrics/compositor_frame_reporter.cc.omv~ chromium-88.0.4324.150/cc/metrics/compositor_frame_reporter.cc
+--- chromium-88.0.4324.150/cc/metrics/compositor_frame_reporter.cc.omv~	2021-02-11 22:52:55.382518694 +0100
++++ chromium-88.0.4324.150/cc/metrics/compositor_frame_reporter.cc	2021-02-11 22:53:06.205667772 +0100
+@@ -671,7 +671,7 @@ void CompositorFrameReporter::ReportComp
+ 
+ void CompositorFrameReporter::ReportEventLatencyHistograms() const {
+   for (const auto& event_metrics : events_metrics_) {
+-    DCHECK_NE(event_metrics, nullptr);
++//    DCHECK_NE(event_metrics, nullptr);
+     const std::string histogram_base_name =
+         GetEventLatencyHistogramBaseName(*event_metrics);
+     const int event_type_index = static_cast<int>(event_metrics->type());
+diff -up chromium-88.0.4324.150/third_party/blink/renderer/platform/wtf/text/text_codec_icu.cc.omv~ chromium-88.0.4324.150/third_party/blink/renderer/platform/wtf/text/text_codec_icu.cc
+--- chromium-88.0.4324.150/third_party/blink/renderer/platform/wtf/text/text_codec_icu.cc.omv~	2021-02-11 23:19:59.162753094 +0100
++++ chromium-88.0.4324.150/third_party/blink/renderer/platform/wtf/text/text_codec_icu.cc	2021-02-11 23:20:08.452730989 +0100
+@@ -432,7 +432,7 @@ String TextCodecICU::Decode(const char*
+   // ICU decodes it as U+E5E5.
+   if (!strcmp(encoding_.GetName(), "GBK")) {
+     if (EqualIgnoringASCIICase(encoding_.GetName(), "gb18030"))
+-      resultString.Replace(0xE5E5, ideographicSpaceCharacter);
++      resultString.Replace(0xE5E5, kIdeographicSpaceCharacter);
+     // Make GBK compliant to the encoding spec and align with GB18030
+     resultString.Replace(0x01F9, 0xE7C8);
+     // FIXME: Once https://www.w3.org/Bugs/Public/show_bug.cgi?id=28740#c3
+diff -up chromium-88.0.4324.150/ui/accessibility/platform/inspect/tree_formatter.h.omv~ chromium-88.0.4324.150/ui/accessibility/platform/inspect/tree_formatter.h
+--- chromium-88.0.4324.150/ui/accessibility/platform/inspect/tree_formatter.h.omv~	2021-02-11 23:48:46.084819798 +0100
++++ chromium-88.0.4324.150/ui/accessibility/platform/inspect/tree_formatter.h	2021-02-11 23:48:52.363879771 +0100
+@@ -9,6 +9,9 @@
+ 
+ #include "ui/gfx/native_widget_types.h"
+ 
++#include <vector>
++#include <memory>
++
+ namespace base {
+ class Value;
+ class DictionaryValue;
