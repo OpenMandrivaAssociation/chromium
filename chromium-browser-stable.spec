@@ -143,6 +143,7 @@ Patch602:	https://raw.githubusercontent.com/archlinuxarm/PKGBUILDs/master/extra/
 # Enable VAAPI support on Linux
 Patch650:	https://raw.githubusercontent.com/saiarcot895/chromium-ubuntu-build/6c16789cc4d8589734461da78ab40c720b25f6aa/debian/patches/enable-vaapi-on-linux.diff
 Patch651:	https://raw.githubusercontent.com/saiarcot895/chromium-ubuntu-build/6c16789cc4d8589734461da78ab40c720b25f6aa/debian/patches/vdpau-support.patch
+Patch652:	chromium-88-default-video-acceleration-on.patch
 
 # Fixes from Arch
 Patch660:	https://aur.archlinux.org/cgit/aur.git/plain/chromium-skia-harmony.patch
