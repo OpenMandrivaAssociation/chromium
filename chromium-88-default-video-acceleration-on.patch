@@ -1,12 +1,12 @@
-diff -up chromium-88.0.4324.150/chrome/browser/about_flags.cc.omv~ chromium-88.0.4324.150/chrome/browser/about_flags.cc
---- chromium-88.0.4324.150/chrome/browser/about_flags.cc.omv~	2021-02-12 07:36:21.538164728 +0100
-+++ chromium-88.0.4324.150/chrome/browser/about_flags.cc	2021-02-12 07:38:44.558461489 +0100
-@@ -2869,7 +2869,7 @@ const FeatureEntry kFeatureEntries[] = {
+diff -up chromium-89.0.4389.47/chrome/browser/about_flags.cc.26~ chromium-89.0.4389.47/chrome/browser/about_flags.cc
+--- chromium-89.0.4389.47/chrome/browser/about_flags.cc.26~	2021-02-12 13:28:46.277377430 +0100
++++ chromium-89.0.4389.47/chrome/browser/about_flags.cc	2021-02-12 13:29:27.000036103 +0100
+@@ -3009,7 +3009,7 @@ const FeatureEntry kFeatureEntries[] = {
       FEATURE_VALUE_TYPE(ash::features::kSystemTrayMicGainSetting)},
- #endif  // OS_CHROMEOS
+ #endif  // BUILDFLAG(IS_CHROMEOS_ASH)
  
--#if defined(OS_LINUX) && !defined(OS_CHROMEOS) && !defined(OS_ANDROID)
-+#if 0 && defined(OS_LINUX) && !defined(OS_CHROMEOS) && !defined(OS_ANDROID)
+-#if (defined(OS_LINUX) || BUILDFLAG(IS_CHROMEOS_LACROS)) && !defined(OS_ANDROID)
++#if 0 && (defined(OS_LINUX) || BUILDFLAG(IS_CHROMEOS_LACROS)) && !defined(OS_ANDROID)
      {
          "enable-accelerated-video-decode",
          flag_descriptions::kAcceleratedVideoDecodeName,

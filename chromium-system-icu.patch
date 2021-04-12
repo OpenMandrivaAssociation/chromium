@@ -1,8 +1,19 @@
-diff --git a/third_party/blink/renderer/platform/text/character_property_data.h b/third_party/blink/renderer/platform/text/character_property_data.h
-index 28fb6a9..bb4dbd7 100644
---- a/third_party/blink/renderer/platform/text/character_property_data.h
-+++ b/third_party/blink/renderer/platform/text/character_property_data.h
-@@ -244,10 +244,12 @@ static const UChar32 kIsHangulRanges[] = {
+diff -up chromium-89.0.4389.47/base/BUILD.gn.23~ chromium-89.0.4389.47/base/BUILD.gn
+--- chromium-89.0.4389.47/base/BUILD.gn.23~	2021-02-12 13:25:45.387277309 +0100
++++ chromium-89.0.4389.47/base/BUILD.gn	2021-02-12 13:27:09.044749663 +0100
+@@ -3257,7 +3257,7 @@ if (build_base_unittests) {
+       ]
+     }
+ 
+-    if (icu_use_data_file) {
++    if (false) {
+       if (is_android) {
+         deps += [ "//third_party/icu:icu_extra_assets" ]
+       } else {
+diff -up chromium-89.0.4389.47/third_party/blink/renderer/platform/text/character_property_data.h.23~ chromium-89.0.4389.47/third_party/blink/renderer/platform/text/character_property_data.h
+--- chromium-89.0.4389.47/third_party/blink/renderer/platform/text/character_property_data.h.23~	2021-02-11 00:04:08.000000000 +0100
++++ chromium-89.0.4389.47/third_party/blink/renderer/platform/text/character_property_data.h	2021-02-12 13:25:45.386277291 +0100
+@@ -161,10 +161,12 @@ static const UChar32 kIsHangulRanges[] =
      0xD7B0, 0xD7FF,
      // Halfwidth Hangul Jamo
      // https://www.unicode.org/charts/nameslist/c_FF00.html
@@ -14,34 +25,6 @@ index 28fb6a9..bb4dbd7 100644
 +static const UChar32 kIsHangulArray[] = {
 +  0xFFDC,
 +};
-
+ 
  // Freezed trie tree, see character_property_data_generator.cc.
  extern const int32_t kSerializedCharacterDataSize;
-diff -up chromium-80.0.3987.132/base/BUILD.gn.omv~ chromium-80.0.3987.132/base/BUILD.gn
---- chromium-80.0.3987.132/base/BUILD.gn.omv~	2020-03-11 21:57:54.959321632 +0100
-+++ chromium-80.0.3987.132/base/BUILD.gn	2020-03-11 21:58:24.750320187 +0100
-@@ -2945,7 +2945,7 @@ test("base_unittests") {
-     ]
-   }
- 
--  if (icu_use_data_file) {
-+  if (false) {
-     if (is_android) {
-       deps += [ "//third_party/icu:icu_extra_assets" ]
-     } else {
-diff -up chromium-80.0.3987.132/chrome/browser/ui/views/native_file_system/native_file_system_usage_bubble_view.cc.omv~ chromium-80.0.3987.132/chrome/browser/ui/views/native_file_system/native_file_system_usage_bubble_view.cc
---- chromium-80.0.3987.132/chrome/browser/ui/views/native_file_system/native_file_system_usage_bubble_view.cc.omv~	2020-03-12 04:13:35.334228057 +0100
-+++ chromium-80.0.3987.132/chrome/browser/ui/views/native_file_system/native_file_system_usage_bubble_view.cc	2020-03-12 04:13:53.916227156 +0100
-@@ -26,9 +26,9 @@
- #include "content/public/browser/render_frame_host.h"
- #include "content/public/browser/render_process_host.h"
- #include "content/public/browser/web_contents.h"
--#include "third_party/icu/source/common/unicode/unistr.h"
--#include "third_party/icu/source/common/unicode/utypes.h"
--#include "third_party/icu/source/i18n/unicode/listformatter.h"
-+#include <unicode/unistr.h>
-+#include <unicode/utypes.h>
-+#include <unicode/listformatter.h>
- #include "ui/base/l10n/l10n_util.h"
- #include "ui/gfx/paint_vector_icon.h"
- #include "ui/views/controls/button/image_button.h"

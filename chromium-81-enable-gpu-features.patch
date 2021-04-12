@@ -1,6 +1,6 @@
-diff -up chromium-88.0.4324.150/gpu/config/gpu_finch_features.cc.39~ chromium-88.0.4324.150/gpu/config/gpu_finch_features.cc
---- chromium-88.0.4324.150/gpu/config/gpu_finch_features.cc.39~	2021-02-11 22:29:29.131118899 +0100
-+++ chromium-88.0.4324.150/gpu/config/gpu_finch_features.cc	2021-02-11 22:31:43.034834560 +0100
+diff -up chromium-89.0.4389.47/gpu/config/gpu_finch_features.cc.35~ chromium-89.0.4389.47/gpu/config/gpu_finch_features.cc
+--- chromium-89.0.4389.47/gpu/config/gpu_finch_features.cc.35~	2021-02-12 13:42:27.193118296 +0100
++++ chromium-89.0.4389.47/gpu/config/gpu_finch_features.cc	2021-02-12 13:43:19.683803909 +0100
 @@ -78,11 +78,12 @@ const base::FeatureParam<std::string> kL
  // Enable GPU Rasterization by default. This can still be overridden by
  // --enable-gpu-rasterization or --disable-gpu-rasterization.
@@ -10,7 +10,7 @@ diff -up chromium-88.0.4324.150/gpu/config/gpu_finch_features.cc.39~ chromium-88
 +// Linux doesn't mean we have to.
  const base::Feature kDefaultEnableGpuRasterization{
    "DefaultEnableGpuRasterization",
- #if defined(OS_MAC) || defined(OS_WIN) || BUILDFLAG(IS_ASH) || \
+ #if defined(OS_MAC) || defined(OS_WIN) || BUILDFLAG(IS_CHROMEOS_ASH) || \
 -    defined(OS_ANDROID) || defined(OS_FUCHSIA)
 +    defined(OS_ANDROID) || defined(OS_FUCHSIA) || defined(OS_LINUX)
        base::FEATURE_ENABLED_BY_DEFAULT
@@ -20,8 +20,8 @@ diff -up chromium-88.0.4324.150/gpu/config/gpu_finch_features.cc.39~ chromium-88
  // Use ThreadPriority::DISPLAY for GPU main, viz compositor and IO threads.
  const base::Feature kGpuUseDisplayThreadPriority{
    "GpuUseDisplayThreadPriority",
--#if defined(OS_ANDROID) || BUILDFLAG(IS_ASH) || defined(OS_WIN)
-+#if defined(OS_ANDROID) || BUILDFLAG(IS_ASH) || defined(OS_WIN) || defined(OS_LINUX)
+-#if defined(OS_ANDROID) || BUILDFLAG(IS_CHROMEOS_ASH) || defined(OS_WIN)
++#if defined(OS_ANDROID) || BUILDFLAG(IS_CHROMEOS_ASH) || defined(OS_WIN) || defined(OS_LINUX)
        base::FEATURE_ENABLED_BY_DEFAULT
  #else
        base::FEATURE_DISABLED_BY_DEFAULT

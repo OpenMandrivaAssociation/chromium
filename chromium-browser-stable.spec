@@ -1,4 +1,4 @@
-%define channel stable
+%define channel beta
 %if "%{channel}" == "stable"
 %define namesuffix %{nil}
 %else
@@ -23,7 +23,7 @@
 %endif
 
 # Libraries that should be unbundled
-%global system_libs icu fontconfig harfbuzz-ng libjpeg libpng snappy libdrm ffmpeg flac libwebp zlib libxml libxslt re2 libusb libevent freetype opus freetype opus openh264
+%global system_libs icu fontconfig harfbuzz-ng libjpeg libpng snappy libdrm ffmpeg flac libwebp zlib libxml libxslt re2 libusb libevent freetype opus openh264
 # FIXME add libvpx
 
 # Set up Google API keys, see http://www.chromium.org/developers/how-tos/api-keys
@@ -56,7 +56,7 @@
 Name: 		chromium-browser-%{channel}
 # Working version numbers can be found at
 # http://omahaproxy.appspot.com/
-Version: 	88.0.4324.150
+Version: 	89.0.4389.114
 Release: 	1%{?extrarelsuffix}
 Summary: 	A fast webkit-based web browser
 Group: 		Networking/WWW
@@ -80,8 +80,6 @@ Patch1:		https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-68.0.
 Patch2:		https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-67.0.3396.62-gn-system.patch
 # Do not prefix libpng functions
 Patch4:		https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-60.0.3112.78-no-libpng-prefix.patch
-# Do not mangle libjpeg
-Patch5:		https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-60.0.3112.78-jpeg-nomangle.patch
 # Do not mangle zlib
 Patch6:		https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-77.0.3865.75-no-zlib-mangle.patch
 # Use Gentoo's Widevine hack
@@ -97,8 +95,6 @@ Patch11:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-79.0.
 Patch12:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-71.0.3578.98-py2-bootstrap.patch
 # Add "Fedora" to the user agent string
 #Patch13:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-79.0.3945.56-fedora-user-agent.patch
-# rename function to avoid conflict with rawhide glibc "gettid()"
-Patch50:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-75.0.3770.80-grpc-gettid-fix.patch
 # Needs to be submitted..
 Patch51:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-76.0.3809.100-gcc-remoting-constexpr.patch
 # https://gitweb.gentoo.org/repo/gentoo.git/tree/www-client/chromium/files/chromium-unbundle-zlib.patch
@@ -123,16 +119,12 @@ Patch54:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-77.0.
 # https://github.com/stha09/chromium-patches
 Patch550:	https://raw.githubusercontent.com/stha09/chromium-patches/master/chromium-86-ConsumeDurationNumber-constexpr.patch
 Patch551:	https://raw.githubusercontent.com/stha09/chromium-patches/master/chromium-86-ImageMemoryBarrierData-init.patch
-Patch552:	https://raw.githubusercontent.com/stha09/chromium-patches/master/chromium-87-CursorFactory-include.patch
 Patch553:	https://raw.githubusercontent.com/stha09/chromium-patches/master/chromium-87-compiler.patch
 Patch554:	https://raw.githubusercontent.com/stha09/chromium-patches/master/chromium-86-nearby-explicit.patch
 Patch555:	https://raw.githubusercontent.com/stha09/chromium-patches/master/chromium-86-nearby-include.patch
-Patch556:	https://raw.githubusercontent.com/stha09/chromium-patches/master/chromium-fix-char_traits.patch
 Patch557:	https://raw.githubusercontent.com/stha09/chromium-patches/master/chromium-78-protobuf-RepeatedPtrField-export.patch
-Patch558:	https://raw.githubusercontent.com/stha09/chromium-patches/master/chromium-79-gcc-protobuf-alignas.patch
 Patch559:	https://raw.githubusercontent.com/stha09/chromium-patches/master/chromium-80-QuicStreamSendBuffer-deleted-move-constructor.patch
 Patch560:	https://raw.githubusercontent.com/stha09/chromium-patches/master/chromium-84-blink-disable-clang-format.patch
-Patch561:	https://raw.githubusercontent.com/stha09/chromium-patches/master/chromium-87-openscreen-include.patch
 
 ### Chromium Tests Patches ###
 # suse, system libs
@@ -141,15 +133,14 @@ Patch600:	arm_use_right_compiler.patch
 Patch602:	https://raw.githubusercontent.com/archlinuxarm/PKGBUILDs/master/extra/chromium/chromium-system-icu.patch
 
 # Enable VAAPI support on Linux
-Patch650:	https://raw.githubusercontent.com/saiarcot895/chromium-ubuntu-build/6c16789cc4d8589734461da78ab40c720b25f6aa/debian/patches/enable-vaapi-on-linux.diff
-Patch651:	https://raw.githubusercontent.com/saiarcot895/chromium-ubuntu-build/6c16789cc4d8589734461da78ab40c720b25f6aa/debian/patches/vdpau-support.patch
+Patch650:	https://raw.githubusercontent.com/saiarcot895/chromium-ubuntu-build/master/debian/patches/enable-vaapi-on-linux.diff
+Patch651:	https://raw.githubusercontent.com/saiarcot895/chromium-ubuntu-build/master/debian/patches/vdpau-support.patch
 Patch652:	chromium-88-default-video-acceleration-on.patch
 
 # Fixes from Arch
 Patch660:	https://aur.archlinux.org/cgit/aur.git/plain/chromium-skia-harmony.patch
 Patch661:	https://aur.archlinux.org/cgit/aur.git/plain/wayland-egl.patch
 Patch662:	https://aur.archlinux.org/cgit/aur.git/plain/chromium-glibc-2.33.patch
-Patch663:	https://aur.archlinux.org/cgit/aur.git/plain/subpixel-anti-aliasing-in-FreeType-2.8.1.patch
 
 
 # mga
@@ -159,8 +150,8 @@ Patch701:	chromium-69-wmvflvmpg.patch
 # omv
 Patch1001:	chromium-64-system-curl.patch
 Patch1002:	chromium-69-no-static-libstdc++.patch
-Patch1003:	chromium-88-buildfixes.patch
 Patch1004:	chromium-88-less-blacklist-nonsense.patch
+Patch1005:	chromium-89-buildfixes.patch
 Patch1007:	chromium-81-enable-gpu-features.patch
 
 Provides: 	%{crname}
@@ -217,6 +208,7 @@ BuildRequires:	gtk+2.0-devel
 BuildRequires: 	pkgconfig(nspr)
 BuildRequires: 	pkgconfig(zlib)
 BuildRequires: 	pkgconfig(xscrnsaver)
+BuildRequires:	pkgconfig(xshmfence)
 BuildRequires: 	pkgconfig(glu)
 BuildRequires: 	pkgconfig(gl)
 BuildRequires: 	cups-devel
@@ -368,7 +360,7 @@ export PATH=$PWD/bfd:$PATH
 # Workaround for build failure
 %global ldflags %{ldflags} -Wl,-z,notext
 %endif
-%global optflags %{optflags} -I%{_includedir}/libunwind
+%global optflags %{optflags} -I%{_includedir}/libunwind -I%{_includedir}/opus
 
 export CC=clang
 export CXX=clang++
