@@ -1,8 +1,8 @@
-diff -up chromium-89.0.4389.47/chrome/browser/about_flags.cc.26~ chromium-89.0.4389.47/chrome/browser/about_flags.cc
---- chromium-89.0.4389.47/chrome/browser/about_flags.cc.26~	2021-02-12 13:28:46.277377430 +0100
-+++ chromium-89.0.4389.47/chrome/browser/about_flags.cc	2021-02-12 13:29:27.000036103 +0100
-@@ -3009,7 +3009,7 @@ const FeatureEntry kFeatureEntries[] = {
-      FEATURE_VALUE_TYPE(ash::features::kSystemTrayMicGainSetting)},
+diff -up chromium-90.0.4412.3/chrome/browser/about_flags.cc.26~ chromium-90.0.4412.3/chrome/browser/about_flags.cc
+--- chromium-90.0.4412.3/chrome/browser/about_flags.cc.26~	2021-02-12 16:48:49.947058939 +0100
++++ chromium-90.0.4412.3/chrome/browser/about_flags.cc	2021-02-12 16:49:28.598123101 +0100
+@@ -2951,7 +2951,7 @@ const FeatureEntry kFeatureEntries[] = {
+      FEATURE_VALUE_TYPE(media::kDeprecateLowUsageCodecs)},
  #endif  // BUILDFLAG(IS_CHROMEOS_ASH)
  
 -#if (defined(OS_LINUX) || BUILDFLAG(IS_CHROMEOS_LACROS)) && !defined(OS_ANDROID)

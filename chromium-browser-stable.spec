@@ -1,4 +1,4 @@
-%define channel beta
+%define channel stable
 %if "%{channel}" == "stable"
 %define namesuffix %{nil}
 %else
@@ -23,7 +23,7 @@
 %endif
 
 # Libraries that should be unbundled
-%global system_libs icu fontconfig harfbuzz-ng libjpeg libpng snappy libdrm ffmpeg flac libwebp zlib libxml libxslt re2 libusb libevent freetype opus openh264
+%global system_libs icu fontconfig harfbuzz-ng libjpeg libpng snappy libdrm ffmpeg flac libwebp zlib libxml libxslt re2 libusb libevent freetype opus freetype opus openh264
 # FIXME add libvpx
 
 # Set up Google API keys, see http://www.chromium.org/developers/how-tos/api-keys
@@ -56,7 +56,7 @@
 Name: 		chromium-browser-%{channel}
 # Working version numbers can be found at
 # http://omahaproxy.appspot.com/
-Version: 	89.0.4389.114
+Version: 	90.0.4430.72
 Release: 	1%{?extrarelsuffix}
 Summary: 	A fast webkit-based web browser
 Group: 		Networking/WWW
@@ -150,8 +150,10 @@ Patch701:	chromium-69-wmvflvmpg.patch
 # omv
 Patch1001:	chromium-64-system-curl.patch
 Patch1002:	chromium-69-no-static-libstdc++.patch
+Patch1003:	chromium-system-zlib.patch
 Patch1004:	chromium-88-less-blacklist-nonsense.patch
-Patch1005:	chromium-89-buildfixes.patch
+Patch1005:	chromium-90-compilefixes.patch
+Patch1006:	chromium-90-buildfixes.patch
 Patch1007:	chromium-81-enable-gpu-features.patch
 
 Provides: 	%{crname}
@@ -360,7 +362,7 @@ export PATH=$PWD/bfd:$PATH
 # Workaround for build failure
 %global ldflags %{ldflags} -Wl,-z,notext
 %endif
-%global optflags %{optflags} -I%{_includedir}/libunwind -I%{_includedir}/opus
+%global optflags %{optflags} -I%{_includedir}/libunwind
 
 export CC=clang
 export CXX=clang++

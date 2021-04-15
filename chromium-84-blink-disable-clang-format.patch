@@ -1,20 +1,7 @@
-From 08ac7188f414218ac9d764e29e7aa64a6bfc2f96 Mon Sep 17 00:00:00 2001
-From: Stephan Hartmann <stha09@googlemail.com>
-Date: Sun, 31 May 2020 10:02:03 +0000
-Subject: [PATCH] disable clang-format for generated code in blink
-
-For GCC builds clang-format might be not available. Additionally,
-current scripts look for clang-format within chromium sources and
-don't consider system clang-format.
----
- .../bindings/scripts/bind_gen/codegen_utils.py         | 10 +---------
- 1 file changed, 1 insertion(+), 9 deletions(-)
-
-diff --git a/third_party/blink/renderer/bindings/scripts/bind_gen/codegen_utils.py b/third_party/blink/renderer/bindings/scripts/bind_gen/codegen_utils.py
-index 7021f1a..33bf5bf 100644
---- a/third_party/blink/renderer/bindings/scripts/bind_gen/codegen_utils.py
-+++ b/third_party/blink/renderer/bindings/scripts/bind_gen/codegen_utils.py
-@@ -150,12 +150,4 @@ def write_code_node_to_file(code_node, filepath):
+diff -up chromium-90.0.4412.3/third_party/blink/renderer/bindings/scripts/bind_gen/codegen_utils.py.21~ chromium-90.0.4412.3/third_party/blink/renderer/bindings/scripts/bind_gen/codegen_utils.py
+--- chromium-90.0.4412.3/third_party/blink/renderer/bindings/scripts/bind_gen/codegen_utils.py.21~	2021-02-12 16:44:13.129616051 +0100
++++ chromium-90.0.4412.3/third_party/blink/renderer/bindings/scripts/bind_gen/codegen_utils.py	2021-02-12 16:46:34.313837863 +0100
+@@ -171,13 +171,4 @@ def write_code_node_to_file(code_node, f
  
      rendered_text = render_code_node(code_node)
  
@@ -26,8 +13,6 @@ index 7021f1a..33bf5bf 100644
 -                               filename=format_result.filename,
 -                               stderr=format_result.error_message))
 -
--    web_idl.file_io.write_to_file_if_changed(filepath, format_result.contents)
+-    web_idl.file_io.write_to_file_if_changed(
+-        filepath, format_result.contents.encode('utf-8'))
 +    web_idl.file_io.write_to_file_if_changed(filepath, rendered_text)
--- 
-2.26.2
-
