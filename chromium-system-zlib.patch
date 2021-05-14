@@ -1,0 +1,11 @@
+diff -up chromium-90.0.4430.61/chrome/browser/profiling_host/BUILD.gn.34~ chromium-90.0.4430.61/chrome/browser/profiling_host/BUILD.gn
+--- chromium-90.0.4430.61/chrome/browser/profiling_host/BUILD.gn.34~	2021-04-11 02:18:17.505546735 +0200
++++ chromium-90.0.4430.61/chrome/browser/profiling_host/BUILD.gn	2021-04-11 02:18:42.385440815 +0200
+@@ -24,7 +24,6 @@ static_library("profiling_host") {
+     "//components/version_info",
+     "//content/public/browser",
+     "//content/public/common",
+-    "//third_party/zlib:zlib",
+ 
+     # Added to support the dependency on //chrome/browser/metrics
+     # TODO(darin): We should instead have a way to express that dependency here.

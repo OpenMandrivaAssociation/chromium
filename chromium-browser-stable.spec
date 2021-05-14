@@ -16,7 +16,6 @@
 %define crname chromium-browser
 %define _crdir %{_libdir}/%{crname}
 %define _src %{_topdir}/SOURCES
-%define	debug_package %nil
 
 %ifarch %ix86
 %define _build_pkgcheck_set %{nil}
@@ -56,7 +55,7 @@
 Name: 		chromium-browser-%{channel}
 # Working version numbers can be found at
 # http://omahaproxy.appspot.com/
-Version: 	90.0.4430.72
+Version: 	90.0.4430.212
 Release: 	1%{?extrarelsuffix}
 Summary: 	A fast webkit-based web browser
 Group: 		Networking/WWW
@@ -351,7 +350,7 @@ fi
 
 %ifarch %{arm}
 # Use linker flags to reduce memory consumption on low-mem architectures
-%global optflags %(echo %{optflags} | sed -e 's/-g /-g0 /' -e 's/-gdwarf-4//')
+%global optflags %(echo %{optflags} | sed -e 's/-g[1-3] /-g0 /' -e 's/-gdwarf-4//')
 mkdir -p bfd
 ln -s %{_bindir}/ld.bfd bfd/ld
 export PATH=$PWD/bfd:$PATH
@@ -362,7 +361,8 @@ export PATH=$PWD/bfd:$PATH
 # Workaround for build failure
 %global ldflags %{ldflags} -Wl,-z,notext
 %endif
-%global optflags %{optflags} -I%{_includedir}/libunwind
+# -g3 output is too large for builders to handle
+%global optflags %{optflags} -I%{_includedir}/libunwind -DUSE_SYSTEM_MINIZIP=1 -g1
 
 export CC=clang
 export CXX=clang++
