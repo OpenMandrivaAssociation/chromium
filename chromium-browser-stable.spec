@@ -5,6 +5,8 @@
 %define namesuffix -%{channel}
 %endif
 
+# Workaround for debugsource package being empty
+%define _empty_manifest_terminate_build 0
 %define _disable_ld_no_undefined 1
 # Chromium buildmess uses its own LTO
 %global _disable_lto 1
