@@ -1,7 +1,6 @@
-diff -up chromium-88.0.4324.150/gpu/config/gpu_control_list_testing.json.omv~ chromium-88.0.4324.150/gpu/config/gpu_control_list_testing.json
-diff -up chromium-88.0.4324.150/gpu/config/gpu_driver_bug_list.json.omv~ chromium-88.0.4324.150/gpu/config/gpu_driver_bug_list.json
---- chromium-88.0.4324.150/gpu/config/gpu_driver_bug_list.json.omv~	2021-02-12 04:30:55.722803811 +0100
-+++ chromium-88.0.4324.150/gpu/config/gpu_driver_bug_list.json	2021-02-12 04:36:26.327606645 +0100
+diff -up chromium-92.0.4515.131/gpu/config/gpu_driver_bug_list.json.32~ chromium-92.0.4515.131/gpu/config/gpu_driver_bug_list.json
+--- chromium-92.0.4515.131/gpu/config/gpu_driver_bug_list.json.32~	2021-08-03 04:50:20.000000000 +0200
++++ chromium-92.0.4515.131/gpu/config/gpu_driver_bug_list.json	2021-08-14 05:15:32.404048344 +0200
 @@ -331,18 +331,6 @@
        ]
      },
@@ -60,7 +59,7 @@ diff -up chromium-88.0.4324.150/gpu/config/gpu_driver_bug_list.json.omv~ chromiu
        "id": 70,
        "description": "Disable D3D11 on older nVidia drivers",
        "cr_bugs": [349929],
-@@ -498,18 +461,6 @@
+@@ -505,18 +468,6 @@
        ]
      },
      {
@@ -79,7 +78,7 @@ diff -up chromium-88.0.4324.150/gpu/config/gpu_driver_bug_list.json.omv~ chromiu
        "id": 91,
        "cr_bugs": [150500, 414816],
        "description": "ETC1 non-power-of-two sized textures crash older IMG drivers",
-@@ -960,22 +911,6 @@
+@@ -947,22 +898,6 @@
        ]
      },
      {
@@ -102,7 +101,7 @@ diff -up chromium-88.0.4324.150/gpu/config/gpu_driver_bug_list.json.omv~ chromiu
        "id": 132,
        "description": "On Intel GPUs MSAA performance is not acceptable for GPU rasterization",
        "cr_bugs": [527565],
-@@ -1049,27 +984,6 @@
+@@ -1036,27 +971,6 @@
        "disabled_extensions": ["GL_NV_path_rendering"]
      },
      {
@@ -130,7 +129,7 @@ diff -up chromium-88.0.4324.150/gpu/config/gpu_driver_bug_list.json.omv~ chromiu
        "id": 140,
        "description": "glReadPixels fails on FBOs with SRGB_ALPHA textures, Nexus 5X",
        "cr_bugs": [550292, 565179],
-@@ -1569,19 +1483,6 @@
+@@ -1556,19 +1470,6 @@
        ]
      },
      {
@@ -150,7 +149,7 @@ diff -up chromium-88.0.4324.150/gpu/config/gpu_driver_bug_list.json.omv~ chromiu
        "id": 191,
        "description": "Emulate GLSL function isnan() on Intel Mac",
        "cr_bugs": [650547],
-@@ -1693,31 +1594,6 @@
+@@ -1680,18 +1581,6 @@
        ]
      },
      {
@@ -166,23 +165,10 @@ diff -up chromium-88.0.4324.150/gpu/config/gpu_driver_bug_list.json.omv~ chromiu
 -      ]
 -    },
 -    {
--      "id": 201,
--      "cr_bugs": [659326,639760],
--      "description": "AMD drivers in Linux require invariant qualifier to match between vertex and fragment shaders",
--      "os": {
--        "type": "linux"
--      },
--      "vendor_id": "0x1002",
--      "features": [
--        "dont_remove_invariant_for_fragment_input",
--        "remove_invariant_and_centroid_for_essl3"
--      ]
--    },
--    {
        "id": 202,
        "cr_bugs": [639760,641129],
        "description": "Mac driver GL 4.1 requires invariant and centroid to match between shaders",
-@@ -1729,22 +1605,6 @@
+@@ -1703,22 +1592,6 @@
        ]
      },
      {
@@ -205,7 +191,7 @@ diff -up chromium-88.0.4324.150/gpu/config/gpu_driver_bug_list.json.omv~ chromiu
        "id": 205,
        "description": "Adreno 5xx support for EXT_multisampled_render_to_texture is buggy on Android 7.1",
        "cr_bugs": [663811],
-@@ -1781,19 +1641,6 @@
+@@ -1755,19 +1628,6 @@
        ]
      },
      {
@@ -225,7 +211,7 @@ diff -up chromium-88.0.4324.150/gpu/config/gpu_driver_bug_list.json.omv~ chromiu
        "id": 209,
        "description": "Decode and Encode before generateMipmap for srgb format textures on Chromeos Intel",
        "cr_bugs": [634519],
-@@ -1806,18 +1653,6 @@
+@@ -1780,18 +1640,6 @@
        ]
      },
      {
@@ -244,7 +230,7 @@ diff -up chromium-88.0.4324.150/gpu/config/gpu_driver_bug_list.json.omv~ chromiu
        "id": 211,
        "description": "Rewrite -float to 0.0 - float for Intel Mac",
        "cr_bugs": [672380],
-@@ -1971,30 +1806,6 @@
+@@ -1945,30 +1793,6 @@
        ]
      },
      {
@@ -275,7 +261,7 @@ diff -up chromium-88.0.4324.150/gpu/config/gpu_driver_bug_list.json.omv~ chromiu
        "id": 224,
        "description": "VPx decoding isn't supported well before Windows 10 creators update.",
        "cr_bugs": [616318, 667532],
-@@ -2542,18 +2353,6 @@
+@@ -2501,18 +2325,6 @@
        ]
      },
      {
@@ -294,7 +280,7 @@ diff -up chromium-88.0.4324.150/gpu/config/gpu_driver_bug_list.json.omv~ chromiu
        "id": 271,
        "cr_bugs": [860418],
        "description": "Frequent crashes in glClear on Mali-T7xx on N with driver 12.1.01alp0",
-@@ -2679,27 +2478,6 @@
+@@ -2638,27 +2450,6 @@
        ]
      },
      {
@@ -322,7 +308,7 @@ diff -up chromium-88.0.4324.150/gpu/config/gpu_driver_bug_list.json.omv~ chromiu
        "id": 286,
        "cr_bugs": [908069],
        "description": "Video corruption on Intel HD 530 without hardware overlay support",
-@@ -2847,23 +2625,6 @@
+@@ -2794,23 +2585,6 @@
        ]
      },
      {
@@ -346,7 +332,7 @@ diff -up chromium-88.0.4324.150/gpu/config/gpu_driver_bug_list.json.omv~ chromiu
        "id": 303,
        "cr_bugs": [890227],
        "description": "Dynamic texture map crashes on Intel drivers less than version 24",
-@@ -3214,24 +2975,6 @@
+@@ -3148,24 +2922,6 @@
        ]
      },
      {
@@ -371,9 +357,9 @@ diff -up chromium-88.0.4324.150/gpu/config/gpu_driver_bug_list.json.omv~ chromiu
        "id": 332,
        "cr_bugs": [1045586],
        "description": "Send empty video hdr metadata due to crashes on AMD",
-diff -up chromium-88.0.4324.150/gpu/config/software_rendering_list.json.omv~ chromium-88.0.4324.150/gpu/config/software_rendering_list.json
---- chromium-88.0.4324.150/gpu/config/software_rendering_list.json.omv~	2021-02-12 04:37:06.059134377 +0100
-+++ chromium-88.0.4324.150/gpu/config/software_rendering_list.json	2021-02-12 04:41:28.925449792 +0100
+diff -up chromium-92.0.4515.131/gpu/config/software_rendering_list.json.32~ chromium-92.0.4515.131/gpu/config/software_rendering_list.json
+--- chromium-92.0.4515.131/gpu/config/software_rendering_list.json.32~	2021-08-03 04:50:20.000000000 +0200
++++ chromium-92.0.4515.131/gpu/config/software_rendering_list.json	2021-08-14 05:14:42.843255185 +0200
 @@ -40,41 +40,6 @@
        ]
      },
@@ -675,4 +661,3 @@ diff -up chromium-88.0.4324.150/gpu/config/software_rendering_list.json.omv~ chr
      },
      {
        "id": 136,
-diff -up chromium-88.0.4324.150/sandbox/policy/linux/sandbox_seccomp_bpf_linux.h.omv~ chromium-88.0.4324.150/sandbox/policy/linux/sandbox_seccomp_bpf_linux.h

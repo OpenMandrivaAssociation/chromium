@@ -1,17 +1,17 @@
-diff -up chromium-90.0.4412.3/components/viz/service/display/direct_renderer.h.omv~ chromium-90.0.4412.3/components/viz/service/display/direct_renderer.h
---- chromium-90.0.4412.3/components/viz/service/display/direct_renderer.h.omv~	2021-02-12 23:05:01.879722098 +0100
-+++ chromium-90.0.4412.3/components/viz/service/display/direct_renderer.h	2021-02-12 23:05:07.350864192 +0100
-@@ -15,6 +15,7 @@
+diff -up chromium-92.0.4515.131/components/viz/service/display/direct_renderer.h.33~ chromium-92.0.4515.131/components/viz/service/display/direct_renderer.h
+--- chromium-92.0.4515.131/components/viz/service/display/direct_renderer.h.33~	2021-08-14 05:17:22.017543650 +0200
++++ chromium-92.0.4515.131/components/viz/service/display/direct_renderer.h	2021-08-14 05:18:51.576090191 +0200
+@@ -14,6 +14,7 @@
+ #include "base/containers/flat_map.h"
  #include "base/macros.h"
- #include "base/optional.h"
  #include "build/build_config.h"
 +#include "components/viz/service/display/delegated_ink_trail_data.h"
- #include "components/viz/common/delegated_ink_metadata.h"
  #include "components/viz/common/quads/aggregated_render_pass.h"
  #include "components/viz/common/quads/tile_draw_quad.h"
-diff -up chromium-90.0.4412.3/components/viz/service/display/gl_renderer.h.omv~ chromium-90.0.4412.3/components/viz/service/display/gl_renderer.h
---- chromium-90.0.4412.3/components/viz/service/display/gl_renderer.h.omv~	2021-02-12 23:03:56.799944694 +0100
-+++ chromium-90.0.4412.3/components/viz/service/display/gl_renderer.h	2021-02-12 23:04:05.866202337 +0100
+ #include "components/viz/service/display/aggregated_frame.h"
+diff -up chromium-92.0.4515.131/components/viz/service/display/gl_renderer.h.33~ chromium-92.0.4515.131/components/viz/service/display/gl_renderer.h
+--- chromium-92.0.4515.131/components/viz/service/display/gl_renderer.h.33~	2021-08-03 04:50:18.000000000 +0200
++++ chromium-92.0.4515.131/components/viz/service/display/gl_renderer.h	2021-08-14 05:17:22.017543650 +0200
 @@ -17,6 +17,7 @@
  #include "base/containers/queue.h"
  #include "base/macros.h"
@@ -20,42 +20,9 @@ diff -up chromium-90.0.4412.3/components/viz/service/display/gl_renderer.h.omv~ 
  #include "components/viz/common/gpu/context_cache_controller.h"
  #include "components/viz/common/quads/aggregated_render_pass_draw_quad.h"
  #include "components/viz/common/quads/compositor_render_pass_draw_quad.h"
-diff -up chromium-90.0.4412.3/ui/accessibility/ax_tree_serializer.h.omv~ chromium-90.0.4412.3/ui/accessibility/ax_tree_serializer.h
---- chromium-90.0.4412.3/ui/accessibility/ax_tree_serializer.h.omv~	2021-02-13 01:57:30.955848283 +0100
-+++ chromium-90.0.4412.3/ui/accessibility/ax_tree_serializer.h	2021-02-13 01:59:23.058509478 +0100
-@@ -12,6 +12,7 @@
- #include <unordered_map>
- #include <unordered_set>
- #include <vector>
-+#include <ctime>
- 
- #include "base/debug/crash_logging.h"
- #include "base/debug/dump_without_crashing.h"
-diff -up chromium-90.0.4430.61/third_party/pdfium/core/fxcodec/png/png_decoder.cpp.omv~ chromium-90.0.4430.61/third_party/pdfium/core/fxcodec/png/png_decoder.cpp
---- chromium-90.0.4430.61/third_party/pdfium/core/fxcodec/png/png_decoder.cpp.omv~	2021-04-11 02:45:50.794493400 +0200
-+++ chromium-90.0.4430.61/third_party/pdfium/core/fxcodec/png/png_decoder.cpp	2021-04-11 02:46:02.474260123 +0200
-@@ -4,6 +4,7 @@
- 
- // Original code copyright 2014 Foxit Software Inc. http://www.foxitsoftware.com
- 
-+#include "core/fxcodec/fx_codec_def.h"
- #include "core/fxcodec/png/png_decoder.h"
- 
- #include <algorithm>
-diff -up chromium-90.0.4430.212/third_party/ruy/src/ruy/block_map.cc.omv~ chromium-90.0.4430.212/third_party/ruy/src/ruy/block_map.cc
---- chromium-90.0.4430.212/third_party/ruy/src/ruy/block_map.cc.omv~	2021-05-11 00:49:33.349184065 +0200
-+++ chromium-90.0.4430.212/third_party/ruy/src/ruy/block_map.cc	2021-05-11 00:49:40.336297320 +0200
-@@ -16,6 +16,7 @@ limitations under the License.
- #include "ruy/block_map.h"
- 
- #include <algorithm>
-+#include <limits>
- #include <cstdint>
- 
- #ifdef RUY_MAKEBLOCKMAP_DEBUG
-diff -up chromium-90.0.4430.212/sql/recover_module/cursor.h.omv~ chromium-90.0.4430.212/sql/recover_module/cursor.h
---- chromium-90.0.4430.212/sql/recover_module/cursor.h.omv~	2021-05-12 16:13:53.876510084 +0200
-+++ chromium-90.0.4430.212/sql/recover_module/cursor.h	2021-05-12 16:14:11.662761281 +0200
+diff -up chromium-92.0.4515.131/sql/recover_module/cursor.h.33~ chromium-92.0.4515.131/sql/recover_module/cursor.h
+--- chromium-92.0.4515.131/sql/recover_module/cursor.h.33~	2021-08-03 04:50:25.000000000 +0200
++++ chromium-92.0.4515.131/sql/recover_module/cursor.h	2021-08-14 05:17:22.017543650 +0200
 @@ -62,8 +62,8 @@ class VirtualCursor {
    // |sqlite_cursor| must have been returned by VirtualTable::SqliteCursor().
    static inline VirtualCursor* FromSqliteCursor(
@@ -67,9 +34,31 @@ diff -up chromium-90.0.4430.212/sql/recover_module/cursor.h.omv~ chromium-90.0.4
      static_assert(offsetof(VirtualCursor, sqlite_cursor_) == 0,
                    "sqlite_cursor_ must be the first member of the class");
      VirtualCursor* result = reinterpret_cast<VirtualCursor*>(sqlite_cursor);
-diff -up chromium-90.0.4430.212/third_party/zlib/google/zip_internal.cc.omv~ chromium-90.0.4430.212/third_party/zlib/google/zip_internal.cc
---- chromium-90.0.4430.212/third_party/zlib/google/zip_internal.cc.omv~	2021-05-13 16:45:35.648224558 +0200
-+++ chromium-90.0.4430.212/third_party/zlib/google/zip_internal.cc	2021-05-13 16:45:48.789404449 +0200
+diff -up chromium-92.0.4515.131/third_party/pdfium/core/fxcodec/png/png_decoder.cpp.33~ chromium-92.0.4515.131/third_party/pdfium/core/fxcodec/png/png_decoder.cpp
+--- chromium-92.0.4515.131/third_party/pdfium/core/fxcodec/png/png_decoder.cpp.33~	2021-08-03 04:53:43.000000000 +0200
++++ chromium-92.0.4515.131/third_party/pdfium/core/fxcodec/png/png_decoder.cpp	2021-08-14 05:17:22.017543650 +0200
+@@ -4,6 +4,7 @@
+ 
+ // Original code copyright 2014 Foxit Software Inc. http://www.foxitsoftware.com
+ 
++#include "core/fxcodec/fx_codec_def.h"
+ #include "core/fxcodec/png/png_decoder.h"
+ 
+ #include <algorithm>
+diff -up chromium-92.0.4515.131/third_party/ruy/src/ruy/block_map.cc.33~ chromium-92.0.4515.131/third_party/ruy/src/ruy/block_map.cc
+--- chromium-92.0.4515.131/third_party/ruy/src/ruy/block_map.cc.33~	2021-08-03 04:53:44.000000000 +0200
++++ chromium-92.0.4515.131/third_party/ruy/src/ruy/block_map.cc	2021-08-14 05:17:22.017543650 +0200
+@@ -16,6 +16,7 @@ limitations under the License.
+ #include "ruy/block_map.h"
+ 
+ #include <algorithm>
++#include <limits>
+ #include <cstdint>
+ 
+ #ifdef RUY_MAKEBLOCKMAP_DEBUG
+diff -up chromium-92.0.4515.131/third_party/zlib/google/zip_internal.cc.33~ chromium-92.0.4515.131/third_party/zlib/google/zip_internal.cc
+--- chromium-92.0.4515.131/third_party/zlib/google/zip_internal.cc.33~	2021-08-03 04:51:17.000000000 +0200
++++ chromium-92.0.4515.131/third_party/zlib/google/zip_internal.cc	2021-08-14 05:17:22.017543650 +0200
 @@ -14,9 +14,11 @@
  #include "base/strings/utf_string_conversions.h"
  
@@ -82,3 +71,4 @@ diff -up chromium-90.0.4430.212/third_party/zlib/google/zip_internal.cc.omv~ chr
  #else
  #include "third_party/zlib/contrib/minizip/unzip.h"
  #include "third_party/zlib/contrib/minizip/zip.h"
+diff -up chromium-92.0.4515.131/ui/accessibility/ax_tree_serializer.h.33~ chromium-92.0.4515.131/ui/accessibility/ax_tree_serializer.h

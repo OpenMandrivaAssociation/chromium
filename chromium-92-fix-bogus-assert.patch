@@ -1,0 +1,13 @@
+diff -up chromium-92.0.4515.131/third_party/closure_compiler/compiler.py.omv~ chromium-92.0.4515.131/third_party/closure_compiler/compiler.py
+--- chromium-92.0.4515.131/third_party/closure_compiler/compiler.py.omv~	2021-08-14 17:52:34.534896646 +0200
++++ chromium-92.0.4515.131/third_party/closure_compiler/compiler.py	2021-08-14 17:52:51.942728670 +0200
+@@ -14,7 +14,7 @@ import subprocess
+ 
+ _CURRENT_DIR = os.path.join(os.path.dirname(__file__))
+-_JAVA_PATH = os.path.join(_CURRENT_DIR, "..", "jdk", "current", "bin", "java")
+-assert os.path.isfile(_JAVA_PATH), "java only allowed in android builds"
++_JAVA_PATH = "/usr/bin/java"
++#assert os.path.isfile(_JAVA_PATH), "java only allowed in android builds"
+ 
+ class Compiler(object):
+   """Runs the Closure compiler on given source files to typecheck them

@@ -1,10 +1,10 @@
-diff -up chromium-83.0.4103.7/base/test/BUILD.gn.9~ chromium-83.0.4103.7/base/test/BUILD.gn
---- chromium-83.0.4103.7/base/test/BUILD.gn.9~	2020-04-15 00:44:37.601219031 +0200
-+++ chromium-83.0.4103.7/base/test/BUILD.gn	2020-04-15 00:45:03.905130488 +0200
-@@ -188,9 +188,6 @@ static_library("test_support") {
+diff -up chromium-92.0.4515.131/base/test/BUILD.gn.7~ chromium-92.0.4515.131/base/test/BUILD.gn
+--- chromium-92.0.4515.131/base/test/BUILD.gn.7~	2021-08-14 04:23:28.113072347 +0200
++++ chromium-92.0.4515.131/base/test/BUILD.gn	2021-08-14 04:37:15.215239352 +0200
+@@ -198,9 +198,6 @@ static_library("test_support") {
      sources += [ "test_file_util_linux.cc" ]
      public_deps += [ ":fontconfig_util_linux" ]
-     data_deps = [ "//third_party/test_fonts" ]
+     data_deps += [ "//third_party/test_fonts" ]
 -    if (current_toolchain == host_toolchain) {
 -      data_deps += [ ":do_generate_fontconfig_caches" ]
 -    }
