@@ -57,7 +57,7 @@
 Name: 		chromium-browser-%{channel}
 # Working version numbers can be found at
 # http://omahaproxy.appspot.com/
-Version: 	92.0.4515.131
+Version: 	92.0.4515.159
 Release: 	1%{?extrarelsuffix}
 Summary: 	A fast webkit-based web browser
 Group: 		Networking/WWW
@@ -153,6 +153,7 @@ Patch1005:	chromium-90-compilefixes.patch
 Patch1006:	chromium-92-fix-bogus-assert.patch
 Patch1007:	chromium-81-enable-gpu-features.patch
 Patch1008:	chromium-92-glibc-2.34.patch
+Patch1009:	chromium-92-skia-freetype-2.11.patch
 
 Provides: 	%{crname}
 Obsoletes: 	chromium-browser-unstable < 26.0.1410.51
