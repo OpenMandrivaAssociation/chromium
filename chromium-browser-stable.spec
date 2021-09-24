@@ -57,7 +57,7 @@
 Name: 		chromium-browser-%{channel}
 # Working version numbers can be found at
 # http://omahaproxy.appspot.com/
-Version: 	92.0.4515.159
+Version: 	94.0.4606.54
 Release: 	1%{?extrarelsuffix}
 Summary: 	A fast webkit-based web browser
 Group: 		Networking/WWW
@@ -88,8 +88,6 @@ Patch6:		https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-77.0.
 Patch8:		https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-71.0.3578.98-widevine-r3.patch
 # Disable fontconfig cache magic that breaks remoting (originally from Fedora, ported to 81 code base)
 Patch9:		chromium-83-disable-fontconfig-cache-magic.patch
-# drop rsp clobber, which breaks gcc9 (thanks to Jeff Law)
-Patch10:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-78.0.3904.70-gcc9-drop-rsp-clobber.patch
 # Try to load widevine from other places
 Patch11:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-79.0.3945.56-widevine-other-locations.patch
 # Add "Fedora" to the user agent string
@@ -116,13 +114,7 @@ Patch54:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-77.0.
 
 ### Chromium gcc/libstdc++ support ###
 # https://github.com/stha09/chromium-patches
-Patch551:	https://raw.githubusercontent.com/stha09/chromium-patches/master/chromium-86-ImageMemoryBarrierData-init.patch
-Patch553:	https://raw.githubusercontent.com/stha09/chromium-patches/master/chromium-87-compiler.patch
-Patch554:	https://raw.githubusercontent.com/stha09/chromium-patches/master/chromium-86-nearby-explicit.patch
-Patch555:	https://raw.githubusercontent.com/stha09/chromium-patches/master/chromium-86-nearby-include.patch
-Patch557:	https://raw.githubusercontent.com/stha09/chromium-patches/master/chromium-78-protobuf-RepeatedPtrField-export.patch
-Patch559:	https://raw.githubusercontent.com/stha09/chromium-patches/master/chromium-80-QuicStreamSendBuffer-deleted-move-constructor.patch
-Patch560:	https://raw.githubusercontent.com/stha09/chromium-patches/master/chromium-84-blink-disable-clang-format.patch
+Source550:	https://github.com/stha09/chromium-patches/releases/download/chromium-94-patchset-3/chromium-94-patchset-3.tar.xz
 
 ### Chromium Tests Patches ###
 # suse, system libs
@@ -135,14 +127,12 @@ Patch650:	https://raw.githubusercontent.com/saiarcot895/chromium-ubuntu-build/ma
 Patch651:	https://raw.githubusercontent.com/saiarcot895/chromium-ubuntu-build/master/debian/patches/vdpau-support.patch
 
 # Fixes from Arch
-Patch660:	https://aur.archlinux.org/cgit/aur.git/plain/chromium-skia-harmony.patch
 Patch661:	https://aur.archlinux.org/cgit/aur.git/plain/wayland-egl.patch
-Patch662:	https://aur.archlinux.org/cgit/aur.git/plain/chromium-glibc-2.33.patch
 
 
 # mga
-Patch700:	chromium-81-extra-media.patch
-Patch701:	chromium-69-wmvflvmpg.patch
+#Patch700:	chromium-81-extra-media.patch
+#Patch701:	chromium-69-wmvflvmpg.patch
 
 # omv
 Patch1001:	chromium-64-system-curl.patch
@@ -152,8 +142,10 @@ Patch1004:	chromium-88-less-blacklist-nonsense.patch
 Patch1005:	chromium-90-compilefixes.patch
 Patch1006:	chromium-92-fix-bogus-assert.patch
 Patch1007:	chromium-81-enable-gpu-features.patch
-Patch1008:	chromium-92-glibc-2.34.patch
-Patch1009:	chromium-92-skia-freetype-2.11.patch
+#Patch1009:	chromium-92-skia-freetype-2.11.patch
+Patch1008:	chromium-94-compiler.patch
+Patch1009:	chromium-93-ffmpeg-4.4.patch
+Patch1010:	chromium-94-glibc-2.34.patch
 
 Provides: 	%{crname}
 Obsoletes: 	chromium-browser-unstable < 26.0.1410.51
@@ -171,9 +163,9 @@ BuildRequires:	pkgconfig(libunwind)
 BuildRequires:	pkgconfig(re2)
 %endif
 BuildRequires:	pkgconfig(com_err)
-BuildRequires:	python2dist(json5)
-BuildRequires:	python2-pkg-resources
-BuildRequires:	python2-xcbgen
+#BuildRequires:	python3dist(json5)
+BuildRequires:	python3-pkg-resources
+#BuildRequires:	python3-xcbgen
 BuildRequires: 	alsa-oss-devel
 BuildRequires:	atomic-devel
 BuildRequires:	harfbuzz-devel
@@ -293,7 +285,12 @@ members of the Chromium and WebDriver teams.
 
 
 %prep
-%autosetup -p1 -n chromium-%{version}
+%autosetup -p1 -n chromium-%{version} -a 550
+P=550
+for i in patches/*patch; do
+	patch -p1 -b -z .${P}~ <$i
+	P=$((P+1))
+done
 
 rm -rf third_party/binutils/
 
@@ -336,8 +333,8 @@ python build/linux/unbundle/replace_gn_files.py \
 	--system-libraries %{system_libs}
 
 # Look, I don't know. This package is spit and chewing gum. Sorry.
-rm -rf third_party/markupsafe
-ln -s %{python2_sitearch}/markupsafe third_party/markupsafe
+#rm -rf third_party/markupsafe
+#ln -s %{python2_sitearch}/markupsafe third_party/markupsafe
 # We should look on removing other python packages as well i.e. ply
 
 # workaround build failure
@@ -376,7 +373,7 @@ export CXX=clang++
 
 # gn is rather convoluted and not python3 friendly -- let's make
 # sure it sees python2 when it calls python
-export PATH=`pwd`:$PATH
+#export PATH=`pwd`:$PATH
 
 CHROMIUM_CORE_GN_DEFINES="use_sysroot=false is_debug=false fieldtrial_testing_like_official_build=true use_lld=false use_gold=true"
 CHROMIUM_CORE_GN_DEFINES+=" is_clang=true clang_base_path=\"%{_prefix}\" clang_use_chrome_plugins=false "

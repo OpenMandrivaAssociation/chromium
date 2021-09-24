@@ -1,0 +1,24 @@
+diff -up chromium-94.0.4606.54/media/filters/ffmpeg_demuxer.cc.omv~ chromium-94.0.4606.54/media/filters/ffmpeg_demuxer.cc
+diff -up chromium-94.0.4606.54/sandbox/linux/services/credentials.cc.omv~ chromium-94.0.4606.54/sandbox/linux/services/credentials.cc
+--- chromium-94.0.4606.54/sandbox/linux/services/credentials.cc.omv~	2021-09-24 19:04:37.380594241 +0200
++++ chromium-94.0.4606.54/sandbox/linux/services/credentials.cc	2021-09-24 19:06:58.524136713 +0200
+@@ -98,7 +98,8 @@ bool ChrootToSafeEmptyDir() {
+   // attempt this optimization.
+   clone_flags |= CLONE_VM | CLONE_VFORK | CLONE_SETTLS;
+ 
+-  char tls_buf[PTHREAD_STACK_MIN] = {0};
++  char *tls_buf = new char[PTHREAD_STACK_MIN];
++  memset(tls_buf, 0, PTHREAD_STACK_MIN);
+   tls = tls_buf;
+ #endif
+ 
+@@ -109,6 +110,9 @@ bool ChrootToSafeEmptyDir() {
+   int status = -1;
+   PCHECK(HANDLE_EINTR(waitpid(pid, &status, 0)) == pid);
+ 
++#if defined(ARCH_CPU_X86_64) || defined(ARCH_CPU_ARM_FAMILY)
++  delete[] tls_buf;
++#endif
+   return WIFEXITED(status) && WEXITSTATUS(status) == kExitSuccess;
+ }
+ 
