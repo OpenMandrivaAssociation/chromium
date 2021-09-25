@@ -20,20 +20,6 @@ diff -up chromium-94.0.4606.54/components/viz/service/display/gl_renderer.h.28~ 
  #include "components/viz/common/gpu/context_cache_controller.h"
  #include "components/viz/common/quads/aggregated_render_pass_draw_quad.h"
  #include "components/viz/common/quads/compositor_render_pass_draw_quad.h"
-diff -up chromium-94.0.4606.54/sql/recover_module/cursor.h.28~ chromium-94.0.4606.54/sql/recover_module/cursor.h
---- chromium-94.0.4606.54/sql/recover_module/cursor.h.28~	2021-09-20 21:12:31.000000000 +0200
-+++ chromium-94.0.4606.54/sql/recover_module/cursor.h	2021-09-24 03:03:45.505238850 +0200
-@@ -62,8 +62,8 @@ class VirtualCursor {
-   // |sqlite_cursor| must have been returned by VirtualTable::SqliteCursor().
-   static inline VirtualCursor* FromSqliteCursor(
-       sqlite3_vtab_cursor* sqlite_cursor) {
--    static_assert(std::is_standard_layout<VirtualCursor>::value,
--                  "needed for the reinterpret_cast below");
-+//    static_assert(std::is_standard_layout<VirtualCursor>::value,
-+//                  "needed for the reinterpret_cast below");
-     static_assert(offsetof(VirtualCursor, sqlite_cursor_) == 0,
-                   "sqlite_cursor_ must be the first member of the class");
-     VirtualCursor* result = reinterpret_cast<VirtualCursor*>(sqlite_cursor);
 diff -up chromium-94.0.4606.54/third_party/pdfium/core/fxcodec/png/png_decoder.cpp.28~ chromium-94.0.4606.54/third_party/pdfium/core/fxcodec/png/png_decoder.cpp
 --- chromium-94.0.4606.54/third_party/pdfium/core/fxcodec/png/png_decoder.cpp.28~	2021-09-24 03:03:45.505238850 +0200
 +++ chromium-94.0.4606.54/third_party/pdfium/core/fxcodec/png/png_decoder.cpp	2021-09-24 03:04:17.998288409 +0200

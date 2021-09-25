@@ -57,7 +57,7 @@
 Name: 		chromium-browser-%{channel}
 # Working version numbers can be found at
 # http://omahaproxy.appspot.com/
-Version: 	94.0.4606.54
+Version: 	94.0.4606.61
 Release: 	1%{?extrarelsuffix}
 Summary: 	A fast webkit-based web browser
 Group: 		Networking/WWW
@@ -128,7 +128,8 @@ Patch651:	https://raw.githubusercontent.com/saiarcot895/chromium-ubuntu-build/ma
 
 # Fixes from Arch
 Patch661:	https://aur.archlinux.org/cgit/aur.git/plain/wayland-egl.patch
-
+Patch662:	https://aur.archlinux.org/cgit/aur.git/plain/sql-make-VirtualCursor-standard-layout-type.patch
+Patch663:	https://aur.archlinux.org/cgit/aur.git/plain/use-oauth2-client-switches-as-default.patch
 
 # mga
 #Patch700:	chromium-81-extra-media.patch
@@ -351,6 +352,7 @@ done
 
 %build
 . %{_sysconfdir}/profile.d/90java.sh
+sed -i -e "s,/usr/bin/java,$(which java),g" third_party/closure_compiler/compiler.py
 
 %ifarch %{arm}
 # Use linker flags to reduce memory consumption on low-mem architectures
