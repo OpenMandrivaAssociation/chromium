@@ -208,3 +208,17 @@ diff -up chromium-94.0.4606.61/sql/recover_module/pager.h.17~ chromium-94.0.4606
    // Raw pointer usage is acceptable because this instance's owner is expected
    // to ensure that the VirtualTable outlives this.
    VirtualTable* const table_;
+diff -up chromium-94.0.4606.61/sql/recover_module/cursor.h.omv~ chromium-94.0.4606.61/sql/recover_module/cursor.h
+--- chromium-94.0.4606.61/sql/recover_module/cursor.h.omv~	2021-09-25 02:18:23.400636542 +0200
++++ chromium-94.0.4606.61/sql/recover_module/cursor.h	2021-09-25 02:18:31.142656690 +0200
+@@ -62,8 +62,10 @@ class VirtualCursor {
+   // |sqlite_cursor| must have been returned by VirtualTable::SqliteCursor().
+   static inline VirtualCursor* FromSqliteCursor(
+       sqlite3_vtab_cursor* sqlite_cursor) {
++#if 0
+     static_assert(std::is_standard_layout<VirtualCursor>::value,
+                   "needed for the reinterpret_cast below");
++#endif
+     static_assert(offsetof(VirtualCursor, sqlite_cursor_) == 0,
+                   "sqlite_cursor_ must be the first member of the class");
+     VirtualCursor* result = reinterpret_cast<VirtualCursor*>(sqlite_cursor);
