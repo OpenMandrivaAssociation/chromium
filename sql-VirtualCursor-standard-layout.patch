@@ -1,7 +1,23 @@
-diff -up chromium-94.0.4606.61/sql/recover_module/btree.cc.17~ chromium-94.0.4606.61/sql/recover_module/btree.cc
---- chromium-94.0.4606.61/sql/recover_module/btree.cc.17~	2021-09-24 06:26:10.000000000 +0200
-+++ chromium-94.0.4606.61/sql/recover_module/btree.cc	2021-09-25 02:00:19.610366450 +0200
-@@ -136,16 +136,25 @@ static_assert(std::is_trivially_destruct
+From 80368f8ba7a8bab13440463a254888311efe3986 Mon Sep 17 00:00:00 2001
+From: Stephan Hartmann <stha09@googlemail.com>
+Date: Tue, 04 May 2021 15:00:19 +0000
+Subject: [PATCH] sql: make VirtualCursor standard layout type
+
+sql::recover::VirtualCursor needs to be a standard layout type, but
+has members of type std::unique_ptr. However, std::unique_ptr is not
+guaranteed to be standard layout. Compiling with clang combined with
+gcc-11 libstdc++ fails because of this. Replace std::unique_ptr with
+raw pointers.
+
+Bug: 1189788
+Change-Id: Ia6dc388cc5ef1c0f2afc75f8ca45b9f12687ca9c
+---
+
+diff --git a/sql/recover_module/btree.cc b/sql/recover_module/btree.cc
+index 9ecaafe..839318a 100644
+--- a/sql/recover_module/btree.cc
++++ b/sql/recover_module/btree.cc
+@@ -135,16 +135,25 @@
                "Move the destructor to the .cc file if it's non-trival");
  #endif  // !DCHECK_IS_ON()
  
@@ -33,10 +49,11 @@ diff -up chromium-94.0.4606.61/sql/recover_module/btree.cc.17~ chromium-94.0.460
  bool LeafPageDecoder::TryAdvance() {
    DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
    DCHECK(CanAdvance());
-diff -up chromium-94.0.4606.61/sql/recover_module/btree.h.17~ chromium-94.0.4606.61/sql/recover_module/btree.h
---- chromium-94.0.4606.61/sql/recover_module/btree.h.17~	2021-09-24 06:26:10.000000000 +0200
-+++ chromium-94.0.4606.61/sql/recover_module/btree.h	2021-09-25 02:00:19.610366450 +0200
-@@ -103,7 +103,7 @@ class LeafPageDecoder {
+diff --git a/sql/recover_module/btree.h b/sql/recover_module/btree.h
+index d76d076..33114b0 100644
+--- a/sql/recover_module/btree.h
++++ b/sql/recover_module/btree.h
+@@ -102,7 +102,7 @@
    //
    // |db_reader| must have been used to read an inner page of a table B-tree.
    // |db_reader| must outlive this instance.
@@ -45,7 +62,7 @@ diff -up chromium-94.0.4606.61/sql/recover_module/btree.h.17~ chromium-94.0.4606
    ~LeafPageDecoder() noexcept = default;
  
    LeafPageDecoder(const LeafPageDecoder&) = delete;
-@@ -151,6 +151,15 @@ class LeafPageDecoder {
+@@ -150,6 +150,15 @@
    // read as long as CanAdvance() returns true.
    bool TryAdvance();
  
@@ -61,7 +78,7 @@ diff -up chromium-94.0.4606.61/sql/recover_module/btree.h.17~ chromium-94.0.4606
    // True if the given reader may point to an inner page in a table B-tree.
    //
    // The last ReadPage() call on |db_reader| must have succeeded.
-@@ -164,14 +173,14 @@ class LeafPageDecoder {
+@@ -163,14 +172,14 @@
    static int ComputeCellCount(DatabasePageReader* db_reader);
  
    // The number of the B-tree page this reader is reading.
@@ -79,10 +96,11 @@ diff -up chromium-94.0.4606.61/sql/recover_module/btree.h.17~ chromium-94.0.4606
  
    // The reader's cursor state.
    //
-diff -up chromium-94.0.4606.61/sql/recover_module/cursor.cc.17~ chromium-94.0.4606.61/sql/recover_module/cursor.cc
---- chromium-94.0.4606.61/sql/recover_module/cursor.cc.17~	2021-09-24 06:26:10.000000000 +0200
-+++ chromium-94.0.4606.61/sql/recover_module/cursor.cc	2021-09-25 02:00:19.610366450 +0200
-@@ -28,7 +28,7 @@ VirtualCursor::~VirtualCursor() {
+diff --git a/sql/recover_module/cursor.cc b/sql/recover_module/cursor.cc
+index 0029ff9..42548bc 100644
+--- a/sql/recover_module/cursor.cc
++++ b/sql/recover_module/cursor.cc
+@@ -26,7 +26,7 @@
  int VirtualCursor::First() {
    DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
    inner_decoders_.clear();
@@ -91,7 +109,7 @@ diff -up chromium-94.0.4606.61/sql/recover_module/cursor.cc.17~ chromium-94.0.46
  
    AppendPageDecoder(table_->root_page_id());
    return Next();
-@@ -38,18 +38,18 @@ int VirtualCursor::Next() {
+@@ -36,18 +36,18 @@
    DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
    record_reader_.Reset();
  
@@ -117,7 +135,7 @@ diff -up chromium-94.0.4606.61/sql/recover_module/cursor.cc.17~ chromium-94.0.46
          continue;
        }
        if (!record_reader_.Initialize())
-@@ -101,13 +101,13 @@ int VirtualCursor::ReadColumn(int column
+@@ -99,13 +99,13 @@
  int64_t VirtualCursor::RowId() {
    DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
    DCHECK(record_reader_.IsInitialized());
@@ -134,7 +152,7 @@ diff -up chromium-94.0.4606.61/sql/recover_module/cursor.cc.17~ chromium-94.0.46
        << __func__
        << " must only be called when the current path has no leaf decoder";
  
-@@ -115,7 +115,7 @@ void VirtualCursor::AppendPageDecoder(in
+@@ -113,7 +113,7 @@
      return;
  
    if (LeafPageDecoder::IsOnValidPage(&db_reader_)) {
@@ -143,10 +161,11 @@ diff -up chromium-94.0.4606.61/sql/recover_module/cursor.cc.17~ chromium-94.0.46
      return;
    }
  
-diff -up chromium-94.0.4606.61/sql/recover_module/cursor.h.17~ chromium-94.0.4606.61/sql/recover_module/cursor.h
---- chromium-94.0.4606.61/sql/recover_module/cursor.h.17~	2021-09-24 06:26:10.000000000 +0200
-+++ chromium-94.0.4606.61/sql/recover_module/cursor.h	2021-09-25 02:00:19.610366450 +0200
-@@ -129,7 +129,7 @@ class VirtualCursor {
+diff --git a/sql/recover_module/cursor.h b/sql/recover_module/cursor.h
+index afcd690..b15c31d 100644
+--- a/sql/recover_module/cursor.h
++++ b/sql/recover_module/cursor.h
+@@ -129,7 +129,7 @@
    std::vector<std::unique_ptr<InnerPageDecoder>> inner_decoders_;
  
    // Decodes the leaf page containing records.
@@ -155,10 +174,11 @@ diff -up chromium-94.0.4606.61/sql/recover_module/cursor.h.17~ chromium-94.0.460
  
    SEQUENCE_CHECKER(sequence_checker_);
  };
-diff -up chromium-94.0.4606.61/sql/recover_module/pager.cc.17~ chromium-94.0.4606.61/sql/recover_module/pager.cc
---- chromium-94.0.4606.61/sql/recover_module/pager.cc.17~	2021-09-24 06:26:10.000000000 +0200
-+++ chromium-94.0.4606.61/sql/recover_module/pager.cc	2021-09-25 02:00:19.610366450 +0200
-@@ -23,8 +23,7 @@ static_assert(DatabasePageReader::kMaxPa
+diff --git a/sql/recover_module/pager.cc b/sql/recover_module/pager.cc
+index 58e75de..5fe9620 100644
+--- a/sql/recover_module/pager.cc
++++ b/sql/recover_module/pager.cc
+@@ -23,8 +23,7 @@
                "ints are not appropriate for representing page IDs");
  
  DatabasePageReader::DatabasePageReader(VirtualTable* table)
@@ -168,7 +188,7 @@ diff -up chromium-94.0.4606.61/sql/recover_module/pager.cc.17~ chromium-94.0.460
    DCHECK(table != nullptr);
    DCHECK(IsValidPageSize(table->page_size()));
  }
-@@ -57,8 +56,8 @@ int DatabasePageReader::ReadPage(int pag
+@@ -57,8 +56,8 @@
                      std::numeric_limits<int64_t>::max(),
                  "The |read_offset| computation above may overflow");
  
@@ -179,9 +199,10 @@ diff -up chromium-94.0.4606.61/sql/recover_module/pager.cc.17~ chromium-94.0.460
  
    // |page_id_| needs to be set to kInvalidPageId if the read failed.
    // Otherwise, future ReadPage() calls with the previous |page_id_| value
-diff -up chromium-94.0.4606.61/sql/recover_module/pager.h.17~ chromium-94.0.4606.61/sql/recover_module/pager.h
---- chromium-94.0.4606.61/sql/recover_module/pager.h.17~	2021-09-24 06:26:10.000000000 +0200
-+++ chromium-94.0.4606.61/sql/recover_module/pager.h	2021-09-25 02:00:59.844573377 +0200
+diff --git a/sql/recover_module/pager.h b/sql/recover_module/pager.h
+index 0e388ddc..99314e3 100644
+--- a/sql/recover_module/pager.h
++++ b/sql/recover_module/pager.h
 @@ -5,6 +5,7 @@
  #ifndef SQL_RECOVER_MODULE_PAGER_H_
  #define SQL_RECOVER_MODULE_PAGER_H_
@@ -189,8 +210,8 @@ diff -up chromium-94.0.4606.61/sql/recover_module/pager.h.17~ chromium-94.0.4606
 +#include <array>
  #include <cstdint>
  #include <memory>
- #include <ostream>
-@@ -71,7 +72,7 @@ class DatabasePageReader {
+ 
+@@ -70,7 +71,7 @@
      DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
      DCHECK_NE(page_id_, kInvalidPageId)
          << "Successful ReadPage() required before accessing pager state";
@@ -199,7 +220,7 @@ diff -up chromium-94.0.4606.61/sql/recover_module/pager.h.17~ chromium-94.0.4606
    }
  
    // The number of bytes in the page read by the last ReadPage() call.
-@@ -138,7 +139,7 @@ class DatabasePageReader {
+@@ -137,7 +138,7 @@
    int page_id_ = kInvalidPageId;
    // Stores the bytes of the last page successfully read by ReadPage().
    // The content is undefined if the last call to ReadPage() did not succeed.

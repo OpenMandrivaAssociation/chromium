@@ -1,6 +1,6 @@
-diff -up chromium-94.0.4606.54/components/viz/service/display/direct_renderer.h.28~ chromium-94.0.4606.54/components/viz/service/display/direct_renderer.h
---- chromium-94.0.4606.54/components/viz/service/display/direct_renderer.h.28~	2021-09-20 21:12:25.000000000 +0200
-+++ chromium-94.0.4606.54/components/viz/service/display/direct_renderer.h	2021-09-24 03:03:45.505238850 +0200
+diff -up chromium-95.0.4638.17/components/viz/service/display/direct_renderer.h.23~ chromium-95.0.4638.17/components/viz/service/display/direct_renderer.h
+--- chromium-95.0.4638.17/components/viz/service/display/direct_renderer.h.23~	2021-09-21 21:04:39.000000000 +0200
++++ chromium-95.0.4638.17/components/viz/service/display/direct_renderer.h	2021-09-25 02:12:50.383819876 +0200
 @@ -14,6 +14,7 @@
  #include "base/containers/flat_map.h"
  #include "base/macros.h"
@@ -9,9 +9,9 @@ diff -up chromium-94.0.4606.54/components/viz/service/display/direct_renderer.h.
  #include "components/viz/common/quads/aggregated_render_pass.h"
  #include "components/viz/common/quads/tile_draw_quad.h"
  #include "components/viz/service/display/aggregated_frame.h"
-diff -up chromium-94.0.4606.54/components/viz/service/display/gl_renderer.h.28~ chromium-94.0.4606.54/components/viz/service/display/gl_renderer.h
---- chromium-94.0.4606.54/components/viz/service/display/gl_renderer.h.28~	2021-09-20 21:12:25.000000000 +0200
-+++ chromium-94.0.4606.54/components/viz/service/display/gl_renderer.h	2021-09-24 03:03:45.505238850 +0200
+diff -up chromium-95.0.4638.17/components/viz/service/display/gl_renderer.h.23~ chromium-95.0.4638.17/components/viz/service/display/gl_renderer.h
+--- chromium-95.0.4638.17/components/viz/service/display/gl_renderer.h.23~	2021-09-21 21:04:39.000000000 +0200
++++ chromium-95.0.4638.17/components/viz/service/display/gl_renderer.h	2021-09-25 02:12:50.383819876 +0200
 @@ -17,6 +17,7 @@
  #include "base/containers/queue.h"
  #include "base/macros.h"
@@ -20,9 +20,9 @@ diff -up chromium-94.0.4606.54/components/viz/service/display/gl_renderer.h.28~ 
  #include "components/viz/common/gpu/context_cache_controller.h"
  #include "components/viz/common/quads/aggregated_render_pass_draw_quad.h"
  #include "components/viz/common/quads/compositor_render_pass_draw_quad.h"
-diff -up chromium-94.0.4606.54/third_party/pdfium/core/fxcodec/png/png_decoder.cpp.28~ chromium-94.0.4606.54/third_party/pdfium/core/fxcodec/png/png_decoder.cpp
---- chromium-94.0.4606.54/third_party/pdfium/core/fxcodec/png/png_decoder.cpp.28~	2021-09-24 03:03:45.505238850 +0200
-+++ chromium-94.0.4606.54/third_party/pdfium/core/fxcodec/png/png_decoder.cpp	2021-09-24 03:04:17.998288409 +0200
+diff -up chromium-95.0.4638.17/third_party/pdfium/core/fxcodec/png/png_decoder.cpp.23~ chromium-95.0.4638.17/third_party/pdfium/core/fxcodec/png/png_decoder.cpp
+--- chromium-95.0.4638.17/third_party/pdfium/core/fxcodec/png/png_decoder.cpp.23~	2021-09-25 02:12:50.383819876 +0200
++++ chromium-95.0.4638.17/third_party/pdfium/core/fxcodec/png/png_decoder.cpp	2021-09-25 02:14:11.918065584 +0200
 @@ -4,6 +4,7 @@
  
  // Original code copyright 2014 Foxit Software Inc. http://www.foxitsoftware.com
@@ -30,21 +30,11 @@ diff -up chromium-94.0.4606.54/third_party/pdfium/core/fxcodec/png/png_decoder.c
 +#include "core/fxcodec/fx_codec_def.h"
  #include "core/fxcodec/png/png_decoder.h"
  
- #include <string.h>
-diff -up chromium-94.0.4606.54/third_party/ruy/src/ruy/block_map.cc.28~ chromium-94.0.4606.54/third_party/ruy/src/ruy/block_map.cc
---- chromium-94.0.4606.54/third_party/ruy/src/ruy/block_map.cc.28~	2021-09-20 21:14:50.000000000 +0200
-+++ chromium-94.0.4606.54/third_party/ruy/src/ruy/block_map.cc	2021-09-24 03:03:45.506238852 +0200
-@@ -16,6 +16,7 @@ limitations under the License.
- #include "ruy/block_map.h"
- 
- #include <algorithm>
-+#include <limits>
- #include <cstdint>
- 
- #ifdef RUY_MAKEBLOCKMAP_DEBUG
-diff -up chromium-94.0.4606.54/third_party/zlib/google/zip_internal.cc.28~ chromium-94.0.4606.54/third_party/zlib/google/zip_internal.cc
---- chromium-94.0.4606.54/third_party/zlib/google/zip_internal.cc.28~	2021-09-20 21:13:06.000000000 +0200
-+++ chromium-94.0.4606.54/third_party/zlib/google/zip_internal.cc	2021-09-24 03:03:45.506238852 +0200
+ #include <setjmp.h>
+diff -up chromium-95.0.4638.17/third_party/ruy/src/ruy/block_map.cc.23~ chromium-95.0.4638.17/third_party/ruy/src/ruy/block_map.cc
+diff -up chromium-95.0.4638.17/third_party/zlib/google/zip_internal.cc.23~ chromium-95.0.4638.17/third_party/zlib/google/zip_internal.cc
+--- chromium-95.0.4638.17/third_party/zlib/google/zip_internal.cc.23~	2021-09-21 21:05:32.000000000 +0200
++++ chromium-95.0.4638.17/third_party/zlib/google/zip_internal.cc	2021-09-25 02:12:50.384819880 +0200
 @@ -18,9 +18,11 @@
  #include "base/strings/utf_string_conversions.h"
  

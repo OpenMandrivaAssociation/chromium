@@ -1,0 +1,81 @@
+diff -up chromium-97.0.4682.3/third_party/breakpad/breakpad/src/client/linux/handler/exception_handler.cc.omv~ chromium-97.0.4682.3/third_party/breakpad/breakpad/src/client/linux/handler/exception_handler.cc
+--- chromium-97.0.4682.3/third_party/breakpad/breakpad/src/client/linux/handler/exception_handler.cc.omv~	2021-11-02 22:45:17.238262908 +0100
++++ chromium-97.0.4682.3/third_party/breakpad/breakpad/src/client/linux/handler/exception_handler.cc	2021-11-02 22:45:23.061268462 +0100
+@@ -138,7 +138,7 @@ void InstallAlternateStackLocked() {
+   // SIGSTKSZ may be too small to prevent the signal handlers from overrunning
+   // the alternative stack. Ensure that the size of the alternative stack is
+   // large enough.
+-  static const unsigned kSigStackSize = std::max(16384, SIGSTKSZ);
++  static const unsigned kSigStackSize = std::max(16384L, SIGSTKSZ);
+ 
+   // Only set an alternative stack if there isn't already one, or if the current
+   // one is too small.
+diff -up chromium-97.0.4682.3/third_party/zlib/google/zip_internal.cc.omv~ chromium-97.0.4682.3/third_party/zlib/google/zip_internal.cc
+--- chromium-97.0.4682.3/third_party/zlib/google/zip_internal.cc.omv~	2021-11-02 22:51:01.799596700 +0100
++++ chromium-97.0.4682.3/third_party/zlib/google/zip_internal.cc	2021-11-02 22:52:16.428670047 +0100
+@@ -177,7 +177,7 @@ void* OpenZipBuffer(void* opaque, const
+ 
+ // Reads compressed data from the specified stream. This function copies data
+ // refered by the opaque parameter and returns the size actually copied.
+-uLong ReadZipBuffer(void* opaque, void* /*stream*/, void* buf, uLong size) {
++unsigned long ReadZipBuffer(void* opaque, void* /*stream*/, void* buf, unsigned long size) {
+   ZipBuffer* buffer = static_cast<ZipBuffer*>(opaque);
+   DCHECK_LE(buffer->offset, buffer->length);
+   ZPOS64_T remaining_bytes = buffer->length - buffer->offset;
+@@ -192,10 +192,10 @@ uLong ReadZipBuffer(void* opaque, void*
+ 
+ // Writes compressed data to the stream. This function always returns zero
+ // because this implementation is only for reading compressed data.
+-uLong WriteZipBuffer(void* /*opaque*/,
++unsigned long WriteZipBuffer(void* /*opaque*/,
+                      void* /*stream*/,
+                      const void* /*buf*/,
+-                     uLong /*size*/) {
++                     unsigned long /*size*/) {
+   NOTREACHED();
+   return 0;
+ }
+@@ -357,7 +357,7 @@ bool ZipOpenNewFileInZip(zipFile zip_fil
+                          Compression compression) {
+   // Section 4.4.4 http://www.pkware.com/documents/casestudies/APPNOTE.TXT
+   // Setting the Language encoding flag so the file is told to be in utf-8.
+-  const uLong LANGUAGE_ENCODING_FLAG = 0x1 << 11;
++  const unsigned long LANGUAGE_ENCODING_FLAG = 0x1 << 11;
+ 
+   const zip_fileinfo file_info = TimeToZipFileInfo(last_modified_time);
+   const int err = zipOpenNewFileInZip4_64(
+@@ -370,11 +370,11 @@ bool ZipOpenNewFileInZip(zipFile zip_fil
+       /*size_extrafield_global=*/0u,
+       /*comment=*/nullptr,
+       /*method=*/compression,
+-      /*level=*/Z_DEFAULT_COMPRESSION,
++      /*level=*/-1 /*Z_DEFAULT_COMPRESSION*/,
+       /*raw=*/0,
+       /*windowBits=*/-MAX_WBITS,
+       /*memLevel=*/DEF_MEM_LEVEL,
+-      /*strategy=*/Z_DEFAULT_STRATEGY,
++      /*strategy=*/0 /*Z_DEFAULT_STRATEGY*/,
+       /*password=*/nullptr,
+       /*crcForCrypting=*/0,
+       /*versionMadeBy=*/0,
+diff -up chromium-97.0.4682.3/sandbox/linux/services/credentials.cc.omv~ chromium-97.0.4682.3/sandbox/linux/services/credentials.cc
+--- chromium-97.0.4682.3/sandbox/linux/services/credentials.cc.omv~	2021-11-03 00:53:43.137064606 +0100
++++ chromium-97.0.4682.3/sandbox/linux/services/credentials.cc	2021-11-03 00:54:48.494608066 +0100
+@@ -100,7 +100,8 @@ bool ChrootToSafeEmptyDir() {
+   // TODO(crbug.com/1247458) Broken in MSan builds after LLVM f1bb30a4956f.
+   clone_flags |= CLONE_VM | CLONE_VFORK | CLONE_SETTLS;
+ 
+-  char tls_buf[PTHREAD_STACK_MIN] = {0};
++  char *tls_buf = new char[PTHREAD_STACK_MIN];
++  *tls_buf = 0;
+   tls = tls_buf;
+ #endif
+ 
+@@ -111,6 +112,7 @@ bool ChrootToSafeEmptyDir() {
+   int status = -1;
+   PCHECK(HANDLE_EINTR(waitpid(pid, &status, 0)) == pid);
+ 
++  delete[] tls_buf;
+   return WIFEXITED(status) && WEXITSTATUS(status) == kExitSuccess;
+ }
+ 

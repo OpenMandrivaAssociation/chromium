@@ -1,0 +1,12 @@
+diff -up chromium-92.0.4515.131/third_party/angle/src/libANGLE/renderer/vulkan/vk_helpers.cpp.13~ chromium-92.0.4515.131/third_party/angle/src/libANGLE/renderer/vulkan/vk_helpers.cpp
+--- chromium-92.0.4515.131/third_party/angle/src/libANGLE/renderer/vulkan/vk_helpers.cpp.13~	2021-08-14 04:47:19.872202958 +0200
++++ chromium-92.0.4515.131/third_party/angle/src/libANGLE/renderer/vulkan/vk_helpers.cpp	2021-08-14 04:49:04.563673410 +0200
+@@ -76,7 +76,7 @@ constexpr size_t kDefaultPoolAllocatorPa
+ 
+ struct ImageMemoryBarrierData
+ {
+-    char name[44];
++    const char *name;
+ 
+     // The Vk layout corresponding to the ImageLayout key.
+     VkImageLayout layout;
