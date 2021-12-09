@@ -94,21 +94,27 @@ Source3:	master_preferences
 Source4:	chromium-drirc-disable-10bpc-color-configs.conf
 Source100:	%{name}.rpmlintrc
 
-%if 0
 ### Chromium Fedora Patches ###
 Patch0:		https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-70.0.3538.67-sandbox-pie.patch
 # Use /etc/chromium for master_prefs
 Patch1:		https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-68.0.3440.106-master-prefs-path.patch
-# Use gn system files
-# Do not prefix libpng functions
-Patch4:		https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-60.0.3112.78-no-libpng-prefix.patch
-# Do not mangle zlib
-Patch6:		https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-77.0.3865.75-no-zlib-mangle.patch
 # Use Gentoo's Widevine hack
 # https://gitweb.gentoo.org/repo/gentoo.git/tree/www-client/chromium/files/chromium-widevine-r3.patch
 Patch8:		https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-71.0.3578.98-widevine-r3.patch
 # Try to load widevine from other places
 Patch11:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-79.0.3945.56-widevine-other-locations.patch
+# From Arch and Gentoo
+# https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=chromium-dev
+Patch100:	https://raw.githubusercontent.com/gentoo/gentoo/master/www-client/chromium/files/chromium-96-EnumTable-crash.patch
+Patch101:	https://raw.githubusercontent.com/gentoo/gentoo/master/www-client/chromium/files/chromium-93-InkDropHost-crash.patch
+Patch102:	https://raw.githubusercontent.com/gentoo/gentoo/master/www-client/chromium/files/chromium-shim_headers.patch
+Patch103:	https://raw.githubusercontent.com/archlinux/svntogit-packages/packages/chromium/trunk/use-oauth2-client-switches-as-default.patch
+%if 0
+# Use gn system files
+# Do not prefix libpng functions
+Patch4:		https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-60.0.3112.78-no-libpng-prefix.patch
+# Do not mangle zlib
+Patch6:		https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-77.0.3865.75-no-zlib-mangle.patch
 # Add "Fedora" to the user agent string
 #Patch13:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-79.0.3945.56-fedora-user-agent.patch
 # https://gitweb.gentoo.org/repo/gentoo.git/tree/www-client/chromium/files/chromium-unbundle-zlib.patch
@@ -117,14 +123,6 @@ Patch53:	chromium-81-unbundle-zlib.patch
 Patch54:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-77.0.3865.75-gcc-include-memory.patch
 # /../../ui/base/cursor/ozone/bitmap_cursor_factory_ozone.cc:53:15: error: 'find_if' is not a member of 'std'; did you mean 'find'? 
 #Patch63:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-79.0.3945.56-fix-find_if.patch
-
-# From Arch and Gentoo
-# https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=chromium-dev
-Patch100:	https://raw.githubusercontent.com/gentoo/gentoo/master/www-client/chromium/files/chromium-96-EnumTable-crash.patch
-Patch101:	https://raw.githubusercontent.com/gentoo/gentoo/master/www-client/chromium/files/chromium-93-InkDropHost-crash.patch
-Patch102:	https://raw.githubusercontent.com/gentoo/gentoo/master/www-client/chromium/files/chromium-shim_headers.patch
-Patch103:	https://raw.githubusercontent.com/archlinux/svntogit-packages/packages/chromium/trunk/use-oauth2-client-switches-as-default.patch
-
 
 # Use lstdc++ on EPEL7 only
 #Patch101:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-75.0.3770.100-epel7-stdc++.patch
