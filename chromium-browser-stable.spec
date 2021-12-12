@@ -17,7 +17,7 @@
 %define _crdir %{_libdir}/%{crname}
 %define _src %{_topdir}/SOURCES
 # For incomplete debug package support
-#define	_empty_manifest_terminate_build 0
+%define	_empty_manifest_terminate_build 0
 
 %ifarch %ix86
 %define _build_pkgcheck_set %{nil}
