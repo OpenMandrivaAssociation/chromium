@@ -369,6 +369,7 @@ export PATH=$PWD/bfd:$PATH
 %global optflags %{optflags} -I%{_includedir}/libunwind -O3
 
 # try to reduce space for Build system
+%global optflags %(echo %{optflags} | sed -e 's/-g /-g0 /' -e 's/-gdwarf-4//')
 sed -i 's|-g2|-g0|g' build/config/compiler/BUILD.gn
 
 export CC=clang
