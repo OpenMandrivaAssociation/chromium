@@ -368,6 +368,9 @@ export PATH=$PWD/bfd:$PATH
 # -Os breaks the build on x86_64
 %global optflags %{optflags} -I%{_includedir}/libunwind -O3
 
+# try to reduce space for Build system
+sed -i 's|-g2|-g0|g' build/config/compiler/BUILD.gn
+
 export CC=clang
 export CXX=clang++
 
