@@ -17,7 +17,7 @@
 %define _crdir %{_libdir}/%{crname}
 %define _src %{_topdir}/SOURCES
 # For incomplete debug package support
-%define	_empty_manifest_terminate_build 0
+#define	_empty_manifest_terminate_build 0
 
 %ifarch %ix86
 %define _build_pkgcheck_set %{nil}
@@ -67,8 +67,6 @@
 %bcond_without	system_vpx
 # system re2 doesn't work with custom libcxx
 %bcond_with	system_re2
-# chromium lto
-%bcond_with     thin_lto
 
 # Always support proprietary codecs
 # or html5 does not work
@@ -80,7 +78,7 @@
 Name: 		chromium-browser-%{channel}
 # Working version numbers can be found at
 # http://omahaproxy.appspot.com/
-Version: 	96.0.4664.110
+Version: 	97.0.4692.71
 Release: 	1%{?extrarelsuffix}
 Summary: 	A fast webkit-based web browser
 Group: 		Networking/WWW
@@ -100,23 +98,16 @@ Source100:	%{name}.rpmlintrc
 Patch0:		https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-70.0.3538.67-sandbox-pie.patch
 # Use /etc/chromium for master_prefs
 Patch1:		https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-68.0.3440.106-master-prefs-path.patch
-# Use Gentoo's Widevine hack
-# https://gitweb.gentoo.org/repo/gentoo.git/tree/www-client/chromium/files/chromium-widevine-r3.patch
-Patch8:		https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-71.0.3578.98-widevine-r3.patch
-# Try to load widevine from other places
-Patch11:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-79.0.3945.56-widevine-other-locations.patch
-# From Arch and Gentoo
-# https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=chromium-dev
-Patch100:	https://raw.githubusercontent.com/gentoo/gentoo/master/www-client/chromium/files/chromium-96-EnumTable-crash.patch
-Patch101:	https://raw.githubusercontent.com/gentoo/gentoo/master/www-client/chromium/files/chromium-93-InkDropHost-crash.patch
-Patch102:	https://raw.githubusercontent.com/gentoo/gentoo/master/www-client/chromium/files/chromium-shim_headers.patch
-Patch103:	https://raw.githubusercontent.com/archlinux/svntogit-packages/packages/chromium/trunk/use-oauth2-client-switches-as-default.patch
-%if 0
 # Use gn system files
 # Do not prefix libpng functions
 Patch4:		https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-60.0.3112.78-no-libpng-prefix.patch
 # Do not mangle zlib
 Patch6:		https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-77.0.3865.75-no-zlib-mangle.patch
+# Use Gentoo's Widevine hack
+# https://gitweb.gentoo.org/repo/gentoo.git/tree/www-client/chromium/files/chromium-widevine-r3.patch
+Patch8:		https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-71.0.3578.98-widevine-r3.patch
+# Try to load widevine from other places
+Patch11:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-79.0.3945.56-widevine-other-locations.patch
 # Add "Fedora" to the user agent string
 #Patch13:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-79.0.3945.56-fedora-user-agent.patch
 # https://gitweb.gentoo.org/repo/gentoo.git/tree/www-client/chromium/files/chromium-unbundle-zlib.patch
@@ -125,6 +116,14 @@ Patch53:	chromium-81-unbundle-zlib.patch
 Patch54:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-77.0.3865.75-gcc-include-memory.patch
 # /../../ui/base/cursor/ozone/bitmap_cursor_factory_ozone.cc:53:15: error: 'find_if' is not a member of 'std'; did you mean 'find'? 
 #Patch63:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-79.0.3945.56-fix-find_if.patch
+
+# From Arch and Gentoo
+# https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=chromium-dev
+Patch100:	https://raw.githubusercontent.com/gentoo/gentoo/master/www-client/chromium/files/chromium-96-EnumTable-crash.patch
+Patch101:	https://raw.githubusercontent.com/gentoo/gentoo/master/www-client/chromium/files/chromium-93-InkDropHost-crash.patch
+Patch102:	https://raw.githubusercontent.com/gentoo/gentoo/master/www-client/chromium/files/chromium-shim_headers.patch
+Patch103:	https://raw.githubusercontent.com/archlinux/svntogit-packages/packages/chromium/trunk/use-oauth2-client-switches-as-default.patch
+
 
 # Use lstdc++ on EPEL7 only
 #Patch101:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-75.0.3770.100-epel7-stdc++.patch
@@ -135,13 +134,11 @@ Patch54:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-77.0.
 #Patch300:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-76.0.3809.132-rhel8-force-disable-use_gnome_keyring.patch
 
 #Patch501:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-75.0.3770.80-SIOCGSTAMP.patch
-%endif
 
 ### Chromium gcc/libstdc++ support ###
 # https://github.com/stha09/chromium-patches
-Source500:	https://github.com/stha09/chromium-patches/releases/download/chromium-96-patchset-4/chromium-96-patchset-4.tar.xz
+Source500:	https://github.com/stha09/chromium-patches/releases/download/chromium-97-patchset-4/chromium-97-patchset-4.tar.xz
 
-%if 0
 ### Chromium Tests Patches ###
 # Arch Linux, fix for compile error with system ICU
 Patch602:	https://raw.githubusercontent.com/archlinuxarm/PKGBUILDs/master/extra/chromium/chromium-system-icu.patch
@@ -158,7 +155,6 @@ Patch1001:	chromium-64-system-curl.patch
 Patch1003:	chromium-system-zlib.patch
 Patch1004:	chromium-88-less-blacklist-nonsense.patch
 Patch1007:	chromium-81-enable-gpu-features.patch
-%endif
 Patch2:		https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-67.0.3396.62-gn-system.patch
 Patch1002:	chromium-69-no-static-libstdc++.patch
 Patch1006:	https://raw.githubusercontent.com/ungoogled-software/ungoogled-chromium-fedora/master/chromium-91.0.4472.77-java-only-allowed-in-android-builds.patch
@@ -250,12 +246,10 @@ BuildRequires: 	pkgconfig(libusb-1.0)
 BuildRequires:  speech-dispatcher-devel
 BuildRequires:  pkgconfig(libpci)
 BuildRequires:	pkgconfig(libexif)
-BuildRequires:	python3dist(markupsafe)
 BuildRequires:	ninja
 BuildRequires:	nodejs
 BuildRequires:	jdk-current
-# For -ldl and -lpthread
-BuildRequires:	glibc-static-devel
+BuildRequires:	python3dist(markupsafe)
 
 %description
 Chromium is a browser that combines a minimal design with sophisticated
@@ -297,10 +291,13 @@ members of the Chromium and WebDriver teams.
 
 
 %prep
-%autosetup -p1 -n chromium-%{version}
-tar xf %{S:500}
+%autosetup -p1 -n chromium-%{version} -a 500
+j=1
 for i in patches/*; do
-	patch -p1 -z .stha09~ -b <$i
+	if basename $i |grep -qE '~$'; then continue; fi
+	echo "Applying `basename $i`"
+	patch -p1 -z .stha09-${j}~ -b <$i
+	j=$((j+1))
 done
 
 rm -rf third_party/binutils/
@@ -354,7 +351,7 @@ fi
 
 %ifarch %{arm}
 # Use linker flags to reduce memory consumption on low-mem architectures
-%global optflags %(echo %{optflags} | sed -e 's/-g3 /-g0 /' -e 's/-gdwarf-4//')
+%global optflags %(echo %{optflags} | sed -e 's/-g /-g0 /' -e 's/-gdwarf-4//')
 mkdir -p bfd
 ln -s %{_bindir}/ld.bfd bfd/ld
 export PATH=$PWD/bfd:$PATH
@@ -365,12 +362,7 @@ export PATH=$PWD/bfd:$PATH
 # Workaround for build failure
 %global ldflags %{ldflags} -Wl,-z,notext
 %endif
-# -Os breaks the build on x86_64
-%global optflags %{optflags} -I%{_includedir}/libunwind -O3
-
-# try to reduce space for Build system
-%global optflags %(echo %{optflags} | sed -e 's/-g3 /-g0 /' -e 's/-gdwarf-4//')
-sed -i 's|-g2|-g0|g' build/config/compiler/BUILD.gn
+%global optflags %{optflags} -I%{_includedir}/libunwind
 
 export CC=clang
 export CXX=clang++
@@ -431,12 +423,7 @@ CHROMIUM_CORE_GN_DEFINES+=" target_cpu=\"arm64\""
 CHROMIUM_CORE_GN_DEFINES+=" google_api_key=\"%{google_api_key}\""
 CHROMIUM_CORE_GN_DEFINES+=" google_default_client_id=\"%{google_default_client_id}\""
 CHROMIUM_CORE_GN_DEFINES+=" google_default_client_secret=\"%{google_default_client_secret}\""
-CHROMIUM_CORE_GN_DEFINES+=" use_clang=true use_lld=true"
-%if %{with thin_lto}
-CHROMIUM_CORE_GN_DEFINES+=" thin_lto_enable_optimizations=true use_thin_lto=true"
-%else
-CHROMIUM_CORE_GN_DEFINES+=" use_thin_lto=false"
-%endif
+CHROMIUM_CORE_GN_DEFINES+=" thin_lto_enable_optimizations=true use_clang=true use_lld=true use_thin_lto=true"
 CHROMIUM_CORE_GN_DEFINES+=" custom_toolchain=\"//build/toolchain/linux/unbundle:default\""
 CHROMIUM_CORE_GN_DEFINES+=" host_toolchain=\"//build/toolchain/linux/unbundle:default\""
 CHROMIUM_CORE_GN_DEFINES+=" v8_snapshot_toolchain=\"//build/toolchain/linux/unbundle:default\""
@@ -453,10 +440,14 @@ CHROMIUM_BROWSER_GN_DEFINES+=" use_vaapi=true"
 if echo %{__cc} | grep -q clang; then
 	export CFLAGS="%{optflags} -Qunused-arguments -fPIE -fpie -fPIC"
 	export CXXFLAGS="%{optflags} -Qunused-arguments -fPIE -fpie -fPIC"
-%if %{with thin_lto}
 	_lto_cpus="$(getconf _NPROCESSORS_ONLN)"
+	if [ $_lto_cpus -gt 4 ]; then
+		# LTO is very memory intensive, so
+		# 32 parallel LTO jobs may not be
+		# a good idea...
+		_lto_cpus=4
+	fi
 	export LDFLAGS="%{ldflags} -Wl,--thinlto-jobs=$_lto_cpus"
-%endif
 	export AR="llvm-ar"
 	export NM="llvm-nm"
 	export RANLIB="llvm-ranlib"
@@ -488,6 +479,7 @@ mkdir -p %{buildroot}%{_mandir}/man1
 install -m 755 %{SOURCE1} %{buildroot}%{_libdir}/%{name}/
 install -m 755 out/Release/chrome %{buildroot}%{_libdir}/%{name}/
 install -m 4755 out/Release/chrome_sandbox %{buildroot}%{_libdir}/%{name}/chrome-sandbox
+cp -a out/Release/chromedriver %{buildroot}%{_libdir}/%{name}/chromedriver
 install -m 644 out/Release/locales/*.pak %{buildroot}%{_libdir}/%{name}/locales/
 install -m 644 out/Release/chrome_100_percent.pak %{buildroot}%{_libdir}/%{name}/
 install -m 644 out/Release/resources.pak %{buildroot}%{_libdir}/%{name}/
@@ -496,10 +488,7 @@ install -m 644 out/Release/resources.pak %{buildroot}%{_libdir}/%{name}/
 install -m 644 out/Release/*.bin %{buildroot}%{_libdir}/%{name}/
 install -m 644 chrome/browser/resources/default_apps/* %{buildroot}%{_libdir}/%{name}/default_apps/
 ln -s %{_libdir}/%{name}/chromium-wrapper %{buildroot}%{_bindir}/%{name}
-%ifarch %{x86_64}
-cp -a out/Release/chromedriver %{buildroot}%{_libdir}/%{name}/chromedriver
 ln -s %{_libdir}/%{name}/chromedriver %{buildroot}%{_bindir}/chromedriver
-%endif
 
 find out/Release/resources/ -name "*.d" -exec rm {} \;
 cp -r out/Release/resources %{buildroot}%{_libdir}/%{name}
@@ -559,9 +548,7 @@ cp %{S:4} %{buildroot}%{_datadir}/drirc.d/10-%{name}.conf
 %{_datadir}/applications/*.desktop
 %{_datadir}/icons/hicolor/*/apps/%{name}.png
 
-%ifarch %{x86_64}
 %files -n chromedriver%{namesuffix}
 %doc LICENSE AUTHORS
 %{_bindir}/chromedriver
 %{_libdir}/%{name}/chromedriver
-%endif
