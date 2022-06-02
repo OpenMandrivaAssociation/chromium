@@ -78,7 +78,7 @@
 Name: 		chromium-browser-%{channel}
 # Working version numbers can be found at
 # http://omahaproxy.appspot.com/
-Version: 	97.0.4692.99
+Version: 	102.0.5005.61
 Release: 	1%{?extrarelsuffix}
 Summary: 	A fast webkit-based web browser
 Group: 		Networking/WWW
@@ -107,7 +107,7 @@ Patch6:		https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-77.0.
 # https://gitweb.gentoo.org/repo/gentoo.git/tree/www-client/chromium/files/chromium-widevine-r3.patch
 Patch8:		https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-71.0.3578.98-widevine-r3.patch
 # Try to load widevine from other places
-Patch11:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-79.0.3945.56-widevine-other-locations.patch
+Patch11:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-100.0.4896.60-widevine-other-locations.patch
 # Add "Fedora" to the user agent string
 #Patch13:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-79.0.3945.56-fedora-user-agent.patch
 # https://gitweb.gentoo.org/repo/gentoo.git/tree/www-client/chromium/files/chromium-unbundle-zlib.patch
@@ -117,13 +117,14 @@ Patch54:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-77.0.
 # /../../ui/base/cursor/ozone/bitmap_cursor_factory_ozone.cc:53:15: error: 'find_if' is not a member of 'std'; did you mean 'find'? 
 #Patch63:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-79.0.3945.56-fix-find_if.patch
 
+Patch64:       https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-98.0.4758.80-EnumTable-crash.patch
+
 # From Arch and Gentoo
 # https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=chromium-dev
-Patch100:	https://raw.githubusercontent.com/gentoo/gentoo/master/www-client/chromium/files/chromium-96-EnumTable-crash.patch
 Patch101:	https://raw.githubusercontent.com/gentoo/gentoo/master/www-client/chromium/files/chromium-93-InkDropHost-crash.patch
 Patch102:	https://raw.githubusercontent.com/gentoo/gentoo/master/www-client/chromium/files/chromium-shim_headers.patch
 Patch103:	https://raw.githubusercontent.com/archlinux/svntogit-packages/packages/chromium/trunk/use-oauth2-client-switches-as-default.patch
-
+Patch104:	https://github.com/archlinux/svntogit-packages/raw/packages/chromium/trunk/chromium-libxml-unbundle.patch
 
 # Use lstdc++ on EPEL7 only
 #Patch101:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-75.0.3770.100-epel7-stdc++.patch
@@ -137,24 +138,20 @@ Patch103:	https://raw.githubusercontent.com/archlinux/svntogit-packages/packages
 
 ### Chromium gcc/libstdc++ support ###
 # https://github.com/stha09/chromium-patches
-Source500:	https://github.com/stha09/chromium-patches/releases/download/chromium-97-patchset-4/chromium-97-patchset-4.tar.xz
+Source500:	https://github.com/stha09/chromium-patches/releases/download/chromium-102-patchset-6/chromium-102-patchset-6.tar.xz
 
 ### Chromium Tests Patches ###
 # Arch Linux, fix for compile error with system ICU
-Patch602:	https://raw.githubusercontent.com/archlinuxarm/PKGBUILDs/master/extra/chromium/chromium-system-icu.patch
 
 # Enable VAAPI support on Linux
 # FIXME reenable once the patchset has caught up with upstream
 # https://github.com/saiarcot895/chromium-ubuntu-build
 
-# Fixes from Arch
-Patch661:	https://aur.archlinux.org/cgit/aur.git/plain/wayland-egl.patch
-
 # omv
 Patch1001:	chromium-64-system-curl.patch
 Patch1003:	chromium-system-zlib.patch
 Patch1004:	chromium-88-less-blacklist-nonsense.patch
-Patch1007:	chromium-81-enable-gpu-features.patch
+#Patch1007:	chromium-81-enable-gpu-features.patch
 Patch2:		https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-67.0.3396.62-gn-system.patch
 Patch1002:	chromium-69-no-static-libstdc++.patch
 Patch1006:	https://raw.githubusercontent.com/ungoogled-software/ungoogled-chromium-fedora/master/chromium-91.0.4472.77-java-only-allowed-in-android-builds.patch
@@ -242,6 +239,7 @@ BuildRequires:	pkgconfig(lcms2)
 BuildRequires: 	pkgconfig(minizip)
 %endif
 BuildRequires:  pkgconfig(protobuf)
+BuildRequires:	python3dist(protobuf)
 BuildRequires: 	yasm
 BuildRequires: 	pkgconfig(libusb-1.0)
 BuildRequires:  speech-dispatcher-devel
@@ -368,7 +366,7 @@ export PATH=$PWD/bfd:$PATH
 export CC=clang
 export CXX=clang++
 
-CHROMIUM_CORE_GN_DEFINES="use_sysroot=false is_debug=false fieldtrial_testing_like_official_build=true use_lld=false use_gold=true"
+CHROMIUM_CORE_GN_DEFINES="use_sysroot=false is_debug=false fieldtrial_testing_like_official_build=true "
 CHROMIUM_CORE_GN_DEFINES+=" is_clang=true clang_base_path=\"%{_prefix}\" clang_use_chrome_plugins=false "
 CHROMIUM_CORE_GN_DEFINES+=" treat_warnings_as_errors=false "
 CHROMIUM_CORE_GN_DEFINES+=" use_custom_libcxx=true "

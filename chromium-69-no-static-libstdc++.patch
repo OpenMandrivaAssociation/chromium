@@ -2,11 +2,11 @@ diff -up chromium-84.0.4147.38/tools/gn/build/gen.py.30~ chromium-84.0.4147.38/t
 --- chromium-84.0.4147.38/tools/gn/build/gen.py.30~	2020-06-06 20:37:39.523170465 +0200
 +++ chromium-84.0.4147.38/tools/gn/build/gen.py	2020-06-06 20:42:47.505925938 +0200
 @@ -105,7 +105,7 @@ def main(argv):
-   parser.add_option('--no-strip', action='store_true',
+   args_list.add('--no-strip', action='store_true',
                      help='Don\'t strip release build. Useful for profiling.')
-   parser.add_option('--no-static-libstdc++', action='store_true',
+   args_list.add('--no-static-libstdc++', action='store_true',
 -                    default=False, dest='no_static_libstdcpp',
 +                    default=True, dest='no_static_libstdcpp',
                      help='Don\'t link libstdc++ statically')
-   parser.add_option('--link-lib',
+   args_list.add('--link-lib',
                      action='append',

@@ -100,7 +100,7 @@ diff -up chromium-92.0.4515.131/gpu/config/gpu_driver_bug_list.json.32~ chromium
 -    {
        "id": 132,
        "description": "On Intel GPUs MSAA performance is not acceptable for GPU rasterization",
-       "cr_bugs": [527565],
+       "cr_bugs": [527565, 1298585],
 @@ -1036,27 +971,6 @@
        "disabled_extensions": ["GL_NV_path_rendering"]
      },
