@@ -125,6 +125,7 @@ Patch101:	https://raw.githubusercontent.com/gentoo/gentoo/master/www-client/chro
 Patch102:	https://raw.githubusercontent.com/gentoo/gentoo/master/www-client/chromium/files/chromium-shim_headers.patch
 Patch103:	https://raw.githubusercontent.com/archlinux/svntogit-packages/packages/chromium/trunk/use-oauth2-client-switches-as-default.patch
 Patch104:	https://github.com/archlinux/svntogit-packages/raw/packages/chromium/trunk/chromium-libxml-unbundle.patch
+Patch105:	reverse-roll-src-third_party-ffmpeg.patch
 
 # Use lstdc++ on EPEL7 only
 #Patch101:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-75.0.3770.100-epel7-stdc++.patch
