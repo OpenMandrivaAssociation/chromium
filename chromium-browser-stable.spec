@@ -119,6 +119,11 @@ Patch54:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-77.0.
 
 Patch64:       https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-98.0.4758.80-EnumTable-crash.patch
 
+%if %omvver > 4050000
+# only cooker has markupsafe > 2.0
+Patch65: 	https://src.fedoraproject.org/rpms/chromium/raw/rawhide/f/chromium-99.0.4844.84-markdownsafe-soft_str.patch
+%endif
+
 # From Arch and Gentoo
 # https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=chromium-dev
 Patch101:	https://raw.githubusercontent.com/gentoo/gentoo/master/www-client/chromium/files/chromium-93-InkDropHost-crash.patch
