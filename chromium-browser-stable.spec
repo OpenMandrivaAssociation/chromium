@@ -173,6 +173,7 @@ BuildRequires: 	gperf
 BuildRequires: 	bison
 BuildRequires: 	re2c
 BuildRequires: 	flex
+BuildRequires:	git
 BuildRequires:	pkgconfig(alsa)
 BuildRequires:	pkgconfig(krb5)
 BuildRequires:	pkgconfig(openh264)
