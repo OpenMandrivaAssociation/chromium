@@ -136,3 +136,13 @@ diff -up chromium-99.0.4844.84/third_party/jinja2/utils.py.soft_str chromium-99.
      )
 -    return soft_unicode(s)
 +    return soft_str(s)
+--- chromium-102.0.5005.61/third_party/blink/renderer/bindings/scripts/generate_bindings.pydeps.orig	2022-06-04 09:03:43.846883491 +0100
++++ chromium-102.0.5005.61/third_party/blink/renderer/bindings/scripts/generate_bindings.pydeps	2022-06-04 09:03:54.599516645 +0100
+@@ -17,7 +17,6 @@
+ ../../../../mako/mako/template.py
+ ../../../../mako/mako/util.py
+ ../../../../markupsafe/__init__.py
+-../../../../markupsafe/_compat.py
+ ../../../../markupsafe/_native.py
+ ../../../../pyjson5/src/json5/__init__.py
+ ../../../../pyjson5/src/json5/lib.py
