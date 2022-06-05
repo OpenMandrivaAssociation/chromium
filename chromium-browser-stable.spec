@@ -358,7 +358,7 @@ fi
 
 %ifarch %{arm}
 # Use linker flags to reduce memory consumption on low-mem architectures
-%global optflags %(echo %{optflags} | sed -e 's/-g /-g0 /' -e 's/-gdwarf-4//')
+%global optflags %(echo %{optflags} | sed -e 's/-g3 /-g0 /' -e 's/-gdwarf-4//')
 mkdir -p bfd
 ln -s %{_bindir}/ld.bfd bfd/ld
 export PATH=$PWD/bfd:$PATH
@@ -369,7 +369,7 @@ export PATH=$PWD/bfd:$PATH
 # Workaround for build failure
 %global ldflags %{ldflags} -Wl,-z,notext
 %endif
-%global optflags %(echo %{optflags} | sed -e 's/-g /-g0 /' -e 's/-gdwarf-4//')
+%global optflags %(echo %{optflags} | sed -e 's/-g3 /-g0 /' -e 's/-gdwarf-4//')
 %global optflags %{optflags} -I%{_includedir}/libunwind
 
 export CC=clang
