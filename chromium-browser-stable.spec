@@ -411,7 +411,6 @@ CHROMIUM_CORE_GN_DEFINES+=" use_ozone=true "
 CHROMIUM_CORE_GN_DEFINES+=" enable_nacl=false "
 CHROMIUM_CORE_GN_DEFINES+=" proprietary_codecs=true "
 CHROMIUM_CORE_GN_DEFINES+=" ffmpeg_branding=\"ChromeOS\" "
-CHROMIUM_CORE_GN_DEFINES+=" enable_hevc_demuxing=true "
 CHROMIUM_CORE_GN_DEFINES+=" enable_mse_mpeg2ts_stream_parser=true "
 %ifarch %{ix86}
 CHROMIUM_CORE_GN_DEFINES+=" target_cpu=\"x86\""
