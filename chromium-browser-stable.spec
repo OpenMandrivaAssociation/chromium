@@ -433,6 +433,7 @@ CHROMIUM_CORE_GN_DEFINES+=" thin_lto_enable_optimizations=true use_clang=true us
 CHROMIUM_CORE_GN_DEFINES+=" custom_toolchain=\"//build/toolchain/linux/unbundle:default\""
 CHROMIUM_CORE_GN_DEFINES+=" host_toolchain=\"//build/toolchain/linux/unbundle:default\""
 CHROMIUM_CORE_GN_DEFINES+=" v8_snapshot_toolchain=\"//build/toolchain/linux/unbundle:default\""
+CHROMIUM_CORE_GN_DEFINES+=" symbol_level=1"
 
 CHROMIUM_BROWSER_GN_DEFINES="use_pulseaudio=true link_pulseaudio=true"
 CHROMIUM_BROWSER_GN_DEFINES+=" enable_nacl=false"
