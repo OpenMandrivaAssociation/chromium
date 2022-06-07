@@ -426,6 +426,9 @@ CHROMIUM_CORE_GN_DEFINES+=" rtc_build_with_neon=true"
 %endif
 %ifarch %{aarch64}
 CHROMIUM_CORE_GN_DEFINES+=" target_cpu=\"arm64\""
+# if this is true (default for non official builds) it tries to use
+# a prebuilt x86 binary in the source tree
+CHROMIUM_CORE_GN_DEFINES+=" devtools_skip_typecheck=false"
 %endif
 CHROMIUM_CORE_GN_DEFINES+=" google_api_key=\"%{google_api_key}\""
 CHROMIUM_CORE_GN_DEFINES+=" google_default_client_id=\"%{google_default_client_id}\""
