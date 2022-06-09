@@ -23,6 +23,14 @@
 %define _build_pkgcheck_set %{nil}
 %endif
 
+# crisb - build hangs with python3.11 during rminjs
+%if %omvver > 4050000
+%define build_py python3.9
+%else
+%define build_py python3
+%endif
+
+
 # FIXME As of 97.0.4688.2, Chromium crashes frequently when
 # built with fortification enabled.
 # [3784233:1:1107/202853.599120:ERROR:socket.cc(93)] sendmsg: Broken pipe (32)
@@ -247,8 +255,16 @@ BuildRequires:	pkgconfig(lcms2)
 %if %{with system_minizip}
 BuildRequires: 	pkgconfig(minizip)
 %endif
+
+%if %omvver > 4050000
+BuildRequires:	pkgconfig(python-3.9)
+%else
+BuildRequires:	pkgconfig(python)
 BuildRequires:  pkgconfig(protobuf)
 BuildRequires:	python3dist(protobuf)
+BuildRequires:  python3dist(markupsafe)
+%endif
+
 BuildRequires: 	yasm
 BuildRequires: 	pkgconfig(libusb-1.0)
 BuildRequires:  speech-dispatcher-devel
@@ -257,7 +273,6 @@ BuildRequires:	pkgconfig(libexif)
 BuildRequires:	ninja
 BuildRequires:	nodejs
 BuildRequires:	jdk-current
-BuildRequires:	python3dist(markupsafe)
 
 %description
 Chromium is a browser that combines a minimal design with sophisticated
@@ -341,13 +356,15 @@ for lib in %{system_libs}; do
 		\! -regex '.*\.\(gn\|gni\|isolate\)' \
 		-delete
 done
-python build/linux/unbundle/replace_gn_files.py \
+%build_py build/linux/unbundle/replace_gn_files.py \
 	--system-libraries %{system_libs}
 
+%if %omvver <= 4050000
 # Look, I don't know. This package is spit and chewing gum. Sorry.
 rm -rf third_party/markupsafe
 ln -s %{python3_sitearch}/markupsafe third_party/markupsafe
 # We should look on removing other python packages as well i.e. ply
+%endif
 
 # workaround build failure
 if [ ! -f chrome/test/data/webui/i18n_process_css_test.html ]; then
@@ -476,11 +493,11 @@ fi
 export CC=%{__cc}
 export CXX=%{__cxx}
 
-python tools/gn/bootstrap/bootstrap.py --skip-generate-buildfiles
+%build_py tools/gn/bootstrap/bootstrap.py --skip-generate-buildfiles
 
-python third_party/libaddressinput/chromium/tools/update-strings.py
+%build_py third_party/libaddressinput/chromium/tools/update-strings.py
 
-out/Release/gn gen --script-executable=/usr/bin/python --args="${CHROMIUM_CORE_GN_DEFINES} ${CHROMIUM_BROWSER_GN_DEFINES}" out/Release
+out/Release/gn gen --script-executable=/usr/bin/%build_py --args="${CHROMIUM_CORE_GN_DEFINES} ${CHROMIUM_BROWSER_GN_DEFINES}" out/Release
 
 # Note: DON'T use system sqlite (3.7.3) -- it breaks history search
 # As of 36.0.1985.143, use_system_icu breaks the build.
