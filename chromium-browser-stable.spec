@@ -86,7 +86,7 @@
 Name: 		chromium-browser-%{channel}
 # Working version numbers can be found at
 # http://omahaproxy.appspot.com/
-Version: 	102.0.5005.115
+Version: 	103.0.5060.53
 Release: 	1%{?extrarelsuffix}
 Summary: 	A fast webkit-based web browser
 Group: 		Networking/WWW
@@ -137,7 +137,6 @@ Patch65: 	https://src.fedoraproject.org/rpms/chromium/raw/rawhide/f/chromium-99.
 Patch101:	https://raw.githubusercontent.com/gentoo/gentoo/master/www-client/chromium/files/chromium-93-InkDropHost-crash.patch
 Patch102:	https://raw.githubusercontent.com/gentoo/gentoo/master/www-client/chromium/files/chromium-shim_headers.patch
 Patch103:	https://raw.githubusercontent.com/archlinux/svntogit-packages/packages/chromium/trunk/use-oauth2-client-switches-as-default.patch
-Patch104:	https://github.com/archlinux/svntogit-packages/raw/packages/chromium/trunk/chromium-libxml-unbundle.patch
 Patch105:	reverse-roll-src-third_party-ffmpeg.patch
 
 # Use lstdc++ on EPEL7 only
@@ -152,7 +151,7 @@ Patch105:	reverse-roll-src-third_party-ffmpeg.patch
 
 ### Chromium gcc/libstdc++ support ###
 # https://github.com/stha09/chromium-patches
-Source500:	https://github.com/stha09/chromium-patches/releases/download/chromium-102-patchset-6/chromium-102-patchset-6.tar.xz
+Source500:	https://github.com/stha09/chromium-patches/releases/download/chromium-103-patchset-4/chromium-103-patchset-4.tar.xz
 
 ### Chromium Tests Patches ###
 # Arch Linux, fix for compile error with system ICU
