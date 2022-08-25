@@ -86,7 +86,7 @@
 Name: 		chromium-browser-%{channel}
 # Working version numbers can be found at
 # http://omahaproxy.appspot.com/
-Version: 	103.0.5060.134
+Version: 	104.0.5112.101
 Release: 	1%{?extrarelsuffix}
 Summary: 	A fast webkit-based web browser
 Group: 		Networking/WWW
@@ -151,7 +151,7 @@ Patch105:	reverse-roll-src-third_party-ffmpeg.patch
 
 ### Chromium gcc/libstdc++ support ###
 # https://github.com/stha09/chromium-patches
-Source500:	https://github.com/stha09/chromium-patches/releases/download/chromium-103-patchset-4/chromium-103-patchset-4.tar.xz
+Source500:	https://github.com/stha09/chromium-patches/releases/download/chromium-104-patchset-2/chromium-104-patchset-2.tar.xz
 
 ### Chromium Tests Patches ###
 # Arch Linux, fix for compile error with system ICU
