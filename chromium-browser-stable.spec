@@ -86,7 +86,7 @@
 Name: 		chromium-browser-%{channel}
 # Working version numbers can be found at
 # http://omahaproxy.appspot.com/
-Version: 	104.0.5112.101
+Version: 	105.0.5195.102
 Release: 	1%{?extrarelsuffix}
 Summary: 	A fast webkit-based web browser
 Group: 		Networking/WWW
@@ -151,7 +151,7 @@ Patch105:	reverse-roll-src-third_party-ffmpeg.patch
 
 ### Chromium gcc/libstdc++ support ###
 # https://github.com/stha09/chromium-patches
-Source500:	https://github.com/stha09/chromium-patches/releases/download/chromium-104-patchset-2/chromium-104-patchset-2.tar.xz
+Source500:	https://github.com/stha09/chromium-patches/releases/download/chromium-105-patchset-1/chromium-105-patchset-1.tar.xz
 
 ### Chromium Tests Patches ###
 # Arch Linux, fix for compile error with system ICU
@@ -163,7 +163,6 @@ Source500:	https://github.com/stha09/chromium-patches/releases/download/chromium
 # omv
 Patch1001:	chromium-64-system-curl.patch
 Patch1003:	chromium-system-zlib.patch
-Patch1004:	chromium-88-less-blacklist-nonsense.patch
 #Patch1007:	chromium-81-enable-gpu-features.patch
 Patch2:		https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-67.0.3396.62-gn-system.patch
 Patch1002:	chromium-69-no-static-libstdc++.patch
@@ -172,6 +171,7 @@ Patch1009:	chromium-97-compilefixes.patch
 Patch1010:	chromium-97-ffmpeg-4.4.1.patch
 Patch1011:	chromium-99-ffmpeg-5.0.patch
 Patch1012:	chromium-102-python3.11.patch
+Patch1013:	chromium-105-minizip-ng.patch
 
 Provides: 	%{crname}
 Obsoletes: 	chromium-browser-unstable < 26.0.1410.51
@@ -357,6 +357,9 @@ for lib in %{system_libs}; do
 done
 %build_py build/linux/unbundle/replace_gn_files.py \
 	--system-libraries %{system_libs}
+# Forcing an outdated copy of what should really match system headers
+# is just about as dumb as something can get
+cp -f %{_includedir}/wayland-client-core.h third_party/wayland/src/src/
 
 %if %omvver <= 4050000
 # Look, I don't know. This package is spit and chewing gum. Sorry.
