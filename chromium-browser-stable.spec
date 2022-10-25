@@ -172,6 +172,7 @@ Patch1009:	chromium-97-compilefixes.patch
 Patch1010:	chromium-97-ffmpeg-4.4.1.patch
 Patch1011:	chromium-99-ffmpeg-5.0.patch
 Patch1013:	chromium-105-minizip-ng.patch
+Patch1014:	chromium-107-ffmpeg-5.1.patch
 
 Provides: 	%{crname}
 Obsoletes: 	chromium-browser-unstable < 26.0.1410.51
