@@ -24,7 +24,8 @@
 %endif
 
 # crisb - build hangs with python3.11 during rminjs
-%if %omvver > 4050000
+%if 0
+#%omvver > 4050000
 %define build_py python3.9
 %else
 %define build_py python3
@@ -86,7 +87,7 @@
 Name: 		chromium-browser-%{channel}
 # Working version numbers can be found at
 # http://omahaproxy.appspot.com/
-Version: 	105.0.5195.125
+Version: 	107.0.5304.68
 Release: 	1%{?extrarelsuffix}
 Summary: 	A fast webkit-based web browser
 Group: 		Networking/WWW
@@ -151,7 +152,7 @@ Patch105:	reverse-roll-src-third_party-ffmpeg.patch
 
 ### Chromium gcc/libstdc++ support ###
 # https://github.com/stha09/chromium-patches
-Source500:	https://github.com/stha09/chromium-patches/releases/download/chromium-105-patchset-1/chromium-105-patchset-1.tar.xz
+Source500:	https://github.com/stha09/chromium-patches/releases/download/chromium-107-patchset-1/chromium-107-patchset-1.tar.xz
 
 ### Chromium Tests Patches ###
 # Arch Linux, fix for compile error with system ICU
@@ -170,7 +171,6 @@ Patch1006:	https://raw.githubusercontent.com/ungoogled-software/ungoogled-chromi
 Patch1009:	chromium-97-compilefixes.patch
 Patch1010:	chromium-97-ffmpeg-4.4.1.patch
 Patch1011:	chromium-99-ffmpeg-5.0.patch
-Patch1012:	chromium-102-python3.11.patch
 Patch1013:	chromium-105-minizip-ng.patch
 
 Provides: 	%{crname}
