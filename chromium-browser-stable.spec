@@ -54,7 +54,7 @@
 #global system_libs icu fontconfig harfbuzz-ng libjpeg libpng snappy libdrm ffmpeg flac libwebp zlib libxml libxslt re2 libusb libevent freetype opus openh264
 # KNOWN TO WORK:  global system_libs zlib ffmpeg fontconfig harfbuzz-ng libjpeg libpng libdrm flac libwebp
 # KNOWN TO BREAK: global system_libs zlib ffmpeg fontconfig harfbuzz-ng libjpeg libpng libdrm flac libwebp libxml libxslt libevent opus openh264
-%global system_libs zlib ffmpeg fontconfig harfbuzz-ng libjpeg libpng libdrm flac libwebp libxml libxslt opus openh264 libusb ffi
+%global system_libs zlib ffmpeg fontconfig harfbuzz-ng libjpeg libpng libdrm flac libwebp libxml libxslt opus openh264 libusb
 # FIXME add libvpx
 
 # Set up Google API keys, see http://www.chromium.org/developers/how-tos/api-keys
@@ -210,6 +210,11 @@ BuildRequires:  pkgconfig(libva-drm)
 BuildRequires:  pkgconfig(libva-glx)
 BuildRequires:  pkgconfig(libva-x11)
 BuildRequires:	pkgconfig(dri)
+BuildRequires:	pkgconfig(Qt5Core)
+BuildRequires:	pkgconfig(Qt5DBus)
+BuildRequires:	pkgconfig(Qt5Gui)
+BuildRequires:	pkgconfig(Qt5Widgets)
+BuildRequires:	pkgconfig(Qt5OpenGL)
 BuildRequires:	%{_lib}GL-devel
 BuildRequires: 	bzip2-devel
 BuildRequires: 	jpeg-devel
@@ -399,7 +404,7 @@ export CXX=clang++
 CHROMIUM_CORE_GN_DEFINES="use_sysroot=false is_debug=false fieldtrial_testing_like_official_build=true "
 CHROMIUM_CORE_GN_DEFINES+=" is_clang=true clang_base_path=\"%{_prefix}\" clang_use_chrome_plugins=false "
 CHROMIUM_CORE_GN_DEFINES+=" treat_warnings_as_errors=false "
-CHROMIUM_CORE_GN_DEFINES+=" use_custom_libcxx=true "
+CHROMIUM_CORE_GN_DEFINES+=" use_custom_libcxx=true use_system_ffi=true "
 for i in %{system_libs}; do
 	if [ "$i" = "harfbuzz-ng" ]; then
 		CHROMIUM_CORE_GN_DEFINES+=" use_system_harfbuzz=true "
@@ -415,7 +420,7 @@ CHROMIUM_CORE_GN_DEFINES+=" use_system_minigbm=true "
 CHROMIUM_CORE_GN_DEFINES+=" use_system_wayland=true "
 CHROMIUM_CORE_GN_DEFINES+=" use_xkbcommon=true "
 #CHROMIUM_CORE_GN_DEFINES+=" use_glib=false use_atk=false "
-#CHROMIUM_CORE_GN_DEFINES+=" use_gtk=false "
+CHROMIUM_CORE_GN_DEFINES+=" use_gtk=false use_qt=true "
 %if %{with system_icu}
 CHROMIUM_CORE_GN_DEFINES+=" use_system_icu=true "
 %else
