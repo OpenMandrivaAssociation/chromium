@@ -404,7 +404,7 @@ export CXX=clang++
 CHROMIUM_CORE_GN_DEFINES="use_sysroot=false is_debug=false fieldtrial_testing_like_official_build=true "
 CHROMIUM_CORE_GN_DEFINES+=" is_clang=true clang_base_path=\"%{_prefix}\" clang_use_chrome_plugins=false "
 CHROMIUM_CORE_GN_DEFINES+=" treat_warnings_as_errors=false "
-CHROMIUM_CORE_GN_DEFINES+=" use_custom_libcxx=true use_system_ffi=true "
+CHROMIUM_CORE_GN_DEFINES+=" use_custom_libcxx=true use_system_libffi=true "
 for i in %{system_libs}; do
 	if [ "$i" = "harfbuzz-ng" ]; then
 		CHROMIUM_CORE_GN_DEFINES+=" use_system_harfbuzz=true "
