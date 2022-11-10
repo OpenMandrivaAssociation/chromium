@@ -23,15 +23,6 @@
 %define _build_pkgcheck_set %{nil}
 %endif
 
-# crisb - build hangs with python3.11 during rminjs
-%if 0
-#%omvver > 4050000
-%define build_py python3.9
-%else
-%define build_py python3
-%endif
-
-
 # FIXME As of 97.0.4688.2, Chromium crashes frequently when
 # built with fortification enabled.
 # [3784233:1:1107/202853.599120:ERROR:socket.cc(93)] sendmsg: Broken pipe (32)
@@ -51,11 +42,10 @@
 %define _ssp_cflags %{nil}
 
 # Libraries that should be unbundled
-#global system_libs icu fontconfig harfbuzz-ng libjpeg libpng snappy libdrm ffmpeg flac libwebp zlib libxml libxslt re2 libusb libevent freetype opus openh264
-# KNOWN TO WORK:  global system_libs zlib ffmpeg fontconfig harfbuzz-ng libjpeg libpng libdrm flac libwebp
-# KNOWN TO BREAK: global system_libs zlib ffmpeg fontconfig harfbuzz-ng libjpeg libpng libdrm flac libwebp libxml libxslt libevent opus openh264
-%global system_libs zlib ffmpeg fontconfig harfbuzz-ng libjpeg libpng libdrm flac libwebp libxml libxslt opus openh264 libusb
-# FIXME add libvpx
+%global system_libs brotli dav1d flac ffmpeg fontconfig harfbuzz-ng icu libaom libjpeg libpng libdrm libwebp libxml libxslt opus openh264 libusb zlib libevent freetype
+# FIXME add libvpx [currently results in build failure]
+# re2 jsoncpp snappy <-- can't be added right now because of use_custom_libcxx=true, system libs use libstdc++
+%define system() %(if echo %{system_libs} |grep -q -E '(^| )%{1}( |$)'; then echo -n 1; else echo -n 0;  fi)
 
 # Set up Google API keys, see http://www.chromium.org/developers/how-tos/api-keys
 # OpenMandriva key, id and secret
@@ -65,17 +55,6 @@
 %define    google_default_client_secret RDdr-pHq2gStY4uw0m-zxXeo
 
 %bcond_with	plf
-# crisb - ozone causes a segfault on startup as of 57.0.2987.133, doesn't compile in 80.x
-%bcond_with	ozone
-# Breaks the build as of chromium 83, icu 66.1
-%bcond_without	system_icu
-%bcond_without	system_ffmpeg
-# Temporarily broken, cr_z_* symbols used even when we're supposed to use system minizip
-%bcond_without	system_minizip
-# chromium 58 fails with system vpx 1.6.1
-%bcond_without	system_vpx
-# system re2 doesn't work with custom libcxx
-%bcond_with	system_re2
 
 # Always support proprietary codecs
 # or html5 does not work
@@ -87,7 +66,9 @@
 Name: 		chromium-browser-%{channel}
 # Working version numbers can be found at
 # http://omahaproxy.appspot.com/
-Version: 	107.0.5304.68
+Version: 	107.0.5304.110
+### Don't be evil!!! ###
+#define ungoogled 107.0.5304.88-1
 Release: 	1%{?extrarelsuffix}
 Summary: 	A fast webkit-based web browser
 Group: 		Networking/WWW
@@ -104,7 +85,10 @@ Source4:	chromium-drirc-disable-10bpc-color-configs.conf
 Source100:	%{name}.rpmlintrc
 
 ### Chromium Fedora Patches ###
+%if ! 0%{?ungoogled:1}
+# Ungoogled Chromium already builds a PIE sandbox
 Patch0:		https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-70.0.3538.67-sandbox-pie.patch
+%endif
 # Use /etc/chromium for master_prefs
 Patch1:		https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-68.0.3440.106-master-prefs-path.patch
 # Use gn system files
@@ -123,10 +107,8 @@ Patch11:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-100.0
 Patch53:	chromium-81-unbundle-zlib.patch
 # Needs to be submitted..
 Patch54:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-77.0.3865.75-gcc-include-memory.patch
-# /../../ui/base/cursor/ozone/bitmap_cursor_factory_ozone.cc:53:15: error: 'find_if' is not a member of 'std'; did you mean 'find'? 
-#Patch63:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-79.0.3945.56-fix-find_if.patch
 
-Patch64:       https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-98.0.4758.80-EnumTable-crash.patch
+Patch64:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-98.0.4758.80-EnumTable-crash.patch
 
 %if %omvver > 4050000
 # only cooker has markupsafe > 2.0
@@ -154,6 +136,11 @@ Patch105:	reverse-roll-src-third_party-ffmpeg.patch
 # https://github.com/stha09/chromium-patches
 Source500:	https://github.com/stha09/chromium-patches/releases/download/chromium-107-patchset-1/chromium-107-patchset-1.tar.xz
 
+%if 0%{?ungoogled:1}
+Source1000:	https://github.com/ungoogled-software/ungoogled-chromium/archive/%{ungoogled}.tar.gz
+Patch1000:	chromium-107-fix-build-after-ungoogling.patch
+%endif
+
 ### Chromium Tests Patches ###
 # Arch Linux, fix for compile error with system ICU
 
@@ -163,10 +150,11 @@ Source500:	https://github.com/stha09/chromium-patches/releases/download/chromium
 
 # omv
 Patch1001:	chromium-64-system-curl.patch
+Patch1002:	chromium-69-no-static-libstdc++.patch
 Patch1003:	chromium-system-zlib.patch
+Patch1004:	chromium-107-system-libs.patch
 #Patch1007:	chromium-81-enable-gpu-features.patch
 Patch2:		https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-67.0.3396.62-gn-system.patch
-Patch1002:	chromium-69-no-static-libstdc++.patch
 Patch1006:	https://raw.githubusercontent.com/ungoogled-software/ungoogled-chromium-fedora/master/chromium-91.0.4472.77-java-only-allowed-in-android-builds.patch
 Patch1009:	chromium-97-compilefixes.patch
 Patch1010:	chromium-97-ffmpeg-4.4.1.patch
@@ -175,9 +163,10 @@ Patch1013:	chromium-105-minizip-ng.patch
 Patch1014:	chromium-107-ffmpeg-5.1.patch
 
 Provides: 	%{crname}
-Obsoletes: 	chromium-browser-unstable < 26.0.1410.51
-Obsoletes: 	chromium-browser-beta < 26.0.1410.51
-Obsoletes: 	chromium-browser < 1:9.0.597.94
+Obsoletes: 	chromium-browser-unstable < %{EVRD}
+Obsoletes: 	chromium-browser-dev < %{EVRD}
+Obsoletes: 	chromium-browser-beta < %{EVRD}
+Obsoletes: 	chromium-browser < %{EVRD}
 BuildRequires:	glibc-static-devel
 BuildRequires: 	gperf
 BuildRequires: 	bison
@@ -186,16 +175,10 @@ BuildRequires: 	flex
 BuildRequires:	git
 BuildRequires:	pkgconfig(alsa)
 BuildRequires:	pkgconfig(krb5)
-BuildRequires:	pkgconfig(openh264)
 BuildRequires:	pkgconfig(libunwind)
-%if %{with system_re2}
-BuildRequires:	pkgconfig(re2)
-%endif
 BuildRequires:	pkgconfig(com_err)
 BuildRequires: 	alsa-oss-devel
 BuildRequires:	atomic-devel
-BuildRequires:	harfbuzz-devel
-BuildRequires:  pkgconfig(icu-i18n)
 BuildRequires: 	snappy-devel
 BuildRequires: 	jsoncpp-devel
 BuildRequires: 	pkgconfig(expat)
@@ -203,7 +186,6 @@ BuildRequires: 	pkgconfig(glib-2.0)
 BuildRequires: 	pkgconfig(wayland-egl)
 BuildRequires: 	pkgconfig(nss)
 BuildRequires:	pkgconfig(gbm)
-BuildRequires:	pkgconfig(libdrm)
 BuildRequires:	pkgconfig(libglvnd)
 BuildRequires:  pkgconfig(libva)
 BuildRequires:  pkgconfig(libva-drm)
@@ -217,20 +199,78 @@ BuildRequires:	pkgconfig(Qt5Widgets)
 BuildRequires:	pkgconfig(Qt5OpenGL)
 BuildRequires:	%{_lib}GL-devel
 BuildRequires: 	bzip2-devel
-BuildRequires: 	jpeg-devel
-BuildRequires: 	pkgconfig(libpng)
 BuildRequires:	pkgconfig(libcurl)
 BuildRequires:	clang lld
-%if %{with system_ffmpeg}
+%if %{system brotli}
+BuildRequires:	pkgconfig(libbrotlicommon)
+BuildRequires:	pkgconfig(libbrotlidec)
+BuildRequires:	pkgconfig(libbrotlienc)
+%endif
+%if %{system dav1d}
+BuildRequires:	pkgconfig(dav1d)
+%endif
+%if %{system ffmpeg}
 BuildRequires:  pkgconfig(libavcodec)
 BuildRequires:  pkgconfig(libavfilter)
 BuildRequires:  pkgconfig(libavformat) >= 57.41.100
 BuildRequires:  pkgconfig(libavutil)
 %endif
-BuildRequires:	gtk+3.0-devel
-BuildRequires:	gtk+2.0-devel
-BuildRequires: 	pkgconfig(nspr)
+%if %{system flac}
+BuildRequires: 	pkgconfig(flac)
+%endif
+%if %{system fontconfig}
+BuildRequires: 	pkgconfig(fontconfig)
+%endif
+%if %{system harfbuzz-ng}
+BuildRequires:	harfbuzz-devel
+%endif
+%if %{system icu}
+BuildRequires:  pkgconfig(icu-i18n)
+%endif
+%if %{system libaom}
+BuildRequires:	pkgconfig(aom)
+%endif
+%if %{system libdrm}
+BuildRequires:	pkgconfig(libdrm)
+%endif
+%if %{system libevent}
+BuildRequires: 	pkgconfig(libevent)
+%endif
+%if %{system libjpeg}
+BuildRequires: 	jpeg-devel
+%endif
+%if %{system libpng}
+BuildRequires: 	pkgconfig(libpng)
+%endif
+%if %{system libusb}
+BuildRequires: 	pkgconfig(libusb-1.0)
+%endif
+%if %{system libvpx}
+BuildRequires: 	pkgconfig(vpx)
+%endif
+%if %{system libwebp}
+BuildRequires: 	pkgconfig(libwebp)
+%endif
+%if %{system libxml}
+BuildRequires: 	pkgconfig(libxml-2.0)
+%endif
+%if %{system libxslt}
+BuildRequires: 	pkgconfig(libxslt)
+%endif
+%if %{system opus}
+BuildRequires: 	pkgconfig(opus)
+%endif
+%if %{system openh264}
+BuildRequires:	pkgconfig(openh264)
+%endif
+%if %{system re2}
+BuildRequires:	pkgconfig(re2)
+%endif
+%if %{system zlib}
 BuildRequires: 	pkgconfig(zlib)
+BuildRequires: 	pkgconfig(minizip)
+%endif
+BuildRequires: 	pkgconfig(nspr)
 BuildRequires: 	pkgconfig(xscrnsaver)
 BuildRequires:	pkgconfig(xshmfence)
 BuildRequires: 	pkgconfig(glu)
@@ -239,40 +279,24 @@ BuildRequires: 	cups-devel
 BuildRequires:	pkgconfig(dbus-glib-1)
 BuildRequires: 	pkgconfig(gnome-keyring-1)
 BuildRequires: 	pam-devel
-%if %{with system_vpx}
-BuildRequires: 	pkgconfig(vpx)
-%endif
 BuildRequires: 	pkgconfig(xtst)
-BuildRequires: 	pkgconfig(libxslt)
-BuildRequires: 	pkgconfig(libxml-2.0)
 BuildRequires: 	pkgconfig(libpulse)
 BuildRequires: 	pkgconfig(xt)
 BuildRequires: 	cap-devel
 BuildRequires: 	elfutils-devel
 BuildRequires: 	pkgconfig(gnutls)
-BuildRequires: 	pkgconfig(libevent)
 BuildRequires: 	pkgconfig(udev)
-BuildRequires: 	pkgconfig(flac)
-BuildRequires: 	pkgconfig(opus)
-BuildRequires: 	pkgconfig(libwebp)
 BuildRequires: 	pkgconfig(speex)
 BuildRequires:	pkgconfig(lcms2)
 BuildRequires:	pkgconfig(libffi)
-%if %{with system_minizip}
-BuildRequires: 	pkgconfig(minizip)
-%endif
+BuildRequires:	pkgconfig(snappy)
 
-%if %omvver > 4050000
-BuildRequires:	pkgconfig(python-3.9)
-%else
 BuildRequires:	pkgconfig(python)
 BuildRequires:  pkgconfig(protobuf)
-BuildRequires:	python3dist(protobuf)
-BuildRequires:  python3dist(markupsafe)
-%endif
+BuildRequires:	python%{pyver}dist(protobuf)
+BuildRequires:  python%{pyver}dist(markupsafe)
 
 BuildRequires: 	yasm
-BuildRequires: 	pkgconfig(libusb-1.0)
 BuildRequires:  speech-dispatcher-devel
 BuildRequires:  pkgconfig(libpci)
 BuildRequires:	pkgconfig(libexif)
@@ -320,7 +344,9 @@ members of the Chromium and WebDriver teams.
 
 
 %prep
-%autosetup -p1 -n chromium-%{version} -a 500
+# Not using %%autosetup so we can apply patches after stha09 and
+# ungoogled-chromium patches have been applied
+%setup -q -n chromium-%{version} -a 500 %{?ungoogled:-a 1000}
 j=1
 for i in patches/*; do
 	if basename $i |grep -qE '~$'; then continue; fi
@@ -329,12 +355,27 @@ for i in patches/*; do
 	j=$((j+1))
 done
 
+%if 0%{?ungoogled:1}
+UGDIR=$(pwd)/ungoogled-chromium-%{ungoogled}
+# FIXME we shouldn't un-prune anything, but this seems to be needed
+sed -i -e '/esbuild/d' $UGDIR/pruning.list
+python $UGDIR/utils/prune_binaries.py ./ $UGDIR/pruning.list
+python $UGDIR/utils/patches.py apply ./ $UGDIR/patches
+python $UGDIR/utils/domain_substitution.py apply -r $UGDIR/domain_regex.list -f $UGDIR/domain_substitution.list -c domainsubcache.tar.gz ./
+%endif
+
+%autopatch -p1
+
 rm -rf third_party/binutils/
 
 echo "%{revision}" > build/LASTCHANGE.in
 
 sed -i 's!-nostdlib++!!g'  build/config/posix/BUILD.gn
 sed -i 's!ffmpeg_buildflags!ffmpeg_features!g' build/linux/unbundle/ffmpeg.gn
+
+# Allow building against system libraries in official builds
+sed -i 's/OFFICIAL_BUILD/GOOGLE_CHROME_BUILD/' \
+	tools/generate_shim_headers/generate_shim_headers.py
  
 # Hard code extra version
 FILE=chrome/common/channel_info_posix.cc
@@ -362,18 +403,18 @@ for lib in %{system_libs}; do
 		\! -regex '.*\.\(gn\|gni\|isolate\)' \
 		-delete
 done
-%build_py build/linux/unbundle/replace_gn_files.py \
+python build/linux/unbundle/replace_gn_files.py \
 	--system-libraries %{system_libs}
 # Forcing an outdated copy of what should really match system headers
 # is just about as dumb as something can get
 cp -f %{_includedir}/wayland-client-core.h third_party/wayland/src/src/
 
-%if %omvver <= 4050000
+#if %omvver <= 4050000
 # Look, I don't know. This package is spit and chewing gum. Sorry.
 rm -rf third_party/markupsafe
 ln -s %{python3_sitearch}/markupsafe third_party/markupsafe
 # We should look on removing other python packages as well i.e. ply
-%endif
+#endif
 
 # workaround build failure
 if [ ! -f chrome/test/data/webui/i18n_process_css_test.html ]; then
@@ -381,6 +422,10 @@ if [ ! -f chrome/test/data/webui/i18n_process_css_test.html ]; then
 fi
 
 %build
+%if 0%{?ungoogled:1}
+UGDIR=$(pwd)/ungoogled-chromium-%{ungoogled}
+%endif
+
 . %{_sysconfdir}/profile.d/90java.sh
 
 %ifarch %{arm}
@@ -401,78 +446,119 @@ export PATH=$PWD/bfd:$PATH
 export CC=clang
 export CXX=clang++
 
-CHROMIUM_CORE_GN_DEFINES="use_sysroot=false is_debug=false fieldtrial_testing_like_official_build=true "
-CHROMIUM_CORE_GN_DEFINES+=" is_clang=true clang_base_path=\"%{_prefix}\" clang_use_chrome_plugins=false "
-CHROMIUM_CORE_GN_DEFINES+=" treat_warnings_as_errors=false "
-CHROMIUM_CORE_GN_DEFINES+=" use_custom_libcxx=true use_system_libffi=true "
+_lto_cpus="$(getconf _NPROCESSORS_ONLN)"
+if [ $_lto_cpus -gt 4 ]; then
+	# LTO is very memory intensive, so
+	# 32 parallel LTO jobs may not be
+	# a good idea...
+	_lto_cpus=4
+fi
+
+GN_DEFINES=""
+%if 0%{?ungoogled:1}
+GN_DEFINES+=" $(cat $UGDIR/flags.gn |tr '\n' ' ')"
+%endif
+GN_DEFINES+="use_sysroot=false is_debug=false fieldtrial_testing_like_official_build=true "
+GN_DEFINES+=" is_clang=true clang_base_path=\"%{_prefix}\" clang_use_chrome_plugins=false "
+GN_DEFINES+=" treat_warnings_as_errors=false "
+%if 1
+GN_DEFINES+=" use_custom_libcxx=true "
+%else
+GN_DEFINES+=" use_custom_libcxx=false "
+%endif
 for i in %{system_libs}; do
 	if [ "$i" = "harfbuzz-ng" ]; then
-		CHROMIUM_CORE_GN_DEFINES+=" use_system_harfbuzz=true "
+		GN_DEFINES+=" use_system_harfbuzz=true "
 	else
-		CHROMIUM_CORE_GN_DEFINES+=" use_system_$i=true "
+		GN_DEFINES+=" use_system_$i=true "
 	fi
 done
-CHROMIUM_CORE_GN_DEFINES+=" use_system_libjpeg=true "
-CHROMIUM_CORE_GN_DEFINES+=" use_system_lcms2=true "
-#CHROMIUM_CORE_GN_DEFINES+=" use_system_libpng=true "
-#CHROMIUM_CORE_GN_DEFINES+=" use_system_libdrm=true "
-CHROMIUM_CORE_GN_DEFINES+=" use_system_minigbm=true "
-CHROMIUM_CORE_GN_DEFINES+=" use_system_wayland=true "
-CHROMIUM_CORE_GN_DEFINES+=" use_xkbcommon=true "
-#CHROMIUM_CORE_GN_DEFINES+=" use_glib=false use_atk=false "
-CHROMIUM_CORE_GN_DEFINES+=" use_gtk=false use_qt=true "
-%if %{with system_icu}
-CHROMIUM_CORE_GN_DEFINES+=" use_system_icu=true "
-%else
-CHROMIUM_CORE_GN_DEFINES+=" icu_use_data_file=true"
-%endif
-CHROMIUM_CORE_GN_DEFINES+=" use_gnome_keyring=false "
-CHROMIUM_CORE_GN_DEFINES+=" fatal_linker_warnings=false "
-CHROMIUM_CORE_GN_DEFINES+=" system_libdir=\"%{_lib}\""
-CHROMIUM_CORE_GN_DEFINES+=" use_allocator=\"none\""
-CHROMIUM_CORE_GN_DEFINES+=" use_aura=true "
-#CHROMIUM_CORE_GN_DEFINES+=" use_gio=true"
-%if %{with ozone}
-CHROMIUM_CORE_GN_DEFINES+=" use_ozone=true "
-%endif
-CHROMIUM_CORE_GN_DEFINES+=" enable_nacl=false "
-CHROMIUM_CORE_GN_DEFINES+=" proprietary_codecs=true "
-CHROMIUM_CORE_GN_DEFINES+=" ffmpeg_branding=\"ChromeOS\" "
-CHROMIUM_CORE_GN_DEFINES+=" enable_mse_mpeg2ts_stream_parser=true "
+GN_DEFINES+=" use_system_expat=true "
+GN_DEFINES+=" use_system_lcms2=true "
+GN_DEFINES+=" use_system_libffi=true "
+GN_DEFINES+=" use_system_libopenjpeg2=true "
+# We don't currently ship libsync
+#GN_DEFINES+=" use_system_libsync=true "
+GN_DEFINES+=" use_system_libwayland=true "
+GN_DEFINES+=" use_system_libwayland_client=true "
+GN_DEFINES+=" use_system_libwayland_server=true "
+GN_DEFINES+=" use_system_lua=true "
+GN_DEFINES+=" use_system_minigbm=true "
+GN_DEFINES+=" use_system_openjpeg2=true "
+GN_DEFINES+=" use_system_protobuf=true "
+GN_DEFINES+=" use_system_wayland=true "
+GN_DEFINES+=" use_system_wayland_client=true "
+GN_DEFINES+=" use_system_wayland_scanner=true "
+GN_DEFINES+=" use_system_wayland_server=true "
+GN_DEFINES+=" use_xkbcommon=true "
+GN_DEFINES+=" use_gtk=false use_qt=true "
+if ! echo %{system_libs} |grep -q icu; then
+GN_DEFINES+=" icu_use_data_file=true"
+fi
+GN_DEFINES+=" use_gnome_keyring=false "
+GN_DEFINES+=" fatal_linker_warnings=false "
+GN_DEFINES+=" system_libdir=\"%{_lib}\""
+GN_DEFINES+=" use_allocator=\"none\""
+#GN_DEFINES+=" use_aura=true "
+#GN_DEFINES+=" use_gio=true"
+GN_DEFINES+=" enable_nacl=false "
+GN_DEFINES+=" proprietary_codecs=true "
+GN_DEFINES+=" ffmpeg_branding=\"ChromeOS\" "
+GN_DEFINES+=" enable_mse_mpeg2ts_stream_parser=true "
 %ifarch %{ix86}
-CHROMIUM_CORE_GN_DEFINES+=" target_cpu=\"x86\""
+GN_DEFINES+=" target_cpu=\"x86\""
 %endif
 %ifarch %{x86_64}
-CHROMIUM_CORE_GN_DEFINES+=" target_cpu=\"x64\""
+GN_DEFINES+=" target_cpu=\"x64\""
 %endif
 %ifarch %{arm}
-CHROMIUM_CORE_GN_DEFINES+=" target_cpu=\"arm\""
-CHROMIUM_CORE_GN_DEFINES+=" remove_webcore_debug_symbols=true"
-CHROMIUM_CORE_GN_DEFINES+=" rtc_build_with_neon=true"
+GN_DEFINES+=" target_cpu=\"arm\""
+GN_DEFINES+=" remove_webcore_debug_symbols=true"
+GN_DEFINES+=" rtc_build_with_neon=true"
 %endif
 %ifarch %{aarch64}
-CHROMIUM_CORE_GN_DEFINES+=" target_cpu=\"arm64\""
+GN_DEFINES+=" target_cpu=\"arm64\""
 # if this is true (default for non official builds) it tries to use
 # a prebuilt x86 binary in the source tree
-CHROMIUM_CORE_GN_DEFINES+=" devtools_skip_typecheck=false"
+GN_DEFINES+=" devtools_skip_typecheck=false"
 %endif
-CHROMIUM_CORE_GN_DEFINES+=" google_api_key=\"%{google_api_key}\""
-CHROMIUM_CORE_GN_DEFINES+=" google_default_client_id=\"%{google_default_client_id}\""
-CHROMIUM_CORE_GN_DEFINES+=" google_default_client_secret=\"%{google_default_client_secret}\""
-CHROMIUM_CORE_GN_DEFINES+=" thin_lto_enable_optimizations=true use_clang=true use_lld=true use_thin_lto=true"
-CHROMIUM_CORE_GN_DEFINES+=" custom_toolchain=\"//build/toolchain/linux/unbundle:default\""
-CHROMIUM_CORE_GN_DEFINES+=" host_toolchain=\"//build/toolchain/linux/unbundle:default\""
-CHROMIUM_CORE_GN_DEFINES+=" v8_snapshot_toolchain=\"//build/toolchain/linux/unbundle:default\""
-CHROMIUM_CORE_GN_DEFINES+=" symbol_level=1"
+%if ! 0%{?ungoogled:1}
+GN_DEFINES+=" google_api_key=\"%{google_api_key}\""
+GN_DEFINES+=" google_default_client_id=\"%{google_default_client_id}\""
+GN_DEFINES+=" google_default_client_secret=\"%{google_default_client_secret}\""
+%endif
+GN_DEFINES+=" thin_lto_enable_optimizations=true use_clang=true use_lld=true use_thin_lto=true"
+GN_DEFINES+=" custom_toolchain=\"//build/toolchain/linux/unbundle:default\""
+GN_DEFINES+=" host_toolchain=\"//build/toolchain/linux/unbundle:default\""
+GN_DEFINES+=" v8_snapshot_toolchain=\"//build/toolchain/linux/unbundle:default\""
+GN_DEFINES+=" symbol_level=1"
 
-CHROMIUM_BROWSER_GN_DEFINES="use_pulseaudio=true link_pulseaudio=true"
-CHROMIUM_BROWSER_GN_DEFINES+=" enable_nacl=false"
-CHROMIUM_BROWSER_GN_DEFINES+=" is_component_ffmpeg=true"
-CHROMIUM_BROWSER_GN_DEFINES+=" enable_hangout_services_extension=true"
-CHROMIUM_BROWSER_GN_DEFINES+=" use_aura=true"
-CHROMIUM_BROWSER_GN_DEFINES+=" enable_widevine=true"
-CHROMIUM_BROWSER_GN_DEFINES+=" enable_webrtc=true"
-CHROMIUM_BROWSER_GN_DEFINES+=" use_vaapi=true"
+GN_DEFINES+=" use_pulseaudio=true link_pulseaudio=true"
+GN_DEFINES+=" enable_nacl=false"
+GN_DEFINES+=" is_component_ffmpeg=true"
+GN_DEFINES+=" enable_hangout_services_extension=true"
+GN_DEFINES+=" enable_widevine=true"
+GN_DEFINES+=" use_vaapi=true"
+GN_DEFINES+=" angle_link_glx=true angle_test_enable_system_egl=true "
+GN_DEFINES+=" enable_hevc_parser_and_hw_decoder=true enable_jxl_decoder=true"
+GN_DEFINES+=" enable_media_drm_storage=true"
+%ifarch %{x86_64}
+GN_DEFINES+=" enable_perfetto_x64_cpu_opt=true"
+%endif
+%ifarch %{aarch64}
+GN_DEFINES+=" rtc_build_with_neon=true"
+%endif
+GN_DEFINES+=" enable_precompiled_headers=true"
+GN_DEFINES+=" is_official_build=true"
+GN_DEFINES+=" ozone_platform_drm=true"
+GN_DEFINES+=" perfetto_use_system_zlib=true"
+GN_DEFINES+=" rtc_link_pipewire=true rtc_use_pipewire=true"
+GN_DEFINES+=" use_libinput=true use_real_dbus_clients=true"
+GN_DEFINES+=" use_vaapi_image_codecs=true"
+# 107: Build failure: GN_DEFINES+=" enable_wayland_server=true"
+# 107: Build failure: GN_DEFINES+=" perfetto_use_system_protobuf=true"
+# 107: Build failure: GN_DEFINES+=" use_v4l2_codec=true use_v4lplugin=true"
+# 107: Build failure: GN_DEFINES+=" use_webaudio_ffmpeg=true"
 
 if echo %{__cc} | grep -q clang; then
 	export CFLAGS="%{optflags} -Qunused-arguments -fPIE -fpie -fPIC"
@@ -482,13 +568,6 @@ if echo %{__cc} | grep -q clang; then
 		# _Float32 acts up with -Os/-Oz [at compile time]
 		export CFLAGS="$CFLAGS -O2"
 		export CXXFLAGS="$CXXFLAGS -O2"
-	fi
-	_lto_cpus="$(getconf _NPROCESSORS_ONLN)"
-	if [ $_lto_cpus -gt 4 ]; then
-		# LTO is very memory intensive, so
-		# 32 parallel LTO jobs may not be
-		# a good idea...
-		_lto_cpus=4
 	fi
 	export LDFLAGS="%{ldflags} -Wl,--thinlto-jobs=$_lto_cpus"
 	export AR="llvm-ar"
@@ -501,16 +580,12 @@ fi
 export CC=%{__cc}
 export CXX=%{__cxx}
 
-%build_py tools/gn/bootstrap/bootstrap.py --skip-generate-buildfiles
+python tools/gn/bootstrap/bootstrap.py --skip-generate-buildfiles
 
-%build_py third_party/libaddressinput/chromium/tools/update-strings.py
+python third_party/libaddressinput/chromium/tools/update-strings.py
 
-out/Release/gn gen --script-executable=/usr/bin/%build_py --args="${CHROMIUM_CORE_GN_DEFINES} ${CHROMIUM_BROWSER_GN_DEFINES}" out/Release
+out/Release/gn gen --script-executable=/usr/bin/python --args="${GN_DEFINES}" out/Release
 
-# Note: DON'T use system sqlite (3.7.3) -- it breaks history search
-# As of 36.0.1985.143, use_system_icu breaks the build.
-# gyp: Duplicate target definitions for /home/bero/abf/chromium-browser-stable/BUILD/chromium-36.0.1985.143/third_party/icu/icu.gyp:icudata#target
-# This should be enabled again once the gyp files are fixed.
 %ifarch %{x86_64}
 ninja -C out/Release chrome chrome_sandbox chromedriver
 %else
