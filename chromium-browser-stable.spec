@@ -68,7 +68,7 @@ Name: 		chromium-browser-%{channel}
 # http://omahaproxy.appspot.com/
 Version: 	107.0.5304.110
 ### Don't be evil!!! ###
-#define ungoogled 107.0.5304.88-1
+#define ungoogled 107.0.5304.107-1
 Release: 	1%{?extrarelsuffix}
 Summary: 	A fast webkit-based web browser
 Group: 		Networking/WWW
@@ -357,6 +357,7 @@ done
 
 %if 0%{?ungoogled:1}
 UGDIR=$(pwd)/ungoogled-chromium-%{ungoogled}
+echo %{version} >$UGDIR/chromium_version.txt
 # FIXME we shouldn't un-prune anything, but this seems to be needed
 sed -i -e '/esbuild/d' $UGDIR/pruning.list
 python $UGDIR/utils/prune_binaries.py ./ $UGDIR/pruning.list
