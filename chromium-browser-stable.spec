@@ -68,7 +68,8 @@ Name: 		chromium-browser-%{channel}
 # http://omahaproxy.appspot.com/
 Version: 	107.0.5304.110
 ### Don't be evil!!! ###
-#define ungoogled 107.0.5304.107-1
+%define ungoogled 107.0.5304.107-1
+%define stha 107-patchset-1
 Release: 	1%{?extrarelsuffix}
 Summary: 	A fast webkit-based web browser
 Group: 		Networking/WWW
@@ -134,7 +135,9 @@ Patch105:	reverse-roll-src-third_party-ffmpeg.patch
 
 ### Chromium gcc/libstdc++ support ###
 # https://github.com/stha09/chromium-patches
-Source500:	https://github.com/stha09/chromium-patches/releases/download/chromium-107-patchset-1/chromium-107-patchset-1.tar.xz
+%if 0%{?stha:1}
+Source500:	https://github.com/stha09/chromium-patches/releases/download/chromium-%{stha}/chromium-%{stha}.tar.xz
+%endif
 
 %if 0%{?ungoogled:1}
 Source1000:	https://github.com/ungoogled-software/ungoogled-chromium/archive/%{ungoogled}.tar.gz
@@ -164,9 +167,12 @@ Patch1014:	chromium-107-ffmpeg-5.1.patch
 
 Provides: 	%{crname}
 Obsoletes: 	chromium-browser-unstable < %{EVRD}
+%if "%{channel}" == "stable" || "%{channel}" == "beta"
 Obsoletes: 	chromium-browser-dev < %{EVRD}
+%endif
+%if "%{channel}" == "stable"
 Obsoletes: 	chromium-browser-beta < %{EVRD}
-Obsoletes: 	chromium-browser < %{EVRD}
+%endif
 BuildRequires:	glibc-static-devel
 BuildRequires: 	gperf
 BuildRequires: 	bison
@@ -346,7 +352,8 @@ members of the Chromium and WebDriver teams.
 %prep
 # Not using %%autosetup so we can apply patches after stha09 and
 # ungoogled-chromium patches have been applied
-%setup -q -n chromium-%{version} -a 500 %{?ungoogled:-a 1000}
+%setup -q -n chromium-%{version} %{?stha:-a 500} %{?ungoogled:-a 1000}
+%if 0%{?stha:1}
 j=1
 for i in patches/*; do
 	if basename $i |grep -qE '~$'; then continue; fi
@@ -354,6 +361,7 @@ for i in patches/*; do
 	patch -p1 -z .stha09-${j}~ -b <$i
 	j=$((j+1))
 done
+%endif
 
 %if 0%{?ungoogled:1}
 UGDIR=$(pwd)/ungoogled-chromium-%{ungoogled}
@@ -441,7 +449,7 @@ export PATH=$PWD/bfd:$PATH
 # Workaround for build failure
 %global ldflags %{ldflags} -Wl,-z,notext
 %endif
-%global optflags %(echo %{optflags} | sed -e 's/-g3 /-g1 /' -e 's/-gdwarf-4//')
+%global optflags %(echo %{optflags} | sed -e 's/-g3 /-g1 /')
 %global optflags %{optflags} -I%{_includedir}/libunwind
 
 export CC=clang
@@ -515,6 +523,8 @@ GN_DEFINES+=" target_cpu=\"x64\""
 %ifarch %{arm}
 GN_DEFINES+=" target_cpu=\"arm\""
 GN_DEFINES+=" remove_webcore_debug_symbols=true"
+%endif
+%ifarch %{armx}
 GN_DEFINES+=" rtc_build_with_neon=true"
 %endif
 %ifarch %{aarch64}
@@ -546,9 +556,6 @@ GN_DEFINES+=" enable_media_drm_storage=true"
 %ifarch %{x86_64}
 GN_DEFINES+=" enable_perfetto_x64_cpu_opt=true"
 %endif
-%ifarch %{aarch64}
-GN_DEFINES+=" rtc_build_with_neon=true"
-%endif
 GN_DEFINES+=" enable_precompiled_headers=true"
 GN_DEFINES+=" is_official_build=true"
 GN_DEFINES+=" ozone_platform_drm=true"
@@ -561,9 +568,11 @@ GN_DEFINES+=" use_vaapi_image_codecs=true"
 # 107: Build failure: GN_DEFINES+=" use_v4l2_codec=true use_v4lplugin=true"
 # 107: Build failure: GN_DEFINES+=" use_webaudio_ffmpeg=true"
 
+# -gdwarf-4 is for the sake of debugedit
+# https://sourceware.org/bugzilla/show_bug.cgi?id=29773
 if echo %{__cc} | grep -q clang; then
-	export CFLAGS="%{optflags} -Qunused-arguments -fPIE -fpie -fPIC"
-	export CXXFLAGS="%{optflags} -Qunused-arguments -fPIE -fpie -fPIC"
+	export CFLAGS="%{optflags} -Qunused-arguments -fPIE -fpie -fPIC -gdwarf-4"
+	export CXXFLAGS="%{optflags} -Qunused-arguments -fPIE -fpie -fPIC -gdwarf-4"
 	if echo %{optflags} |grep -qE -- '-O[sz]'; then
 		# FIXME this should get a real fix
 		# _Float32 acts up with -Os/-Oz [at compile time]
