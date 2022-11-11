@@ -463,6 +463,12 @@ export PATH=$PWD/bfd:$PATH
 %endif
 %global optflags %(echo %{optflags} | sed -e 's/-g3 /-g1 /')
 %global optflags %{optflags} -I%{_includedir}/libunwind
+%ifarch x86_64
+# Not needed for znver1, and shouldn't be used for x86_64, but
+# is needed right now
+# https://file-store.openmandriva.org/api/v1/file_stores/98a2f814bb2fcd7821643aac55d678ba74aff510.log?show=true
+%global optflags %{optflags} -mbmi2
+%endif
 
 export CC=clang
 export CXX=clang++
