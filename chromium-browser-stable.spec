@@ -203,6 +203,17 @@ BuildRequires:	pkgconfig(Qt5DBus)
 BuildRequires:	pkgconfig(Qt5Gui)
 BuildRequires:	pkgconfig(Qt5Widgets)
 BuildRequires:	pkgconfig(Qt5OpenGL)
+BuildRequires:	pkgconfig(xkbcommon)
+BuildRequires:	pkgconfig(atspi-2)
+BuildRequires:	pkgconfig(atk)
+BuildRequires:	pkgconfig(atk-bridge-2.0)
+BuildRequires:	pkgconfig(pangocairo)
+BuildRequires:	pkgconfig(libopenjp2)
+BuildRequires:	pkgconfig(libpipewire-0.3)
+BuildRequires:	pkgconfig(libinput)
+BuildRequires:	pkgconfig(epoxy)
+BuildRequires:	pkgconfig(xcomposite)
+BuildRequires:	pkgconfig(xdamage)
 BuildRequires:	%{_lib}GL-devel
 BuildRequires: 	bzip2-devel
 BuildRequires:	pkgconfig(libcurl)
@@ -211,6 +222,7 @@ BuildRequires:	clang lld
 BuildRequires:	pkgconfig(libbrotlicommon)
 BuildRequires:	pkgconfig(libbrotlidec)
 BuildRequires:	pkgconfig(libbrotlienc)
+BuildRequires:	brotli
 %endif
 %if %{system dav1d}
 BuildRequires:	pkgconfig(dav1d)
