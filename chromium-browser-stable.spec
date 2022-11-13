@@ -54,15 +54,6 @@
 %define    google_default_client_id 1089316189405-m0ropn3qa4p1phesfvi2urs7qps1d79o.apps.googleusercontent.com
 %define    google_default_client_secret RDdr-pHq2gStY4uw0m-zxXeo
 
-%bcond_with	plf
-
-# Always support proprietary codecs
-# or html5 does not work
-%if %{with plf}
-%define extrarelsuffix plf
-%define distsuffix plf
-%endif
-
 Name: 		chromium-browser-%{channel}
 # Working version numbers can be found at
 # http://omahaproxy.appspot.com/
@@ -70,7 +61,7 @@ Version: 	107.0.5304.110
 ### Don't be evil!!! ###
 %define ungoogled 107.0.5304.107-1
 %define stha 107-patchset-1
-Release: 	1%{?extrarelsuffix}
+Release: 	2
 Summary: 	A fast webkit-based web browser
 Group: 		Networking/WWW
 License: 	BSD, LGPL
@@ -463,12 +454,6 @@ export PATH=$PWD/bfd:$PATH
 %endif
 %global optflags %(echo %{optflags} | sed -e 's/-g3 /-g1 /')
 %global optflags %{optflags} -I%{_includedir}/libunwind
-%ifarch x86_64
-# Not needed for znver1, and shouldn't be used for x86_64, but
-# is needed right now
-# https://file-store.openmandriva.org/api/v1/file_stores/98a2f814bb2fcd7821643aac55d678ba74aff510.log?show=true
-%global optflags %{optflags} -mbmi2
-%endif
 
 export CC=clang
 export CXX=clang++
@@ -571,7 +556,8 @@ GN_DEFINES+=" use_vaapi=true"
 GN_DEFINES+=" angle_link_glx=true angle_test_enable_system_egl=true "
 GN_DEFINES+=" enable_hevc_parser_and_hw_decoder=true enable_jxl_decoder=true"
 GN_DEFINES+=" enable_media_drm_storage=true"
-%ifarch %{x86_64}
+%ifarch znver1
+# This really is znver1 only, as it enables SSE4.2, BMI2 and AVX2
 GN_DEFINES+=" enable_perfetto_x64_cpu_opt=true"
 %endif
 GN_DEFINES+=" enable_precompiled_headers=true"
