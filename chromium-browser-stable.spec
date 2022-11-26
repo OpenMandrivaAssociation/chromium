@@ -17,7 +17,7 @@
 %define _crdir %{_libdir}/%{crname}
 %define _src %{_topdir}/SOURCES
 # For incomplete debug package support
-%define	_empty_manifest_terminate_build 0
+%define _empty_manifest_terminate_build 0
 
 %ifarch %ix86
 %define _build_pkgcheck_set %{nil}
@@ -50,25 +50,25 @@
 # Set up Google API keys, see http://www.chromium.org/developers/how-tos/api-keys
 # OpenMandriva key, id and secret
 # For your own builds, please get your own set of keys.
-%define    google_api_key AIzaSyAraWnKIFrlXznuwvd3gI-gqTozL-H-8MU
-%define    google_default_client_id 1089316189405-m0ropn3qa4p1phesfvi2urs7qps1d79o.apps.googleusercontent.com
-%define    google_default_client_secret RDdr-pHq2gStY4uw0m-zxXeo
+%define google_api_key AIzaSyAraWnKIFrlXznuwvd3gI-gqTozL-H-8MU
+%define google_default_client_id 1089316189405-m0ropn3qa4p1phesfvi2urs7qps1d79o.apps.googleusercontent.com
+%define google_default_client_secret RDdr-pHq2gStY4uw0m-zxXeo
 
-Name: 		chromium-browser-%{channel}
+Name:		chromium-browser-%{channel}
 # Working version numbers can be found at
 # http://omahaproxy.appspot.com/
-Version: 	107.0.5304.110
+Version:	107.0.5304.121
 ### Don't be evil!!! ###
-%define ungoogled 107.0.5304.107-1
+%define ungoogled 107.0.5304.121-1
 %define stha 107-patchset-1
-Release: 	2
-Summary: 	A fast webkit-based web browser
-Group: 		Networking/WWW
-License: 	BSD, LGPL
+Release:	2
+Summary:	A fast webkit-based web browser
+Group:		Networking/WWW
+License:	BSD, LGPL
 # From : http://gsdview.appspot.com/chromium-browser-official/
-Source0: 	https://commondatastorage.googleapis.com/chromium-browser-official/chromium-%{version}.tar.xz
-Source1: 	chromium-wrapper
-Source2: 	chromium-browser%{namesuffix}.desktop
+Source0:	https://commondatastorage.googleapis.com/chromium-browser-official/chromium-%{version}.tar.xz
+Source1:	chromium-wrapper
+Source2:	chromium-browser%{namesuffix}.desktop
 Source3:	master_preferences
 # https://bugs.freedesktop.org/show_bug.cgi?id=106490
 # Workaround from Arch Linux
@@ -104,7 +104,7 @@ Patch64:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-98.0.
 
 %if %omvver > 4050000
 # only cooker has markupsafe > 2.0
-Patch65: 	https://src.fedoraproject.org/rpms/chromium/raw/rawhide/f/chromium-99.0.4844.84-markdownsafe-soft_str.patch
+Patch65:	https://src.fedoraproject.org/rpms/chromium/raw/rawhide/f/chromium-99.0.4844.84-markdownsafe-soft_str.patch
 %endif
 
 # From Arch and Gentoo
@@ -156,38 +156,38 @@ Patch1011:	chromium-99-ffmpeg-5.0.patch
 Patch1013:	chromium-105-minizip-ng.patch
 Patch1014:	chromium-107-ffmpeg-5.1.patch
 
-Provides: 	%{crname}
-Obsoletes: 	chromium-browser-unstable < %{EVRD}
+Provides:	%{crname}
+Obsoletes:	chromium-browser-unstable < %{EVRD}
 %if "%{channel}" == "stable" || "%{channel}" == "beta"
-Obsoletes: 	chromium-browser-dev < %{EVRD}
+Obsoletes:	chromium-browser-dev < %{EVRD}
 %endif
 %if "%{channel}" == "stable"
-Obsoletes: 	chromium-browser-beta < %{EVRD}
+Obsoletes:	chromium-browser-beta < %{EVRD}
 %endif
 BuildRequires:	glibc-static-devel
-BuildRequires: 	gperf
-BuildRequires: 	bison
-BuildRequires: 	re2c
-BuildRequires: 	flex
+BuildRequires:	gperf
+BuildRequires:	bison
+BuildRequires:	re2c
+BuildRequires:	flex
 BuildRequires:	git
 BuildRequires:	pkgconfig(alsa)
 BuildRequires:	pkgconfig(krb5)
 BuildRequires:	pkgconfig(libunwind)
 BuildRequires:	pkgconfig(com_err)
-BuildRequires: 	alsa-oss-devel
+BuildRequires:	alsa-oss-devel
 BuildRequires:	atomic-devel
-BuildRequires: 	snappy-devel
-BuildRequires: 	jsoncpp-devel
-BuildRequires: 	pkgconfig(expat)
-BuildRequires: 	pkgconfig(glib-2.0)
-BuildRequires: 	pkgconfig(wayland-egl)
-BuildRequires: 	pkgconfig(nss)
+BuildRequires:	snappy-devel
+BuildRequires:	jsoncpp-devel
+BuildRequires:	pkgconfig(expat)
+BuildRequires:	pkgconfig(glib-2.0)
+BuildRequires:	pkgconfig(wayland-egl)
+BuildRequires:	pkgconfig(nss)
 BuildRequires:	pkgconfig(gbm)
 BuildRequires:	pkgconfig(libglvnd)
-BuildRequires:  pkgconfig(libva)
-BuildRequires:  pkgconfig(libva-drm)
-BuildRequires:  pkgconfig(libva-glx)
-BuildRequires:  pkgconfig(libva-x11)
+BuildRequires:	pkgconfig(libva)
+BuildRequires:	pkgconfig(libva-drm)
+BuildRequires:	pkgconfig(libva-glx)
+BuildRequires:	pkgconfig(libva-x11)
 BuildRequires:	pkgconfig(dri)
 BuildRequires:	pkgconfig(Qt5Core)
 BuildRequires:	pkgconfig(Qt5DBus)
@@ -206,7 +206,7 @@ BuildRequires:	pkgconfig(epoxy)
 BuildRequires:	pkgconfig(xcomposite)
 BuildRequires:	pkgconfig(xdamage)
 BuildRequires:	%{_lib}GL-devel
-BuildRequires: 	bzip2-devel
+BuildRequires:	bzip2-devel
 BuildRequires:	pkgconfig(libcurl)
 BuildRequires:	clang lld
 %if %{system brotli}
@@ -219,22 +219,22 @@ BuildRequires:	brotli
 BuildRequires:	pkgconfig(dav1d)
 %endif
 %if %{system ffmpeg}
-BuildRequires:  pkgconfig(libavcodec)
-BuildRequires:  pkgconfig(libavfilter)
-BuildRequires:  pkgconfig(libavformat) >= 57.41.100
-BuildRequires:  pkgconfig(libavutil)
+BuildRequires:	pkgconfig(libavcodec)
+BuildRequires:	pkgconfig(libavfilter)
+BuildRequires:	pkgconfig(libavformat) >= 57.41.100
+BuildRequires:	pkgconfig(libavutil)
 %endif
 %if %{system flac}
-BuildRequires: 	pkgconfig(flac)
+BuildRequires:	pkgconfig(flac)
 %endif
 %if %{system fontconfig}
-BuildRequires: 	pkgconfig(fontconfig)
+BuildRequires:	pkgconfig(fontconfig)
 %endif
 %if %{system harfbuzz-ng}
 BuildRequires:	harfbuzz-devel
 %endif
 %if %{system icu}
-BuildRequires:  pkgconfig(icu-i18n)
+BuildRequires:	pkgconfig(icu-i18n)
 %endif
 %if %{system libaom}
 BuildRequires:	pkgconfig(aom)
@@ -243,31 +243,31 @@ BuildRequires:	pkgconfig(aom)
 BuildRequires:	pkgconfig(libdrm)
 %endif
 %if %{system libevent}
-BuildRequires: 	pkgconfig(libevent)
+BuildRequires:	pkgconfig(libevent)
 %endif
 %if %{system libjpeg}
-BuildRequires: 	jpeg-devel
+BuildRequires:	jpeg-devel
 %endif
 %if %{system libpng}
-BuildRequires: 	pkgconfig(libpng)
+BuildRequires:	pkgconfig(libpng)
 %endif
 %if %{system libusb}
-BuildRequires: 	pkgconfig(libusb-1.0)
+BuildRequires:	pkgconfig(libusb-1.0)
 %endif
 %if %{system libvpx}
-BuildRequires: 	pkgconfig(vpx)
+BuildRequires:	pkgconfig(vpx)
 %endif
 %if %{system libwebp}
-BuildRequires: 	pkgconfig(libwebp)
+BuildRequires:	pkgconfig(libwebp)
 %endif
 %if %{system libxml}
-BuildRequires: 	pkgconfig(libxml-2.0)
+BuildRequires:	pkgconfig(libxml-2.0)
 %endif
 %if %{system libxslt}
-BuildRequires: 	pkgconfig(libxslt)
+BuildRequires:	pkgconfig(libxslt)
 %endif
 %if %{system opus}
-BuildRequires: 	pkgconfig(opus)
+BuildRequires:	pkgconfig(opus)
 %endif
 %if %{system openh264}
 BuildRequires:	pkgconfig(openh264)
@@ -276,38 +276,38 @@ BuildRequires:	pkgconfig(openh264)
 BuildRequires:	pkgconfig(re2)
 %endif
 %if %{system zlib}
-BuildRequires: 	pkgconfig(zlib)
-BuildRequires: 	pkgconfig(minizip)
+BuildRequires:	pkgconfig(zlib)
+BuildRequires:	pkgconfig(minizip)
 %endif
-BuildRequires: 	pkgconfig(nspr)
-BuildRequires: 	pkgconfig(xscrnsaver)
+BuildRequires:	pkgconfig(nspr)
+BuildRequires:	pkgconfig(xscrnsaver)
 BuildRequires:	pkgconfig(xshmfence)
-BuildRequires: 	pkgconfig(glu)
-BuildRequires: 	pkgconfig(gl)
-BuildRequires: 	cups-devel
+BuildRequires:	pkgconfig(glu)
+BuildRequires:	pkgconfig(gl)
+BuildRequires:	cups-devel
 BuildRequires:	pkgconfig(dbus-glib-1)
-BuildRequires: 	pkgconfig(gnome-keyring-1)
-BuildRequires: 	pam-devel
-BuildRequires: 	pkgconfig(xtst)
-BuildRequires: 	pkgconfig(libpulse)
-BuildRequires: 	pkgconfig(xt)
-BuildRequires: 	cap-devel
-BuildRequires: 	elfutils-devel
-BuildRequires: 	pkgconfig(gnutls)
-BuildRequires: 	pkgconfig(udev)
-BuildRequires: 	pkgconfig(speex)
+BuildRequires:	pkgconfig(gnome-keyring-1)
+BuildRequires:	pam-devel
+BuildRequires:	pkgconfig(xtst)
+BuildRequires:	pkgconfig(libpulse)
+BuildRequires:	pkgconfig(xt)
+BuildRequires:	cap-devel
+BuildRequires:	elfutils-devel
+BuildRequires:	pkgconfig(gnutls)
+BuildRequires:	pkgconfig(udev)
+BuildRequires:	pkgconfig(speex)
 BuildRequires:	pkgconfig(lcms2)
 BuildRequires:	pkgconfig(libffi)
 BuildRequires:	pkgconfig(snappy)
 
 BuildRequires:	pkgconfig(python)
-BuildRequires:  pkgconfig(protobuf)
+BuildRequires:	pkgconfig(protobuf)
 BuildRequires:	python%{pyver}dist(protobuf)
-BuildRequires:  python%{pyver}dist(markupsafe)
+BuildRequires:	python%{pyver}dist(markupsafe)
 
-BuildRequires: 	yasm
-BuildRequires:  speech-dispatcher-devel
-BuildRequires:  pkgconfig(libpci)
+BuildRequires:	yasm
+BuildRequires:	speech-dispatcher-devel
+BuildRequires:	pkgconfig(libpci)
 BuildRequires:	pkgconfig(libexif)
 BuildRequires:	ninja
 BuildRequires:	nodejs
@@ -324,10 +324,10 @@ chromium-browser-dev package instead.
 
 %if "%{channel}" == "stable"
 %package -n chromium-browser
-Summary: 	A fast webkit-based web browser (transition package)
-Epoch: 		1
+Summary:	A fast webkit-based web browser (transition package)
+Epoch:		1
 Group:		Networking/WWW
-Requires: 	%{name} = %{version}-%{release}
+Requires:	%{name} = %{version}-%{release}
 
 %description -n chromium-browser
 Chromium is a browser that combines a minimal design with sophisticated
@@ -343,14 +343,12 @@ Summary:	WebDriver for Google Chrome/Chromium
 Group:		Development/Other
 Requires:	%{name} = %{version}-%{release}
 
-
 %description -n chromedriver%{namesuffix}
 WebDriver is an open source tool for automated testing of webapps across many
 browsers. It provides capabilities for navigating to web pages, user input,
 JavaScript execution, and more. ChromeDriver is a standalone server which
 implements WebDriver's wire protocol for Chromium. It is being developed by
 members of the Chromium and WebDriver teams.
-
 
 %prep
 # Not using %%autosetup so we can apply patches after stha09 and
@@ -359,10 +357,10 @@ members of the Chromium and WebDriver teams.
 %if 0%{?stha:1}
 j=1
 for i in patches/*; do
-	if basename $i |grep -qE '~$'; then continue; fi
-	echo "Applying `basename $i`"
-	patch -p1 -z .stha09-${j}~ -b <$i
-	j=$((j+1))
+    if basename $i |grep -qE '~$'; then continue; fi
+    echo "Applying `basename $i`"
+    patch -p1 -z .stha09-${j}~ -b <$i
+    j=$((j+1))
 done
 %endif
 
@@ -388,7 +386,7 @@ sed -i 's!ffmpeg_buildflags!ffmpeg_features!g' build/linux/unbundle/ffmpeg.gn
 # Allow building against system libraries in official builds
 sed -i 's/OFFICIAL_BUILD/GOOGLE_CHROME_BUILD/' \
 	tools/generate_shim_headers/generate_shim_headers.py
- 
+
 # Hard code extra version
 FILE=chrome/common/channel_info_posix.cc
 sed -i.orig -e 's/getenv("CHROME_VERSION_EXTRA")/"%{product_vendor} %{product_version}"/' $FILE
@@ -509,7 +507,7 @@ GN_DEFINES+=" icu_use_data_file=true"
 fi
 GN_DEFINES+=" use_gnome_keyring=false "
 GN_DEFINES+=" fatal_linker_warnings=false "
-GN_DEFINES+=" system_libdir=\"%{_lib}\""
+GN_DEFINES+=" system_libdir=\"%{_libdir}\""
 GN_DEFINES+=" use_allocator=\"none\""
 #GN_DEFINES+=" use_aura=true "
 #GN_DEFINES+=" use_gio=true"
@@ -583,7 +581,7 @@ if echo %{__cc} | grep -q clang; then
 		export CFLAGS="$CFLAGS -O2"
 		export CXXFLAGS="$CXXFLAGS -O2"
 	fi
-	export LDFLAGS="%{ldflags} -Wl,--thinlto-jobs=$_lto_cpus"
+	export LDFLAGS="%{build_ldflags} -Wl,--thinlto-jobs=$_lto_cpus"
 	export AR="llvm-ar"
 	export NM="llvm-nm"
 	export RANLIB="llvm-ranlib"
