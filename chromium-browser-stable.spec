@@ -57,11 +57,11 @@
 Name:		chromium-browser-%{channel}
 # Working version numbers can be found at
 # http://omahaproxy.appspot.com/
-Version:	107.0.5304.121
+Version:	108.0.5359.94
 ### Don't be evil!!! ###
-%define ungoogled 107.0.5304.121-1
-%define stha 107-patchset-1
-Release:	2
+%define ungoogled 108.0.5359.94-1
+%define stha 108-patchset-2
+Release:	1
 Summary:	A fast webkit-based web browser
 Group:		Networking/WWW
 License:	BSD, LGPL
@@ -99,8 +99,6 @@ Patch11:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-100.0
 Patch53:	chromium-81-unbundle-zlib.patch
 # Needs to be submitted..
 Patch54:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-77.0.3865.75-gcc-include-memory.patch
-
-Patch64:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-98.0.4758.80-EnumTable-crash.patch
 
 %if %omvver > 4050000
 # only cooker has markupsafe > 2.0
@@ -356,6 +354,8 @@ members of the Chromium and WebDriver teams.
 %setup -q -n chromium-%{version} %{?stha:-a 500} %{?ungoogled:-a 1000}
 %if 0%{?stha:1}
 j=1
+# This seems to be upstream already, but still included in stha
+rm patches/chromium-108-LabToLCH-include.patch
 for i in patches/*; do
     if basename $i |grep -qE '~$'; then continue; fi
     echo "Applying `basename $i`"
@@ -368,7 +368,7 @@ done
 UGDIR=$(pwd)/ungoogled-chromium-%{ungoogled}
 echo %{version} >$UGDIR/chromium_version.txt
 # FIXME we shouldn't un-prune anything, but this seems to be needed
-sed -i -e '/esbuild/d' $UGDIR/pruning.list
+#sed -i -e '/esbuild/d' $UGDIR/pruning.list
 python $UGDIR/utils/prune_binaries.py ./ $UGDIR/pruning.list
 python $UGDIR/utils/patches.py apply ./ $UGDIR/patches
 python $UGDIR/utils/domain_substitution.py apply -r $UGDIR/domain_regex.list -f $UGDIR/domain_substitution.list -c domainsubcache.tar.gz ./
@@ -419,13 +419,6 @@ python build/linux/unbundle/replace_gn_files.py \
 # is just about as dumb as something can get
 cp -f %{_includedir}/wayland-client-core.h third_party/wayland/src/src/
 
-#if %omvver <= 4050000
-# Look, I don't know. This package is spit and chewing gum. Sorry.
-rm -rf third_party/markupsafe
-ln -s %{python3_sitearch}/markupsafe third_party/markupsafe
-# We should look on removing other python packages as well i.e. ply
-#endif
-
 # workaround build failure
 if [ ! -f chrome/test/data/webui/i18n_process_css_test.html ]; then
 	touch chrome/test/data/webui/i18n_process_css_test.html
@@ -468,7 +461,7 @@ GN_DEFINES=""
 %if 0%{?ungoogled:1}
 GN_DEFINES+=" $(cat $UGDIR/flags.gn |tr '\n' ' ')"
 %endif
-GN_DEFINES+="use_sysroot=false is_debug=false fieldtrial_testing_like_official_build=true "
+GN_DEFINES+="use_sysroot=false is_debug=false "
 GN_DEFINES+=" is_clang=true clang_base_path=\"%{_prefix}\" clang_use_chrome_plugins=false "
 GN_DEFINES+=" treat_warnings_as_errors=false "
 %if 1
@@ -539,7 +532,7 @@ GN_DEFINES+=" google_api_key=\"%{google_api_key}\""
 GN_DEFINES+=" google_default_client_id=\"%{google_default_client_id}\""
 GN_DEFINES+=" google_default_client_secret=\"%{google_default_client_secret}\""
 %endif
-GN_DEFINES+=" thin_lto_enable_optimizations=true use_clang=true use_lld=true use_thin_lto=true"
+GN_DEFINES+=" thin_lto_enable_optimizations=true is_clang=true use_lld=true use_thin_lto=true"
 GN_DEFINES+=" custom_toolchain=\"//build/toolchain/linux/unbundle:default\""
 GN_DEFINES+=" host_toolchain=\"//build/toolchain/linux/unbundle:default\""
 GN_DEFINES+=" v8_snapshot_toolchain=\"//build/toolchain/linux/unbundle:default\""

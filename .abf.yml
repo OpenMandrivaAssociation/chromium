@@ -1,4 +1,4 @@
 sources:
-  chromium-107.0.5304.121.tar.xz: edf2f9a5819eff5dd6a1a4fbb169dc76ce8181f7
-  107.0.5304.121-1.tar.gz: 237a99abc2b598cccadbcf4f36b0fcd95c0de762
-  chromium-107-patchset-1.tar.xz: 791ff9f9c5101283efb2a933e91174a3b67a5012
+  108.0.5359.94-1.tar.gz: 2cf113e6c50fdd679cddefee52d84ac3bfdbae5c
+  chromium-108-patchset-2.tar.xz: 673a31f2f8681e65ffeeda022f5c0028b66fab93
+  chromium-108.0.5359.94.tar.xz: 101ddc7ed8e7d893008677cfe1bdcd212df64b4e
