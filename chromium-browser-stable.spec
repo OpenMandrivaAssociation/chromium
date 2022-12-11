@@ -57,9 +57,9 @@
 Name:		chromium-browser-%{channel}
 # Working version numbers can be found at
 # http://omahaproxy.appspot.com/
-Version:	108.0.5359.94
+Version:	108.0.5359.98
 ### Don't be evil!!! ###
-%define ungoogled 108.0.5359.94-1
+%define ungoogled 108.0.5359.98-1
 %define stha 108-patchset-2
 Release:	1
 Summary:	A fast webkit-based web browser
