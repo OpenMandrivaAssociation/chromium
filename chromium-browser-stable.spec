@@ -57,9 +57,9 @@
 Name:		chromium-browser-%{channel}
 # Working version numbers can be found at
 # http://omahaproxy.appspot.com/
-Version:	108.0.5359.94
+Version:	108.0.5359.125
 ### Don't be evil!!! ###
-%define ungoogled 108.0.5359.94-1
+%define ungoogled 108.0.5359.125-1
 %define stha 108-patchset-2
 Release:	1
 Summary:	A fast webkit-based web browser
@@ -368,8 +368,8 @@ done
 UGDIR=$(pwd)/ungoogled-chromium-%{ungoogled}
 echo %{version} >$UGDIR/chromium_version.txt
 # FIXME we shouldn't un-prune anything, but this seems to be needed
-#sed -i -e '/esbuild/d' $UGDIR/pruning.list
-python $UGDIR/utils/prune_binaries.py ./ $UGDIR/pruning.list
+#sed -i -e '/chrome-linux-5359-1669656947-a415d5db65dd3e05ade5e2d1d5f3750801174642.profdata/d' $UGDIR/pruning.list
+python $UGDIR/utils/prune_binaries.py ./ $UGDIR/pruning.list --verbose
 python $UGDIR/utils/patches.py apply ./ $UGDIR/patches
 python $UGDIR/utils/domain_substitution.py apply -r $UGDIR/domain_regex.list -f $UGDIR/domain_substitution.list -c domainsubcache.tar.gz ./
 %endif
