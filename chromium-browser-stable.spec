@@ -42,7 +42,8 @@
 %define _ssp_cflags %{nil}
 
 # Libraries that should be unbundled
-%global system_libs brotli dav1d flac ffmpeg fontconfig harfbuzz-ng icu libaom libjpeg libpng libdrm libwebp libxml libxslt opus openh264 libusb zlib libevent freetype
+# openh264
+%global system_libs brotli dav1d flac ffmpeg fontconfig harfbuzz-ng icu libaom libjpeg libpng libdrm libwebp libxml libxslt opus libusb zlib libevent freetype
 # FIXME add libvpx [currently results in build failure]
 # re2 jsoncpp snappy <-- can't be added right now because of use_custom_libcxx=true, system libs use libstdc++
 %define system() %(if echo %{system_libs} |grep -q -E '(^| )%{1}( |$)'; then echo -n 1; else echo -n 0;  fi)
@@ -57,10 +58,10 @@
 Name:		chromium-browser-%{channel}
 # Working version numbers can be found at
 # http://omahaproxy.appspot.com/
-Version:	108.0.5359.125
+Version:	109.0.5414.119
 ### Don't be evil!!! ###
-%define ungoogled 108.0.5359.125-1
-%define stha 108-patchset-2
+%define ungoogled 109.0.5414.119-1
+%define stha 109-patchset-2
 Release:	1
 Summary:	A fast webkit-based web browser
 Group:		Networking/WWW
@@ -95,6 +96,8 @@ Patch8:		https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-71.0.
 Patch11:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-100.0.4896.60-widevine-other-locations.patch
 # Add "Fedora" to the user agent string
 #Patch13:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-79.0.3945.56-fedora-user-agent.patch
+# https://chromium-review.googlesource.com/c/chromium/src/+/3952302
+Patch20:	1245d8c.diff
 # https://gitweb.gentoo.org/repo/gentoo.git/tree/www-client/chromium/files/chromium-unbundle-zlib.patch
 Patch53:	chromium-81-unbundle-zlib.patch
 # Needs to be submitted..
@@ -354,8 +357,6 @@ members of the Chromium and WebDriver teams.
 %setup -q -n chromium-%{version} %{?stha:-a 500} %{?ungoogled:-a 1000}
 %if 0%{?stha:1}
 j=1
-# This seems to be upstream already, but still included in stha
-rm patches/chromium-108-LabToLCH-include.patch
 for i in patches/*; do
     if basename $i |grep -qE '~$'; then continue; fi
     echo "Applying `basename $i`"

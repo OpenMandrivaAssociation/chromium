@@ -1,6 +1,6 @@
-diff -up chromium-107.0.5304.68/third_party/tflite_support/src/tensorflow_lite_support/metadata/cc/metadata_extractor.cc.23~ chromium-107.0.5304.68/third_party/tflite_support/src/tensorflow_lite_support/metadata/cc/metadata_extractor.cc
---- chromium-107.0.5304.68/third_party/tflite_support/src/tensorflow_lite_support/metadata/cc/metadata_extractor.cc.23~	2022-10-25 21:40:23.981291500 +0200
-+++ chromium-107.0.5304.68/third_party/tflite_support/src/tensorflow_lite_support/metadata/cc/metadata_extractor.cc	2022-10-25 22:54:08.720348068 +0200
+diff -up chromium-109.0.5414.119/third_party/tflite_support/src/tensorflow_lite_support/metadata/cc/metadata_extractor.cc.24~ chromium-109.0.5414.119/third_party/tflite_support/src/tensorflow_lite_support/metadata/cc/metadata_extractor.cc
+--- chromium-109.0.5414.119/third_party/tflite_support/src/tensorflow_lite_support/metadata/cc/metadata_extractor.cc.24~	2023-01-25 00:37:04.438041000 +0100
++++ chromium-109.0.5414.119/third_party/tflite_support/src/tensorflow_lite_support/metadata/cc/metadata_extractor.cc	2023-01-31 23:44:37.907854747 +0100
 @@ -27,8 +27,8 @@ limitations under the License.
  #include "tensorflow_lite_support/cc/port/status_macros.h"
  #include "tensorflow_lite_support/metadata/cc/utils/zip_readonly_mem_file.h"
@@ -32,14 +32,14 @@ diff -up chromium-107.0.5304.68/third_party/tflite_support/src/tensorflow_lite_s
    if (position == 0) {
      return CreateStatusWithPayload(
          StatusCode::kUnknown, "Unable to read file in zip archive.",
-diff -up chromium-107.0.5304.68/third_party/tflite_support/src/tensorflow_lite_support/metadata/cc/utils/zip_readonly_mem_file.cc.23~ chromium-107.0.5304.68/third_party/tflite_support/src/tensorflow_lite_support/metadata/cc/utils/zip_readonly_mem_file.cc
---- chromium-107.0.5304.68/third_party/tflite_support/src/tensorflow_lite_support/metadata/cc/utils/zip_readonly_mem_file.cc.23~	2022-10-25 21:40:23.981291500 +0200
-+++ chromium-107.0.5304.68/third_party/tflite_support/src/tensorflow_lite_support/metadata/cc/utils/zip_readonly_mem_file.cc	2022-10-25 22:48:53.023243998 +0200
+diff -up chromium-109.0.5414.119/third_party/tflite_support/src/tensorflow_lite_support/metadata/cc/utils/zip_readonly_mem_file.cc.24~ chromium-109.0.5414.119/third_party/tflite_support/src/tensorflow_lite_support/metadata/cc/utils/zip_readonly_mem_file.cc
+--- chromium-109.0.5414.119/third_party/tflite_support/src/tensorflow_lite_support/metadata/cc/utils/zip_readonly_mem_file.cc.24~	2023-01-25 00:37:04.438041000 +0100
++++ chromium-109.0.5414.119/third_party/tflite_support/src/tensorflow_lite_support/metadata/cc/utils/zip_readonly_mem_file.cc	2023-01-31 23:45:18.505653910 +0100
 @@ -19,7 +19,7 @@ limitations under the License.
  #include <cstdio>
  
  #include "absl/strings/string_view.h"  // from @com_google_absl
--#include "contrib/minizip/ioapi.h"
+-#include "third_party/zlib/contrib/minizip/ioapi.h"
 +#include <minizip/ioapi.h>
  
  namespace tflite {
@@ -111,9 +111,9 @@ diff -up chromium-107.0.5304.68/third_party/tflite_support/src/tensorflow_lite_s
    // Unused.
    return 0;
  }
-diff -up chromium-107.0.5304.68/third_party/tflite_support/src/tensorflow_lite_support/metadata/cc/utils/zip_readonly_mem_file.h.23~ chromium-107.0.5304.68/third_party/tflite_support/src/tensorflow_lite_support/metadata/cc/utils/zip_readonly_mem_file.h
---- chromium-107.0.5304.68/third_party/tflite_support/src/tensorflow_lite_support/metadata/cc/utils/zip_readonly_mem_file.h.23~	2022-10-25 21:40:23.981291500 +0200
-+++ chromium-107.0.5304.68/third_party/tflite_support/src/tensorflow_lite_support/metadata/cc/utils/zip_readonly_mem_file.h	2022-10-25 22:54:29.165484392 +0200
+diff -up chromium-109.0.5414.119/third_party/tflite_support/src/tensorflow_lite_support/metadata/cc/utils/zip_readonly_mem_file.h.24~ chromium-109.0.5414.119/third_party/tflite_support/src/tensorflow_lite_support/metadata/cc/utils/zip_readonly_mem_file.h
+--- chromium-109.0.5414.119/third_party/tflite_support/src/tensorflow_lite_support/metadata/cc/utils/zip_readonly_mem_file.h.24~	2023-01-25 00:37:04.438041000 +0100
++++ chromium-109.0.5414.119/third_party/tflite_support/src/tensorflow_lite_support/metadata/cc/utils/zip_readonly_mem_file.h	2023-01-31 23:44:37.908854741 +0100
 @@ -19,7 +19,7 @@ limitations under the License.
  #include <cstdlib>
  
@@ -150,9 +150,9 @@ diff -up chromium-107.0.5304.68/third_party/tflite_support/src/tensorflow_lite_s
  };
  
  }  // namespace metadata
-diff -up chromium-107.0.5304.68/third_party/tflite_support/src/tensorflow_lite_support/metadata/cc/utils/zip_writable_mem_file.cc.23~ chromium-107.0.5304.68/third_party/tflite_support/src/tensorflow_lite_support/metadata/cc/utils/zip_writable_mem_file.cc
---- chromium-107.0.5304.68/third_party/tflite_support/src/tensorflow_lite_support/metadata/cc/utils/zip_writable_mem_file.cc.23~	2022-10-25 21:40:23.981291500 +0200
-+++ chromium-107.0.5304.68/third_party/tflite_support/src/tensorflow_lite_support/metadata/cc/utils/zip_writable_mem_file.cc	2022-10-25 22:54:58.892682624 +0200
+diff -up chromium-109.0.5414.119/third_party/tflite_support/src/tensorflow_lite_support/metadata/cc/utils/zip_writable_mem_file.cc.24~ chromium-109.0.5414.119/third_party/tflite_support/src/tensorflow_lite_support/metadata/cc/utils/zip_writable_mem_file.cc
+--- chromium-109.0.5414.119/third_party/tflite_support/src/tensorflow_lite_support/metadata/cc/utils/zip_writable_mem_file.cc.24~	2023-01-25 00:37:04.438041000 +0100
++++ chromium-109.0.5414.119/third_party/tflite_support/src/tensorflow_lite_support/metadata/cc/utils/zip_writable_mem_file.cc	2023-01-31 23:44:37.908854741 +0100
 @@ -19,7 +19,7 @@ limitations under the License.
  #include <cstdio>
  
@@ -231,9 +231,9 @@ diff -up chromium-107.0.5304.68/third_party/tflite_support/src/tensorflow_lite_s
    // Unused.
    return 0;
  }
-diff -up chromium-107.0.5304.68/third_party/tflite_support/src/tensorflow_lite_support/metadata/cc/utils/zip_writable_mem_file.h.23~ chromium-107.0.5304.68/third_party/tflite_support/src/tensorflow_lite_support/metadata/cc/utils/zip_writable_mem_file.h
---- chromium-107.0.5304.68/third_party/tflite_support/src/tensorflow_lite_support/metadata/cc/utils/zip_writable_mem_file.h.23~	2022-10-25 21:40:23.981291500 +0200
-+++ chromium-107.0.5304.68/third_party/tflite_support/src/tensorflow_lite_support/metadata/cc/utils/zip_writable_mem_file.h	2022-10-25 22:55:19.186817960 +0200
+diff -up chromium-109.0.5414.119/third_party/tflite_support/src/tensorflow_lite_support/metadata/cc/utils/zip_writable_mem_file.h.24~ chromium-109.0.5414.119/third_party/tflite_support/src/tensorflow_lite_support/metadata/cc/utils/zip_writable_mem_file.h
+--- chromium-109.0.5414.119/third_party/tflite_support/src/tensorflow_lite_support/metadata/cc/utils/zip_writable_mem_file.h.24~	2023-01-25 00:37:04.438041000 +0100
++++ chromium-109.0.5414.119/third_party/tflite_support/src/tensorflow_lite_support/metadata/cc/utils/zip_writable_mem_file.h	2023-01-31 23:44:37.908854741 +0100
 @@ -19,7 +19,7 @@ limitations under the License.
  #include <cstdlib>
  
