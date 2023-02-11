@@ -58,10 +58,10 @@
 Name:		chromium-browser-%{channel}
 # Working version numbers can be found at
 # http://omahaproxy.appspot.com/
-Version:	109.0.5414.119
+Version:	110.0.5481.77
 ### Don't be evil!!! ###
-%define ungoogled 109.0.5414.119-1
-%define stha 109-patchset-2
+%define ungoogled 110.0.5481.77-1
+%define stha 110-patchset-3
 Release:	1
 Summary:	A fast webkit-based web browser
 Group:		Networking/WWW
@@ -85,8 +85,6 @@ Patch0:		https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-70.0.
 # Use /etc/chromium for master_prefs
 Patch1:		https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-68.0.3440.106-master-prefs-path.patch
 # Use gn system files
-# Do not prefix libpng functions
-Patch4:		https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-60.0.3112.78-no-libpng-prefix.patch
 # Do not mangle zlib
 Patch6:		https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-77.0.3865.75-no-zlib-mangle.patch
 # Use Gentoo's Widevine hack

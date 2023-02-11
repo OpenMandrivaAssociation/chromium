@@ -1,6 +1,6 @@
-diff -up chromium-105.0.5195.102/build/linux/unbundle/libusb.gn.17~ chromium-105.0.5195.102/build/linux/unbundle/libusb.gn
---- chromium-105.0.5195.102/build/linux/unbundle/libusb.gn.17~	2022-09-04 19:26:38.764657425 +0200
-+++ chromium-105.0.5195.102/build/linux/unbundle/libusb.gn	2022-09-04 19:26:38.764657425 +0200
+diff -up chromium-110.0.5481.77/build/linux/unbundle/libusb.gn.18~ chromium-110.0.5481.77/build/linux/unbundle/libusb.gn
+--- chromium-110.0.5481.77/build/linux/unbundle/libusb.gn.18~	2023-02-11 16:32:26.643839854 +0100
++++ chromium-110.0.5481.77/build/linux/unbundle/libusb.gn	2023-02-11 16:32:26.643839854 +0100
 @@ -0,0 +1,24 @@
 +# Copyright 2016 The Chromium Authors. All rights reserved.
 +# Use of this source code is governed by a BSD-style license that can be
@@ -26,12 +26,12 @@ diff -up chromium-105.0.5195.102/build/linux/unbundle/libusb.gn.17~ chromium-105
 +  ]
 +  public_configs = [ ":system_libusb" ]
 +}
-diff -up chromium-105.0.5195.102/build/linux/unbundle/replace_gn_files.py.17~ chromium-105.0.5195.102/build/linux/unbundle/replace_gn_files.py
---- chromium-105.0.5195.102/build/linux/unbundle/replace_gn_files.py.17~	2022-09-04 19:26:38.764657425 +0200
-+++ chromium-105.0.5195.102/build/linux/unbundle/replace_gn_files.py	2022-09-04 19:49:06.309090446 +0200
-@@ -52,6 +52,7 @@ REPLACEMENTS = {
+diff -up chromium-110.0.5481.77/build/linux/unbundle/replace_gn_files.py.18~ chromium-110.0.5481.77/build/linux/unbundle/replace_gn_files.py
+--- chromium-110.0.5481.77/build/linux/unbundle/replace_gn_files.py.18~	2023-02-11 16:32:26.643839854 +0100
++++ chromium-110.0.5481.77/build/linux/unbundle/replace_gn_files.py	2023-02-11 16:33:06.912926038 +0100
+@@ -54,6 +54,7 @@ REPLACEMENTS = {
+   'libevent': 'third_party/libevent/BUILD.gn',
    'libjpeg': 'third_party/libjpeg.gni',
-   'libjxl' : 'third_party/libjxl/BUILD.gn',
    'libpng': 'third_party/libpng/BUILD.gn',
 +  'libusb': 'third_party/libusb/BUILD.gn',
    'libvpx': 'third_party/libvpx/BUILD.gn',
