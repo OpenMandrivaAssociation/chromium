@@ -41,11 +41,16 @@
 %define _fortify_cflags %{nil}
 %define _ssp_cflags %{nil}
 
-# Libraries that should be unbundled
-# openh264
-%global system_libs brotli dav1d flac ffmpeg fontconfig harfbuzz-ng icu libaom libjpeg libpng libdrm libwebp libxml libxslt opus libusb zlib libevent freetype
-# FIXME add libvpx [currently results in build failure]
-# re2 jsoncpp snappy <-- can't be added right now because of use_custom_libcxx=true, system libs use libstdc++
+# Libraries that should be unbundled (and reason why they
+# aren't yet):
+# openh264: Fails to compile
+# icu: Causes crash when loading some websites, e.g.
+#      build logs from abf, anti-spiegel.ru
+# libvpx: Fails to compile
+# re2 jsoncpp snappy: Use C++, therefore won't work while
+#                     system uses libstdc++ but chromium
+#                     uses use_custom_libcxx=true
+%global system_libs brotli dav1d flac ffmpeg fontconfig harfbuzz-ng libaom libjpeg libpng libdrm libwebp libxml libxslt opus libusb zlib libevent freetype openh264
 %define system() %(if echo %{system_libs} |grep -q -E '(^| )%{1}( |$)'; then echo -n 1; else echo -n 0;  fi)
 
 # Set up Google API keys, see http://www.chromium.org/developers/how-tos/api-keys
@@ -146,6 +151,7 @@ Patch1001:	chromium-64-system-curl.patch
 Patch1002:	chromium-69-no-static-libstdc++.patch
 Patch1003:	chromium-system-zlib.patch
 Patch1004:	chromium-107-system-libs.patch
+Patch1005:	chromium-restore-jpeg-xl-support.patch
 #Patch1007:	chromium-81-enable-gpu-features.patch
 Patch2:		https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-67.0.3396.62-gn-system.patch
 Patch1006:	https://raw.githubusercontent.com/ungoogled-software/ungoogled-chromium-fedora/master/chromium-91.0.4472.77-java-only-allowed-in-android-builds.patch
@@ -544,7 +550,7 @@ GN_DEFINES+=" enable_hangout_services_extension=true"
 GN_DEFINES+=" enable_widevine=true"
 GN_DEFINES+=" use_vaapi=true"
 GN_DEFINES+=" angle_link_glx=true angle_test_enable_system_egl=true "
-GN_DEFINES+=" enable_hevc_parser_and_hw_decoder=true enable_jxl_decoder=true"
+GN_DEFINES+=" enable_hevc_parser_and_hw_decoder=true enable_av1_decoder=true enable_jxl_decoder=true"
 GN_DEFINES+=" enable_media_drm_storage=true"
 %ifarch znver1
 # This really is znver1 only, as it enables SSE4.2, BMI2 and AVX2
