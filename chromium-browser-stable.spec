@@ -46,11 +46,14 @@
 # openh264: Fails to compile
 # icu: Causes crash when loading some websites, e.g.
 #      build logs from abf, anti-spiegel.ru
+# libevent: Works-ish, but causes weird random freezes
+#           observed e.g. while running multiple Slack
+#           sessions in browser mode
 # libvpx: Fails to compile
 # re2 jsoncpp snappy: Use C++, therefore won't work while
 #                     system uses libstdc++ but chromium
 #                     uses use_custom_libcxx=true
-%global system_libs brotli dav1d flac ffmpeg fontconfig harfbuzz-ng libaom libjpeg libpng libdrm libwebp libxml libxslt opus libusb zlib libevent freetype openh264
+%global system_libs brotli dav1d flac ffmpeg fontconfig harfbuzz-ng libaom libjpeg libpng libdrm libwebp libxml libxslt opus libusb zlib freetype openh264
 %define system() %(if echo %{system_libs} |grep -q -E '(^| )%{1}( |$)'; then echo -n 1; else echo -n 0;  fi)
 
 # Set up Google API keys, see http://www.chromium.org/developers/how-tos/api-keys
@@ -63,9 +66,9 @@
 Name:		chromium-browser-%{channel}
 # Working version numbers can be found at
 # http://omahaproxy.appspot.com/
-Version:	110.0.5481.77
+Version:	110.0.5481.100
 ### Don't be evil!!! ###
-%define ungoogled 110.0.5481.77-1
+%define ungoogled 110.0.5481.100-1
 %define stha 110-patchset-3
 Release:	1
 Summary:	A fast webkit-based web browser
