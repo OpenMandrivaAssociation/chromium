@@ -66,7 +66,7 @@
 Name:		chromium-browser-%{channel}
 # Working version numbers can be found at
 # http://omahaproxy.appspot.com/
-Version:	110.0.5481.100
+Version:	110.0.5481.177
 ### Don't be evil!!! ###
 %define ungoogled 110.0.5481.100-1
 %define stha 110-patchset-3
@@ -376,7 +376,7 @@ done
 UGDIR=$(pwd)/ungoogled-chromium-%{ungoogled}
 echo %{version} >$UGDIR/chromium_version.txt
 # FIXME we shouldn't un-prune anything, but this seems to be needed
-#sed -i -e '/chrome-linux-5359-1669656947-a415d5db65dd3e05ade5e2d1d5f3750801174642.profdata/d' $UGDIR/pruning.list
+sed -i -e '/chrome-linux-5481-1675162426-393d781cbc3753d814a299bfd43435032b5acfd9.profdata/d' $UGDIR/pruning.list
 python $UGDIR/utils/prune_binaries.py ./ $UGDIR/pruning.list --verbose
 python $UGDIR/utils/patches.py apply ./ $UGDIR/patches
 python $UGDIR/utils/domain_substitution.py apply -r $UGDIR/domain_regex.list -f $UGDIR/domain_substitution.list -c domainsubcache.tar.gz ./
