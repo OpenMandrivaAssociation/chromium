@@ -65,11 +65,11 @@
 
 Name:		chromium-browser-%{channel}
 # Working version numbers can be found at
-# http://omahaproxy.appspot.com/
-Version:	110.0.5481.177
+# https://chromiumdash.appspot.com/releases?platform=Linux
+Version:	111.0.5563.64
 ### Don't be evil!!! ###
-%define ungoogled 110.0.5481.177-1
-%define stha 110-patchset-4
+%define ungoogled 111.0.5563.64-1
+%define stha 111-patchset-2
 Release:	1
 Summary:	A fast webkit-based web browser
 Group:		Networking/WWW
@@ -109,15 +109,10 @@ Patch53:	chromium-81-unbundle-zlib.patch
 # Needs to be submitted..
 Patch54:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-77.0.3865.75-gcc-include-memory.patch
 
-%if %omvver > 4050000
-# only cooker has markupsafe > 2.0
-Patch65:	https://src.fedoraproject.org/rpms/chromium/raw/rawhide/f/chromium-99.0.4844.84-markdownsafe-soft_str.patch
-%endif
-
 # From Arch and Gentoo
 # https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=chromium-dev
-Patch101:	https://raw.githubusercontent.com/gentoo/gentoo/master/www-client/chromium/files/chromium-93-InkDropHost-crash.patch
-Patch102:	https://raw.githubusercontent.com/gentoo/gentoo/master/www-client/chromium/files/chromium-shim_headers.patch
+#Patch101:	https://raw.githubusercontent.com/gentoo/gentoo/master/www-client/chromium/files/chromium-93-InkDropHost-crash.patch
+#Patch102:	https://raw.githubusercontent.com/gentoo/gentoo/master/www-client/chromium/files/chromium-shim_headers.patch
 Patch103:	https://raw.githubusercontent.com/archlinux/svntogit-packages/packages/chromium/trunk/use-oauth2-client-switches-as-default.patch
 Patch105:	reverse-roll-src-third_party-ffmpeg.patch
 
@@ -364,6 +359,10 @@ members of the Chromium and WebDriver teams.
 %setup -q -n chromium-%{version} %{?stha:-a 500} %{?ungoogled:-a 1000}
 %if 0%{?stha:1}
 j=1
+# Still in stha, but already upstream too
+rm patches/chromium-110-dpf-arm64.patch \
+	patches/chromium-111-v8-std-layout1.patch \
+	patches/chromium-111-v8-std-layout2.patch
 for i in patches/*; do
     if basename $i |grep -qE '~$'; then continue; fi
     echo "Applying `basename $i`"
