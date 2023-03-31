@@ -70,7 +70,7 @@ Version:	111.0.5563.110
 ### Don't be evil!!! ###
 %define ungoogled 111.0.5563.110-1
 %define stha 111-patchset-2
-Release:	1
+Release:	2
 Summary:	A fast webkit-based web browser
 Group:		Networking/WWW
 License:	BSD, LGPL
