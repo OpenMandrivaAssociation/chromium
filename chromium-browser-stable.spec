@@ -66,11 +66,11 @@
 Name:		chromium-browser-%{channel}
 # Working version numbers can be found at
 # https://chromiumdash.appspot.com/releases?platform=Linux
-Version:	111.0.5563.110
+Version:	112.0.5615.49
 ### Don't be evil!!! ###
-%define ungoogled 111.0.5563.110-1
-%define stha 111-patchset-2
-Release:	2
+%define ungoogled 112.0.5615.49-1
+#define stha 112-patchset-1
+Release:	1
 Summary:	A fast webkit-based web browser
 Group:		Networking/WWW
 License:	BSD, LGPL
@@ -156,6 +156,7 @@ Patch1006:	https://raw.githubusercontent.com/ungoogled-software/ungoogled-chromi
 Patch1009:	chromium-97-compilefixes.patch
 Patch1010:	chromium-97-ffmpeg-4.4.1.patch
 Patch1011:	chromium-99-ffmpeg-5.0.patch
+Patch1012:	chromium-112-compile.patch
 Patch1013:	chromium-105-minizip-ng.patch
 Patch1014:	chromium-107-ffmpeg-5.1.patch
 

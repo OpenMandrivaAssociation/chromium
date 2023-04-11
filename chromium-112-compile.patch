@@ -1,0 +1,12 @@
+diff -up chromium-112.0.5615.49/ui/ozone/platform/drm/gpu/drm_thread.cc.omv~ chromium-112.0.5615.49/ui/ozone/platform/drm/gpu/drm_thread.cc
+--- chromium-112.0.5615.49/ui/ozone/platform/drm/gpu/drm_thread.cc.omv~	2023-04-11 00:57:31.802433400 +0200
++++ chromium-112.0.5615.49/ui/ozone/platform/drm/gpu/drm_thread.cc	2023-04-11 00:57:44.459495726 +0200
+@@ -149,7 +149,7 @@ void DrmThread::CreateBuffer(gfx::Accele
+   // but it happens during init. Need to figure out why.
+   std::vector<uint64_t> modifiers;
+   if (window && window->GetController() && !(flags & GBM_BO_USE_LINEAR) &&
+-      !(flags & GBM_BO_USE_HW_VIDEO_DECODER) &&
++/*      !(flags & GBM_BO_USE_HW_VIDEO_DECODER) && */
+       !(client_flags & GbmPixmap::kFlagNoModifiers)) {
+     modifiers = window->GetController()->GetSupportedModifiers(fourcc_format);
+   }
