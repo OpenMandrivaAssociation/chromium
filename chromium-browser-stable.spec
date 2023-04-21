@@ -66,9 +66,9 @@
 Name:		chromium-browser-%{channel}
 # Working version numbers can be found at
 # https://chromiumdash.appspot.com/releases?platform=Linux
-Version:	112.0.5615.49
+Version:	112.0.5615.165
 ### Don't be evil!!! ###
-%define ungoogled 112.0.5615.49-1
+%define ungoogled 112.0.5615.165-1
 #define stha 112-patchset-1
 Release:	1
 Summary:	A fast webkit-based web browser
