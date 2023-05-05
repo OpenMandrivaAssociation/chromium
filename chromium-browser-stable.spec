@@ -66,9 +66,9 @@
 Name:		chromium-browser-%{channel}
 # Working version numbers can be found at
 # https://chromiumdash.appspot.com/releases?platform=Linux
-Version:	112.0.5615.165
+Version:	113.0.5672.63
 ### Don't be evil!!! ###
-%define ungoogled 112.0.5615.165-1
+%define ungoogled 113.0.5672.63-1
 #define stha 112-patchset-1
 Release:	1
 Summary:	A fast webkit-based web browser
@@ -108,6 +108,7 @@ Patch20:	1245d8c.diff
 Patch53:	chromium-81-unbundle-zlib.patch
 # Needs to be submitted..
 Patch54:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-77.0.3865.75-gcc-include-memory.patch
+Patch55:	chromium-113.0.5672.63-compile.patch
 
 # From Arch and Gentoo
 # https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=chromium-dev
@@ -375,6 +376,15 @@ done
 %if 0%{?ungoogled:1}
 UGDIR=$(pwd)/ungoogled-chromium-%{ungoogled}
 echo %{version} >$UGDIR/chromium_version.txt
+# Disable a few patches: We don't want to allow Google to spy on our
+# users, but we don't want to prevent users from voluntarily using
+# Google services.
+# Also, disable some security-for-usability tradeoffs by default
+sed -i \
+	-e '/disable-autofill/d' \
+	-e '/prefs-only-keep-cookies-until-exit/d' \
+	-e '/replace-google-search-engine-with-nosearch/d' \
+	$UGDIR/patches/series
 python $UGDIR/utils/prune_binaries.py ./ $UGDIR/pruning.list --verbose
 python $UGDIR/utils/patches.py apply ./ $UGDIR/patches
 python $UGDIR/utils/domain_substitution.py apply -r $UGDIR/domain_regex.list -f $UGDIR/domain_substitution.list -c domainsubcache.tar.gz ./

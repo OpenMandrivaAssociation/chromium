@@ -23,8 +23,7 @@
      "show_on_all_tabs": true
   },
   "first_run_tabs": [
-     "http://openmandriva.org",
-     "http://tools.google.com/chrome/intl/en/welcome.html"
+     "http://openmandriva.org"
   ],
   "homepage": "http://openmandriva.org",
   "homepage_is_newtabpage": false
