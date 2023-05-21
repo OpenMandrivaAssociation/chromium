@@ -70,7 +70,7 @@ Version:	113.0.5672.126
 ### Don't be evil!!! ###
 %define ungoogled 113.0.5672.126-1
 #define stha 112-patchset-1
-Release:	1
+Release:	2
 Summary:	A fast webkit-based web browser
 Group:		Networking/WWW
 License:	BSD, LGPL
