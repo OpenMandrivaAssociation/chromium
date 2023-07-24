@@ -53,7 +53,8 @@
 # re2 jsoncpp snappy: Use C++, therefore won't work while
 #                     system uses libstdc++ but chromium
 #                     uses use_custom_libcxx=true
-%global system_libs brotli dav1d flac ffmpeg fontconfig harfbuzz-ng libaom libjpeg libpng libdrm libwebp libxml libxslt opus libusb zlib freetype openh264
+%global system_libs brotli dav1d flac ffmpeg fontconfig harfbuzz-ng libjpeg libpng libdrm libwebp libxml libxslt opus libusb zlib freetype openh264
+# libaom
 %define system() %(if echo %{system_libs} |grep -q -E '(^| )%{1}( |$)'; then echo -n 1; else echo -n 0;  fi)
 
 # Set up Google API keys, see http://www.chromium.org/developers/how-tos/api-keys
@@ -66,11 +67,11 @@
 Name:		chromium-browser-%{channel}
 # Working version numbers can be found at
 # https://chromiumdash.appspot.com/releases?platform=Linux
-Version:	113.0.5672.126
+Version:	115.0.5790.102
 ### Don't be evil!!! ###
-%define ungoogled 113.0.5672.126-1
+%define ungoogled 115.0.5790.102-1
 #define stha 112-patchset-1
-Release:	2
+Release:	1
 Summary:	A fast webkit-based web browser
 Group:		Networking/WWW
 License:	BSD, LGPL
@@ -125,6 +126,12 @@ Patch105:	reverse-roll-src-third_party-ffmpeg.patch
 # Apply these patches to work around EPEL8 issues
 #Patch300:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-76.0.3809.132-rhel8-force-disable-use_gnome_keyring.patch
 
+Patch401:	https://src.fedoraproject.org/rpms/chromium/raw/rawhide/f/chromium-114-qt-handle_scale_factor_changes.patch
+Patch402:	https://src.fedoraproject.org/rpms/chromium/raw/rawhide/f/chromium-114-qt-fix_font_double_scaling.patch
+Patch403:	https://src.fedoraproject.org/rpms/chromium/raw/rawhide/f/chromium-114-qt_deps.patch
+Patch404:	https://src.fedoraproject.org/rpms/chromium/raw/rawhide/f/chromium-114-qt_enable_AllowQt_feature_flag.patch
+Patch405:	https://src.fedoraproject.org/rpms/chromium/raw/rawhide/f/chromium-114-qt_logical_scale_factor.patch
+
 #Patch501:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-75.0.3770.80-SIOCGSTAMP.patch
 
 ### Chromium gcc/libstdc++ support ###
@@ -160,6 +167,7 @@ Patch1011:	chromium-99-ffmpeg-5.0.patch
 Patch1012:	chromium-112-compile.patch
 Patch1013:	chromium-105-minizip-ng.patch
 Patch1014:	chromium-107-ffmpeg-5.1.patch
+Patch1015:	chromium-114-clang-16.patch
 
 Provides:	%{crname}
 Obsoletes:	chromium-browser-unstable < %{EVRD}
@@ -574,6 +582,7 @@ GN_DEFINES+=" perfetto_use_system_zlib=true"
 GN_DEFINES+=" rtc_link_pipewire=true rtc_use_pipewire=true"
 GN_DEFINES+=" use_libinput=true use_real_dbus_clients=true"
 GN_DEFINES+=" use_vaapi_image_codecs=true"
+GN_DEFINES+=" enable_rust=false"
 # 107: Build failure: GN_DEFINES+=" enable_wayland_server=true"
 # 107: Build failure: GN_DEFINES+=" perfetto_use_system_protobuf=true"
 # 107: Build failure: GN_DEFINES+=" use_v4l2_codec=true use_v4lplugin=true"
@@ -625,6 +634,7 @@ install -m 4755 out/Release/chrome_sandbox %{buildroot}%{_libdir}/%{name}/chrome
 install -m 644 out/Release/locales/*.pak %{buildroot}%{_libdir}/%{name}/locales/
 install -m 644 out/Release/chrome_100_percent.pak %{buildroot}%{_libdir}/%{name}/
 install -m 644 out/Release/resources.pak %{buildroot}%{_libdir}/%{name}/
+install -m 755 out/Release/libqt5_shim.so %{buildroot}%{_libdir}/%{name}/
 # May or may not be there depending on whether or not we use system icu
 [ -e out/Release/icudtl.dat ] && install -m 644 out/Release/icudtl.dat %{buildroot}%{_libdir}/%{name}/
 install -m 644 out/Release/*.bin %{buildroot}%{_libdir}/%{name}/

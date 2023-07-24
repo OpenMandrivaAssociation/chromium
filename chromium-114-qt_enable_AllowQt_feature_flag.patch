@@ -1,0 +1,12 @@
+diff -up chromium-114.0.5735.106/ui/linux/linux_ui_factory.cc.me chromium-114.0.5735.106/ui/linux/linux_ui_factory.cc
+--- chromium-114.0.5735.106/ui/linux/linux_ui_factory.cc.me	2023-06-11 18:47:09.742886578 +0200
++++ chromium-114.0.5735.106/ui/linux/linux_ui_factory.cc	2023-06-11 18:48:42.231584886 +0200
+@@ -127,7 +127,7 @@ LinuxUiAndTheme* GetDefaultLinuxUiAndThe
+ 
+ }  // namespace
+ 
+-BASE_FEATURE(kAllowQt, "AllowQt", base::FEATURE_DISABLED_BY_DEFAULT);
++BASE_FEATURE(kAllowQt, "AllowQt", base::FEATURE_ENABLED_BY_DEFAULT);
+ 
+ LinuxUi* GetDefaultLinuxUi() {
+   auto* linux_ui = GetDefaultLinuxUiAndTheme();

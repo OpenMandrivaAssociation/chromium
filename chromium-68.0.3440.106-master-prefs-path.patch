@@ -1,20 +1,20 @@
-diff -up chromium-92.0.4515.131/chrome/browser/first_run/first_run_internal_linux.cc.2~ chromium-92.0.4515.131/chrome/browser/first_run/first_run_internal_linux.cc
---- chromium-92.0.4515.131/chrome/browser/first_run/first_run_internal_linux.cc.2~	2021-08-14 03:38:46.112259991 +0200
-+++ chromium-92.0.4515.131/chrome/browser/first_run/first_run_internal_linux.cc	2021-08-14 04:22:25.906192670 +0200
-@@ -20,14 +20,8 @@ bool IsOrganicFirstRun() {
+diff -up chromium-115.0.5790.102/chrome/browser/first_run/first_run_internal_linux.cc.1~ chromium-115.0.5790.102/chrome/browser/first_run/first_run_internal_linux.cc
+--- chromium-115.0.5790.102/chrome/browser/first_run/first_run_internal_linux.cc.1~	2023-07-24 13:09:46.723226630 +0200
++++ chromium-115.0.5790.102/chrome/browser/first_run/first_run_internal_linux.cc	2023-07-24 13:12:53.974778833 +0200
+@@ -20,12 +20,14 @@ bool IsOrganicFirstRun() {
  
  base::FilePath InitialPrefsPath() {
    // The standard location of the initial prefs is next to the chrome binary.
--  base::FilePath initial_prefs;
--  if (!base::PathService::Get(base::DIR_EXE, &initial_prefs))
--    return base::FilePath();
--
--  base::FilePath new_path = initial_prefs.AppendASCII(installer::kInitialPrefs);
--  if (base::PathIsReadable(new_path))
--    return new_path;
--
+-  base::FilePath dir_exe;
 +  // ...but we patch it to use /etc/chromium
-+  base::FilePath initial_prefs = base::FilePath("/etc/chromium");
-   return initial_prefs.AppendASCII(installer::kLegacyInitialPrefs);
++  return base::FilePath("/etc/chromium");
++/*  base::FilePath dir_exe;
+   if (!base::PathService::Get(base::DIR_EXE, &dir_exe)) {
+     return base::FilePath();
+   }
+ 
+-  return installer::InitialPreferences::Path(dir_exe);
++  return installer::InitialPreferences::Path(dir_exe); */
  }
  
+ }  // namespace internal
