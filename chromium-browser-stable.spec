@@ -67,7 +67,7 @@
 Name:		chromium-browser-%{channel}
 # Working version numbers can be found at
 # https://chromiumdash.appspot.com/releases?platform=Linux
-Version:	115.0.5790.102
+Version:	115.0.5790.110
 ### Don't be evil!!! ###
 %define ungoogled 115.0.5790.102-1
 #define stha 112-patchset-1
