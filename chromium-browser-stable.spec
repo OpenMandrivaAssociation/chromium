@@ -71,6 +71,12 @@ Version:	115.0.5790.110
 ### Don't be evil!!! ###
 %define ungoogled 115.0.5790.102-1
 #define stha 112-patchset-1
+# To find the CEF commit matching the Chromium version, look up the
+# right branch at
+# https://bitbucket.org/chromiumembedded/cef/wiki/BranchesAndBuilding
+# then check the commit for the branch at the branch download page,
+# https://bitbucket.org/chromiumembedded/cef/downloads/?tab=branches
+%define cef 5790:9cc8df1534336ce86b8e2def975049eec0635fb1
 Release:	1
 Summary:	A fast webkit-based web browser
 Group:		Networking/WWW
@@ -84,6 +90,10 @@ Source3:	master_preferences
 # Workaround from Arch Linux
 # https://aur.archlinux.org/cgit/aur.git/tree/chromium-drirc-disable-10bpc-color-configs.conf?h=chromium-vaapi
 Source4:	chromium-drirc-disable-10bpc-color-configs.conf
+%if 0%{?cef:1}
+Source10:	https://bitbucket.org/chromiumembedded/cef/get/%(echo %{cef} |cut -d: -f2).tar.bz2
+Source11:	https://chromium-fonts.storage.googleapis.com/336e775eec536b2d785cc80eff6ac39051931286#/test_fonts.tar.gz
+%endif
 Source100:	%{name}.rpmlintrc
 
 ### Chromium Fedora Patches ###
@@ -168,6 +178,16 @@ Patch1012:	chromium-112-compile.patch
 Patch1013:	chromium-105-minizip-ng.patch
 Patch1014:	chromium-107-ffmpeg-5.1.patch
 Patch1015:	chromium-114-clang-16.patch
+%if 0%{?cef:1}
+Patch1020:	cef-drop-unneeded-libxml-patch.patch
+Patch1021:	cef-rebase-chrome_runtime_views-patch.patch
+Patch1022:	cef-rebase-content_2015.patch
+Patch1023:	chromium-115-fix-generate_fontconfig_caches.patch
+Patch1024:	cef-115-minizip-ng.patch
+%if 0%{?ungoogled:1}
+Patch1025:	cef-115-ungoogling.patch
+%endif
+%endif
 
 Provides:	%{crname}
 Obsoletes:	chromium-browser-unstable < %{EVRD}
@@ -335,6 +355,23 @@ browser which is updated with features and fixes once they have been
 thoroughly tested. If you want the latest features, install the
 chromium-browser-dev package instead.
 
+%if 0%{?cef:1}
+%package -n cef
+Summary: Chromium Embedded Framework - library for embeddind Chromium in custom applications
+Group: System/Libraries
+
+%description -n cef
+Chromium Embedded Framework - library for embeddind Chromium in custom applications
+
+%package -n cef-devel
+Summary: Chromium Embedded Framework - library for embeddind Chromium in custom applications
+Group: Development/Libraries
+Requires: cef = %{EVRD}
+
+%description -n cef-devel
+Chromium Embedded Framework - library for embeddind Chromium in custom applications
+%endif
+
 %if "%{channel}" == "stable"
 %package -n chromium-browser
 Summary:	A fast webkit-based web browser (transition package)
@@ -396,6 +433,27 @@ sed -i \
 python $UGDIR/utils/prune_binaries.py ./ $UGDIR/pruning.list --verbose
 python $UGDIR/utils/patches.py apply ./ $UGDIR/patches
 python $UGDIR/utils/domain_substitution.py apply -r $UGDIR/domain_regex.list -f $UGDIR/domain_substitution.list -c domainsubcache.tar.gz ./
+%endif
+
+%if 0%{?cef:1}
+tar xf %{S:10}
+mv chromiumembedded-cef-* cef
+# CEF's scripts refuse to work outside of git repositories, so
+# we have to fake it
+git init
+cd third_party/pdfium ; git init; cd ../..
+cd cef; git init; cd ..
+cd cef
+COMMIT_NUMBER=%(echo %{cef} |cut -d: -f1) COMMIT_HASH=%(echo %{cef} |cut -d: -f2) python tools/make_version_header.py include/cef_version.h --cef_version VERSION.in --chrome_version ../chrome/VERSION --cpp_header_dir include
+cd ..
+
+if [ "$(cat third_party/test_fonts/test_fonts.tar.gz.sha1)" != "336e775eec536b2d785cc80eff6ac39051931286" ]; then
+	echo "Please update the test_fonts (Source11) to $(cat third_party/test_fonts/test_fonts.tar.gz.sha1)"
+	exit 1
+fi
+cd third_party/test_fonts
+tar xf %{S:11}
+cd ../..
 %endif
 
 %autopatch -p1
@@ -470,8 +528,10 @@ export PATH=$PWD/bfd:$PATH
 %global optflags %(echo %{optflags} | sed -e 's/-g3 /-g1 /')
 %global optflags %{optflags} -I%{_includedir}/libunwind
 
+%if ! %{cross_compiling}
 export CC=clang
 export CXX=clang++
+%endif
 
 _lto_cpus="$(getconf _NPROCESSORS_ONLN)"
 if [ $_lto_cpus -gt 4 ]; then
@@ -622,6 +682,19 @@ ninja -C out/Release chrome chrome_sandbox chromedriver
 ninja -C out/Release chrome chrome_sandbox
 %endif
 
+%if 0%{?cef:1}
+# Apply CEF specific patches and build CEF...
+cd cef
+./tools/patch.sh
+cd ..
+
+# Lastly, try to build it...
+# We have to use use_thin_lto=false because LTO in CEF causes
+# an OOM while linking libcef.so even on boxes with 64 GB RAM + 64 GB swap
+out/Release/gn gen --script-executable=/usr/bin/python --args="${GN_DEFINES} is_cfi=false use_thin_lto=false chrome_pgo_phase=0" out/Release-CEF
+ninja -C out/Release-CEF cef chrome_sandbox
+%endif
+
 %install
 mkdir -p %{buildroot}%{_bindir}
 mkdir -p %{buildroot}%{_libdir}/%{name}/locales
@@ -677,6 +750,38 @@ find %{buildroot} -name "*.nexe" -exec strip {} \;
 # drirc workaround for VAAPI
 mkdir -p %{buildroot}%{_datadir}/drirc.d/
 cp %{S:4} %{buildroot}%{_datadir}/drirc.d/10-%{name}.conf
+
+%if 0%{?cef:1}
+# FIXME the packaging here is based on the filesystem layout in
+# the binaries referenced in OnlyOffice's
+# https://github.com/ONLYOFFICE/build_tools/blob/master/scripts/core_common/modules/cef.py
+# such as
+# http://d2ettrnqo7v976.cloudfront.net/cef/5414/linux_64/cef_binary.7z
+# Is there a better option?
+# Adding qt5_shim stuff is OM specific, hoping to get Qt integration
+cd out/Release-CEF
+mkdir -p %{buildroot}%{_libdir}/cef/Release \
+	%{buildroot}%{_libdir}/cef/Resources
+cp -a chrome-sandbox libcef.so libEGL.so libGLESv2.so libvk_swiftshader.so libvulkan.so.1 snapshot_blob.bin v8_context_snapshot.bin vk_swiftshader_icd.json libqt5_shim.so %{buildroot}%{_libdir}/cef/Release
+cp -a chrome_100_percent.pak chrome_200_percent.pak icudtl.dat locales resources.pak %{buildroot}%{_libdir}/cef/Resources
+cd ../..
+
+# -devel package layout is based on what we see in OnlyOffice's
+# desktop-sdk/ChromiumBasedEditors/lib/src/cef/linux
+cp -a cef/include %{buildroot}%{_libdir}/cef/
+cp -a out/Release-CEF/includes/include/* %{buildroot}%{_libdir}/cef/include/
+cp -a cef/libcef_dll cef/tests %{buildroot}%{_libdir}/cef
+
+%files -n cef
+%dir %{_libdir}/cef
+%{_libdir}/cef/Release
+%{_libdir}/cef/Resources
+
+%files -n cef-devel
+%{_libdir}/cef/include
+%{_libdir}/cef/libcef_dll
+%{_libdir}/cef/tests
+%endif
 
 %if "%{channel}" == "stable"
 %files -n chromium-browser

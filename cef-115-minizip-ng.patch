@@ -1,0 +1,23 @@
+diff -up chromium-115.0.5790.110/cef/libcef/browser/zip_reader_impl.cc.omv~ chromium-115.0.5790.110/cef/libcef/browser/zip_reader_impl.cc
+--- chromium-115.0.5790.110/cef/libcef/browser/zip_reader_impl.cc.omv~	2023-07-30 12:12:37.019972435 +0200
++++ chromium-115.0.5790.110/cef/libcef/browser/zip_reader_impl.cc	2023-07-30 12:21:58.918809401 +0200
+@@ -9,6 +9,10 @@
+ #include "base/time/time.h"
+ #include "include/cef_stream.h"
+ 
++#define voidpf void*
++#define OF(x) x
++#define uLong unsigned long
++
+ // Static functions
+ 
+ // static
+@@ -160,7 +164,7 @@ bool CefZipReaderImpl::MoveToFile(const
+ 
+   std::string fileNameStr = fileName;
+   return (unzLocateFile(reader_, fileNameStr.c_str(),
+-                        (caseSensitive ? 1 : 2)) == UNZ_OK);
++                        reinterpret_cast<unzFileNameComparer>((caseSensitive ? 1 : 2))) == UNZ_OK);
+ }
+ 
+ bool CefZipReaderImpl::Close() {
