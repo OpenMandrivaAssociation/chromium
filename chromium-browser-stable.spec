@@ -762,7 +762,10 @@ cp %{S:4} %{buildroot}%{_datadir}/drirc.d/10-%{name}.conf
 cd out/Release-CEF
 mkdir -p %{buildroot}%{_libdir}/cef/Release \
 	%{buildroot}%{_libdir}/cef/Resources
-cp -a chrome-sandbox libcef.so libEGL.so libGLESv2.so libvk_swiftshader.so libvulkan.so.1 snapshot_blob.bin v8_context_snapshot.bin vk_swiftshader_icd.json libqt5_shim.so %{buildroot}%{_libdir}/cef/Release
+cp -a chrome_sandbox libcef.so libEGL.so libGLESv2.so libvk_swiftshader.so libvulkan.so.1 snapshot_blob.bin v8_context_snapshot.bin vk_swiftshader_icd.json libqt5_shim.so %{buildroot}%{_libdir}/cef/Release
+# The build process generates chrome_sandbox, but cef binary builds ship chrome-sandbox
+# It's the same thing, so let's provide both names to be on the safe side
+ln -s chrome_sandbox %{buildroot}%{_libdir}/cef/Release/chrome-sandbox
 cp -a chrome_100_percent.pak chrome_200_percent.pak icudtl.dat locales resources.pak %{buildroot}%{_libdir}/cef/Resources
 cd ../..
 
