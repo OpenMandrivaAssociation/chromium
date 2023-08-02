@@ -363,6 +363,10 @@ chromium-browser-dev package instead.
 %if 0%{?cef:1}
 %package -n cef
 Summary: Chromium Embedded Framework - library for embeddind Chromium in custom applications
+# FIXME cef hardcodes a gtk dependency somewhere. It should
+# really be dropped in favor of Qt
+BuildRequires: pkgconfig(gtk+-3.0)
+BuildRequires: pkgconfig(gtk+-unix-print-3.0)
 Group: System/Libraries
 
 %description -n cef
