@@ -23,6 +23,9 @@
 %define _build_pkgcheck_set %{nil}
 %endif
 
+%bcond_without browser
+%bcond_without cef
+
 # FIXME As of 97.0.4688.2, Chromium crashes frequently when
 # built with fortification enabled.
 # [3784233:1:1107/202853.599120:ERROR:socket.cc(93)] sendmsg: Broken pipe (32)
@@ -71,13 +74,15 @@ Version:	115.0.5790.110
 ### Don't be evil!!! ###
 %define ungoogled 115.0.5790.102-1
 #define stha 112-patchset-1
+%if %{with cef}
 # To find the CEF commit matching the Chromium version, look up the
 # right branch at
 # https://bitbucket.org/chromiumembedded/cef/wiki/BranchesAndBuilding
 # then check the commit for the branch at the branch download page,
 # https://bitbucket.org/chromiumembedded/cef/downloads/?tab=branches
 %define cef 5790:9cc8df1534336ce86b8e2def975049eec0635fb1
-Release:	1
+%endif
+Release:	2
 Summary:	A fast webkit-based web browser
 Group:		Networking/WWW
 License:	BSD, LGPL
@@ -667,19 +672,21 @@ else
 	export CFLAGS="%{optflags}"
 	export CXXFLAGS="%{optflags}"
 fi
-export CC=%{__cc}
-export CXX=%{__cxx}
+export CC="%{__cc}"
+export CXX="%{__cxx}"
 
 python tools/gn/bootstrap/bootstrap.py --skip-generate-buildfiles
 
 python third_party/libaddressinput/chromium/tools/update-strings.py
 
+%if %{with browser}
 out/Release/gn gen --script-executable=/usr/bin/python --args="${GN_DEFINES}" out/Release
 
 %ifarch %{x86_64}
 ninja -C out/Release chrome chrome_sandbox chromedriver
 %else
 ninja -C out/Release chrome chrome_sandbox
+%endif
 %endif
 
 %if 0%{?cef:1}
@@ -696,6 +703,7 @@ ninja -C out/Release-CEF cef chrome_sandbox
 %endif
 
 %install
+%if %{with browser}
 mkdir -p %{buildroot}%{_bindir}
 mkdir -p %{buildroot}%{_libdir}/%{name}/locales
 mkdir -p %{buildroot}%{_libdir}/%{name}/themes
@@ -750,6 +758,7 @@ find %{buildroot} -name "*.nexe" -exec strip {} \;
 # drirc workaround for VAAPI
 mkdir -p %{buildroot}%{_datadir}/drirc.d/
 cp %{S:4} %{buildroot}%{_datadir}/drirc.d/10-%{name}.conf
+%endif
 
 %if 0%{?cef:1}
 # FIXME the packaging here is based on the filesystem layout in
@@ -773,6 +782,9 @@ cd ../..
 # desktop-sdk/ChromiumBasedEditors/lib/src/cef/linux
 cp -a cef/include %{buildroot}%{_libdir}/cef/
 cp -a out/Release-CEF/includes/include/* %{buildroot}%{_libdir}/cef/include/
+# Header referenced by cef but not included there
+mkdir -p %{buildroot}%{_libdir}/cef/include/base/internal/net/base
+cp -a net/base/net_error_list.h %{buildroot}%{_libdir}/cef/include/base/internal/net/base/
 cp -a cef/libcef_dll cef/tests %{buildroot}%{_libdir}/cef
 
 %files -n cef
@@ -786,6 +798,7 @@ cp -a cef/libcef_dll cef/tests %{buildroot}%{_libdir}/cef
 %{_libdir}/cef/tests
 %endif
 
+%if %{with browser}
 %if "%{channel}" == "stable"
 %files -n chromium-browser
 %endif
@@ -816,4 +829,5 @@ cp -a cef/libcef_dll cef/tests %{buildroot}%{_libdir}/cef
 %doc LICENSE AUTHORS
 %{_bindir}/chromedriver
 %{_libdir}/%{name}/chromedriver
+%endif
 %endif
