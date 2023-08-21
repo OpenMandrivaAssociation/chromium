@@ -56,8 +56,9 @@
 # re2 jsoncpp snappy: Use C++, therefore won't work while
 #                     system uses libstdc++ but chromium
 #                     uses use_custom_libcxx=true
-%global system_libs brotli dav1d flac ffmpeg fontconfig harfbuzz-ng libjpeg libpng libdrm libwebp libxml libxslt opus libusb zlib freetype openh264
-# libaom
+%global system_libs dav1d flac ffmpeg fontconfig harfbuzz-ng libjpeg libpng libdrm libwebp libxml libxslt opus libusb zlib freetype openh264
+# FIXME readd libaom when fixed
+# FIXME readd brotli if and when it starts shipping the private shared_dictionary.h header used here
 %define system() %(if echo %{system_libs} |grep -q -E '(^| )%{1}( |$)'; then echo -n 1; else echo -n 0;  fi)
 
 # Set up Google API keys, see http://www.chromium.org/developers/how-tos/api-keys
@@ -70,19 +71,19 @@
 Name:		chromium-browser-%{channel}
 # Working version numbers can be found at
 # https://chromiumdash.appspot.com/releases?platform=Linux
-Version:	115.0.5790.110
+Version:	116.0.5845.96
 ### Don't be evil!!! ###
-%define ungoogled 115.0.5790.102-1
-#define stha 112-patchset-1
+%define ungoogled 116.0.5845.96-1
+%define stha 116-patchset-2
 %if %{with cef}
 # To find the CEF commit matching the Chromium version, look up the
 # right branch at
 # https://bitbucket.org/chromiumembedded/cef/wiki/BranchesAndBuilding
 # then check the commit for the branch at the branch download page,
 # https://bitbucket.org/chromiumembedded/cef/downloads/?tab=branches
-%define cef 5790:9cc8df1534336ce86b8e2def975049eec0635fb1
+%define cef 5845:376a7808efe57e7826effef25f9a942bcde97d8c
 %endif
-Release:	2
+Release:	1
 Summary:	A fast webkit-based web browser
 Group:		Networking/WWW
 License:	BSD, LGPL
@@ -116,10 +117,6 @@ Patch6:		https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-77.0.
 Patch8:		https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-71.0.3578.98-widevine-r3.patch
 # Try to load widevine from other places
 Patch11:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-100.0.4896.60-widevine-other-locations.patch
-# Add "Fedora" to the user agent string
-#Patch13:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-79.0.3945.56-fedora-user-agent.patch
-# https://chromium-review.googlesource.com/c/chromium/src/+/3952302
-Patch20:	1245d8c.diff
 # https://gitweb.gentoo.org/repo/gentoo.git/tree/www-client/chromium/files/chromium-unbundle-zlib.patch
 Patch53:	chromium-81-unbundle-zlib.patch
 # Needs to be submitted..
@@ -140,12 +137,6 @@ Patch105:	reverse-roll-src-third_party-ffmpeg.patch
 
 # Apply these patches to work around EPEL8 issues
 #Patch300:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-76.0.3809.132-rhel8-force-disable-use_gnome_keyring.patch
-
-Patch401:	https://src.fedoraproject.org/rpms/chromium/raw/rawhide/f/chromium-114-qt-handle_scale_factor_changes.patch
-Patch402:	https://src.fedoraproject.org/rpms/chromium/raw/rawhide/f/chromium-114-qt-fix_font_double_scaling.patch
-Patch403:	https://src.fedoraproject.org/rpms/chromium/raw/rawhide/f/chromium-114-qt_deps.patch
-Patch404:	https://src.fedoraproject.org/rpms/chromium/raw/rawhide/f/chromium-114-qt_enable_AllowQt_feature_flag.patch
-Patch405:	https://src.fedoraproject.org/rpms/chromium/raw/rawhide/f/chromium-114-qt_logical_scale_factor.patch
 
 #Patch501:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-75.0.3770.80-SIOCGSTAMP.patch
 
@@ -173,20 +164,21 @@ Patch1002:	chromium-69-no-static-libstdc++.patch
 Patch1003:	chromium-system-zlib.patch
 Patch1004:	chromium-107-system-libs.patch
 Patch1005:	chromium-restore-jpeg-xl-support.patch
+# Without this, final linking throws a bad_alloc exception.
+# Probably the limits set upstream are too low.
 #Patch1007:	chromium-81-enable-gpu-features.patch
 Patch2:		https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-67.0.3396.62-gn-system.patch
 Patch1006:	https://raw.githubusercontent.com/ungoogled-software/ungoogled-chromium-fedora/master/chromium-91.0.4472.77-java-only-allowed-in-android-builds.patch
+Patch1007:	chromium-116-dont-override-thinlto-cache-policy.patch
 Patch1009:	chromium-97-compilefixes.patch
 Patch1010:	chromium-97-ffmpeg-4.4.1.patch
 Patch1011:	chromium-99-ffmpeg-5.0.patch
 Patch1012:	chromium-112-compile.patch
 Patch1013:	chromium-105-minizip-ng.patch
 Patch1014:	chromium-107-ffmpeg-5.1.patch
-Patch1015:	chromium-114-clang-16.patch
 %if 0%{?cef:1}
 Patch1020:	cef-drop-unneeded-libxml-patch.patch
-Patch1021:	cef-rebase-chrome_runtime_views-patch.patch
-Patch1022:	cef-rebase-content_2015.patch
+Patch1021:	cef-rebase-patches.patch
 Patch1023:	chromium-115-fix-generate_fontconfig_caches.patch
 Patch1024:	cef-115-minizip-ng.patch
 %if 0%{?ungoogled:1}
@@ -415,10 +407,6 @@ members of the Chromium and WebDriver teams.
 %setup -q -n chromium-%{version} %{?stha:-a 500} %{?ungoogled:-a 1000}
 %if 0%{?stha:1}
 j=1
-# Still in stha, but already upstream too
-rm patches/chromium-110-dpf-arm64.patch \
-	patches/chromium-111-v8-std-layout1.patch \
-	patches/chromium-111-v8-std-layout2.patch
 for i in patches/*; do
     if basename $i |grep -qE '~$'; then continue; fi
     echo "Applying `basename $i`"

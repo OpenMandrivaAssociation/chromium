@@ -1,0 +1,38 @@
+diff -up chromium-116.0.5845.96/build/config/compiler/BUILD.gn.18~ chromium-116.0.5845.96/build/config/compiler/BUILD.gn
+--- chromium-116.0.5845.96/build/config/compiler/BUILD.gn.18~	2023-08-21 16:53:00.845933337 +0200
++++ chromium-116.0.5845.96/build/config/compiler/BUILD.gn	2023-08-21 18:19:54.404132239 +0200
+@@ -669,7 +669,7 @@ config("compiler") {
+ 
+     # Limit the size of the ThinLTO cache to the lesser of 10% of
+     # available disk space, 40GB and 100000 files.
+-    cache_policy = "cache_size=10%:cache_size_bytes=40g:cache_size_files=100000"
++    #cache_policy = "cache_size=10%:cache_size_bytes=40g:cache_size_files=100000"
+ 
+     # An import limit of 30 has better performance (per speedometer) and lower
+     # binary size than the default setting of 100.
+@@ -705,12 +705,12 @@ config("compiler") {
+           "-Wcrl,object_path_lto",
+         ]
+       } else {
+-        ldflags +=
+-            [ "-Wl,--thinlto-cache-dir=" +
+-              rebase_path("$root_out_dir/thinlto-cache", root_build_dir) ]
++      #  ldflags +=
++      #      [ "-Wl,--thinlto-cache-dir=" +
++      #        rebase_path("$root_out_dir/thinlto-cache", root_build_dir) ]
+       }
+ 
+-      ldflags += [ "-Wl,--thinlto-cache-policy=$cache_policy" ]
++      #ldflags += [ "-Wl,--thinlto-cache-policy=$cache_policy" ]
+ 
+       if (is_chromeos) {
+         # ARM was originally set lower than x86 to keep the size
+@@ -1911,8 +1911,6 @@ config("thin_archive") {
+   # confuses lldb.
+   if ((is_posix && !is_nacl && !is_apple) || is_fuchsia) {
+     arflags = [ "-T" ]
+-  } else if (is_win && use_lld) {
+-    arflags = [ "/llvmlibthin" ]
+   }
+ }
+ 

@@ -1,5 +1,6 @@
 sources:
-  115.0.5790.102-1.tar.gz: 00ceb6aa96b700c32f330a0d6afae2b1b3e4eb47
-  chromium-115.0.5790.110.tar.xz: 415de87fd1d749ae34d190c736a6db5473dca07c
   test_fonts.tar.gz: 336e775eec536b2d785cc80eff6ac39051931286
-  9cc8df1534336ce86b8e2def975049eec0635fb1.tar.bz2: e691dc85b313e155349132ca37a478f4141ebdf7
+  116.0.5845.96-1.tar.gz: de70626c601fd0f57e8b10289329c5521aa5fed5
+  376a7808efe57e7826effef25f9a942bcde97d8c.tar.bz2: 939bacf5b36fac4ff40a42e5b4fdb92b084711eb
+  chromium-116.0.5845.96.tar.xz: cfcc860ecb3a032a27ceef1fa69eda193cb1e0de
+  chromium-116-patchset-2.tar.xz: c9e10070eef41bebf9fa89e5559631ab87b754b8
