@@ -1,6 +1,6 @@
 sources:
   test_fonts.tar.gz: 336e775eec536b2d785cc80eff6ac39051931286
-  116.0.5845.110-1.tar.gz: 977f04c206fff5c8570bf05e706ed301b413d6bc
-  chromium-116.0.5845.110.tar.xz: 10b7cb361fe1b9f6e0dee5e396bdb76df60d3a45
   chromium-116-patchset-2.tar.xz: c9e10070eef41bebf9fa89e5559631ab87b754b8
   0b8c26575ea37d444fead1f02c389294c4897fec.tar.bz2: 07c9b16f3fa001b5242d8a2678aad731de705eb2
+  116.0.5845.140-1.tar.gz: 3f29fdf9fd5ed800353132162bf3206bdaaa391a
+  chromium-116.0.5845.140.tar.xz: deb682bab8ad8d9fbf4f7d43d0697719012adda6
