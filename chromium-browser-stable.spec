@@ -56,9 +56,8 @@
 # re2 jsoncpp snappy: Use C++, therefore won't work while
 #                     system uses libstdc++ but chromium
 #                     uses use_custom_libcxx=true
-%global system_libs dav1d flac ffmpeg fontconfig harfbuzz-ng libjpeg libpng libdrm libwebp libxml libxslt opus libusb zlib freetype openh264
+%global system_libs brotli dav1d flac ffmpeg fontconfig harfbuzz-ng libjpeg libpng libdrm libwebp libxml libxslt opus libusb zlib freetype openh264
 # FIXME readd libaom when fixed
-# FIXME readd brotli if and when it starts shipping the private shared_dictionary.h header used here
 %define system() %(if echo %{system_libs} |grep -q -E '(^| )%{1}( |$)'; then echo -n 1; else echo -n 0;  fi)
 
 # Set up Google API keys, see http://www.chromium.org/developers/how-tos/api-keys
@@ -71,7 +70,7 @@
 Name:		chromium-browser-%{channel}
 # Working version numbers can be found at
 # https://chromiumdash.appspot.com/releases?platform=Linux
-Version:	116.0.5845.179
+Version:	116.0.5845.187
 ### Don't be evil!!! ###
 %define ungoogled 116.0.5845.179-1
 %define stha 116-patchset-2
