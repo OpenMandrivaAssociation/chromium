@@ -1,0 +1,14 @@
+diff -up chromium-116.0.5845.187/net/filter/brotli_source_stream.cc.omv~ chromium-116.0.5845.187/net/filter/brotli_source_stream.cc
+--- chromium-116.0.5845.187/net/filter/brotli_source_stream.cc.omv~	2023-09-12 01:42:39.284372126 +0200
++++ chromium-116.0.5845.187/net/filter/brotli_source_stream.cc	2023-09-12 01:42:54.105540823 +0200
+@@ -12,8 +12,8 @@
+ #include "base/memory/raw_ptr.h"
+ #include "base/metrics/histogram_macros.h"
+ #include "net/base/io_buffer.h"
+-#include "third_party/brotli/include/brotli/decode.h"
+-#include "third_party/brotli/include/brotli/shared_dictionary.h"
++#include <brotli/decode.h>
++#include <brotli/shared_dictionary.h>
+ 
+ namespace net {
+ 
