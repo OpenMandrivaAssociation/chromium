@@ -1,0 +1,14 @@
+diff -up chromium-117.0.5938.62/cef/BUILD.gn.omv~ chromium-117.0.5938.62/cef/BUILD.gn
+--- chromium-117.0.5938.62/cef/BUILD.gn.omv~	2023-09-16 22:16:57.475244287 +0200
++++ chromium-117.0.5938.62/cef/BUILD.gn	2023-09-16 22:19:23.657365829 +0200
+@@ -420,6 +420,10 @@ test("libcef_static_unittests") {
+     "libcef/features:config",
+     "//build/config:precompiled_headers",
+   ]
++
++  libs = [
++    "z",
++  ]
+ }
+ 
+ # Source files that are linked into libcef and cef_framework and implement

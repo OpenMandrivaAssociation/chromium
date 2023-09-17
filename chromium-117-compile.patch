@@ -1,0 +1,23 @@
+diff -up chromium-117.0.5938.62/third_party/perfetto/gn/BUILD.gn.omv~ chromium-117.0.5938.62/third_party/perfetto/gn/BUILD.gn
+--- chromium-117.0.5938.62/third_party/perfetto/gn/BUILD.gn.omv~	2023-09-14 01:45:33.446347040 +0200
++++ chromium-117.0.5938.62/third_party/perfetto/gn/BUILD.gn	2023-09-14 01:47:05.478076645 +0200
+@@ -392,7 +392,6 @@ config("system_zlib_config") {
+ if (enable_perfetto_zlib) {
+   group("zlib") {
+     if (perfetto_use_system_zlib) {
+-      public_configs = [ "//gn:system_zlib_config" ]
+     } else if (perfetto_root_path == "//") {
+       public_configs = [ "//buildtools:zlib_config" ]
+       public_deps = [ "//buildtools:zlib" ]
+diff -up chromium-117.0.5938.62/build/config/compiler/BUILD.gn.omv~ chromium-117.0.5938.62/build/config/compiler/BUILD.gn
+--- chromium-117.0.5938.62/build/config/compiler/BUILD.gn.omv~	2023-09-14 01:56:09.426090536 +0200
++++ chromium-117.0.5938.62/build/config/compiler/BUILD.gn	2023-09-14 01:56:47.331677101 +0200
+@@ -764,7 +764,7 @@ config("compiler") {
+         # toolchain has this flag.
+         # We only use one version of LLVM within a build so there's no need to
+         # upgrade debug info, which can be expensive since it runs the verifier.
+-        ldflags += [ "-Wl,-mllvm,-disable-auto-upgrade-debug-info" ]
++        #ldflags += [ "-Wl,-mllvm,-disable-auto-upgrade-debug-info" ]
+       }
+     }
+ 

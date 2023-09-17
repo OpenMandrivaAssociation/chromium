@@ -1,7 +1,7 @@
-diff -up chromium-100.0.4896.60/chrome/common/chrome_paths.cc.widevine-other-locations chromium-100.0.4896.60/chrome/common/chrome_paths.cc
---- chromium-100.0.4896.60/chrome/common/chrome_paths.cc.widevine-other-locations	2022-04-02 15:48:56.944051789 +0000
-+++ chromium-100.0.4896.60/chrome/common/chrome_paths.cc	2022-04-02 15:52:34.825642103 +0000
-@@ -319,6 +319,16 @@ bool PathProvider(int key, base::FilePat
+diff -up chromium-117.0.5938.62/chrome/common/chrome_paths.cc.4~ chromium-117.0.5938.62/chrome/common/chrome_paths.cc
+--- chromium-117.0.5938.62/chrome/common/chrome_paths.cc.4~	2023-09-14 01:03:30.714378971 +0200
++++ chromium-117.0.5938.62/chrome/common/chrome_paths.cc	2023-09-14 01:06:28.324920469 +0200
+@@ -376,6 +376,16 @@ bool PathProvider(int key, base::FilePat
  
  #if BUILDFLAG(ENABLE_WIDEVINE)
      case chrome::DIR_BUNDLED_WIDEVINE_CDM:
@@ -15,6 +15,6 @@ diff -up chromium-100.0.4896.60/chrome/common/chrome_paths.cc.widevine-other-loc
 +        cur = base::FilePath(FILE_PATH_LITERAL("/opt/google/chrome/WidevineCdm/_platform_specific/linux_x64/libwidevinecdm.so"));
 +        break;
 +      }
-       if (!GetComponentDirectory(&cur))
+       if (!GetComponentDirectory(&cur)) {
          return false;
-       cur = cur.AppendASCII(kWidevineCdmBaseDirectory);
+       }

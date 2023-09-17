@@ -56,7 +56,7 @@
 # re2 jsoncpp snappy: Use C++, therefore won't work while
 #                     system uses libstdc++ but chromium
 #                     uses use_custom_libcxx=true
-%global system_libs brotli dav1d flac ffmpeg fontconfig harfbuzz-ng libjpeg libpng libdrm libwebp libxml libxslt opus libusb zlib freetype openh264
+%global system_libs brotli dav1d flac ffmpeg fontconfig harfbuzz-ng libjpeg libpng libdrm libwebp libxml libxslt opus libusb freetype openh264 zlib
 # FIXME readd libaom when fixed
 %define system() %(if echo %{system_libs} |grep -q -E '(^| )%{1}( |$)'; then echo -n 1; else echo -n 0;  fi)
 
@@ -70,17 +70,17 @@
 Name:		chromium-browser-%{channel}
 # Working version numbers can be found at
 # https://chromiumdash.appspot.com/releases?platform=Linux
-Version:	116.0.5845.187
+Version:	117.0.5938.88
 ### Don't be evil!!! ###
-%define ungoogled 116.0.5845.179-1
-%define stha 116-patchset-2
+%define ungoogled 117.0.5938.88-1
+#define stha 116-patchset-2
 %if %{with cef}
 # To find the CEF commit matching the Chromium version, look up the
 # right branch at
 # https://bitbucket.org/chromiumembedded/cef/wiki/BranchesAndBuilding
 # then check the commit for the branch at the branch download page,
 # https://bitbucket.org/chromiumembedded/cef/downloads/?tab=branches
-%define cef 5845:9c7dc32f63c399219c697c09ed5716955f97825d
+%define cef 5938:641496065f2728073a0aa4403a4bee0330f2f057
 %endif
 Release:	1
 Summary:	A fast webkit-based web browser
@@ -176,14 +176,16 @@ Patch1011:	chromium-99-ffmpeg-5.0.patch
 Patch1012:	chromium-112-compile.patch
 Patch1013:	chromium-105-minizip-ng.patch
 Patch1014:	chromium-107-ffmpeg-5.1.patch
+Patch1015:	chromium-117-compile.patch
 %if 0%{?cef:1}
 Patch1020:	cef-drop-unneeded-libxml-patch.patch
-Patch1021:	cef-rebase-patches.patch
+Patch1021:	cef-117-rebase-patches-to-ungoogled.patch
 Patch1023:	chromium-115-fix-generate_fontconfig_caches.patch
 Patch1024:	cef-115-minizip-ng.patch
 %if 0%{?ungoogled:1}
 Patch1025:	cef-115-ungoogling.patch
 %endif
+Patch1026:	cef-zlib-linkage.patch
 %endif
 
 Provides:	%{crname}
