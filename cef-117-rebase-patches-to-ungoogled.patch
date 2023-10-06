@@ -1,6 +1,6 @@
-diff -up chromium-117.0.5938.62/cef/patch/patches/base_sandbox_2743.patch.omv~ chromium-117.0.5938.62/cef/patch/patches/base_sandbox_2743.patch
---- chromium-117.0.5938.62/cef/patch/patches/base_sandbox_2743.patch.omv~	2023-09-15 20:12:26.973091699 +0200
-+++ chromium-117.0.5938.62/cef/patch/patches/base_sandbox_2743.patch	2023-09-15 20:19:56.450268978 +0200
+diff -up chromium-117.0.5938.149/cef/patch/patches/base_sandbox_2743.patch.28~ chromium-117.0.5938.149/cef/patch/patches/base_sandbox_2743.patch
+--- chromium-117.0.5938.149/cef/patch/patches/base_sandbox_2743.patch.28~	2023-09-22 16:27:12.000000000 +0200
++++ chromium-117.0.5938.149/cef/patch/patches/base_sandbox_2743.patch	2023-10-06 13:06:59.520988010 +0200
 @@ -1,7 +1,6 @@
 -diff --git base/BUILD.gn base/BUILD.gn
 -index 6e6f24e479cce..2e1632ce35865 100644
@@ -164,18 +164,18 @@ diff -up chromium-117.0.5938.62/cef/patch/patches/base_sandbox_2743.patch.omv~ c
            reinterpret_cast<uint8_t*>(&rids[2]));
     return FromSubAuthorities(SECURITY_APP_PACKAGE_AUTHORITY, std::size(rids),
                               rids);
-diff -up chromium-117.0.5938.62/cef/patch/patches/chrome_runtime_views.patch.omv~ chromium-117.0.5938.62/cef/patch/patches/chrome_runtime_views.patch
---- chromium-117.0.5938.62/cef/patch/patches/chrome_runtime_views.patch.omv~	2023-09-15 20:11:57.396308545 +0200
-+++ chromium-117.0.5938.62/cef/patch/patches/chrome_runtime_views.patch	2023-09-15 20:18:10.022658457 +0200
+diff -up chromium-117.0.5938.149/cef/patch/patches/chrome_runtime_views.patch.28~ chromium-117.0.5938.149/cef/patch/patches/chrome_runtime_views.patch
+--- chromium-117.0.5938.149/cef/patch/patches/chrome_runtime_views.patch.28~	2023-09-22 16:27:12.000000000 +0200
++++ chromium-117.0.5938.149/cef/patch/patches/chrome_runtime_views.patch	2023-10-06 13:28:33.337461751 +0200
 @@ -1,8 +1,7 @@
 -diff --git chrome/browser/ui/browser_command_controller.cc chrome/browser/ui/browser_command_controller.cc
 -index 38fe556ecb2f7..86e38031e026a 100644
 ---- chrome/browser/ui/browser_command_controller.cc
 -+++ chrome/browser/ui/browser_command_controller.cc
 -@@ -401,6 +401,7 @@ bool BrowserCommandController::ExecuteCommandWithDisposition(
-+diff -up chrome/browser/ui/browser_command_controller.cc.rtv~ chrome/browser/ui/browser_command_controller.cc
-+--- chrome/browser/ui/browser_command_controller.cc.rtv~	2023-09-15 15:34:14.862672820 +0200
-++++ chrome/browser/ui/browser_command_controller.cc	2023-09-15 20:15:51.178958965 +0200
++diff -up chrome/browser/ui/browser_command_controller.cc.crv~ chrome/browser/ui/browser_command_controller.cc
++--- chrome/browser/ui/browser_command_controller.cc.crv~	2023-10-06 13:06:43.265823375 +0200
+++++ chrome/browser/ui/browser_command_controller.cc	2023-10-06 13:27:58.134078125 +0200
 +@@ -400,6 +400,7 @@ bool BrowserCommandController::ExecuteCo
     // choose to not implement CommandUpdaterDelegate inside this class and
     // therefore command_updater_ doesn't have the delegate set).
@@ -207,9 +207,9 @@ diff -up chromium-117.0.5938.62/cef/patch/patches/chrome_runtime_views.patch.omv
 ---- chrome/browser/ui/toolbar/app_menu_model.cc
 -+++ chrome/browser/ui/toolbar/app_menu_model.cc
 -@@ -590,6 +590,57 @@ SaveAndShareSubMenuModel::SaveAndShareSubMenuModel(
-+diff -up chrome/browser/ui/toolbar/app_menu_model.cc.rtv~ chrome/browser/ui/toolbar/app_menu_model.cc
-+--- chrome/browser/ui/toolbar/app_menu_model.cc.rtv~	2023-09-15 15:34:13.796391245 +0200
-++++ chrome/browser/ui/toolbar/app_menu_model.cc	2023-09-15 20:15:51.179116071 +0200
++diff -up chrome/browser/ui/toolbar/app_menu_model.cc.crv~ chrome/browser/ui/toolbar/app_menu_model.cc
++--- chrome/browser/ui/toolbar/app_menu_model.cc.crv~	2023-10-06 13:06:42.191822668 +0200
+++++ chrome/browser/ui/toolbar/app_menu_model.cc	2023-10-06 13:27:58.138078169 +0200
 +@@ -535,6 +535,57 @@ SaveAndShareSubMenuModel::SaveAndShareSu
     }
   }
@@ -268,9 +268,9 @@ diff -up chromium-117.0.5938.62/cef/patch/patches/chrome_runtime_views.patch.omv
 ---- chrome/browser/ui/toolbar/app_menu_model.h
 -+++ chrome/browser/ui/toolbar/app_menu_model.h
 -@@ -202,6 +202,7 @@ class AppMenuModel : public ui::SimpleMenuModel,
-+diff -up chrome/browser/ui/toolbar/app_menu_model.h.rtv~ chrome/browser/ui/toolbar/app_menu_model.h
-+--- chrome/browser/ui/toolbar/app_menu_model.h.rtv~	2023-09-12 20:48:00.737264600 +0200
-++++ chrome/browser/ui/toolbar/app_menu_model.h	2023-09-15 20:15:51.179243371 +0200
++diff -up chrome/browser/ui/toolbar/app_menu_model.h.crv~ chrome/browser/ui/toolbar/app_menu_model.h
++--- chrome/browser/ui/toolbar/app_menu_model.h.crv~	2023-10-03 20:44:08.296351200 +0200
+++++ chrome/browser/ui/toolbar/app_menu_model.h	2023-10-06 13:27:58.138078169 +0200
 +@@ -202,6 +202,7 @@ class AppMenuModel : public ui::SimpleMe
     void ExecuteCommand(int command_id, int event_flags) override;
     bool IsCommandIdChecked(int command_id) const override;
@@ -293,9 +293,9 @@ diff -up chromium-117.0.5938.62/cef/patch/patches/chrome_runtime_views.patch.omv
 ---- chrome/browser/ui/views/find_bar_host.cc
 -+++ chrome/browser/ui/views/find_bar_host.cc
 -@@ -412,6 +412,12 @@ void FindBarHost::GetWidgetBounds(gfx::Rect* bounds) {
-+diff -up chrome/browser/ui/views/find_bar_host.cc.rtv~ chrome/browser/ui/views/find_bar_host.cc
-+--- chrome/browser/ui/views/find_bar_host.cc.rtv~	2023-09-12 20:48:00.817272200 +0200
-++++ chrome/browser/ui/views/find_bar_host.cc	2023-09-15 20:15:51.179294348 +0200
++diff -up chrome/browser/ui/views/find_bar_host.cc.crv~ chrome/browser/ui/views/find_bar_host.cc
++--- chrome/browser/ui/views/find_bar_host.cc.crv~	2023-10-03 20:44:08.448364500 +0200
+++++ chrome/browser/ui/views/find_bar_host.cc	2023-10-06 13:27:58.138078169 +0200
 +@@ -412,6 +412,12 @@ void FindBarHost::GetWidgetBounds(gfx::R
     // The BrowserView does Layout for the components that we care about
     // positioning relative to, so we ask it to tell us where we should go.
@@ -309,9 +309,9 @@ diff -up chromium-117.0.5938.62/cef/patch/patches/chrome_runtime_views.patch.omv
 ---- chrome/browser/ui/views/frame/browser_frame.cc
 -+++ chrome/browser/ui/views/frame/browser_frame.cc
 -@@ -91,15 +91,23 @@ ui::ColorProviderKey::SchemeVariant GetSchemeVariant(
-+diff -up chrome/browser/ui/views/frame/browser_frame.cc.rtv~ chrome/browser/ui/views/frame/browser_frame.cc
-+--- chrome/browser/ui/views/frame/browser_frame.cc.rtv~	2023-09-15 15:34:13.874610609 +0200
-++++ chrome/browser/ui/views/frame/browser_frame.cc	2023-09-15 20:16:51.830247927 +0200
++diff -up chrome/browser/ui/views/frame/browser_frame.cc.crv~ chrome/browser/ui/views/frame/browser_frame.cc
++--- chrome/browser/ui/views/frame/browser_frame.cc.crv~	2023-10-06 13:06:42.278823499 +0200
+++++ chrome/browser/ui/views/frame/browser_frame.cc	2023-10-06 13:27:58.139078180 +0200
 +@@ -91,15 +91,23 @@ ui::ColorProviderKey::SchemeVariant GetS
   ////////////////////////////////////////////////////////////////////////////////
   // BrowserFrame, public:
@@ -381,9 +381,9 @@ diff -up chromium-117.0.5938.62/cef/patch/patches/chrome_runtime_views.patch.omv
 -index 77ca1dbf118f9..c60711991d093 100644
 ---- chrome/browser/ui/views/frame/browser_frame.h
 -+++ chrome/browser/ui/views/frame/browser_frame.h
-+diff -up chrome/browser/ui/views/frame/browser_frame.h.rtv~ chrome/browser/ui/views/frame/browser_frame.h
-+--- chrome/browser/ui/views/frame/browser_frame.h.rtv~	2023-09-12 20:48:00.821272600 +0200
-++++ chrome/browser/ui/views/frame/browser_frame.h	2023-09-15 20:15:51.179448088 +0200
++diff -up chrome/browser/ui/views/frame/browser_frame.h.crv~ chrome/browser/ui/views/frame/browser_frame.h
++--- chrome/browser/ui/views/frame/browser_frame.h.crv~	2023-10-03 20:44:08.452364700 +0200
+++++ chrome/browser/ui/views/frame/browser_frame.h	2023-10-06 13:27:58.139078180 +0200
  @@ -61,7 +61,9 @@ enum class TabDragKind {
   // This is a virtual interface that allows system specific browser frames.
   class BrowserFrame : public views::Widget, public views::ContextMenuController {
@@ -392,16 +392,16 @@ diff -up chromium-117.0.5938.62/cef/patch/patches/chrome_runtime_views.patch.omv
     BrowserFrame(const BrowserFrame&) = delete;
     BrowserFrame& operator=(const BrowserFrame&) = delete;
 -diff --git chrome/browser/ui/views/frame/browser_view.cc chrome/browser/ui/views/frame/browser_view.cc
--index 261dfb8562dbd..650a2847fb6c8 100644
+-index 261dfb8562dbd..64bb1900483c8 100644
 ---- chrome/browser/ui/views/frame/browser_view.cc
 -+++ chrome/browser/ui/views/frame/browser_view.cc
-+diff -up chrome/browser/ui/views/frame/browser_view.cc.rtv~ chrome/browser/ui/views/frame/browser_view.cc
-+--- chrome/browser/ui/views/frame/browser_view.cc.rtv~	2023-09-15 15:34:13.873816012 +0200
-++++ chrome/browser/ui/views/frame/browser_view.cc	2023-09-15 20:15:51.179672962 +0200
++diff -up chrome/browser/ui/views/frame/browser_view.cc.crv~ chrome/browser/ui/views/frame/browser_view.cc
++--- chrome/browser/ui/views/frame/browser_view.cc.crv~	2023-10-06 13:06:42.277823489 +0200
+++++ chrome/browser/ui/views/frame/browser_view.cc	2023-10-06 13:27:58.142078213 +0200
  @@ -336,11 +336,10 @@ using content::NativeWebKeyboardEvent;
   using content::WebContents;
   using web_modal::WebContentsModalDialogHost;
-@@ -373,7 +367,7 @@ index 261dfb8562dbd..650a2847fb6c8 10064
+@@ -373,7 +367,7 @@ index 261dfb8562dbd..64bb1900483c8 10064
   
   #if BUILDFLAG(IS_CHROMEOS_ASH)
   // UMA histograms that record animation smoothness for tab loading animation.
@@ -410,7 +410,7 @@ diff -up chromium-117.0.5938.62/cef/patch/patches/chrome_runtime_views.patch.omv
   ///////////////////////////////////////////////////////////////////////////////
   // BrowserView, public:
   
-@@ -397,7 +391,7 @@ index 261dfb8562dbd..650a2847fb6c8 10064
+@@ -397,7 +391,7 @@ index 261dfb8562dbd..64bb1900483c8 10064
     SetShowIcon(
         ::ShouldShowWindowIcon(browser_.get(), AppUsesWindowControlsOverlay()));
   
@@ -419,7 +419,7 @@ diff -up chromium-117.0.5938.62/cef/patch/patches/chrome_runtime_views.patch.omv
     }
   
     browser_->tab_strip_model()->AddObserver(this);
-@@ -405,7 +399,7 @@ index 261dfb8562dbd..650a2847fb6c8 10064
+@@ -405,7 +399,7 @@ index 261dfb8562dbd..64bb1900483c8 10064
   
     // Top container holds tab strip region and toolbar and lives at the front of
     // the view hierarchy.
@@ -428,7 +428,7 @@ diff -up chromium-117.0.5938.62/cef/patch/patches/chrome_runtime_views.patch.omv
     contents_container->SetLayoutManager(std::make_unique<ContentsLayoutManager>(
         devtools_web_view_, contents_web_view_));
   
-@@ -423,7 +417,7 @@ index 261dfb8562dbd..650a2847fb6c8 10064
+@@ -423,7 +417,7 @@ index 261dfb8562dbd..64bb1900483c8 10064
   
     contents_separator_ =
         top_container_->AddChildView(std::make_unique<ContentsSeparator>());
@@ -437,7 +437,7 @@ diff -up chromium-117.0.5938.62/cef/patch/patches/chrome_runtime_views.patch.omv
   
   #if BUILDFLAG(IS_MAC)
   bool BrowserView::UsesImmersiveFullscreenMode() const {
-@@ -440,7 +434,7 @@ index 261dfb8562dbd..650a2847fb6c8 10064
+@@ -440,7 +434,7 @@ index 261dfb8562dbd..64bb1900483c8 10064
   }
   
   bool BrowserView::UsesImmersiveFullscreenTabbedMode() const {
@@ -446,7 +446,7 @@ diff -up chromium-117.0.5938.62/cef/patch/patches/chrome_runtime_views.patch.omv
     if (immersive_mode_controller_->IsEnabled())
       return false;
   
-@@ -449,7 +443,7 @@ index 261dfb8562dbd..650a2847fb6c8 10064
+@@ -449,7 +443,7 @@ index 261dfb8562dbd..64bb1900483c8 10064
     return frame_->GetFrameView()->ShouldHideTopUIForFullscreen();
   }
   
@@ -455,7 +455,7 @@ diff -up chromium-117.0.5938.62/cef/patch/patches/chrome_runtime_views.patch.omv
   }
   
   DownloadBubbleUIController* BrowserView::GetDownloadBubbleUIController() {
-@@ -459,7 +453,7 @@ index 261dfb8562dbd..650a2847fb6c8 10064
+@@ -459,7 +453,7 @@ index 261dfb8562dbd..64bb1900483c8 10064
     if (auto* download_button = toolbar_button_provider_->GetDownloadButton())
       return download_button->bubble_controller();
     return nullptr;
@@ -464,86 +464,104 @@ diff -up chromium-117.0.5938.62/cef/patch/patches/chrome_runtime_views.patch.omv
     if (top_container()->parent() == this)
       return;
   
-@@ -469,7 +463,7 @@ index 261dfb8562dbd..650a2847fb6c8 10064
+@@ -469,7 +463,7 @@ index 261dfb8562dbd..64bb1900483c8 10064
     top_container()->DestroyLayer();
     AddChildViewAt(top_container(), 0);
     EnsureFocusOrder();
--@@ -3994,8 +4016,10 @@ void BrowserView::Layout() {
-+@@ -3998,8 +4020,10 @@ void BrowserView::Layout() {
+-@@ -3873,11 +3895,38 @@ void BrowserView::GetAccessiblePanes(std::vector<views::View*>* panes) {
++@@ -3877,11 +3899,38 @@ void BrowserView::GetAccessiblePanes(std
+  bool BrowserView::ShouldDescendIntoChildForEventHandling(
+      gfx::NativeView child,
+      const gfx::Point& location) {
+@@ -510,7 +504,7 @@ index 261dfb8562dbd..64bb1900483c8 10064
+      // Draggable regions are defined relative to the web contents.
+      gfx::Point point_in_contents_web_view_coords(location);
+      views::View::ConvertPointToTarget(GetWidget()->GetRootView(),
+-@@ -3886,7 +3935,7 @@ bool BrowserView::ShouldDescendIntoChildForEventHandling(
++@@ -3890,7 +3939,7 @@ bool BrowserView::ShouldDescendIntoChild
+  
+      // Draggable regions should be ignored for clicks into any browser view's
+      // owned widgets, for example alerts, permission prompts or find bar.
+@@ -519,7 +513,7 @@ index 261dfb8562dbd..64bb1900483c8 10064
+                 point_in_contents_web_view_coords.x(),
+                 point_in_contents_web_view_coords.y()) ||
+             WidgetOwnedByAnchorContainsPoint(point_in_contents_web_view_coords);
+-@@ -3994,8 +4043,10 @@ void BrowserView::Layout() {
++@@ -3998,8 +4047,10 @@ void BrowserView::Layout() {
   
     // TODO(jamescook): Why was this in the middle of layout code?
     toolbar_->location_bar()->omnibox_view()->SetFocusBehavior(
-@@ -482,7 +476,7 @@ index 261dfb8562dbd..650a2847fb6c8 10064
+@@ -532,7 +526,7 @@ index 261dfb8562dbd..64bb1900483c8 10064
   
   #if BUILDFLAG(IS_CHROMEOS_ASH)
     // In chromeOS ash we round the bottom two corners of the browser frame by
--@@ -4073,6 +4097,11 @@ void BrowserView::AddedToWidget() {
-+@@ -4077,6 +4101,11 @@ void BrowserView::AddedToWidget() {
+-@@ -4073,6 +4124,11 @@ void BrowserView::AddedToWidget() {
++@@ -4077,6 +4128,11 @@ void BrowserView::AddedToWidget() {
     SetThemeProfileForWindow(GetNativeWindow(), browser_->profile());
   #endif
   
-@@ -494,7 +488,7 @@ index 261dfb8562dbd..650a2847fb6c8 10064
+@@ -544,7 +538,7 @@ index 261dfb8562dbd..64bb1900483c8 10064
     toolbar_->Init();
   
     // TODO(pbos): Investigate whether the side panels should be creatable when
--@@ -4120,13 +4149,9 @@ void BrowserView::AddedToWidget() {
-+@@ -4124,13 +4153,9 @@ void BrowserView::AddedToWidget() {
+-@@ -4120,13 +4176,9 @@ void BrowserView::AddedToWidget() {
++@@ -4124,13 +4180,9 @@ void BrowserView::AddedToWidget() {
   
     EnsureFocusOrder();
   
-@@ -510,7 +504,7 @@ index 261dfb8562dbd..650a2847fb6c8 10064
+@@ -560,7 +554,7 @@ index 261dfb8562dbd..64bb1900483c8 10064
     using_native_frame_ = frame_->ShouldUseNativeFrame();
   
     MaybeInitializeWebUITabStrip();
--@@ -4544,7 +4569,8 @@ void BrowserView::ProcessFullscreen(bool fullscreen,
-+@@ -4548,7 +4573,8 @@ void BrowserView::ProcessFullscreen(bool
+-@@ -4544,7 +4596,8 @@ void BrowserView::ProcessFullscreen(bool fullscreen,
++@@ -4548,7 +4600,8 @@ void BrowserView::ProcessFullscreen(bool
     // Undo our anti-jankiness hacks and force a re-layout.
     in_process_fullscreen_ = false;
     ToolbarSizeChanged(false);
-@@ -520,7 +514,7 @@ index 261dfb8562dbd..650a2847fb6c8 10064
+@@ -570,7 +564,7 @@ index 261dfb8562dbd..64bb1900483c8 10064
   }
   
   bool BrowserView::ShouldUseImmersiveFullscreenForUrl(const GURL& url) const {
--@@ -4915,6 +4941,8 @@ Profile* BrowserView::GetProfile() {
-+@@ -4919,6 +4945,8 @@ Profile* BrowserView::GetProfile() {
+-@@ -4915,6 +4968,8 @@ Profile* BrowserView::GetProfile() {
++@@ -4919,6 +4972,8 @@ Profile* BrowserView::GetProfile() {
   }
   
   void BrowserView::UpdateUIForTabFullscreen() {
-@@ -529,7 +523,7 @@ index 261dfb8562dbd..650a2847fb6c8 10064
+@@ -579,7 +573,7 @@ index 261dfb8562dbd..64bb1900483c8 10064
     frame()->GetFrameView()->UpdateFullscreenTopUI();
   }
   
--@@ -4937,6 +4965,8 @@ void BrowserView::HideDownloadShelf() {
-+@@ -4941,6 +4969,8 @@ void BrowserView::HideDownloadShelf() {
+-@@ -4937,6 +4992,8 @@ void BrowserView::HideDownloadShelf() {
++@@ -4941,6 +4996,8 @@ void BrowserView::HideDownloadShelf() {
   }
   
   bool BrowserView::CanUserExitFullscreen() const {
-@@ -538,11 +532,10 @@ index 261dfb8562dbd..650a2847fb6c8 10064
+@@ -588,11 +582,10 @@ index 261dfb8562dbd..64bb1900483c8 10064
     return frame_->GetFrameView()->CanUserExitFullscreen();
   }
   
 -diff --git chrome/browser/ui/views/frame/browser_view.h chrome/browser/ui/views/frame/browser_view.h
--index 58f128d2217a0..c8dd2a4a5a940 100644
+-index 58f128d2217a0..2d5115f2a568e 100644
 ---- chrome/browser/ui/views/frame/browser_view.h
 -+++ chrome/browser/ui/views/frame/browser_view.h
 -@@ -136,11 +136,16 @@ class BrowserView : public BrowserWindow,
-+diff -up chrome/browser/ui/views/frame/browser_view.h.rtv~ chrome/browser/ui/views/frame/browser_view.h
-+--- chrome/browser/ui/views/frame/browser_view.h.rtv~	2023-09-12 20:48:01.829273200 +0200
-++++ chrome/browser/ui/views/frame/browser_view.h	2023-09-15 20:15:51.179930508 +0200
++diff -up chrome/browser/ui/views/frame/browser_view.h.crv~ chrome/browser/ui/views/frame/browser_view.h
++--- chrome/browser/ui/views/frame/browser_view.h.crv~	2023-10-03 20:44:09.464365700 +0200
+++++ chrome/browser/ui/views/frame/browser_view.h	2023-10-06 13:27:58.142078213 +0200
 +@@ -136,11 +136,16 @@ class BrowserView : public BrowserWindow
       kUnknown
     };
   
-@@ -559,7 +552,7 @@ index 58f128d2217a0..c8dd2a4a5a940 10064
+@@ -609,7 +602,7 @@ index 58f128d2217a0..2d5115f2a568e 10064
     void set_frame(BrowserFrame* frame) {
       frame_ = frame;
       paint_as_active_subscription_ =
--@@ -810,6 +815,12 @@ class BrowserView : public BrowserWindow,
-+@@ -810,6 +815,12 @@ class BrowserView : public BrowserWindow
+-@@ -810,6 +815,9 @@ class BrowserView : public BrowserWindow,
++@@ -810,6 +815,9 @@ class BrowserView : public BrowserWindow
       return web_app_frame_toolbar();
     }
   
-@@ -572,10 +565,9 @@ index 58f128d2217a0..c8dd2a4a5a940 10064
+@@ -619,10 +612,9 @@ index 58f128d2217a0..2d5115f2a568e 10064
    private:
     // Do not friend BrowserViewLayout. Use the BrowserViewLayoutDelegate
     // interface to keep these two classes decoupled and testable.
@@ -551,13 +569,13 @@ diff -up chromium-117.0.5938.62/cef/patch/patches/chrome_runtime_views.patch.omv
 -index f6c2991d8c453..459f39740a2de 100644
 ---- chrome/browser/ui/views/frame/browser_view_layout.cc
 -+++ chrome/browser/ui/views/frame/browser_view_layout.cc
-+diff -up chrome/browser/ui/views/frame/browser_view_layout.cc.rtv~ chrome/browser/ui/views/frame/browser_view_layout.cc
-+--- chrome/browser/ui/views/frame/browser_view_layout.cc.rtv~	2023-09-12 20:48:00.829273200 +0200
-++++ chrome/browser/ui/views/frame/browser_view_layout.cc	2023-09-15 20:15:51.180008485 +0200
++diff -up chrome/browser/ui/views/frame/browser_view_layout.cc.crv~ chrome/browser/ui/views/frame/browser_view_layout.cc
++--- chrome/browser/ui/views/frame/browser_view_layout.cc.crv~	2023-10-03 20:44:08.464365700 +0200
+++++ chrome/browser/ui/views/frame/browser_view_layout.cc	2023-10-06 13:27:58.142078213 +0200
  @@ -47,6 +47,10 @@
   #include "ui/views/window/client_view.h"
   #include "ui/views/window/hit_test_utils.h"
-@@ -587,7 +579,7 @@ index f6c2991d8c453..459f39740a2de 10064
+@@ -634,7 +626,7 @@ index f6c2991d8c453..459f39740a2de 10064
   using views::View;
   using web_modal::ModalDialogHostObserver;
   using web_modal::WebContentsModalDialogHost;
@@ -566,7 +584,7 @@ diff -up chromium-117.0.5938.62/cef/patch/patches/chrome_runtime_views.patch.omv
   
   int BrowserViewLayout::LayoutToolbar(int top) {
     TRACE_EVENT0("ui", "BrowserViewLayout::LayoutToolbar");
-@@ -601,10 +593,9 @@ index f6c2991d8c453..459f39740a2de 10064
+@@ -648,10 +640,9 @@ index f6c2991d8c453..459f39740a2de 10064
     int browser_view_width = vertical_layout_rect_.width();
     bool toolbar_visible = delegate_->IsToolbarVisible();
     int height = toolbar_visible ? toolbar_->GetPreferredSize().height() : 0;
@@ -574,29 +592,81 @@ diff -up chromium-117.0.5938.62/cef/patch/patches/chrome_runtime_views.patch.omv
 -index 8267a265a8e10..ee08f18e96a34 100644
 ---- chrome/browser/ui/views/frame/contents_web_view.cc
 -+++ chrome/browser/ui/views/frame/contents_web_view.cc
-+diff -up chrome/browser/ui/views/frame/contents_web_view.cc.rtv~ chrome/browser/ui/views/frame/contents_web_view.cc
-+--- chrome/browser/ui/views/frame/contents_web_view.cc.rtv~	2023-09-12 20:48:00.829273200 +0200
-++++ chrome/browser/ui/views/frame/contents_web_view.cc	2023-09-15 20:15:51.180054733 +0200
++diff -up chrome/browser/ui/views/frame/contents_web_view.cc.crv~ chrome/browser/ui/views/frame/contents_web_view.cc
++--- chrome/browser/ui/views/frame/contents_web_view.cc.crv~	2023-10-03 20:44:08.464365700 +0200
+++++ chrome/browser/ui/views/frame/contents_web_view.cc	2023-10-06 13:27:58.143078224 +0200
  @@ -23,6 +23,11 @@
   ContentsWebView::ContentsWebView(content::BrowserContext* browser_context)
       : views::WebView(browser_context),
-@@ -617,11 +608,10 @@ index 8267a265a8e10..ee08f18e96a34 10064
+@@ -664,11 +655,10 @@ index 8267a265a8e10..ee08f18e96a34 10064
   }
   
   ContentsWebView::~ContentsWebView() {
+-diff --git chrome/browser/ui/views/frame/picture_in_picture_browser_frame_view.cc chrome/browser/ui/views/frame/picture_in_picture_browser_frame_view.cc
+-index c586392c83bb6..131d6b0b2526b 100644
+---- chrome/browser/ui/views/frame/picture_in_picture_browser_frame_view.cc
+-+++ chrome/browser/ui/views/frame/picture_in_picture_browser_frame_view.cc
+-@@ -414,6 +414,11 @@ PictureInPictureBrowserFrameView::PictureInPictureBrowserFrameView(
++diff -up chrome/browser/ui/views/frame/picture_in_picture_browser_frame_view.cc.crv~ chrome/browser/ui/views/frame/picture_in_picture_browser_frame_view.cc
++--- chrome/browser/ui/views/frame/picture_in_picture_browser_frame_view.cc.crv~	2023-10-03 20:44:08.472366600 +0200
+++++ chrome/browser/ui/views/frame/picture_in_picture_browser_frame_view.cc	2023-10-06 13:27:58.143078224 +0200
++@@ -414,6 +414,11 @@ PictureInPictureBrowserFrameView::Pictur
+    frame->GetNativeWindow()->SetEventTargeter(
+        std::make_unique<chromeos::InteriorResizeHandleTargeter>());
+  #endif
+@@ -680,7 +670,7 @@ index c586392c83bb6..131d6b0b2526b 10064
+  }
+  
+  PictureInPictureBrowserFrameView::~PictureInPictureBrowserFrameView() {
+-@@ -513,17 +518,20 @@ gfx::Rect PictureInPictureBrowserFrameView::GetWindowBoundsForClientBounds(
++@@ -513,17 +518,20 @@ gfx::Rect PictureInPictureBrowserFrameVi
+  
+  int PictureInPictureBrowserFrameView::NonClientHitTest(
+      const gfx::Point& point) {
+@@ -710,7 +700,7 @@ index c586392c83bb6..131d6b0b2526b 10064
+    }
+  
+    // Allow dragging and resizing the window.
+-@@ -533,6 +541,27 @@ int PictureInPictureBrowserFrameView::NonClientHitTest(
++@@ -533,6 +541,27 @@ int PictureInPictureBrowserFrameView::No
+    if (window_component != HTNOWHERE)
+      return window_component;
+  
+@@ -738,7 +728,7 @@ index c586392c83bb6..131d6b0b2526b 10064
+    // Allow interacting with the web contents.
+    int frame_component = frame()->client_view()->NonClientHitTest(point);
+    if (frame_component != HTNOWHERE)
+-@@ -591,7 +620,8 @@ void PictureInPictureBrowserFrameView::Layout() {
++@@ -591,7 +620,8 @@ void PictureInPictureBrowserFrameView::L
+    gfx::Rect content_area = GetLocalBounds();
+    content_area.Inset(FrameBorderInsets());
+    gfx::Rect top_bar = content_area;
+@@ -748,7 +738,7 @@ index c586392c83bb6..131d6b0b2526b 10064
+    top_bar_container_view_->SetBoundsRect(top_bar);
+  #if !BUILDFLAG(IS_ANDROID)
+    if (auto_pip_setting_overlay_) {
+-@@ -1029,7 +1059,8 @@ gfx::Insets PictureInPictureBrowserFrameView::ResizeBorderInsets() const {
++@@ -1029,7 +1059,8 @@ gfx::Insets PictureInPictureBrowserFrame
+  }
+  
+  int PictureInPictureBrowserFrameView::GetTopAreaHeight() const {
+@@ -758,11 +748,10 @@ index c586392c83bb6..131d6b0b2526b 10064
+  }
+  
+  gfx::Size PictureInPictureBrowserFrameView::GetNonClientViewAreaSize() const {
 -diff --git chrome/browser/ui/views/page_action/page_action_icon_controller.cc chrome/browser/ui/views/page_action/page_action_icon_controller.cc
 -index 723a2840bd988..975152c988917 100644
 ---- chrome/browser/ui/views/page_action/page_action_icon_controller.cc
 -+++ chrome/browser/ui/views/page_action/page_action_icon_controller.cc
 -@@ -96,6 +96,12 @@ void PageActionIconController::Init(const PageActionIconParams& params,
-+diff -up chrome/browser/ui/views/page_action/page_action_icon_controller.cc.rtv~ chrome/browser/ui/views/page_action/page_action_icon_controller.cc
-+--- chrome/browser/ui/views/page_action/page_action_icon_controller.cc.rtv~	2023-09-12 20:48:00.873277400 +0200
-++++ chrome/browser/ui/views/page_action/page_action_icon_controller.cc	2023-09-15 20:15:51.180094538 +0200
++diff -up chrome/browser/ui/views/page_action/page_action_icon_controller.cc.crv~ chrome/browser/ui/views/page_action/page_action_icon_controller.cc
++--- chrome/browser/ui/views/page_action/page_action_icon_controller.cc.crv~	2023-10-03 20:44:08.544372800 +0200
+++++ chrome/browser/ui/views/page_action/page_action_icon_controller.cc	2023-10-06 13:27:58.143078224 +0200
 +@@ -96,6 +96,12 @@ void PageActionIconController::Init(cons
     };
   
     for (PageActionIconType type : params.types_enabled) {
-@@ -634,11 +624,10 @@ index 723a2840bd988..975152c988917 10064
+@@ -775,11 +764,10 @@ index 723a2840bd988..975152c988917 10064
       switch (type) {
         case PageActionIconType::kPaymentsOfferNotification:
           add_page_action_icon(
@@ -605,14 +675,14 @@ diff -up chromium-117.0.5938.62/cef/patch/patches/chrome_runtime_views.patch.omv
 ---- chrome/browser/ui/views/tabs/browser_tab_strip_controller.cc
 -+++ chrome/browser/ui/views/tabs/browser_tab_strip_controller.cc
 -@@ -560,29 +560,41 @@ gfx::Range BrowserTabStripController::ListTabsInGroup(
-+diff -up chrome/browser/ui/views/tabs/browser_tab_strip_controller.cc.rtv~ chrome/browser/ui/views/tabs/browser_tab_strip_controller.cc
-+--- chrome/browser/ui/views/tabs/browser_tab_strip_controller.cc.rtv~	2023-09-12 20:48:00.949284800 +0200
-++++ chrome/browser/ui/views/tabs/browser_tab_strip_controller.cc	2023-09-15 20:15:51.180155303 +0200
++diff -up chrome/browser/ui/views/tabs/browser_tab_strip_controller.cc.crv~ chrome/browser/ui/views/tabs/browser_tab_strip_controller.cc
++--- chrome/browser/ui/views/tabs/browser_tab_strip_controller.cc.crv~	2023-10-03 20:44:08.640381000 +0200
+++++ chrome/browser/ui/views/tabs/browser_tab_strip_controller.cc	2023-10-06 13:27:58.143078224 +0200
 +@@ -560,29 +560,41 @@ gfx::Range BrowserTabStripController::Li
   }
   
   bool BrowserTabStripController::IsFrameCondensed() const {
-@@ -680,11 +669,10 @@ index dc792bea0ab88..e02cdd3214b1d 10064
+@@ -821,11 +809,10 @@ index dc792bea0ab88..e02cdd3214b1d 10064
     return GetFrameView()->GetCustomBackgroundId(active_state);
   }
   
@@ -621,14 +691,14 @@ diff -up chromium-117.0.5938.62/cef/patch/patches/chrome_runtime_views.patch.omv
 ---- chrome/browser/ui/views/toolbar/toolbar_view.cc
 -+++ chrome/browser/ui/views/toolbar/toolbar_view.cc
 -@@ -190,7 +190,7 @@ class TabstripLikeBackground : public views::Background {
-+diff -up chrome/browser/ui/views/toolbar/toolbar_view.cc.rtv~ chrome/browser/ui/views/toolbar/toolbar_view.cc
-+--- chrome/browser/ui/views/toolbar/toolbar_view.cc.rtv~	2023-09-15 15:34:13.871555589 +0200
-++++ chrome/browser/ui/views/toolbar/toolbar_view.cc	2023-09-15 20:17:47.011885099 +0200
++diff -up chrome/browser/ui/views/toolbar/toolbar_view.cc.crv~ chrome/browser/ui/views/toolbar/toolbar_view.cc
++--- chrome/browser/ui/views/toolbar/toolbar_view.cc.crv~	2023-10-06 13:06:42.275823470 +0200
+++++ chrome/browser/ui/views/toolbar/toolbar_view.cc	2023-10-06 13:27:58.144078234 +0200
 +@@ -190,7 +190,7 @@ class TabstripLikeBackground : public vi
     void Paint(gfx::Canvas* canvas, views::View* view) const override {
       bool painted = TopContainerBackground::PaintThemeCustomImage(
           canvas, view, browser_view_, /*translate_view_coordinates=*/false);
-@@ -693,7 +681,7 @@ index 619f741f15097..79356428c64bf 10064
+@@ -834,7 +821,7 @@ index 619f741f15097..79356428c64bf 10064
         SkColor frame_color =
             browser_view_->frame()->GetFrameView()->GetFrameColor(
                 BrowserFrameActiveState::kUseCurrent);
@@ -637,7 +707,7 @@ diff -up chromium-117.0.5938.62/cef/patch/patches/chrome_runtime_views.patch.omv
   ////////////////////////////////////////////////////////////////////////////////
   // ToolbarView, public:
   
-@@ -771,16 +759,15 @@ index 619f741f15097..79356428c64bf 10064
+@@ -912,16 +899,15 @@ index 619f741f15097..79356428c64bf 10064
   
     std::unique_ptr<SidePanelToolbarButton> side_panel_button;
     std::unique_ptr<SidePanelToolbarContainer> side_panel_toolbar_container;
@@ -654,16 +724,57 @@ diff -up chromium-117.0.5938.62/cef/patch/patches/chrome_runtime_views.patch.omv
 ---- chrome/browser/ui/views/toolbar/toolbar_view.h
 -+++ chrome/browser/ui/views/toolbar/toolbar_view.h
 -@@ -89,7 +89,8 @@ class ToolbarView : public views::AccessiblePaneView,
-+diff -up chrome/browser/ui/views/toolbar/toolbar_view.h.rtv~ chrome/browser/ui/views/toolbar/toolbar_view.h
-+--- chrome/browser/ui/views/toolbar/toolbar_view.h.rtv~	2023-09-12 20:48:00.977287300 +0200
-++++ chrome/browser/ui/views/toolbar/toolbar_view.h	2023-09-15 20:15:51.180337787 +0200
++diff -up chrome/browser/ui/views/toolbar/toolbar_view.h.crv~ chrome/browser/ui/views/toolbar/toolbar_view.h
++--- chrome/browser/ui/views/toolbar/toolbar_view.h.crv~	2023-10-03 20:44:08.668383600 +0200
+++++ chrome/browser/ui/views/toolbar/toolbar_view.h	2023-10-06 13:27:58.146078256 +0200
 +@@ -89,7 +89,8 @@ class ToolbarView : public views::Access
                   // needs to be displayed.
     };
   
-diff -up chromium-117.0.5938.62/cef/patch/patches/content_2015.patch.omv~ chromium-117.0.5938.62/cef/patch/patches/content_2015.patch
---- chromium-117.0.5938.62/cef/patch/patches/content_2015.patch.omv~	2023-09-15 20:12:06.443088358 +0200
-+++ chromium-117.0.5938.62/cef/patch/patches/content_2015.patch	2023-09-15 20:18:59.954242269 +0200
+@@ -931,10 +917,9 @@ index be3bd96444563..96669547e3ccf 10064
+    ToolbarView(const ToolbarView&) = delete;
+    ToolbarView& operator=(const ToolbarView&) = delete;
+    ~ToolbarView() override;
+-diff --git chrome/browser/ui/web_applications/draggable_region_host_impl.cc chrome/browser/ui/web_applications/draggable_region_host_impl.cc
+-index 460a2b08f964b..cb1b67d8b1213 100644
+---- chrome/browser/ui/web_applications/draggable_region_host_impl.cc
+-+++ chrome/browser/ui/web_applications/draggable_region_host_impl.cc
++diff -up chrome/browser/ui/web_applications/draggable_region_host_impl.cc.crv~ chrome/browser/ui/web_applications/draggable_region_host_impl.cc
++--- chrome/browser/ui/web_applications/draggable_region_host_impl.cc.crv~	2023-10-03 20:44:08.700386500 +0200
+++++ chrome/browser/ui/web_applications/draggable_region_host_impl.cc	2023-10-06 13:27:58.146078256 +0200
+ @@ -11,6 +11,24 @@
+  #include "chrome/common/chrome_features.h"
+  #include "mojo/public/cpp/bindings/self_owned_receiver.h"
+@@ -960,7 +945,7 @@ index 460a2b08f964b..cb1b67d8b1213 10064
+  DraggableRegionsHostImpl::DraggableRegionsHostImpl(
+      content::RenderFrameHost& render_frame_host,
+      mojo::PendingReceiver<chrome::mojom::DraggableRegions> receiver)
+-@@ -28,7 +46,7 @@ void DraggableRegionsHostImpl::CreateIfAllowed(
++@@ -28,7 +46,7 @@ void DraggableRegionsHostImpl::CreateIfA
+    auto* browser = chrome::FindBrowserWithWebContents(web_contents);
+  
+    // We only want to bind the receiver for PWAs.
+@@ -969,7 +954,7 @@ index 460a2b08f964b..cb1b67d8b1213 10064
+      return;
+  
+    // The object is bound to the lifetime of |render_frame_host| and the mojo
+-@@ -43,7 +61,7 @@ void DraggableRegionsHostImpl::UpdateDraggableRegions(
++@@ -43,7 +61,7 @@ void DraggableRegionsHostImpl::UpdateDra
+    auto* browser = chrome::FindBrowserWithWebContents(web_contents);
+    // When a WebApp browser's WebContents is reparented to a tabbed browser, a
+    // draggable regions update may race with the reparenting logic.
+@@ -978,7 +963,7 @@ index 460a2b08f964b..cb1b67d8b1213 10064
+      return;
+  
+    SkRegion sk_region;
+-@@ -56,5 +74,12 @@ void DraggableRegionsHostImpl::UpdateDraggableRegions(
++@@ -56,5 +74,12 @@ void DraggableRegionsHostImpl::UpdateDra
+    }
+  
+    auto* app_browser_controller = browser->app_controller();
+diff -up chromium-117.0.5938.149/cef/patch/patches/content_2015.patch.28~ chromium-117.0.5938.149/cef/patch/patches/content_2015.patch
+--- chromium-117.0.5938.149/cef/patch/patches/content_2015.patch.28~	2023-09-22 16:27:12.000000000 +0200
++++ chromium-117.0.5938.149/cef/patch/patches/content_2015.patch	2023-10-06 13:06:59.520988010 +0200
 @@ -1,7 +1,6 @@
 -diff --git content/browser/devtools/devtools_http_handler.cc content/browser/devtools/devtools_http_handler.cc
 -index 5634cbee2987c..88e2be9d6b2c1 100644
