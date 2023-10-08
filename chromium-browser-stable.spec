@@ -72,8 +72,7 @@ Name:		chromium-browser-%{channel}
 # https://chromiumdash.appspot.com/releases?platform=Linux
 Version:	117.0.5938.149
 ### Don't be evil!!! ###
-%define ungoogled 117.0.5938.149-1
-#define stha 116-patchset-2
+%define ungoogled 117.0.5938.150-1
 %if %{with cef}
 # To find the CEF commit matching the Chromium version, look up the
 # right branch at
@@ -82,7 +81,7 @@ Version:	117.0.5938.149
 # https://bitbucket.org/chromiumembedded/cef/downloads/?tab=branches
 %define cef 5938:5053a958e1487c67b5855c83bc32f740b472736c
 %endif
-Release:	1
+Release:	2
 Summary:	A fast webkit-based web browser
 Group:		Networking/WWW
 License:	BSD, LGPL
@@ -138,12 +137,6 @@ Patch105:	reverse-roll-src-third_party-ffmpeg.patch
 #Patch300:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-76.0.3809.132-rhel8-force-disable-use_gnome_keyring.patch
 
 #Patch501:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-75.0.3770.80-SIOCGSTAMP.patch
-
-### Chromium gcc/libstdc++ support ###
-# https://github.com/stha09/chromium-patches
-%if 0%{?stha:1}
-Source500:	https://github.com/stha09/chromium-patches/releases/download/chromium-%{stha}/chromium-%{stha}.tar.xz
-%endif
 
 %if 0%{?ungoogled:1}
 Source1000:	https://github.com/ungoogled-software/ungoogled-chromium/archive/%{ungoogled}.tar.gz
@@ -404,18 +397,9 @@ implements WebDriver's wire protocol for Chromium. It is being developed by
 members of the Chromium and WebDriver teams.
 
 %prep
-# Not using %%autosetup so we can apply patches after stha09 and
+# Not using %%autosetup so we can apply patches after
 # ungoogled-chromium patches have been applied
-%setup -q -n chromium-%{version} %{?stha:-a 500} %{?ungoogled:-a 1000}
-%if 0%{?stha:1}
-j=1
-for i in patches/*; do
-    if basename $i |grep -qE '~$'; then continue; fi
-    echo "Applying `basename $i`"
-    patch -p1 -z .stha09-${j}~ -b <$i
-    j=$((j+1))
-done
-%endif
+%setup -q -n chromium-%{version} %{?ungoogled:-a 1000}
 
 %if 0%{?ungoogled:1}
 UGDIR=$(pwd)/ungoogled-chromium-%{ungoogled}
