@@ -56,8 +56,10 @@
 # re2 jsoncpp snappy: Use C++, therefore won't work while
 #                     system uses libstdc++ but chromium
 #                     uses use_custom_libcxx=true
-%global system_libs brotli dav1d flac ffmpeg fontconfig harfbuzz-ng libjpeg libpng libdrm libwebp libxml libxslt opus libusb freetype openh264 zlib
-# FIXME readd libaom when fixed
+# freetype (as of 118.x): Build failure caused by use of internal
+#                         headers (afws-decl.h included by simple_font_data.cc)
+# libaom (as of 118.x): Build error caused by GN insisting on in-tree version
+%global system_libs brotli dav1d flac ffmpeg fontconfig harfbuzz-ng libjpeg libpng libdrm libwebp libxml libxslt opus libusb openh264 zlib
 %define system() %(if echo %{system_libs} |grep -q -E '(^| )%{1}( |$)'; then echo -n 1; else echo -n 0;  fi)
 
 # Set up Google API keys, see http://www.chromium.org/developers/how-tos/api-keys
@@ -70,18 +72,18 @@
 Name:		chromium-browser-%{channel}
 # Working version numbers can be found at
 # https://chromiumdash.appspot.com/releases?platform=Linux
-Version:	117.0.5938.149
+Version:	118.0.5993.70
 ### Don't be evil!!! ###
-%define ungoogled 117.0.5938.150-1
+%define ungoogled 118.0.5993.70-1
 %if %{with cef}
 # To find the CEF commit matching the Chromium version, look up the
 # right branch at
 # https://bitbucket.org/chromiumembedded/cef/wiki/BranchesAndBuilding
 # then check the commit for the branch at the branch download page,
 # https://bitbucket.org/chromiumembedded/cef/downloads/?tab=branches
-%define cef 5938:5053a958e1487c67b5855c83bc32f740b472736c
+%define cef 5993:3dd607849786b271d95e1a3e8013f59572fa9779
 %endif
-Release:	2
+Release:	1
 Summary:	A fast webkit-based web browser
 Group:		Networking/WWW
 License:	BSD, LGPL
@@ -164,15 +166,13 @@ Patch1006:	https://raw.githubusercontent.com/ungoogled-software/ungoogled-chromi
 Patch1007:	chromium-116-dont-override-thinlto-cache-policy.patch
 Patch1008:	chromium-116-system-brotli.patch
 Patch1009:	chromium-97-compilefixes.patch
-Patch1010:	chromium-97-ffmpeg-4.4.1.patch
-Patch1011:	chromium-99-ffmpeg-5.0.patch
 Patch1012:	chromium-112-compile.patch
 Patch1013:	chromium-105-minizip-ng.patch
-Patch1014:	chromium-107-ffmpeg-5.1.patch
 Patch1015:	chromium-117-compile.patch
+Patch1016:	chromium-118-libstdc++.patch
 %if 0%{?cef:1}
 Patch1020:	cef-drop-unneeded-libxml-patch.patch
-Patch1021:	cef-117-rebase-patches-to-ungoogled.patch
+Patch1021:	cef-118-rebase-to-ungoogled.patch
 Patch1023:	chromium-115-fix-generate_fontconfig_caches.patch
 Patch1024:	cef-115-minizip-ng.patch
 %if 0%{?ungoogled:1}

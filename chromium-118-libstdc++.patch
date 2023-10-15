@@ -1,0 +1,11 @@
+diff -up chromium-118.0.5993.70/services/device/public/cpp/generic_sensor/sensor_reading.h.omv~ chromium-118.0.5993.70/services/device/public/cpp/generic_sensor/sensor_reading.h
+--- chromium-118.0.5993.70/services/device/public/cpp/generic_sensor/sensor_reading.h.omv~	2023-10-14 13:58:46.386351909 +0200
++++ chromium-118.0.5993.70/services/device/public/cpp/generic_sensor/sensor_reading.h	2023-10-14 13:58:52.402414142 +0200
+@@ -6,6 +6,7 @@
+ #define SERVICES_DEVICE_PUBLIC_CPP_GENERIC_SENSOR_SENSOR_READING_H_
+ 
+ #include <type_traits>
++#include <cstdint>
+ 
+ namespace device {
+ 
