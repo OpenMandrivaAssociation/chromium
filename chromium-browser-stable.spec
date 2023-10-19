@@ -72,7 +72,7 @@
 Name:		chromium-browser-%{channel}
 # Working version numbers can be found at
 # https://chromiumdash.appspot.com/releases?platform=Linux
-Version:	118.0.5993.70
+Version:	118.0.5993.88
 ### Don't be evil!!! ###
 %define ungoogled 118.0.5993.70-1
 %if %{with cef}
