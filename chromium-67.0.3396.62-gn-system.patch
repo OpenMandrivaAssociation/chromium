@@ -29,9 +29,7 @@ diff -up chromium-110.0.5481.77/build/linux/unbundle/libusb.gn.19~ chromium-110.
 diff -up chromium-110.0.5481.77/build/linux/unbundle/replace_gn_files.py.19~ chromium-110.0.5481.77/build/linux/unbundle/replace_gn_files.py
 --- chromium-110.0.5481.77/build/linux/unbundle/replace_gn_files.py.19~	2023-02-14 07:08:46.319463057 +0100
 +++ chromium-110.0.5481.77/build/linux/unbundle/replace_gn_files.py	2023-02-14 07:12:09.889697231 +0100
-@@ -55,6 +55,7 @@ REPLACEMENTS = {
-   'libjpeg': 'third_party/libjpeg.gni',
-   'libjxl' : 'third_party/libjxl/BUILD.gn',
+@@ -57,4 +57,5 @@ REPLACEMENTS = {
    'libpng': 'third_party/libpng/BUILD.gn',
 +  'libusb': 'third_party/libusb/BUILD.gn',
    'libvpx': 'third_party/libvpx/BUILD.gn',

@@ -1,7 +1,7 @@
-diff -up chromium-109.0.5414.119/third_party/tflite_support/src/tensorflow_lite_support/metadata/cc/metadata_extractor.cc.24~ chromium-109.0.5414.119/third_party/tflite_support/src/tensorflow_lite_support/metadata/cc/metadata_extractor.cc
---- chromium-109.0.5414.119/third_party/tflite_support/src/tensorflow_lite_support/metadata/cc/metadata_extractor.cc.24~	2023-01-25 00:37:04.438041000 +0100
-+++ chromium-109.0.5414.119/third_party/tflite_support/src/tensorflow_lite_support/metadata/cc/metadata_extractor.cc	2023-01-31 23:44:37.907854747 +0100
-@@ -27,8 +27,8 @@ limitations under the License.
+diff -up chromium-119.0.6045.105/third_party/tflite_support/src/tensorflow_lite_support/metadata/cc/metadata_extractor.cc.21~ chromium-119.0.6045.105/third_party/tflite_support/src/tensorflow_lite_support/metadata/cc/metadata_extractor.cc
+--- chromium-119.0.6045.105/third_party/tflite_support/src/tensorflow_lite_support/metadata/cc/metadata_extractor.cc.21~	2023-11-01 19:11:24.990743600 +0100
++++ chromium-119.0.6045.105/third_party/tflite_support/src/tensorflow_lite_support/metadata/cc/metadata_extractor.cc	2023-11-02 01:05:07.300998605 +0100
+@@ -28,8 +28,8 @@ limitations under the License.
  #include "tensorflow_lite_support/cc/port/status_macros.h"
  #include "tensorflow_lite_support/metadata/cc/utils/zip_readonly_mem_file.h"
  #include "tensorflow_lite_support/metadata/metadata_schema_generated.h"
@@ -10,18 +10,18 @@ diff -up chromium-109.0.5414.119/third_party/tflite_support/src/tensorflow_lite_
 +#include <minizip/ioapi.h>
 +#include <minizip/unzip.h>
  
+ 
  namespace tflite {
- namespace metadata {
-@@ -80,7 +80,7 @@ tflite::support::StatusOr<ZipFileInfo> G
+@@ -81,7 +81,7 @@ tflite::support::StatusOr<ZipFileInfo> G
    int method;
-   RETURN_IF_ERROR(UnzipErrorToStatus(
+   TFLITE_RETURN_IF_ERROR(UnzipErrorToStatus(
        unzOpenCurrentFile2(zf, &method, /*level=*/nullptr, /*raw=*/1)));
 -  if (method != Z_NO_COMPRESSION) {
 +  if (method != 0 /*Z_NO_COMPRESSION*/) {
      return CreateStatusWithPayload(
          StatusCode::kUnknown, "Expected uncompressed zip archive.",
          TfLiteSupportStatus::kMetadataAssociatedFileZipError);
-@@ -104,7 +104,9 @@ tflite::support::StatusOr<ZipFileInfo> G
+@@ -105,7 +105,9 @@ tflite::support::StatusOr<ZipFileInfo> G
    free(c_file_name);
  
    // Get position in file.
@@ -32,9 +32,9 @@ diff -up chromium-109.0.5414.119/third_party/tflite_support/src/tensorflow_lite_
    if (position == 0) {
      return CreateStatusWithPayload(
          StatusCode::kUnknown, "Unable to read file in zip archive.",
-diff -up chromium-109.0.5414.119/third_party/tflite_support/src/tensorflow_lite_support/metadata/cc/utils/zip_readonly_mem_file.cc.24~ chromium-109.0.5414.119/third_party/tflite_support/src/tensorflow_lite_support/metadata/cc/utils/zip_readonly_mem_file.cc
---- chromium-109.0.5414.119/third_party/tflite_support/src/tensorflow_lite_support/metadata/cc/utils/zip_readonly_mem_file.cc.24~	2023-01-25 00:37:04.438041000 +0100
-+++ chromium-109.0.5414.119/third_party/tflite_support/src/tensorflow_lite_support/metadata/cc/utils/zip_readonly_mem_file.cc	2023-01-31 23:45:18.505653910 +0100
+diff -up chromium-119.0.6045.105/third_party/tflite_support/src/tensorflow_lite_support/metadata/cc/utils/zip_readonly_mem_file.cc.21~ chromium-119.0.6045.105/third_party/tflite_support/src/tensorflow_lite_support/metadata/cc/utils/zip_readonly_mem_file.cc
+--- chromium-119.0.6045.105/third_party/tflite_support/src/tensorflow_lite_support/metadata/cc/utils/zip_readonly_mem_file.cc.21~	2023-11-01 19:11:24.990743600 +0100
++++ chromium-119.0.6045.105/third_party/tflite_support/src/tensorflow_lite_support/metadata/cc/utils/zip_readonly_mem_file.cc	2023-11-02 01:05:41.226380975 +0100
 @@ -19,7 +19,7 @@ limitations under the License.
  #include <cstdio>
  
@@ -44,40 +44,33 @@ diff -up chromium-109.0.5414.119/third_party/tflite_support/src/tensorflow_lite_
  
  namespace tflite {
  namespace metadata {
-@@ -41,7 +41,7 @@ zlib_filefunc64_def& ZipReadOnlyMemFile:
+@@ -41,15 +41,15 @@ zlib_filefunc64_def& ZipReadOnlyMemFile:
  }
  
  /* static */
--voidpf ZipReadOnlyMemFile::OpenFile(voidpf opaque,
-+void* ZipReadOnlyMemFile::OpenFile(void* opaque,
-                                     const void* filename,
+-voidpf ZipReadOnlyMemFile::OpenFile(voidpf opaque, const void* filename,
++void* ZipReadOnlyMemFile::OpenFile(void* opaque, const void* filename,
                                      int mode) {
    // Result is never used, but needs to be non-null for `zipOpen2` not to fail.
-@@ -49,10 +49,10 @@ voidpf ZipReadOnlyMemFile::OpenFile(void
+   return opaque;
  }
  
  /* static */
--uLong ZipReadOnlyMemFile::ReadFile(voidpf opaque,
--                                   voidpf stream,
-+unsigned long ZipReadOnlyMemFile::ReadFile(void* opaque,
-+                                   void* stream,
-                                    void* buf,
+-uLong ZipReadOnlyMemFile::ReadFile(voidpf opaque, voidpf stream, void* buf,
 -                                   uLong size) {
++unsigned long ZipReadOnlyMemFile::ReadFile(void* opaque, void* stream, void* buf,
 +                                   unsigned long size) {
    auto* mem_file = static_cast<ZipReadOnlyMemFile*>(opaque);
    if (mem_file->offset_ < 0 || mem_file->Size() < mem_file->offset_) {
      return 0;
-@@ -68,22 +68,22 @@ uLong ZipReadOnlyMemFile::ReadFile(voidp
+@@ -65,20 +65,20 @@ uLong ZipReadOnlyMemFile::ReadFile(voidp
  }
  
  /* static */
--uLong ZipReadOnlyMemFile::WriteFile(voidpf opaque,
--                                    voidpf stream,
-+unsigned long ZipReadOnlyMemFile::WriteFile(void* opaque,
-+                                    void* stream,
-                                     const void* buf,
--                                    uLong size) {
-+                                    unsigned long size) {
+-uLong ZipReadOnlyMemFile::WriteFile(voidpf opaque, voidpf stream,
+-                                    const void* buf, uLong size) {
++unsigned long ZipReadOnlyMemFile::WriteFile(void* opaque, void* stream,
++                                    const void* buf, unsigned long size) {
    // File is not writable.
    return 0;
  }
@@ -95,7 +88,7 @@ diff -up chromium-109.0.5414.119/third_party/tflite_support/src/tensorflow_lite_
    auto* mem_file = static_cast<ZipReadOnlyMemFile*>(opaque);
    switch (origin) {
      case SEEK_SET:
-@@ -109,13 +109,13 @@ long ZipReadOnlyMemFile::SeekFile  // NO
+@@ -104,13 +104,13 @@ long ZipReadOnlyMemFile::SeekFile  // NO
  }
  
  /* static */
@@ -111,9 +104,9 @@ diff -up chromium-109.0.5414.119/third_party/tflite_support/src/tensorflow_lite_
    // Unused.
    return 0;
  }
-diff -up chromium-109.0.5414.119/third_party/tflite_support/src/tensorflow_lite_support/metadata/cc/utils/zip_readonly_mem_file.h.24~ chromium-109.0.5414.119/third_party/tflite_support/src/tensorflow_lite_support/metadata/cc/utils/zip_readonly_mem_file.h
---- chromium-109.0.5414.119/third_party/tflite_support/src/tensorflow_lite_support/metadata/cc/utils/zip_readonly_mem_file.h.24~	2023-01-25 00:37:04.438041000 +0100
-+++ chromium-109.0.5414.119/third_party/tflite_support/src/tensorflow_lite_support/metadata/cc/utils/zip_readonly_mem_file.h	2023-01-31 23:44:37.908854741 +0100
+diff -up chromium-119.0.6045.105/third_party/tflite_support/src/tensorflow_lite_support/metadata/cc/utils/zip_readonly_mem_file.h.21~ chromium-119.0.6045.105/third_party/tflite_support/src/tensorflow_lite_support/metadata/cc/utils/zip_readonly_mem_file.h
+--- chromium-119.0.6045.105/third_party/tflite_support/src/tensorflow_lite_support/metadata/cc/utils/zip_readonly_mem_file.h.21~	2023-11-01 19:11:24.990743600 +0100
++++ chromium-119.0.6045.105/third_party/tflite_support/src/tensorflow_lite_support/metadata/cc/utils/zip_readonly_mem_file.h	2023-11-02 01:06:05.712656885 +0100
 @@ -19,7 +19,7 @@ limitations under the License.
  #include <cstdlib>
  
@@ -123,21 +116,18 @@ diff -up chromium-109.0.5414.119/third_party/tflite_support/src/tensorflow_lite_
  
  namespace tflite {
  namespace metadata {
-@@ -56,17 +56,17 @@ class ZipReadOnlyMemFile {
+@@ -56,15 +56,15 @@ class ZipReadOnlyMemFile {
    size_t Size() const { return data_.size(); }
  
    // The file function implementations used in the `zlib_filefunc64_def`.
 -  static voidpf OpenFile(voidpf opaque, const void* filename, int mode);
 -  static uLong ReadFile(voidpf opaque, voidpf stream, void* buf, uLong size);
--  static uLong WriteFile(voidpf opaque,
--                         voidpf stream,
-+  static void* OpenFile(void* opaque, const void* filename, int mode);
-+  static unsigned long ReadFile(void* opaque, void* stream, void* buf, unsigned long size);
-+  static unsigned long WriteFile(void* opaque,
-+                         void* stream,
-                          const void* buf,
+-  static uLong WriteFile(voidpf opaque, voidpf stream, const void* buf,
 -                         uLong size);
 -  static ZPOS64_T TellFile(voidpf opaque, voidpf stream);
++  static void* OpenFile(void* opaque, const void* filename, int mode);
++  static unsigned long ReadFile(void* opaque, void* stream, void* buf, unsigned long size);
++  static unsigned long WriteFile(void* opaque, void* stream, const void* buf,
 +                         unsigned long size);
 +  static ZPOS64_T TellFile(void* opaque, void* stream);
    static long SeekFile  // NOLINT
@@ -150,9 +140,9 @@ diff -up chromium-109.0.5414.119/third_party/tflite_support/src/tensorflow_lite_
  };
  
  }  // namespace metadata
-diff -up chromium-109.0.5414.119/third_party/tflite_support/src/tensorflow_lite_support/metadata/cc/utils/zip_writable_mem_file.cc.24~ chromium-109.0.5414.119/third_party/tflite_support/src/tensorflow_lite_support/metadata/cc/utils/zip_writable_mem_file.cc
---- chromium-109.0.5414.119/third_party/tflite_support/src/tensorflow_lite_support/metadata/cc/utils/zip_writable_mem_file.cc.24~	2023-01-25 00:37:04.438041000 +0100
-+++ chromium-109.0.5414.119/third_party/tflite_support/src/tensorflow_lite_support/metadata/cc/utils/zip_writable_mem_file.cc	2023-01-31 23:44:37.908854741 +0100
+diff -up chromium-119.0.6045.105/third_party/tflite_support/src/tensorflow_lite_support/metadata/cc/utils/zip_writable_mem_file.cc.21~ chromium-119.0.6045.105/third_party/tflite_support/src/tensorflow_lite_support/metadata/cc/utils/zip_writable_mem_file.cc
+--- chromium-119.0.6045.105/third_party/tflite_support/src/tensorflow_lite_support/metadata/cc/utils/zip_writable_mem_file.cc.21~	2023-11-01 19:11:24.990743600 +0100
++++ chromium-119.0.6045.105/third_party/tflite_support/src/tensorflow_lite_support/metadata/cc/utils/zip_writable_mem_file.cc	2023-11-02 01:06:20.407822441 +0100
 @@ -19,7 +19,7 @@ limitations under the License.
  #include <cstdio>
  
@@ -162,44 +152,37 @@ diff -up chromium-109.0.5414.119/third_party/tflite_support/src/tensorflow_lite_
  
  namespace tflite {
  namespace metadata {
-@@ -45,7 +45,7 @@ absl::string_view ZipWritableMemFile::Ge
- }
+@@ -43,15 +43,15 @@ zlib_filefunc64_def& ZipWritableMemFile:
+ absl::string_view ZipWritableMemFile::GetFileContent() const { return data_; }
  
  /* static */
--voidpf ZipWritableMemFile::OpenFile(voidpf opaque,
-+void* ZipWritableMemFile::OpenFile(void* opaque,
-                                     const void* filename,
+-voidpf ZipWritableMemFile::OpenFile(voidpf opaque, const void* filename,
++void* ZipWritableMemFile::OpenFile(void* opaque, const void* filename,
                                      int mode) {
    // Result is never used, but needs to be non-null for `zipOpen2` not to fail.
-@@ -53,10 +53,10 @@ voidpf ZipWritableMemFile::OpenFile(void
+   return opaque;
  }
  
  /* static */
--uLong ZipWritableMemFile::ReadFile(voidpf opaque,
--                                   voidpf stream,
-+unsigned long ZipWritableMemFile::ReadFile(void* opaque,
-+                                   void* stream,
-                                    void* buf,
+-uLong ZipWritableMemFile::ReadFile(voidpf opaque, voidpf stream, void* buf,
 -                                   uLong size) {
++unsigned long ZipWritableMemFile::ReadFile(void* opaque, void* stream, void* buf,
 +                                   unsigned long size) {
    auto* mem_file = static_cast<ZipWritableMemFile*>(opaque);
    if (mem_file->offset_ < 0 || mem_file->Size() < mem_file->offset_) {
      return 0;
-@@ -72,10 +72,10 @@ uLong ZipWritableMemFile::ReadFile(voidp
+@@ -67,8 +67,8 @@ uLong ZipWritableMemFile::ReadFile(voidp
  }
  
  /* static */
--uLong ZipWritableMemFile::WriteFile(voidpf opaque,
--                                    voidpf stream,
-+unsigned long ZipWritableMemFile::WriteFile(void* opaque,
-+                                    void* stream,
-                                     const void* buf,
--                                    uLong size) {
-+                                    unsigned long size) {
+-uLong ZipWritableMemFile::WriteFile(voidpf opaque, voidpf stream,
+-                                    const void* buf, uLong size) {
++unsigned long ZipWritableMemFile::WriteFile(void* opaque, void* stream,
++                                    const void* buf, unsigned long size) {
    auto* mem_file = static_cast<ZipWritableMemFile*>(opaque);
    if (mem_file->offset_ + size > mem_file->Size()) {
      mem_file->data_.resize(mem_file->offset_ + size);
-@@ -87,13 +87,13 @@ uLong ZipWritableMemFile::WriteFile(void
+@@ -80,13 +80,13 @@ uLong ZipWritableMemFile::WriteFile(void
  }
  
  /* static */
@@ -215,7 +198,7 @@ diff -up chromium-109.0.5414.119/third_party/tflite_support/src/tensorflow_lite_
    auto* mem_file = static_cast<ZipWritableMemFile*>(opaque);
    switch (origin) {
      case SEEK_SET:
-@@ -119,13 +119,13 @@ long ZipWritableMemFile::SeekFile  // NO
+@@ -112,13 +112,13 @@ long ZipWritableMemFile::SeekFile  // NO
  }
  
  /* static */
@@ -231,9 +214,9 @@ diff -up chromium-109.0.5414.119/third_party/tflite_support/src/tensorflow_lite_
    // Unused.
    return 0;
  }
-diff -up chromium-109.0.5414.119/third_party/tflite_support/src/tensorflow_lite_support/metadata/cc/utils/zip_writable_mem_file.h.24~ chromium-109.0.5414.119/third_party/tflite_support/src/tensorflow_lite_support/metadata/cc/utils/zip_writable_mem_file.h
---- chromium-109.0.5414.119/third_party/tflite_support/src/tensorflow_lite_support/metadata/cc/utils/zip_writable_mem_file.h.24~	2023-01-25 00:37:04.438041000 +0100
-+++ chromium-109.0.5414.119/third_party/tflite_support/src/tensorflow_lite_support/metadata/cc/utils/zip_writable_mem_file.h	2023-01-31 23:44:37.908854741 +0100
+diff -up chromium-119.0.6045.105/third_party/tflite_support/src/tensorflow_lite_support/metadata/cc/utils/zip_writable_mem_file.h.21~ chromium-119.0.6045.105/third_party/tflite_support/src/tensorflow_lite_support/metadata/cc/utils/zip_writable_mem_file.h
+--- chromium-119.0.6045.105/third_party/tflite_support/src/tensorflow_lite_support/metadata/cc/utils/zip_writable_mem_file.h.21~	2023-11-01 19:11:24.990743600 +0100
++++ chromium-119.0.6045.105/third_party/tflite_support/src/tensorflow_lite_support/metadata/cc/utils/zip_writable_mem_file.h	2023-11-02 01:06:32.076953892 +0100
 @@ -19,7 +19,7 @@ limitations under the License.
  #include <cstdlib>
  
@@ -243,21 +226,18 @@ diff -up chromium-109.0.5414.119/third_party/tflite_support/src/tensorflow_lite_
  
  namespace tflite {
  namespace metadata {
-@@ -57,17 +57,17 @@ class ZipWritableMemFile {
+@@ -57,15 +57,15 @@ class ZipWritableMemFile {
    size_t Size() const { return data_.size(); }
  
    // The file function implementations used in the `zlib_filefunc64_def`.
 -  static voidpf OpenFile(voidpf opaque, const void* filename, int mode);
 -  static uLong ReadFile(voidpf opaque, voidpf stream, void* buf, uLong size);
--  static uLong WriteFile(voidpf opaque,
--                         voidpf stream,
-+  static void* OpenFile(void* opaque, const void* filename, int mode);
-+  static unsigned long ReadFile(void* opaque, void* stream, void* buf, unsigned long size);
-+  static unsigned long WriteFile(void* opaque,
-+                         void* stream,
-                          const void* buf,
+-  static uLong WriteFile(voidpf opaque, voidpf stream, const void* buf,
 -                         uLong size);
 -  static ZPOS64_T TellFile(voidpf opaque, voidpf stream);
++  static void* OpenFile(void* opaque, const void* filename, int mode);
++  static unsigned long ReadFile(void* opaque, void* stream, void* buf, unsigned long size);
++  static unsigned long WriteFile(void* opaque, void* stream, const void* buf,
 +                         unsigned long size);
 +  static ZPOS64_T TellFile(void* opaque, void* stream);
    static long SeekFile  // NOLINT

@@ -72,7 +72,7 @@
 Name:		chromium-browser-%{channel}
 # Working version numbers can be found at
 # https://chromiumdash.appspot.com/releases?platform=Linux
-Version:	118.0.5993.117
+Version:	119.0.6045.105
 ### Don't be evil!!! ###
 %define ungoogled 118.0.5993.117-1
 %if %{with cef}
@@ -81,7 +81,7 @@ Version:	118.0.5993.117
 # https://bitbucket.org/chromiumembedded/cef/wiki/BranchesAndBuilding
 # then check the commit for the branch at the branch download page,
 # https://bitbucket.org/chromiumembedded/cef/downloads/?tab=branches
-%define cef 5993:3dd607849786b271d95e1a3e8013f59572fa9779
+%define cef 6045:ef03e9636ef4ed06f9a69a30745a8ae246cf599a
 %endif
 Release:	2
 Summary:	A fast webkit-based web browser
@@ -142,6 +142,8 @@ Patch105:	reverse-roll-src-third_party-ffmpeg.patch
 
 %if 0%{?ungoogled:1}
 Source1000:	https://github.com/ungoogled-software/ungoogled-chromium/archive/%{ungoogled}.tar.gz
+# Update ungoogling patches to current Chromium
+Source1001:	https://github.com/ungoogled-software/ungoogled-chromium/pull/2581.patch
 Patch1000:	chromium-107-fix-build-after-ungoogling.patch
 %endif
 
@@ -166,19 +168,20 @@ Patch1006:	https://raw.githubusercontent.com/ungoogled-software/ungoogled-chromi
 Patch1007:	chromium-116-dont-override-thinlto-cache-policy.patch
 Patch1008:	chromium-116-system-brotli.patch
 Patch1009:	chromium-97-compilefixes.patch
-Patch1012:	chromium-112-compile.patch
+#Patch1012:	chromium-112-compile.patch
 Patch1013:	chromium-105-minizip-ng.patch
+Patch1014:	chromium-fix-buildsystem-breakages.patch
 Patch1015:	chromium-117-compile.patch
 Patch1016:	chromium-118-libstdc++.patch
 %if 0%{?cef:1}
 Patch1020:	cef-drop-unneeded-libxml-patch.patch
-Patch1021:	cef-118-rebase-to-ungoogled.patch
-Patch1023:	chromium-115-fix-generate_fontconfig_caches.patch
-Patch1024:	cef-115-minizip-ng.patch
+Patch1021:	chromium-115-fix-generate_fontconfig_caches.patch
+Patch1022:	cef-115-minizip-ng.patch
 %if 0%{?ungoogled:1}
-Patch1025:	cef-115-ungoogling.patch
+Patch1023:	cef-rebase-patches.patch
+Patch1024:	cef-115-ungoogling.patch
 %endif
-Patch1026:	cef-zlib-linkage.patch
+Patch1025:	cef-zlib-linkage.patch
 %endif
 
 Provides:	%{crname}
@@ -406,6 +409,9 @@ members of the Chromium and WebDriver teams.
 
 %if 0%{?ungoogled:1}
 UGDIR=$(pwd)/ungoogled-chromium-%{ungoogled}
+cd $UGDIR
+patch -p1 -b -z .ugu~ <%{S:1001}
+cd ..
 echo %{version} >$UGDIR/chromium_version.txt
 # Disable a few patches: We don't want to allow Google to spy on our
 # users, but we don't want to prevent users from voluntarily using
@@ -820,3 +826,6 @@ cp -a cef/libcef_dll cef/tests %{buildroot}%{_libdir}/cef
 %{_libdir}/%{name}/chromedriver
 %endif
 %endif
+
+%clean
+# don't wipe BUILD
