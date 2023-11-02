@@ -1,6 +1,6 @@
-diff -up chromium-97.0.4682.3/third_party/zlib/google/zip_internal.cc.omv~ chromium-97.0.4682.3/third_party/zlib/google/zip_internal.cc
---- chromium-97.0.4682.3/third_party/zlib/google/zip_internal.cc.omv~	2021-11-02 22:51:01.799596700 +0100
-+++ chromium-97.0.4682.3/third_party/zlib/google/zip_internal.cc	2021-11-02 22:52:16.428670047 +0100
+diff -up chromium-119.0.6045.105/third_party/zlib/google/zip_internal.cc.20~ chromium-119.0.6045.105/third_party/zlib/google/zip_internal.cc
+--- chromium-119.0.6045.105/third_party/zlib/google/zip_internal.cc.20~	2023-11-01 19:11:26.634892700 +0100
++++ chromium-119.0.6045.105/third_party/zlib/google/zip_internal.cc	2023-11-02 00:40:49.202185492 +0100
 @@ -177,7 +177,7 @@ void* OpenZipBuffer(void* opaque, const
  
  // Reads compressed data from the specified stream. This function copies data
@@ -23,7 +23,26 @@ diff -up chromium-97.0.4682.3/third_party/zlib/google/zip_internal.cc.omv~ chrom
    NOTREACHED();
    return 0;
  }
-@@ -357,7 +357,7 @@ bool ZipOpenNewFileInZip(zipFile zip_fil
+@@ -261,12 +261,12 @@ zip_fileinfo TimeToZipFileInfo(const bas
+     // Hence the fail safe option is to leave the date unset. Some programs
+     // might show the unset date as 1980-0-0 which is invalid.
+     zip_info.tmz_date = {
+-        .tm_sec = static_cast<uInt>(file_time_parts.second),
+-        .tm_min = static_cast<uInt>(file_time_parts.minute),
+-        .tm_hour = static_cast<uInt>(file_time_parts.hour),
+-        .tm_mday = static_cast<uInt>(file_time_parts.day_of_month),
+-        .tm_mon = static_cast<uInt>(file_time_parts.month - 1),
+-        .tm_year = static_cast<uInt>(file_time_parts.year)};
++        .tm_sec = static_cast<int>(file_time_parts.second),
++        .tm_min = static_cast<int>(file_time_parts.minute),
++        .tm_hour = static_cast<int>(file_time_parts.hour),
++        .tm_mday = static_cast<int>(file_time_parts.day_of_month),
++        .tm_mon = static_cast<int>(file_time_parts.month - 1),
++        .tm_year = static_cast<int>(file_time_parts.year)};
+   }
+ 
+   return zip_info;
+@@ -358,7 +358,7 @@ bool ZipOpenNewFileInZip(zipFile zip_fil
                           Compression compression) {
    // Section 4.4.4 http://www.pkware.com/documents/casestudies/APPNOTE.TXT
    // Setting the Language encoding flag so the file is told to be in utf-8.
@@ -32,7 +51,7 @@ diff -up chromium-97.0.4682.3/third_party/zlib/google/zip_internal.cc.omv~ chrom
  
    const zip_fileinfo file_info = TimeToZipFileInfo(last_modified_time);
    const int err = zipOpenNewFileInZip4_64(
-@@ -370,11 +370,11 @@ bool ZipOpenNewFileInZip(zipFile zip_fil
+@@ -371,11 +371,11 @@ bool ZipOpenNewFileInZip(zipFile zip_fil
        /*size_extrafield_global=*/0u,
        /*comment=*/nullptr,
        /*method=*/compression,

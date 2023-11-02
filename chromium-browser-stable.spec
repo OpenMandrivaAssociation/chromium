@@ -59,7 +59,7 @@
 # freetype (as of 118.x): Build failure caused by use of internal
 #                         headers (afws-decl.h included by simple_font_data.cc)
 # libaom (as of 118.x): Build error caused by GN insisting on in-tree version
-%global system_libs brotli dav1d flac ffmpeg fontconfig harfbuzz-ng libjpeg libpng libdrm libwebp libxml libxslt opus libusb openh264 zlib
+%global system_libs brotli dav1d flac ffmpeg fontconfig harfbuzz-ng libjpeg libjxl libpng libdrm libwebp libxml libxslt opus libusb openh264 zlib
 %define system() %(if echo %{system_libs} |grep -q -E '(^| )%{1}( |$)'; then echo -n 1; else echo -n 0;  fi)
 
 # Set up Google API keys, see http://www.chromium.org/developers/how-tos/api-keys
@@ -72,7 +72,7 @@
 Name:		chromium-browser-%{channel}
 # Working version numbers can be found at
 # https://chromiumdash.appspot.com/releases?platform=Linux
-Version:	118.0.5993.117
+Version:	119.0.6045.105
 ### Don't be evil!!! ###
 %define ungoogled 118.0.5993.117-1
 %if %{with cef}
@@ -81,7 +81,7 @@ Version:	118.0.5993.117
 # https://bitbucket.org/chromiumembedded/cef/wiki/BranchesAndBuilding
 # then check the commit for the branch at the branch download page,
 # https://bitbucket.org/chromiumembedded/cef/downloads/?tab=branches
-%define cef 5993:3dd607849786b271d95e1a3e8013f59572fa9779
+%define cef 6045:ef03e9636ef4ed06f9a69a30745a8ae246cf599a
 %endif
 Release:	1
 Summary:	A fast webkit-based web browser
@@ -142,6 +142,8 @@ Patch105:	reverse-roll-src-third_party-ffmpeg.patch
 
 %if 0%{?ungoogled:1}
 Source1000:	https://github.com/ungoogled-software/ungoogled-chromium/archive/%{ungoogled}.tar.gz
+# Update ungoogling patches to current Chromium
+Source1001:	https://github.com/ungoogled-software/ungoogled-chromium/pull/2581.patch
 Patch1000:	chromium-107-fix-build-after-ungoogling.patch
 %endif
 
@@ -166,19 +168,20 @@ Patch1006:	https://raw.githubusercontent.com/ungoogled-software/ungoogled-chromi
 Patch1007:	chromium-116-dont-override-thinlto-cache-policy.patch
 Patch1008:	chromium-116-system-brotli.patch
 Patch1009:	chromium-97-compilefixes.patch
-Patch1012:	chromium-112-compile.patch
+#Patch1012:	chromium-112-compile.patch
 Patch1013:	chromium-105-minizip-ng.patch
+Patch1014:	chromium-fix-buildsystem-breakages.patch
 Patch1015:	chromium-117-compile.patch
 Patch1016:	chromium-118-libstdc++.patch
 %if 0%{?cef:1}
 Patch1020:	cef-drop-unneeded-libxml-patch.patch
-Patch1021:	cef-118-rebase-to-ungoogled.patch
-Patch1023:	chromium-115-fix-generate_fontconfig_caches.patch
-Patch1024:	cef-115-minizip-ng.patch
+Patch1021:	chromium-115-fix-generate_fontconfig_caches.patch
+Patch1022:	cef-115-minizip-ng.patch
 %if 0%{?ungoogled:1}
-Patch1025:	cef-115-ungoogling.patch
+Patch1023:	cef-rebase-patches.patch
+Patch1024:	cef-115-ungoogling.patch
 %endif
-Patch1026:	cef-zlib-linkage.patch
+Patch1025:	cef-zlib-linkage.patch
 %endif
 
 Provides:	%{crname}
@@ -403,6 +406,9 @@ members of the Chromium and WebDriver teams.
 
 %if 0%{?ungoogled:1}
 UGDIR=$(pwd)/ungoogled-chromium-%{ungoogled}
+cd $UGDIR
+patch -p1 -b -z .ugu~ <%{S:1001}
+cd ..
 echo %{version} >$UGDIR/chromium_version.txt
 # Disable a few patches: We don't want to allow Google to spy on our
 # users, but we don't want to prevent users from voluntarily using
@@ -694,6 +700,22 @@ install -m 644 out/Release/locales/*.pak %{buildroot}%{_libdir}/%{name}/locales/
 install -m 644 out/Release/chrome_100_percent.pak %{buildroot}%{_libdir}/%{name}/
 install -m 644 out/Release/resources.pak %{buildroot}%{_libdir}/%{name}/
 install -m 755 out/Release/libqt5_shim.so %{buildroot}%{_libdir}/%{name}/
+# libGLESv2.so/libEGL.so look like dupes from the system, but aren't:
+# Loading happens in ui/ozone/common/egl_util.cc -- indicating libGLESv2.so
+# and libEGL.so (as opposed to their .1/.2 counterparts) are ANGLE (OpenGL ES
+# -> native GL API wrapper)
+# Now for most HW that shouldn't be necessary, so we may want to get rid of
+# the custom libs and just use Mesa's libraries directly at some point.
+install -m 755 out/Release/libGLESv2.so %{buildroot}%{_libdir}/%{name}/
+install -m 755 out/Release/libEGL.so %{buildroot}%{_libdir}/%{name}/
+# ANGLE data files (fake ICD for custom vulkan bits?), probably needed unless and
+# until we drop the custom libEGL/libGLESv2
+cp -a out/Release/angledata %{buildroot}%{_libdir}/%{name}/
+cp out/Release/vk_swiftshader_icd.json %{buildroot}%{_libdir}/%{name}/
+# FIXME is the custom vulkan needed, or is this just dupes from system vulkan
+# for prehistoric distros?
+install -m 755 out/Release/libvulkan.so.1 %{buildroot}%{_libdir}/%{name}/
+install -m 755 out/Release/libvk_swiftshader.so %{buildroot}%{_libdir}/%{name}/
 # May or may not be there depending on whether or not we use system icu
 [ -e out/Release/icudtl.dat ] && install -m 644 out/Release/icudtl.dat %{buildroot}%{_libdir}/%{name}/
 install -m 644 out/Release/*.bin %{buildroot}%{_libdir}/%{name}/
@@ -721,15 +743,6 @@ done
 # Install the master_preferences file
 mkdir -p %{buildroot}%{_sysconfdir}/chromium
 install -m 0644 %{SOURCE3} %{buildroot}%{_sysconfdir}/chromium
-
-# FIXME ultimately Chromium should just use the system version
-# instead of looking in its own directory... But for now, symlinking
-# stuff where Chromium wants it will do
-ln -s %{_libdir}/libGLESv2.so.2.1.0 %{buildroot}%{_libdir}/%{name}/libGLESv2.so
-ln -s %{_libdir}/libEGL.so.1.1.0 %{buildroot}%{_libdir}/%{name}/libEGL.so
-mkdir -p %{buildroot}%{_libdir}/%{name}/swiftshader
-ln -s %{_libdir}/libGLESv2.so.2.1.0 %{buildroot}%{_libdir}/%{name}/swiftshader/libGLESv2.so
-ln -s %{_libdir}/libEGL.so.1.1.0 %{buildroot}%{_libdir}/%{name}/swiftshader/libEGL.so
 
 find %{buildroot} -name "*.nexe" -exec strip {} \;
 
@@ -787,7 +800,9 @@ cp -a cef/libcef_dll cef/tests %{buildroot}%{_libdir}/cef
 %{_datadir}/drirc.d/10-%{name}.conf
 %{_bindir}/%{name}
 %{_libdir}/%{name}/*.bin
-%{_libdir}/%{name}/*.so
+%{_libdir}/%{name}/*.so*
+%{_libdir}/%{name}/*.json
+%{_libdir}/%{name}/angledata
 %{_libdir}/%{name}/chromium-wrapper
 %{_libdir}/%{name}/chrome
 %{_libdir}/%{name}/chrome-sandbox
@@ -796,7 +811,6 @@ cp -a cef/libcef_dll cef/tests %{buildroot}%{_libdir}/cef
 %{_libdir}/%{name}/chrome_100_percent.pak
 %{_libdir}/%{name}/resources.pak
 %{_libdir}/%{name}/resources
-%{_libdir}/%{name}/swiftshader
 %{_libdir}/%{name}/themes
 %{_libdir}/%{name}/default_apps
 %{_datadir}/applications/*.desktop
@@ -809,3 +823,6 @@ cp -a cef/libcef_dll cef/tests %{buildroot}%{_libdir}/cef
 %{_libdir}/%{name}/chromedriver
 %endif
 %endif
+
+%clean
+# don't wipe BUILD

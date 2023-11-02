@@ -1,0 +1,15 @@
+diff -up chromium-119.0.6045.105/build/config/linux/atspi2/BUILD.gn.omv~ chromium-119.0.6045.105/build/config/linux/atspi2/BUILD.gn
+--- chromium-119.0.6045.105/build/config/linux/atspi2/BUILD.gn.omv~	2023-11-01 21:35:15.750928435 +0100
++++ chromium-119.0.6045.105/build/config/linux/atspi2/BUILD.gn	2023-11-01 21:37:23.521241578 +0100
+@@ -24,7 +24,10 @@ if (use_atk) {
+     # ATSPI 2.49.90 now defines these for us and it's an error for us to
+     # redefine them on the compiler command line.
+     # See ATSPI 927344a34cd5bf81fc64da4968241735ecb4f03b
+-    if (minor < 49 || (minor == 49 && micro < 90)) {
++    # The major and micro checks are just to make sure micro isn't seen
++    # as unused for minor != 49 -- unused variables happen to be a
++    # fatal error in gn
++    if (minor < 49 || (minor == 49 && micro < 90) || major == 123456 || micro == 123456) {
+       defines = [
+         "ATSPI_MAJOR_VERSION=$major",
+         "ATSPI_MINOR_VERSION=$minor",
