@@ -59,7 +59,7 @@
 # freetype (as of 118.x): Build failure caused by use of internal
 #                         headers (afws-decl.h included by simple_font_data.cc)
 # libaom (as of 118.x): Build error caused by GN insisting on in-tree version
-%global system_libs brotli dav1d flac ffmpeg fontconfig harfbuzz-ng libjpeg libpng libdrm libwebp libxml libxslt opus libusb openh264 zlib
+%global system_libs brotli dav1d flac ffmpeg fontconfig harfbuzz-ng libjpeg libjxl libpng libdrm libwebp libxml libxslt opus libusb openh264 zlib
 %define system() %(if echo %{system_libs} |grep -q -E '(^| )%{1}( |$)'; then echo -n 1; else echo -n 0;  fi)
 
 # Set up Google API keys, see http://www.chromium.org/developers/how-tos/api-keys
@@ -694,6 +694,22 @@ install -m 644 out/Release/locales/*.pak %{buildroot}%{_libdir}/%{name}/locales/
 install -m 644 out/Release/chrome_100_percent.pak %{buildroot}%{_libdir}/%{name}/
 install -m 644 out/Release/resources.pak %{buildroot}%{_libdir}/%{name}/
 install -m 755 out/Release/libqt5_shim.so %{buildroot}%{_libdir}/%{name}/
+# libGLESv2.so/libEGL.so look like dupes from the system, but aren't:
+# Loading happens in ui/ozone/common/egl_util.cc -- indicating libGLESv2.so
+# and libEGL.so (as opposed to their .1/.2 counterparts) are ANGLE (OpenGL ES
+# -> native GL API wrapper)
+# Now for most HW that shouldn't be necessary, so we may want to get rid of
+# the custom libs and just use Mesa's libraries directly at some point.
+install -m 755 out/Release/libGLESv2.so %{buildroot}%{_libdir}/%{name}/
+install -m 755 out/Release/libEGL.so %{buildroot}%{_libdir}/%{name}/
+# ANGLE data files (fake ICD for custom vulkan bits?), probably needed unless and
+# until we drop the custom libEGL/libGLESv2
+cp -a out/Release/angledata %{buildroot}%{_libdir}/%{name}/
+cp out/Release/vk_swiftshader_icd.json %{buildroot}%{_libdir}/%{name}/
+# FIXME is the custom vulkan needed, or is this just dupes from system vulkan
+# for prehistoric distros?
+install -m 755 out/Release/libvulkan.so.1 %{buildroot}%{_libdir}/%{name}/
+install -m 755 out/Release/libvk_swiftshader.so %{buildroot}%{_libdir}/%{name}/
 # May or may not be there depending on whether or not we use system icu
 [ -e out/Release/icudtl.dat ] && install -m 644 out/Release/icudtl.dat %{buildroot}%{_libdir}/%{name}/
 install -m 644 out/Release/*.bin %{buildroot}%{_libdir}/%{name}/
@@ -721,15 +737,6 @@ done
 # Install the master_preferences file
 mkdir -p %{buildroot}%{_sysconfdir}/chromium
 install -m 0644 %{SOURCE3} %{buildroot}%{_sysconfdir}/chromium
-
-# FIXME ultimately Chromium should just use the system version
-# instead of looking in its own directory... But for now, symlinking
-# stuff where Chromium wants it will do
-ln -s %{_libdir}/libGLESv2.so.2.1.0 %{buildroot}%{_libdir}/%{name}/libGLESv2.so
-ln -s %{_libdir}/libEGL.so.1.1.0 %{buildroot}%{_libdir}/%{name}/libEGL.so
-mkdir -p %{buildroot}%{_libdir}/%{name}/swiftshader
-ln -s %{_libdir}/libGLESv2.so.2.1.0 %{buildroot}%{_libdir}/%{name}/swiftshader/libGLESv2.so
-ln -s %{_libdir}/libEGL.so.1.1.0 %{buildroot}%{_libdir}/%{name}/swiftshader/libEGL.so
 
 find %{buildroot} -name "*.nexe" -exec strip {} \;
 
@@ -787,7 +794,9 @@ cp -a cef/libcef_dll cef/tests %{buildroot}%{_libdir}/cef
 %{_datadir}/drirc.d/10-%{name}.conf
 %{_bindir}/%{name}
 %{_libdir}/%{name}/*.bin
-%{_libdir}/%{name}/*.so
+%{_libdir}/%{name}/*.so*
+%{_libdir}/%{name}/*.json
+%{_libdir}/%{name}/angledata
 %{_libdir}/%{name}/chromium-wrapper
 %{_libdir}/%{name}/chrome
 %{_libdir}/%{name}/chrome-sandbox
@@ -796,7 +805,6 @@ cp -a cef/libcef_dll cef/tests %{buildroot}%{_libdir}/cef
 %{_libdir}/%{name}/chrome_100_percent.pak
 %{_libdir}/%{name}/resources.pak
 %{_libdir}/%{name}/resources
-%{_libdir}/%{name}/swiftshader
 %{_libdir}/%{name}/themes
 %{_libdir}/%{name}/default_apps
 %{_datadir}/applications/*.desktop
