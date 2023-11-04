@@ -273,6 +273,9 @@ BuildRequires:	pkgconfig(libevent)
 %if %{system libjpeg}
 BuildRequires:	jpeg-devel
 %endif
+%if %{system libjxl}
+BuildRequires:	pkgconfig(libjxl)
+%endif
 %if %{system libpng}
 BuildRequires:	pkgconfig(libpng)
 %endif
