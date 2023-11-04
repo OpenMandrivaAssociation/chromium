@@ -83,7 +83,7 @@ Version:	118.0.5993.117
 # https://bitbucket.org/chromiumembedded/cef/downloads/?tab=branches
 %define cef 5993:3dd607849786b271d95e1a3e8013f59572fa9779
 %endif
-Release:	1
+Release:	2
 Summary:	A fast webkit-based web browser
 Group:		Networking/WWW
 License:	BSD, LGPL
