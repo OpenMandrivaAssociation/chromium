@@ -457,6 +457,11 @@ cd ../..
 %autopatch -p1
 
 rm -rf third_party/binutils/
+# Get rid of the pre-built eu-strip binary, it is x86_64 and of mysterious origin
+rm -rf buildtools/third_party/eu-strip/bin/eu-strip
+  
+# Replace it with a symlink to the system copy
+ln -s %{_bindir}/eu-strip buildtools/third_party/eu-strip/bin/eu-strip
 
 echo "%{revision}" > build/LASTCHANGE.in
 
