@@ -1,0 +1,167 @@
+diff -up chromium-119.0.6045.105/chrome/browser/DEPS.14~ chromium-119.0.6045.105/chrome/browser/DEPS
+--- chromium-119.0.6045.105/chrome/browser/DEPS.14~	2023-11-01 19:10:09.475902300 +0100
++++ chromium-119.0.6045.105/chrome/browser/DEPS	2023-11-04 23:08:30.051081532 +0100
+@@ -415,6 +415,7 @@ include_rules = [
+   "+media/base",  # For media switches
+   "+media/capabilities", # For InMemoryVideoDecodeStatsDB
+   "+media/cdm",
++  "+media/gpu/buildflags.h",
+   "+media/remoting/device_capability_checker.h",
+   "+media/capture",
+   "+media/midi",  # For midi switches
+diff -up chromium-119.0.6045.105/chrome/browser/about_flags.cc.14~ chromium-119.0.6045.105/chrome/browser/about_flags.cc
+--- chromium-119.0.6045.105/chrome/browser/about_flags.cc.14~	2023-11-04 23:08:13.731928617 +0100
++++ chromium-119.0.6045.105/chrome/browser/about_flags.cc	2023-11-04 23:08:30.053081549 +0100
+@@ -7780,11 +7780,13 @@ const FeatureEntry kFeatureEntries[] = {
+ #endif  // BUILDFLAG(IS_CHROMEOS_ASH)
+ 
+ #if BUILDFLAG(IS_CHROMEOS) && BUILDFLAG(USE_CHROMEOS_MEDIA_ACCELERATION)
++#if !BUILDFLAG(USE_VAAPI)
+     {"chromeos-direct-video-decoder",
+      flag_descriptions::kChromeOSDirectVideoDecoderName,
+      flag_descriptions::kChromeOSDirectVideoDecoderDescription,
+      kOsCrOS | kOsLacros,
+      FEATURE_VALUE_TYPE(media::kUseChromeOSDirectVideoDecoder)},
++#endif  // !BUILDFLAG(USE_VAAPI)
+ 
+     {"enable-vbr-encode-acceleration",
+      flag_descriptions::kChromeOSHWVBREncodingName,
+diff -up chromium-119.0.6045.105/chrome/browser/flag_descriptions.cc.14~ chromium-119.0.6045.105/chrome/browser/flag_descriptions.cc
+--- chromium-119.0.6045.105/chrome/browser/flag_descriptions.cc.14~	2023-11-04 23:08:13.682928184 +0100
++++ chromium-119.0.6045.105/chrome/browser/flag_descriptions.cc	2023-11-04 23:17:12.475738963 +0100
+@@ -7,6 +7,7 @@
+ #include "build/build_config.h"
+ #include "build/chromeos_buildflags.h"
+ #include "components/supervised_user/core/common/buildflags.h"
++#include "media/gpu/buildflags.h"
+ #include "pdf/buildflags.h"
+ 
+ // Keep in identical order as the header file, see the comment at the top
+@@ -7427,7 +7428,8 @@ const char kVaapiVP9kSVCEncoderDescripti
+     "Enable or disable k-SVC VP9 encode acceleration using VA-API.";
+ #endif  // defined(ARCH_CPU_X86_FAMILY) && BUILDFLAG(IS_CHROMEOS)
+ 
+ #if BUILDFLAG(IS_CHROMEOS) && BUILDFLAG(USE_CHROMEOS_MEDIA_ACCELERATION)
++#if !BUILDFLAG(USE_VAAPI)
+ const char kChromeOSDirectVideoDecoderName[] = "ChromeOS Direct Video Decoder";
+ const char kChromeOSDirectVideoDecoderDescription[] =
+     "Enables the hardware-accelerated ChromeOS direct media::VideoDecoder "
+@@ -7435,7 +7436,8 @@ const char kChromeOSDirectVideoDecoderDe
+     "--platform-disallows-chromeos-direct-video-decoder command line switch "
+     "which is added for platforms where said direct VideoDecoder does not work "
+     "or is not well tested (see the disable_cros_video_decoder USE flag in "
+-    "ChromeOS)";
++    "ChromeOS). This flag is supported only on non-Intel and non-AMD devices.";
++#endif  // !BUILDFLAG(USE_VAAPI)
+ const char kChromeOSHWVBREncodingName[] =
+     "ChromeOS Hardware Variable Bitrate Encoding";
+ const char kChromeOSHWVBREncodingDescription[] =
+diff -up chromium-119.0.6045.105/content/public/browser/gpu_utils.cc.14~ chromium-119.0.6045.105/content/public/browser/gpu_utils.cc
+--- chromium-119.0.6045.105/content/public/browser/gpu_utils.cc.14~	2023-11-01 19:10:26.537448200 +0100
++++ chromium-119.0.6045.105/content/public/browser/gpu_utils.cc	2023-11-04 23:08:30.054081558 +0100
+@@ -133,20 +133,26 @@ const gpu::GpuPreferences GetGpuPreferen
+ #if BUILDFLAG(USE_CHROMEOS_MEDIA_ACCELERATION)
+   // The direct VideoDecoder is disallowed on some particular SoC/platforms.
+   const bool should_use_direct_video_decoder =
++#if BUILDFLAG(USE_VAAPI)
++      true;
++#else
+       !command_line->HasSwitch(
+           switches::kPlatformDisallowsChromeOSDirectVideoDecoder) &&
+       base::FeatureList::IsEnabled(media::kUseChromeOSDirectVideoDecoder);
++#endif  // BUILDFLAG(USE_VAAPI)
++
++  gpu_preferences.enable_chromeos_direct_video_decoder =
++#if BUILDFLAG(USE_VAAPI)
++      should_use_direct_video_decoder;
++#else
++      // For testing purposes, the following flag allows using the "other" video
++      // decoder implementation.
++      base::FeatureList::IsEnabled(
++          media::kUseAlternateVideoDecoderImplementation)
++          ? !should_use_direct_video_decoder
++          : should_use_direct_video_decoder;
++#endif  // BUILDFLAG(USE_VAAPI)
+ 
+-  // For testing purposes, the following flag allows using the "other" video
+-  // decoder implementation.
+-  if (base::FeatureList::IsEnabled(
+-          media::kUseAlternateVideoDecoderImplementation)) {
+-    gpu_preferences.enable_chromeos_direct_video_decoder =
+-        !should_use_direct_video_decoder;
+-  } else {
+-    gpu_preferences.enable_chromeos_direct_video_decoder =
+-        should_use_direct_video_decoder;
+-  }
+ #if BUILDFLAG(USE_VAAPI)
+   CHECK(gpu_preferences.enable_chromeos_direct_video_decoder);
+ #endif  // BUILDFLAG(USE_VAAPI)
+diff -up chromium-119.0.6045.105/media/base/media_switches.cc.14~ chromium-119.0.6045.105/media/base/media_switches.cc
+--- chromium-119.0.6045.105/media/base/media_switches.cc.14~	2023-11-04 23:08:13.707928405 +0100
++++ chromium-119.0.6045.105/media/base/media_switches.cc	2023-11-04 23:08:30.054081558 +0100
+@@ -1202,6 +1202,7 @@ BASE_FEATURE(kChromeOSHWVBREncoding,
+              "ChromeOSHWVBREncoding",
+              base::FEATURE_DISABLED_BY_DEFAULT);
+ 
++#if !BUILDFLAG(USE_VAAPI)
+ // Enable the hardware-accelerated direct video decoder instead of the one
+ // needing the VdaVideoDecoder adapter. This flag is used mainly as a
+ // chrome:flag for developers debugging issues as well as to be able to
+@@ -1210,6 +1211,7 @@ BASE_FEATURE(kChromeOSHWVBREncoding,
+ BASE_FEATURE(kUseChromeOSDirectVideoDecoder,
+              "UseChromeOSDirectVideoDecoder",
+              base::FEATURE_ENABLED_BY_DEFAULT);
++#endif  // !BUILDFLAG(USE_VAAPI)
+ 
+ // Limit the number of concurrent hardware decoder instances on ChromeOS.
+ BASE_FEATURE(kLimitConcurrentDecoderInstances,
+@@ -1238,7 +1240,7 @@ BASE_FEATURE(kPreferSoftwareMT21,
+              "PreferSoftwareMT21",
+              base::FEATURE_DISABLED_BY_DEFAULT);
+ #endif  // defined(ARCH_CPU_ARM_FAMILY)
+-#if BUILDFLAG(IS_CHROMEOS)
++#if BUILDFLAG(IS_CHROMEOS) && !BUILDFLAG(USE_VAAPI)
+ // ChromeOS has one of two VideoDecoder implementations active based on
+ // SoC/board specific configurations that are sent via command line flags. This
+ // switch allows using the non default implementation for testing.
+@@ -1246,7 +1248,7 @@ BASE_FEATURE(kPreferSoftwareMT21,
+ BASE_FEATURE(kUseAlternateVideoDecoderImplementation,
+              "UseAlternateVideoDecoderImplementation",
+              base::FEATURE_DISABLED_BY_DEFAULT);
+-#endif  // BUILDFLAG(IS_CHROMEOS)
++#endif  // BUILDFLAG(IS_CHROMEOS) && !BUILDFLAG(USE_VAAPI)
+ #endif  // BUILDFLAG(USE_CHROMEOS_MEDIA_ACCELERATION)
+ 
+ #if BUILDFLAG(IS_WIN)
+diff -up chromium-119.0.6045.105/media/base/media_switches.h.14~ chromium-119.0.6045.105/media/base/media_switches.h
+--- chromium-119.0.6045.105/media/base/media_switches.h.14~	2023-11-01 19:10:31.241874200 +0100
++++ chromium-119.0.6045.105/media/base/media_switches.h	2023-11-04 23:08:30.054081558 +0100
+@@ -14,6 +14,7 @@
+ #include "build/build_config.h"
+ #include "build/chromeos_buildflags.h"
+ #include "media/base/media_export.h"
++#include "media/gpu/buildflags.h"
+ #include "media/media_buildflags.h"
+ 
+ namespace base {
+@@ -382,16 +383,18 @@ MEDIA_EXPORT BASE_DECLARE_FEATURE(kBuilt
+ #if BUILDFLAG(USE_CHROMEOS_MEDIA_ACCELERATION)
+ MEDIA_EXPORT BASE_DECLARE_FEATURE(kChromeOSHWAV1Decoder);
+ MEDIA_EXPORT BASE_DECLARE_FEATURE(kChromeOSHWVBREncoding);
++#if !BUILDFLAG(USE_VAAPI)
+ MEDIA_EXPORT BASE_DECLARE_FEATURE(kUseChromeOSDirectVideoDecoder);
++#endif  // !BUILDFLAG(USE_VAAPI)
+ MEDIA_EXPORT BASE_DECLARE_FEATURE(kLimitConcurrentDecoderInstances);
+ MEDIA_EXPORT BASE_DECLARE_FEATURE(kUSeSequencedTaskRunnerForVEA);
+ #if defined(ARCH_CPU_ARM_FAMILY)
+ MEDIA_EXPORT BASE_DECLARE_FEATURE(kPreferGLImageProcessor);
+ MEDIA_EXPORT BASE_DECLARE_FEATURE(kPreferSoftwareMT21);
+ #endif  // defined(ARCH_CPU_ARM_FAMILY)
+-#if BUILDFLAG(IS_CHROMEOS)
++#if BUILDFLAG(IS_CHROMEOS) && !BUILDFLAG(USE_VAAPI)
+ MEDIA_EXPORT BASE_DECLARE_FEATURE(kUseAlternateVideoDecoderImplementation);
+-#endif  // BUILDFLAG(IS_CHROMEOS)
++#endif  // BUILDFLAG(IS_CHROMEOS) && !BUILDFLAG(USE_VAAPI)
+ #endif  // BUILDFLAG(USE_CHROMEOS_MEDIA_ACCELERATION)
+ 
+ #if BUILDFLAG(IS_WIN)
