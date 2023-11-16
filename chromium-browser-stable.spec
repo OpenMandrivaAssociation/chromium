@@ -59,7 +59,7 @@
 # freetype (as of 118.x): Build failure caused by use of internal
 #                         headers (afws-decl.h included by simple_font_data.cc)
 # libaom (as of 118.x): Build error caused by GN insisting on in-tree version
-%global system_libs brotli dav1d flac ffmpeg fontconfig harfbuzz-ng libjpeg libjxl libpng libdrm libwebp libxml libxslt opus libusb openh264 zlib
+%global system_libs brotli dav1d flac ffmpeg fontconfig harfbuzz-ng libjpeg libjxl libpng libdrm libwebp libxml libxslt opus libusb openh264 zlib libjxl
 %define system() %(if echo %{system_libs} |grep -q -E '(^| )%{1}( |$)'; then echo -n 1; else echo -n 0;  fi)
 
 # Set up Google API keys, see http://www.chromium.org/developers/how-tos/api-keys
@@ -72,9 +72,9 @@
 Name:		chromium-browser-%{channel}
 # Working version numbers can be found at
 # https://chromiumdash.appspot.com/releases?platform=Linux
-Version:	119.0.6045.105
+Version:	119.0.6045.159
 ### Don't be evil!!! ###
-%define ungoogled 118.0.5993.117-1
+%define ungoogled 119.0.6045.123-1
 %if %{with cef}
 # To find the CEF commit matching the Chromium version, look up the
 # right branch at
@@ -83,7 +83,7 @@ Version:	119.0.6045.105
 # https://bitbucket.org/chromiumembedded/cef/downloads/?tab=branches
 %define cef 6045:ef03e9636ef4ed06f9a69a30745a8ae246cf599a
 %endif
-Release:	2
+Release:	1
 Summary:	A fast webkit-based web browser
 Group:		Networking/WWW
 License:	BSD, LGPL
@@ -112,6 +112,7 @@ Patch1:		https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-68.0.
 # Use gn system files
 # Do not mangle zlib
 Patch6:		https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-77.0.3865.75-no-zlib-mangle.patch
+Patch7:		chroimum-119-workaround-crash-on-startup.patch
 # Use Gentoo's Widevine hack
 # https://gitweb.gentoo.org/repo/gentoo.git/tree/www-client/chromium/files/chromium-widevine-r3.patch
 Patch8:		https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-71.0.3578.98-widevine-r3.patch
@@ -122,13 +123,22 @@ Patch53:	chromium-81-unbundle-zlib.patch
 # Needs to be submitted..
 Patch54:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-77.0.3865.75-gcc-include-memory.patch
 Patch55:	chromium-113.0.5672.63-compile.patch
+Patch56:	https://src.fedoraproject.org/rpms/chromium/raw/rawhide/f/chromium-103.0.5060.53-update-rjsmin-to-1.2.0.patch
+Patch57:	https://src.fedoraproject.org/rpms/chromium/raw/rawhide/f/chromium-105.0.5195.52-python-six-1.16.0.patch
+Patch58:	https://src.fedoraproject.org/rpms/chromium/raw/rawhide/f/chromium-108-system-opus.patch
+Patch60:	https://src.fedoraproject.org/rpms/chromium/raw/rawhide/f/chromium-119-nullptr_t-without-namespace-std.patch
+Patch61:	https://src.fedoraproject.org/rpms/chromium/raw/rawhide/f/chromium-119-nvidia-use-separate-bo-to-verify-modifier.patch
+Patch62:	https://src.fedoraproject.org/rpms/chromium/raw/rawhide/f/chromium-119-hide-UseChromeOSDirectVideoDecoder-flag-on-VA-API-devices.patch
 
 # From Arch and Gentoo
 # https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=chromium-dev
-#Patch101:	https://raw.githubusercontent.com/gentoo/gentoo/master/www-client/chromium/files/chromium-93-InkDropHost-crash.patch
-#Patch102:	https://raw.githubusercontent.com/gentoo/gentoo/master/www-client/chromium/files/chromium-shim_headers.patch
-Patch103:	https://raw.githubusercontent.com/archlinux/svntogit-packages/packages/chromium/trunk/use-oauth2-client-switches-as-default.patch
-Patch105:	reverse-roll-src-third_party-ffmpeg.patch
+# https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=chromium-wayland-vaapi
+Patch101:	https://aur.archlinux.org/cgit/aur.git/plain/0001-vaapi-flag-ozone-wayland.patch?h=chromium-wayland-vaapi#/0001-vaapi-flag-ozone-wayland.patch
+Patch102:	https://aur.archlinux.org/cgit/aur.git/plain/0001-adjust-buffer-format-order.patch?h=chromium-wayland-vaapi#/0001-adjust-buffer-format-order.patch
+Patch103:	https://aur.archlinux.org/cgit/aur.git/tree/0001-ozone-wayland-implement-text_input_manager_v3.patch?h=chromium-wayland-vaapi#/0001-ozone-wayland-implement-text_input_manager_v3.patch
+Patch104:	https://aur.archlinux.org/cgit/aur.git/tree/0001-ozone-wayland-implement-text_input_manager-fixes.patch?h=chromium-wayland-vaapi#/0001-ozone-wayland-implement-text_input_manager-fixes.patch
+Patch110:	https://raw.githubusercontent.com/archlinux/svntogit-packages/packages/chromium/trunk/use-oauth2-client-switches-as-default.patch
+Patch111:	reverse-roll-src-third_party-ffmpeg.patch
 
 # Use lstdc++ on EPEL7 only
 #Patch101:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-75.0.3770.100-epel7-stdc++.patch
@@ -142,8 +152,6 @@ Patch105:	reverse-roll-src-third_party-ffmpeg.patch
 
 %if 0%{?ungoogled:1}
 Source1000:	https://github.com/ungoogled-software/ungoogled-chromium/archive/%{ungoogled}.tar.gz
-# Update ungoogling patches to current Chromium
-Source1001:	https://github.com/ungoogled-software/ungoogled-chromium/pull/2581.patch
 Patch1000:	chromium-107-fix-build-after-ungoogling.patch
 %endif
 
@@ -409,9 +417,10 @@ members of the Chromium and WebDriver teams.
 
 %if 0%{?ungoogled:1}
 UGDIR=$(pwd)/ungoogled-chromium-%{ungoogled}
-cd $UGDIR
-patch -p1 -b -z .ugu~ <%{S:1001}
-cd ..
+# Add a Source1001 patch whenever UG is behind upstream
+#cd $UGDIR
+#patch -p1 -b -z .ugu~ <%{S:1001}
+#cd ..
 echo %{version} >$UGDIR/chromium_version.txt
 # Disable a few patches: We don't want to allow Google to spy on our
 # users, but we don't want to prevent users from voluntarily using
@@ -451,6 +460,11 @@ cd ../..
 %autopatch -p1
 
 rm -rf third_party/binutils/
+# Get rid of the pre-built eu-strip binary, it is x86_64 and of mysterious origin
+rm -rf buildtools/third_party/eu-strip/bin/eu-strip
+  
+# Replace it with a symlink to the system copy
+ln -s %{_bindir}/eu-strip buildtools/third_party/eu-strip/bin/eu-strip
 
 echo "%{revision}" > build/LASTCHANGE.in
 
@@ -540,7 +554,7 @@ GN_DEFINES+=" $(cat $UGDIR/flags.gn |tr '\n' ' ')"
 GN_DEFINES+="use_sysroot=false is_debug=false "
 GN_DEFINES+=" is_clang=true clang_base_path=\"%{_prefix}\" clang_use_chrome_plugins=false "
 GN_DEFINES+=" treat_warnings_as_errors=false "
-%if 1
+%if 0
 GN_DEFINES+=" use_custom_libcxx=true "
 %else
 GN_DEFINES+=" use_custom_libcxx=false "

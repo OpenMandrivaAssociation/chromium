@@ -9,3 +9,37 @@ diff -up chromium-119.0.6045.105/services/device/public/cpp/generic_sensor/senso
  
  namespace device {
  
+diff -up chromium-119.0.6045.105/third_party/material_color_utilities/src/cpp/palettes/tones.cc.omv~ chromium-119.0.6045.105/third_party/material_color_utilities/src/cpp/palettes/tones.cc
+--- chromium-119.0.6045.105/third_party/material_color_utilities/src/cpp/palettes/tones.cc.omv~	2023-11-05 00:05:30.332981145 +0100
++++ chromium-119.0.6045.105/third_party/material_color_utilities/src/cpp/palettes/tones.cc	2023-11-05 00:05:37.353046279 +0100
+@@ -19,6 +19,8 @@
+ #include "cpp/cam/cam.h"
+ #include "cpp/cam/hct.h"
+ 
++#include <cmath>
++
+ namespace material_color_utilities {
+ 
+ TonalPalette::TonalPalette(Argb argb) : key_color_(0.0, 0.0, 0.0) {
+diff -up chromium-119.0.6045.105/third_party/ruy/src/ruy/profiler/instrumentation.h.omv~ chromium-119.0.6045.105/third_party/ruy/src/ruy/profiler/instrumentation.h
+--- chromium-119.0.6045.105/third_party/ruy/src/ruy/profiler/instrumentation.h.omv~	2023-11-05 00:06:07.330324045 +0100
++++ chromium-119.0.6045.105/third_party/ruy/src/ruy/profiler/instrumentation.h	2023-11-05 00:06:14.296388507 +0100
+@@ -21,6 +21,7 @@ limitations under the License.
+ #include <mutex>
+ #include <vector>
+ #endif
++#include <string>
+ 
+ namespace ruy {
+ namespace profiler {
+diff -up chromium-119.0.6045.105/third_party/vulkan_memory_allocator/include/vk_mem_alloc.h.omv~ chromium-119.0.6045.105/third_party/vulkan_memory_allocator/include/vk_mem_alloc.h
+--- chromium-119.0.6045.105/third_party/vulkan_memory_allocator/include/vk_mem_alloc.h.omv~	2023-11-05 00:06:55.244766833 +0100
++++ chromium-119.0.6045.105/third_party/vulkan_memory_allocator/include/vk_mem_alloc.h	2023-11-05 00:07:35.970142131 +0100
+@@ -106,6 +106,7 @@ Documentation of all members: vk_mem_all
+ */
+ 
+ #ifdef __cplusplus
++#include <cstdio>
+ extern "C" {
+ #endif
+ 
