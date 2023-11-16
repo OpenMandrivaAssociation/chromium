@@ -25,6 +25,12 @@
 
 %bcond_without browser
 %bcond_without cef
+# Use the internal libc++ instead of libstdc++
+# This should usually be avoided because of potential symbol
+# clashes when using e.g. Qt and Chromium at the same time
+# (especially with cef!), but some versions of chromium make
+# it necessary
+%bcond_with libcxx
 
 # FIXME As of 97.0.4688.2, Chromium crashes frequently when
 # built with fortification enabled.
@@ -56,10 +62,12 @@
 # re2 jsoncpp snappy: Use C++, therefore won't work while
 #                     system uses libstdc++ but chromium
 #                     uses use_custom_libcxx=true
-# freetype (as of 118.x): Build failure caused by use of internal
-#                         headers (afws-decl.h included by simple_font_data.cc)
 # libaom (as of 118.x): Build error caused by GN insisting on in-tree version
-%global system_libs brotli dav1d flac ffmpeg fontconfig harfbuzz-ng libjpeg libjxl libpng libdrm libwebp libxml libxslt opus libusb openh264 zlib libjxl
+%if %{with libcxx}
+%global system_libs brotli dav1d flac ffmpeg fontconfig harfbuzz-ng libjpeg libjxl libpng libdrm libwebp libxml libxslt opus libusb openh264 zlib libjxl freetype zstd
+%else
+%global system_libs brotli dav1d flac ffmpeg fontconfig harfbuzz-ng libjpeg libjxl libpng libdrm libwebp libxml libxslt opus libusb openh264 zlib libjxl freetype zstd re2 jsoncpp snappy
+%endif
 %define system() %(if echo %{system_libs} |grep -q -E '(^| )%{1}( |$)'; then echo -n 1; else echo -n 0;  fi)
 
 # Set up Google API keys, see http://www.chromium.org/developers/how-tos/api-keys
@@ -81,7 +89,7 @@ Version:	119.0.6045.159
 # https://bitbucket.org/chromiumembedded/cef/wiki/BranchesAndBuilding
 # then check the commit for the branch at the branch download page,
 # https://bitbucket.org/chromiumembedded/cef/downloads/?tab=branches
-%define cef 6045:ef03e9636ef4ed06f9a69a30745a8ae246cf599a
+%define cef 6045:c76a3b9f2e3fd582512e89fd0e901368bac1a822
 %endif
 Release:	1
 Summary:	A fast webkit-based web browser
@@ -116,6 +124,14 @@ Patch7:		chroimum-119-workaround-crash-on-startup.patch
 # Use Gentoo's Widevine hack
 # https://gitweb.gentoo.org/repo/gentoo.git/tree/www-client/chromium/files/chromium-widevine-r3.patch
 Patch8:		https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-71.0.3578.98-widevine-r3.patch
+# More search engines for CH
+# https://bugs.chromium.org/p/chromium/issues/detail?id=1502905
+Patch9:		chromium-119.0.6045.159-more-search-engines-for-CH.patch
+# Fix VAAPI video decoding on AMD
+# https://bugs.chromium.org/p/chromium/issues/detail?id=1445074
+# Based on https://gist.githubusercontent.com/thubble/235806c4c64b159653de879173d24d9f/raw/dd9366083a6c635b7accd53cb9c01f7bece1185f/chromium-support-disjoint-vaapi-export-import.patch
+# Unfortunately needs the removed FindMemoryTypeIndexLinux API, disabled for now
+#Patch10:	chromium-119-fix-vaapi-video-decode-on-amd.patch
 # Try to load widevine from other places
 Patch11:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-100.0.4896.60-widevine-other-locations.patch
 # https://gitweb.gentoo.org/repo/gentoo.git/tree/www-client/chromium/files/chromium-unbundle-zlib.patch
@@ -140,15 +156,10 @@ Patch104:	https://aur.archlinux.org/cgit/aur.git/tree/0001-ozone-wayland-impleme
 Patch110:	https://raw.githubusercontent.com/archlinux/svntogit-packages/packages/chromium/trunk/use-oauth2-client-switches-as-default.patch
 Patch111:	reverse-roll-src-third_party-ffmpeg.patch
 
-# Use lstdc++ on EPEL7 only
-#Patch101:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-75.0.3770.100-epel7-stdc++.patch
-# el7 only patch
-#Patch102:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-79.0.3945.56-el7-noexcept.patch
-
-# Apply these patches to work around EPEL8 issues
-#Patch300:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-76.0.3809.132-rhel8-force-disable-use_gnome_keyring.patch
-
-#Patch501:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-75.0.3770.80-SIOCGSTAMP.patch
+# https://gitlab.com/Matt.Jolly/chromium-patches
+# Often has patches needed to build with libstdc++, sometimes other
+# interesting buts
+Patch121:	https://gitlab.com/Matt.Jolly/chromium-patches/-/raw/master/chromium-117-system-zstd.patch?ref_type=heads&inline=false#/chromium-117-system-zstd.patch
 
 %if 0%{?ungoogled:1}
 Source1000:	https://github.com/ungoogled-software/ungoogled-chromium/archive/%{ungoogled}.tar.gz
@@ -554,7 +565,7 @@ GN_DEFINES+=" $(cat $UGDIR/flags.gn |tr '\n' ' ')"
 GN_DEFINES+="use_sysroot=false is_debug=false "
 GN_DEFINES+=" is_clang=true clang_base_path=\"%{_prefix}\" clang_use_chrome_plugins=false "
 GN_DEFINES+=" treat_warnings_as_errors=false "
-%if 0
+%if %{with libcxx}
 GN_DEFINES+=" use_custom_libcxx=true "
 %else
 GN_DEFINES+=" use_custom_libcxx=false "

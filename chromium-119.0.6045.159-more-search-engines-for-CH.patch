@@ -1,0 +1,24 @@
+diff -up chromium-119.0.6045.159/components/search_engines/template_url_prepopulate_data.cc.omv~ chromium-119.0.6045.159/components/search_engines/template_url_prepopulate_data.cc
+--- chromium-119.0.6045.159/components/search_engines/template_url_prepopulate_data.cc.omv~	2023-11-16 20:07:07.288132332 +0100
++++ chromium-119.0.6045.159/components/search_engines/template_url_prepopulate_data.cc	2023-11-16 20:09:57.905546450 +0100
+@@ -242,6 +242,20 @@ constexpr EngineAndTier engines_CH[] = {
+   {SearchEngineTier::kTopEngines, &duckduckgo},
+   {SearchEngineTier::kTopEngines, &yahoo_ch},
+   {SearchEngineTier::kTopEngines, &ecosia},
++  {SearchEngineTier::kTopEngines, &yandex_com},
++  {SearchEngineTier::kRemainingEngines, &qwant},
++  {SearchEngineTier::kRemainingEngines, &mojeek},
++  {SearchEngineTier::kRemainingEngines, &yep},
++  {SearchEngineTier::kRemainingEngines, &brave},
++  {SearchEngineTier::kRemainingEngines, &nona},
++  {SearchEngineTier::kRemainingEngines, &quendu},
++  {SearchEngineTier::kRemainingEngines, &panda},
++  {SearchEngineTier::kRemainingEngines, &metager_de},
++  {SearchEngineTier::kRemainingEngines, &oceanhero},
++  {SearchEngineTier::kRemainingEngines, &info_com},
++  {SearchEngineTier::kRemainingEngines, &karma},
++  {SearchEngineTier::kRemainingEngines, &privacywall},
++  {SearchEngineTier::kRemainingEngines, &lilo},
+ };
+ 
+ // Chile
