@@ -1,6 +1,6 @@
-diff -up chromium-119.0.6045.105/chrome/browser/DEPS.14~ chromium-119.0.6045.105/chrome/browser/DEPS
---- chromium-119.0.6045.105/chrome/browser/DEPS.14~	2023-11-01 19:10:09.475902300 +0100
-+++ chromium-119.0.6045.105/chrome/browser/DEPS	2023-11-04 23:08:30.051081532 +0100
+diff -up chromium-119.0.6045.105/chrome/browser/DEPS.13~ chromium-119.0.6045.105/chrome/browser/DEPS
+--- chromium-119.0.6045.105/chrome/browser/DEPS.13~	2023-11-01 19:10:09.475902300 +0100
++++ chromium-119.0.6045.105/chrome/browser/DEPS	2023-11-05 04:40:16.818052204 +0100
 @@ -415,6 +415,7 @@ include_rules = [
    "+media/base",  # For media switches
    "+media/capabilities", # For InMemoryVideoDecodeStatsDB
@@ -9,9 +9,9 @@ diff -up chromium-119.0.6045.105/chrome/browser/DEPS.14~ chromium-119.0.6045.105
    "+media/remoting/device_capability_checker.h",
    "+media/capture",
    "+media/midi",  # For midi switches
-diff -up chromium-119.0.6045.105/chrome/browser/about_flags.cc.14~ chromium-119.0.6045.105/chrome/browser/about_flags.cc
---- chromium-119.0.6045.105/chrome/browser/about_flags.cc.14~	2023-11-04 23:08:13.731928617 +0100
-+++ chromium-119.0.6045.105/chrome/browser/about_flags.cc	2023-11-04 23:08:30.053081549 +0100
+diff -up chromium-119.0.6045.105/chrome/browser/about_flags.cc.13~ chromium-119.0.6045.105/chrome/browser/about_flags.cc
+--- chromium-119.0.6045.105/chrome/browser/about_flags.cc.13~	2023-11-05 04:40:00.237666231 +0100
++++ chromium-119.0.6045.105/chrome/browser/about_flags.cc	2023-11-05 04:40:16.819052226 +0100
 @@ -7780,11 +7780,13 @@ const FeatureEntry kFeatureEntries[] = {
  #endif  // BUILDFLAG(IS_CHROMEOS_ASH)
  
@@ -26,9 +26,9 @@ diff -up chromium-119.0.6045.105/chrome/browser/about_flags.cc.14~ chromium-119.
  
      {"enable-vbr-encode-acceleration",
       flag_descriptions::kChromeOSHWVBREncodingName,
-diff -up chromium-119.0.6045.105/chrome/browser/flag_descriptions.cc.14~ chromium-119.0.6045.105/chrome/browser/flag_descriptions.cc
---- chromium-119.0.6045.105/chrome/browser/flag_descriptions.cc.14~	2023-11-04 23:08:13.682928184 +0100
-+++ chromium-119.0.6045.105/chrome/browser/flag_descriptions.cc	2023-11-04 23:17:12.475738963 +0100
+diff -up chromium-119.0.6045.105/chrome/browser/flag_descriptions.cc.13~ chromium-119.0.6045.105/chrome/browser/flag_descriptions.cc
+--- chromium-119.0.6045.105/chrome/browser/flag_descriptions.cc.13~	2023-11-05 04:40:00.187665143 +0100
++++ chromium-119.0.6045.105/chrome/browser/flag_descriptions.cc	2023-11-05 04:45:22.016423989 +0100
 @@ -7,6 +7,7 @@
  #include "build/build_config.h"
  #include "build/chromeos_buildflags.h"
@@ -37,8 +37,7 @@ diff -up chromium-119.0.6045.105/chrome/browser/flag_descriptions.cc.14~ chromiu
  #include "pdf/buildflags.h"
  
  // Keep in identical order as the header file, see the comment at the top
-@@ -7427,7 +7428,8 @@ const char kVaapiVP9kSVCEncoderDescripti
-     "Enable or disable k-SVC VP9 encode acceleration using VA-API.";
+@@ -7428,6 +7429,7 @@ const char kVaapiVP9kSVCEncoderDescripti
  #endif  // defined(ARCH_CPU_X86_FAMILY) && BUILDFLAG(IS_CHROMEOS)
  
  #if BUILDFLAG(IS_CHROMEOS) && BUILDFLAG(USE_CHROMEOS_MEDIA_ACCELERATION)
@@ -46,7 +45,7 @@ diff -up chromium-119.0.6045.105/chrome/browser/flag_descriptions.cc.14~ chromiu
  const char kChromeOSDirectVideoDecoderName[] = "ChromeOS Direct Video Decoder";
  const char kChromeOSDirectVideoDecoderDescription[] =
      "Enables the hardware-accelerated ChromeOS direct media::VideoDecoder "
-@@ -7435,7 +7436,8 @@ const char kChromeOSDirectVideoDecoderDe
+@@ -7435,7 +7437,8 @@ const char kChromeOSDirectVideoDecoderDe
      "--platform-disallows-chromeos-direct-video-decoder command line switch "
      "which is added for platforms where said direct VideoDecoder does not work "
      "or is not well tested (see the disable_cros_video_decoder USE flag in "
@@ -56,9 +55,9 @@ diff -up chromium-119.0.6045.105/chrome/browser/flag_descriptions.cc.14~ chromiu
  const char kChromeOSHWVBREncodingName[] =
      "ChromeOS Hardware Variable Bitrate Encoding";
  const char kChromeOSHWVBREncodingDescription[] =
-diff -up chromium-119.0.6045.105/content/public/browser/gpu_utils.cc.14~ chromium-119.0.6045.105/content/public/browser/gpu_utils.cc
---- chromium-119.0.6045.105/content/public/browser/gpu_utils.cc.14~	2023-11-01 19:10:26.537448200 +0100
-+++ chromium-119.0.6045.105/content/public/browser/gpu_utils.cc	2023-11-04 23:08:30.054081558 +0100
+diff -up chromium-119.0.6045.105/content/public/browser/gpu_utils.cc.13~ chromium-119.0.6045.105/content/public/browser/gpu_utils.cc
+--- chromium-119.0.6045.105/content/public/browser/gpu_utils.cc.13~	2023-11-01 19:10:26.537448200 +0100
++++ chromium-119.0.6045.105/content/public/browser/gpu_utils.cc	2023-11-05 04:40:16.819052226 +0100
 @@ -133,20 +133,26 @@ const gpu::GpuPreferences GetGpuPreferen
  #if BUILDFLAG(USE_CHROMEOS_MEDIA_ACCELERATION)
    // The direct VideoDecoder is disallowed on some particular SoC/platforms.
@@ -96,9 +95,9 @@ diff -up chromium-119.0.6045.105/content/public/browser/gpu_utils.cc.14~ chromiu
  #if BUILDFLAG(USE_VAAPI)
    CHECK(gpu_preferences.enable_chromeos_direct_video_decoder);
  #endif  // BUILDFLAG(USE_VAAPI)
-diff -up chromium-119.0.6045.105/media/base/media_switches.cc.14~ chromium-119.0.6045.105/media/base/media_switches.cc
---- chromium-119.0.6045.105/media/base/media_switches.cc.14~	2023-11-04 23:08:13.707928405 +0100
-+++ chromium-119.0.6045.105/media/base/media_switches.cc	2023-11-04 23:08:30.054081558 +0100
+diff -up chromium-119.0.6045.105/media/base/media_switches.cc.13~ chromium-119.0.6045.105/media/base/media_switches.cc
+--- chromium-119.0.6045.105/media/base/media_switches.cc.13~	2023-11-05 04:40:00.209665622 +0100
++++ chromium-119.0.6045.105/media/base/media_switches.cc	2023-11-05 04:40:16.819052226 +0100
 @@ -1202,6 +1202,7 @@ BASE_FEATURE(kChromeOSHWVBREncoding,
               "ChromeOSHWVBREncoding",
               base::FEATURE_DISABLED_BY_DEFAULT);
@@ -133,9 +132,9 @@ diff -up chromium-119.0.6045.105/media/base/media_switches.cc.14~ chromium-119.0
  #endif  // BUILDFLAG(USE_CHROMEOS_MEDIA_ACCELERATION)
  
  #if BUILDFLAG(IS_WIN)
-diff -up chromium-119.0.6045.105/media/base/media_switches.h.14~ chromium-119.0.6045.105/media/base/media_switches.h
---- chromium-119.0.6045.105/media/base/media_switches.h.14~	2023-11-01 19:10:31.241874200 +0100
-+++ chromium-119.0.6045.105/media/base/media_switches.h	2023-11-04 23:08:30.054081558 +0100
+diff -up chromium-119.0.6045.105/media/base/media_switches.h.13~ chromium-119.0.6045.105/media/base/media_switches.h
+--- chromium-119.0.6045.105/media/base/media_switches.h.13~	2023-11-01 19:10:31.241874200 +0100
++++ chromium-119.0.6045.105/media/base/media_switches.h	2023-11-05 04:40:16.819052226 +0100
 @@ -14,6 +14,7 @@
  #include "build/build_config.h"
  #include "build/chromeos_buildflags.h"

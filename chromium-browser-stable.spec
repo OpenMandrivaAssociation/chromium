@@ -59,7 +59,7 @@
 # freetype (as of 118.x): Build failure caused by use of internal
 #                         headers (afws-decl.h included by simple_font_data.cc)
 # libaom (as of 118.x): Build error caused by GN insisting on in-tree version
-%global system_libs brotli dav1d flac ffmpeg fontconfig harfbuzz-ng libjpeg libjxl libpng libdrm libwebp libxml libxslt opus libusb openh264 zlib
+%global system_libs brotli dav1d flac ffmpeg fontconfig harfbuzz-ng libjpeg libjxl libpng libdrm libwebp libxml libxslt opus libusb openh264 zlib libjxl
 %define system() %(if echo %{system_libs} |grep -q -E '(^| )%{1}( |$)'; then echo -n 1; else echo -n 0;  fi)
 
 # Set up Google API keys, see http://www.chromium.org/developers/how-tos/api-keys
@@ -72,9 +72,9 @@
 Name:		chromium-browser-%{channel}
 # Working version numbers can be found at
 # https://chromiumdash.appspot.com/releases?platform=Linux
-Version:	119.0.6045.105
+Version:	119.0.6045.159
 ### Don't be evil!!! ###
-%define ungoogled 119.0.6045.105-1
+%define ungoogled 119.0.6045.123-1
 %if %{with cef}
 # To find the CEF commit matching the Chromium version, look up the
 # right branch at
@@ -112,6 +112,7 @@ Patch1:		https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-68.0.
 # Use gn system files
 # Do not mangle zlib
 Patch6:		https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-77.0.3865.75-no-zlib-mangle.patch
+Patch7:		chroimum-119-workaround-crash-on-startup.patch
 # Use Gentoo's Widevine hack
 # https://gitweb.gentoo.org/repo/gentoo.git/tree/www-client/chromium/files/chromium-widevine-r3.patch
 Patch8:		https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-71.0.3578.98-widevine-r3.patch
