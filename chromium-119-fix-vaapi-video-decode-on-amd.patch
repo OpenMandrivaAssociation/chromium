@@ -1,6 +1,6 @@
 diff -up chromium-119.0.6045.159/gpu/command_buffer/service/shared_image/external_vk_image_backing_factory.cc.6~ chromium-119.0.6045.159/gpu/command_buffer/service/shared_image/external_vk_image_backing_factory.cc
 --- chromium-119.0.6045.159/gpu/command_buffer/service/shared_image/external_vk_image_backing_factory.cc.6~	2023-11-14 23:56:41.004245000 +0100
-+++ chromium-119.0.6045.159/gpu/command_buffer/service/shared_image/external_vk_image_backing_factory.cc	2023-11-16 20:12:09.825640569 +0100
++++ chromium-119.0.6045.159/gpu/command_buffer/service/shared_image/external_vk_image_backing_factory.cc	2023-11-16 23:44:10.346093264 +0100
 @@ -268,7 +268,7 @@ bool ExternalVkImageBackingFactory::IsSu
      return false;
    }
@@ -12,7 +12,7 @@ diff -up chromium-119.0.6045.159/gpu/command_buffer/service/shared_image/externa
      // multi-planar formats on Linux, see https://crbug.com/1394888.
 diff -up chromium-119.0.6045.159/gpu/vulkan/vulkan_image.h.6~ chromium-119.0.6045.159/gpu/vulkan/vulkan_image.h
 --- chromium-119.0.6045.159/gpu/vulkan/vulkan_image.h.6~	2023-11-14 23:56:41.140257000 +0100
-+++ chromium-119.0.6045.159/gpu/vulkan/vulkan_image.h	2023-11-16 20:12:09.825640569 +0100
++++ chromium-119.0.6045.159/gpu/vulkan/vulkan_image.h	2023-11-16 23:44:10.346093264 +0100
 @@ -206,6 +206,22 @@ class COMPONENT_EXPORT(VULKAN) VulkanIma
                                                  std::vector<uint64_t> modifiers,
                                                  VkImageUsageFlags usage,
@@ -38,8 +38,41 @@ diff -up chromium-119.0.6045.159/gpu/vulkan/vulkan_image.h.6~ chromium-119.0.604
    raw_ptr<VulkanDeviceQueue> device_queue_ = nullptr;
 diff -up chromium-119.0.6045.159/gpu/vulkan/vulkan_image_linux.cc.6~ chromium-119.0.6045.159/gpu/vulkan/vulkan_image_linux.cc
 --- chromium-119.0.6045.159/gpu/vulkan/vulkan_image_linux.cc.6~	2023-11-14 23:56:41.144257300 +0100
-+++ chromium-119.0.6045.159/gpu/vulkan/vulkan_image_linux.cc	2023-11-16 20:38:20.181264017 +0100
-@@ -47,6 +47,33 @@ bool VulkanImage::InitializeFromGpuMemor
++++ chromium-119.0.6045.159/gpu/vulkan/vulkan_image_linux.cc	2023-11-16 23:47:40.139984050 +0100
+@@ -14,6 +14,32 @@
+ 
+ namespace gpu {
+ 
++namespace {
++
++// TODO - very hacky!! There is an identical function in vulkan_memory.cc but it isn't exported.
++// Not sure if it's better to make it global or duplicate it?
++absl::optional<uint32_t> FindMemoryTypeIndexLinux(
++    VkPhysicalDevice physical_device,
++    const VkMemoryRequirements* requirements,
++    VkMemoryPropertyFlags flags) {
++  VkPhysicalDeviceMemoryProperties properties;
++  vkGetPhysicalDeviceMemoryProperties(physical_device, &properties);
++  constexpr uint32_t kMaxIndex = 31;
++  for (uint32_t i = 0; i <= kMaxIndex; i++) {
++    if (((1u << i) & requirements->memoryTypeBits) == 0) {
++      continue;
++    }
++    if ((properties.memoryTypes[i].propertyFlags & flags) != flags) {
++      continue;
++    }
++    return i;
++  }
++  NOTREACHED();
++  return absl::nullopt;
++}
++
++}  // namespace
++
+ //  static
+ std::unique_ptr<VulkanImage> VulkanImage::CreateWithExternalMemoryAndModifiers(
+     VulkanDeviceQueue* device_queue,
+@@ -47,6 +73,33 @@ bool VulkanImage::InitializeFromGpuMemor
    queue_family_index_ = queue_family_index;
    auto& native_pixmap_handle = gmb_handle.native_pixmap_handle;
  
@@ -73,7 +106,7 @@ diff -up chromium-119.0.6045.159/gpu/vulkan/vulkan_image_linux.cc.6~ chromium-11
    auto& scoped_fd = native_pixmap_handle.planes[0].fd;
    if (!scoped_fd.is_valid()) {
      DLOG(ERROR) << "GpuMemoryBufferHandle doesn't have a valid fd.";
-@@ -123,6 +150,252 @@ bool VulkanImage::InitializeFromGpuMemor
+@@ -123,6 +176,252 @@ bool VulkanImage::InitializeFromGpuMemor
    return result;
  }
  
@@ -328,7 +361,7 @@ diff -up chromium-119.0.6045.159/gpu/vulkan/vulkan_image_linux.cc.6~ chromium-11
      const gfx::Size& size,
 diff -up chromium-119.0.6045.159/media/gpu/vaapi/vaapi_wrapper.cc.6~ chromium-119.0.6045.159/media/gpu/vaapi/vaapi_wrapper.cc
 --- chromium-119.0.6045.159/media/gpu/vaapi/vaapi_wrapper.cc.6~	2023-11-14 23:56:43.744484700 +0100
-+++ chromium-119.0.6045.159/media/gpu/vaapi/vaapi_wrapper.cc	2023-11-16 20:12:09.826640577 +0100
++++ chromium-119.0.6045.159/media/gpu/vaapi/vaapi_wrapper.cc	2023-11-16 23:44:10.346093264 +0100
 @@ -2649,14 +2649,19 @@ VaapiWrapper::ExportVASurfaceAsNativePix
                           nullptr);
    }
@@ -392,7 +425,7 @@ diff -up chromium-119.0.6045.159/media/gpu/vaapi/vaapi_wrapper.cc.6~ chromium-11
    if (!gfx::Rect(exported_pixmap->va_surface_resolution)
 diff -up chromium-119.0.6045.159/third_party/skia/src/gpu/ganesh/vk/GrVkCaps.cpp.6~ chromium-119.0.6045.159/third_party/skia/src/gpu/ganesh/vk/GrVkCaps.cpp
 --- chromium-119.0.6045.159/third_party/skia/src/gpu/ganesh/vk/GrVkCaps.cpp.6~	2023-11-14 23:57:44.701814400 +0100
-+++ chromium-119.0.6045.159/third_party/skia/src/gpu/ganesh/vk/GrVkCaps.cpp	2023-11-16 20:35:14.675635758 +0100
++++ chromium-119.0.6045.159/third_party/skia/src/gpu/ganesh/vk/GrVkCaps.cpp	2023-11-16 23:44:10.347093275 +0100
 @@ -1475,11 +1475,11 @@ static bool backend_format_is_external(c
      SkASSERT(ycbcrInfo);
  
@@ -436,7 +469,7 @@ diff -up chromium-119.0.6045.159/third_party/skia/src/gpu/ganesh/vk/GrVkCaps.cpp
          return skgpu::Swizzle{"rgba"};
 diff -up chromium-119.0.6045.159/third_party/skia/src/gpu/ganesh/vk/GrVkGpu.cpp.6~ chromium-119.0.6045.159/third_party/skia/src/gpu/ganesh/vk/GrVkGpu.cpp
 --- chromium-119.0.6045.159/third_party/skia/src/gpu/ganesh/vk/GrVkGpu.cpp.6~	2023-11-14 23:57:44.701814400 +0100
-+++ chromium-119.0.6045.159/third_party/skia/src/gpu/ganesh/vk/GrVkGpu.cpp	2023-11-16 20:12:09.826640577 +0100
++++ chromium-119.0.6045.159/third_party/skia/src/gpu/ganesh/vk/GrVkGpu.cpp	2023-11-16 23:44:10.347093275 +0100
 @@ -1337,7 +1337,7 @@ static bool check_tex_image_info(const G
          return false;
      }

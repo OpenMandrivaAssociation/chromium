@@ -130,8 +130,7 @@ Patch9:		chromium-119.0.6045.159-more-search-engines-for-CH.patch
 # Fix VAAPI video decoding on AMD
 # https://bugs.chromium.org/p/chromium/issues/detail?id=1445074
 # Based on https://gist.githubusercontent.com/thubble/235806c4c64b159653de879173d24d9f/raw/dd9366083a6c635b7accd53cb9c01f7bece1185f/chromium-support-disjoint-vaapi-export-import.patch
-# Unfortunately needs the removed FindMemoryTypeIndexLinux API, disabled for now
-#Patch10:	chromium-119-fix-vaapi-video-decode-on-amd.patch
+Patch10:	chromium-119-fix-vaapi-video-decode-on-amd.patch
 # Try to load widevine from other places
 Patch11:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-100.0.4896.60-widevine-other-locations.patch
 # https://gitweb.gentoo.org/repo/gentoo.git/tree/www-client/chromium/files/chromium-unbundle-zlib.patch
