@@ -80,16 +80,16 @@
 Name:		chromium-browser-%{channel}
 # Working version numbers can be found at
 # https://chromiumdash.appspot.com/releases?platform=Linux
-Version:	119.0.6045.159
+Version:	119.0.6045.199
 ### Don't be evil!!! ###
-%define ungoogled 119.0.6045.123-1
+%define ungoogled 119.0.6045.199-1
 %if %{with cef}
 # To find the CEF commit matching the Chromium version, look up the
 # right branch at
 # https://bitbucket.org/chromiumembedded/cef/wiki/BranchesAndBuilding
 # then check the commit for the branch at the branch download page,
 # https://bitbucket.org/chromiumembedded/cef/downloads/?tab=branches
-%define cef 6045:c76a3b9f2e3fd582512e89fd0e901368bac1a822
+%define cef 6045:5d1e039e057bd2d4e841a95a5f1a2192683f1ccf
 %endif
 Release:	1
 Summary:	A fast webkit-based web browser
