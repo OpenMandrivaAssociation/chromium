@@ -601,7 +601,6 @@ fi
 GN_DEFINES+=" use_gnome_keyring=false "
 GN_DEFINES+=" fatal_linker_warnings=false "
 GN_DEFINES+=" system_libdir=\"%{_libdir}\""
-GN_DEFINES+=" use_allocator=\"none\""
 #GN_DEFINES+=" use_aura=true "
 #GN_DEFINES+=" use_gio=true"
 GN_DEFINES+=" enable_nacl=false "
