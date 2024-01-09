@@ -1,6 +1,6 @@
-diff -up chromium-119.0.6045.105/cef/libcef/browser/alloy/chrome_browser_process_alloy.cc.28~ chromium-119.0.6045.105/cef/libcef/browser/alloy/chrome_browser_process_alloy.cc
---- chromium-119.0.6045.105/cef/libcef/browser/alloy/chrome_browser_process_alloy.cc.28~	2023-10-27 19:21:24.000000000 +0200
-+++ chromium-119.0.6045.105/cef/libcef/browser/alloy/chrome_browser_process_alloy.cc	2023-11-01 21:16:38.701360429 +0100
+diff -up chromium-120.0.6099.71/cef/libcef/browser/alloy/chrome_browser_process_alloy.cc.38~ chromium-120.0.6099.71/cef/libcef/browser/alloy/chrome_browser_process_alloy.cc
+--- chromium-120.0.6099.71/cef/libcef/browser/alloy/chrome_browser_process_alloy.cc.38~	2023-12-06 19:19:26.000000000 +0100
++++ chromium-120.0.6099.71/cef/libcef/browser/alloy/chrome_browser_process_alloy.cc	2023-12-12 12:25:46.739431067 +0100
 @@ -331,10 +331,12 @@ StatusTray* ChromeBrowserProcessAlloy::s
    return nullptr;
  }
@@ -14,9 +14,9 @@ diff -up chromium-119.0.6045.105/cef/libcef/browser/alloy/chrome_browser_process
  
  subresource_filter::RulesetService*
  ChromeBrowserProcessAlloy::subresource_filter_ruleset_service() {
-diff -up chromium-119.0.6045.105/cef/libcef/browser/alloy/chrome_browser_process_alloy.h.28~ chromium-119.0.6045.105/cef/libcef/browser/alloy/chrome_browser_process_alloy.h
---- chromium-119.0.6045.105/cef/libcef/browser/alloy/chrome_browser_process_alloy.h.28~	2023-10-27 19:21:24.000000000 +0200
-+++ chromium-119.0.6045.105/cef/libcef/browser/alloy/chrome_browser_process_alloy.h	2023-11-01 21:16:38.702360440 +0100
+diff -up chromium-120.0.6099.71/cef/libcef/browser/alloy/chrome_browser_process_alloy.h.38~ chromium-120.0.6099.71/cef/libcef/browser/alloy/chrome_browser_process_alloy.h
+--- chromium-120.0.6099.71/cef/libcef/browser/alloy/chrome_browser_process_alloy.h.38~	2023-12-06 19:19:26.000000000 +0100
++++ chromium-120.0.6099.71/cef/libcef/browser/alloy/chrome_browser_process_alloy.h	2023-12-12 12:25:46.739431067 +0100
 @@ -89,7 +89,7 @@ class ChromeBrowserProcessAlloy : public
        std::unique_ptr<BackgroundModeManager> manager) override;
  #endif
@@ -26,11 +26,11 @@ diff -up chromium-119.0.6045.105/cef/libcef/browser/alloy/chrome_browser_process
    subresource_filter::RulesetService* subresource_filter_ruleset_service()
        override;
    StartupData* startup_data() override;
-diff -up chromium-119.0.6045.105/cef/libcef/browser/prefs/browser_prefs.cc.28~ chromium-119.0.6045.105/cef/libcef/browser/prefs/browser_prefs.cc
---- chromium-119.0.6045.105/cef/libcef/browser/prefs/browser_prefs.cc.28~	2023-11-01 21:16:38.702360440 +0100
-+++ chromium-119.0.6045.105/cef/libcef/browser/prefs/browser_prefs.cc	2023-11-01 21:18:04.640261709 +0100
-@@ -58,7 +58,7 @@
- #include "components/privacy_sandbox/tracking_protection_prefs.h"
+diff -up chromium-120.0.6099.71/cef/libcef/browser/prefs/browser_prefs.cc.38~ chromium-120.0.6099.71/cef/libcef/browser/prefs/browser_prefs.cc
+--- chromium-120.0.6099.71/cef/libcef/browser/prefs/browser_prefs.cc.38~	2023-12-12 12:25:46.739431067 +0100
++++ chromium-120.0.6099.71/cef/libcef/browser/prefs/browser_prefs.cc	2023-12-12 12:26:47.908011405 +0100
+@@ -59,7 +59,7 @@
+ #include "components/privacy_sandbox/privacy_sandbox_prefs.h"
  #include "components/proxy_config/pref_proxy_config_tracker_impl.h"
  #include "components/proxy_config/proxy_config_dictionary.h"
 -#include "components/safe_browsing/core/common/safe_browsing_prefs.h"
@@ -38,12 +38,12 @@ diff -up chromium-119.0.6045.105/cef/libcef/browser/prefs/browser_prefs.cc.28~ c
  #include "components/safe_search_api/safe_search_util.h"
  #include "components/spellcheck/browser/pref_names.h"
  #include "components/sync_preferences/pref_service_syncable.h"
-@@ -271,7 +271,7 @@ std::unique_ptr<PrefService> CreatePrefS
+@@ -272,7 +272,7 @@ std::unique_ptr<PrefService> CreatePrefS
      prefetch::RegisterPredictionOptionsProfilePrefs(registry.get());
-     privacy_sandbox::tracking_protection::RegisterProfilePrefs(registry.get());
+     privacy_sandbox::RegisterProfilePrefs(registry.get());
      ProfileNetworkContextService::RegisterProfilePrefs(registry.get());
 -    safe_browsing::RegisterProfilePrefs(registry.get());
-+//    safe_browsing::RegisterProfilePrefs(registry.get());
++    //safe_browsing::RegisterProfilePrefs(registry.get());
      unified_consent::UnifiedConsentService::RegisterPrefs(registry.get());
  
      const std::string& locale =

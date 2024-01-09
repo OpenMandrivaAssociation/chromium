@@ -30,7 +30,8 @@
 # clashes when using e.g. Qt and Chromium at the same time
 # (especially with cef!), but some versions of chromium make
 # it necessary
-%bcond_with libcxx
+# Main problem: https://github.com/llvm/llvm-project/issues/50248
+%bcond_without libcxx
 
 # FIXME As of 97.0.4688.2, Chromium crashes frequently when
 # built with fortification enabled.
@@ -80,16 +81,21 @@
 Name:		chromium-browser-%{channel}
 # Working version numbers can be found at
 # https://chromiumdash.appspot.com/releases?platform=Linux
-Version:	119.0.6045.199
+Version:	120.0.6099.199
 ### Don't be evil!!! ###
-%define ungoogled 119.0.6045.199-1
+%define ungoogled 120.0.6099.199-1
 %if %{with cef}
 # To find the CEF commit matching the Chromium version, look up the
 # right branch at
 # https://bitbucket.org/chromiumembedded/cef/wiki/BranchesAndBuilding
 # then check the commit for the branch at the branch download page,
 # https://bitbucket.org/chromiumembedded/cef/downloads/?tab=branches
-%define cef 6045:5d1e039e057bd2d4e841a95a5f1a2192683f1ccf
+#
+# Since we're using system libxml, we're potentially restoring
+# https://github.com/chromiumembedded/cef/issues/3616 fixed in cef upstream.
+# If we run into this problem, we need to either use custom libxml or build
+# system libxml with TLS disabled.
+%define cef 6099:c12930456b29253152def3e57d2a106644c3f498
 %endif
 Release:	1
 Summary:	A fast webkit-based web browser
@@ -141,9 +147,6 @@ Patch55:	chromium-113.0.5672.63-compile.patch
 Patch56:	https://src.fedoraproject.org/rpms/chromium/raw/rawhide/f/chromium-103.0.5060.53-update-rjsmin-to-1.2.0.patch
 Patch57:	https://src.fedoraproject.org/rpms/chromium/raw/rawhide/f/chromium-105.0.5195.52-python-six-1.16.0.patch
 Patch58:	https://src.fedoraproject.org/rpms/chromium/raw/rawhide/f/chromium-108-system-opus.patch
-Patch60:	https://src.fedoraproject.org/rpms/chromium/raw/rawhide/f/chromium-119-nullptr_t-without-namespace-std.patch
-Patch61:	https://src.fedoraproject.org/rpms/chromium/raw/rawhide/f/chromium-119-nvidia-use-separate-bo-to-verify-modifier.patch
-Patch62:	https://src.fedoraproject.org/rpms/chromium/raw/rawhide/f/chromium-119-hide-UseChromeOSDirectVideoDecoder-flag-on-VA-API-devices.patch
 
 # From Arch and Gentoo
 # https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=chromium-dev
@@ -159,10 +162,10 @@ Patch111:	reverse-roll-src-third_party-ffmpeg.patch
 # Often has patches needed to build with libstdc++, sometimes other
 # interesting buts
 Patch121:	https://gitlab.com/Matt.Jolly/chromium-patches/-/raw/master/chromium-117-system-zstd.patch?ref_type=heads&inline=false#/chromium-117-system-zstd.patch
+Patch122:	https://gitlab.com/Matt.Jolly/chromium-patches/-/raw/master/chromium-120-incomplete-type.patch?ref_type=heads&inline=false#/chromium-120-incomplete-type.patch
 
 %if 0%{?ungoogled:1}
 Source1000:	https://github.com/ungoogled-software/ungoogled-chromium/archive/%{ungoogled}.tar.gz
-Patch1000:	chromium-107-fix-build-after-ungoogling.patch
 %endif
 
 ### Chromium Tests Patches ###
@@ -191,6 +194,12 @@ Patch1013:	chromium-105-minizip-ng.patch
 Patch1014:	chromium-fix-buildsystem-breakages.patch
 Patch1015:	chromium-117-compile.patch
 Patch1016:	chromium-118-libstdc++.patch
+# Flag seems to be specific to LLVM master of google's LLVM fork
+Patch1017:	chromium-120-no-invalid-optflag.patch
+%if ! %{with libcxx}
+Patch1018:	chromium-120-libstdc++.patch
+%endif
+Patch1019:	chromium-120-libxml-2.12.patch
 %if 0%{?cef:1}
 Patch1020:	cef-drop-unneeded-libxml-patch.patch
 Patch1021:	chromium-115-fix-generate_fontconfig_caches.patch
@@ -544,10 +553,11 @@ export PATH=$PWD/bfd:$PATH
 %global optflags %(echo %{optflags} | sed -e 's/-g3 /-g1 /')
 %global optflags %{optflags} -I%{_includedir}/libunwind
 
-%if ! %{cross_compiling}
-export CC=clang
-export CXX=clang++
-%endif
+# Chromium builds tend to barf if not told precisely what to use
+export CC="%{__cc}"
+export CXX="%{__cxx}"
+export AR="%{__ar}"
+export NM="llvm-nm"
 
 _lto_cpus="$(getconf _NPROCESSORS_ONLN)"
 if [ $_lto_cpus -gt 4 ]; then
