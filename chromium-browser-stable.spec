@@ -209,6 +209,7 @@ Patch1023:	cef-rebase-patches.patch
 Patch1024:	cef-115-ungoogling.patch
 %endif
 Patch1025:	cef-zlib-linkage.patch
+Patch1026:	cef-120-libxml-2.12.patch
 %endif
 
 Provides:	%{crname}

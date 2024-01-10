@@ -1,0 +1,12 @@
+diff -up chromium-120.0.6099.199/cef/libcef/browser/xml_reader_impl.cc.omv~ chromium-120.0.6099.199/cef/libcef/browser/xml_reader_impl.cc
+--- chromium-120.0.6099.199/cef/libcef/browser/xml_reader_impl.cc.omv~	2024-01-10 18:56:55.147993860 +0100
++++ chromium-120.0.6099.199/cef/libcef/browser/xml_reader_impl.cc	2024-01-10 18:57:26.354771870 +0100
+@@ -80,7 +80,7 @@ void XMLCALL xml_error_callback(void* ar
+  * Signature of the function to use when there is an error and
+  * the module handles the new error reporting mechanism.
+  */
+-void XMLCALL xml_structured_error_callback(void* userData, xmlErrorPtr error) {
++void XMLCALL xml_structured_error_callback(void* userData, const xmlError * error) {
+   if (!error->message) {
+     return;
+   }
