@@ -1,18 +1,18 @@
-diff -up chromium-119.0.6045.159/gpu/command_buffer/service/shared_image/external_vk_image_backing_factory.cc.6~ chromium-119.0.6045.159/gpu/command_buffer/service/shared_image/external_vk_image_backing_factory.cc
---- chromium-119.0.6045.159/gpu/command_buffer/service/shared_image/external_vk_image_backing_factory.cc.6~	2023-11-14 23:56:41.004245000 +0100
-+++ chromium-119.0.6045.159/gpu/command_buffer/service/shared_image/external_vk_image_backing_factory.cc	2023-11-16 23:44:10.346093264 +0100
-@@ -268,7 +268,7 @@ bool ExternalVkImageBackingFactory::IsSu
-     return false;
-   }
- 
--#if BUILDFLAG(IS_LINUX)
-+#if 0
-   if (format.IsLegacyMultiplanar()) {
-     // ExternalVkImageBacking doesn't work properly with external sampler
-     // multi-planar formats on Linux, see https://crbug.com/1394888.
-diff -up chromium-119.0.6045.159/gpu/vulkan/vulkan_image.h.6~ chromium-119.0.6045.159/gpu/vulkan/vulkan_image.h
---- chromium-119.0.6045.159/gpu/vulkan/vulkan_image.h.6~	2023-11-14 23:56:41.140257000 +0100
-+++ chromium-119.0.6045.159/gpu/vulkan/vulkan_image.h	2023-11-16 23:44:10.346093264 +0100
+diff -up chromium-122.0.6261.69/gpu/command_buffer/service/shared_image/external_vk_image_backing_factory.cc.6~ chromium-122.0.6261.69/gpu/command_buffer/service/shared_image/external_vk_image_backing_factory.cc
+--- chromium-122.0.6261.69/gpu/command_buffer/service/shared_image/external_vk_image_backing_factory.cc.6~	2024-02-23 15:31:08.175393889 +0100
++++ chromium-122.0.6261.69/gpu/command_buffer/service/shared_image/external_vk_image_backing_factory.cc	2024-02-23 15:34:41.481351490 +0100
+@@ -103,7 +103,7 @@ bool IsFormatSupported(viz::SharedImageF
+   // zero on Fuchsia and checking it everywhere necessary).
+   // TODO(crbug.com/1310026): Enable ImageBackingOzone to be used for all planes
+   // in Fuchsia and enable this check for Fuchsia.
+-#if !BUILDFLAG(IS_FUCHSIA)
++#if 0 && !BUILDFLAG(IS_FUCHSIA)
+   if (HasGLES2ReadOrWriteUsage(usage)) {
+     if (format.IsLegacyMultiplanar() || format.PrefersExternalSampler()) {
+       return false;
+diff -up chromium-122.0.6261.69/gpu/vulkan/vulkan_image.h.6~ chromium-122.0.6261.69/gpu/vulkan/vulkan_image.h
+--- chromium-122.0.6261.69/gpu/vulkan/vulkan_image.h.6~	2024-02-22 22:43:08.902694000 +0100
++++ chromium-122.0.6261.69/gpu/vulkan/vulkan_image.h	2024-02-23 15:31:08.175393889 +0100
 @@ -206,6 +206,22 @@ class COMPONENT_EXPORT(VULKAN) VulkanIma
                                                  std::vector<uint64_t> modifiers,
                                                  VkImageUsageFlags usage,
@@ -36,9 +36,9 @@ diff -up chromium-119.0.6045.159/gpu/vulkan/vulkan_image.h.6~ chromium-119.0.604
  #endif
  
    raw_ptr<VulkanDeviceQueue> device_queue_ = nullptr;
-diff -up chromium-119.0.6045.159/gpu/vulkan/vulkan_image_linux.cc.6~ chromium-119.0.6045.159/gpu/vulkan/vulkan_image_linux.cc
---- chromium-119.0.6045.159/gpu/vulkan/vulkan_image_linux.cc.6~	2023-11-14 23:56:41.144257300 +0100
-+++ chromium-119.0.6045.159/gpu/vulkan/vulkan_image_linux.cc	2023-11-16 23:47:40.139984050 +0100
+diff -up chromium-122.0.6261.69/gpu/vulkan/vulkan_image_linux.cc.6~ chromium-122.0.6261.69/gpu/vulkan/vulkan_image_linux.cc
+--- chromium-122.0.6261.69/gpu/vulkan/vulkan_image_linux.cc.6~	2024-02-22 22:43:08.902694000 +0100
++++ chromium-122.0.6261.69/gpu/vulkan/vulkan_image_linux.cc	2024-02-23 15:31:08.175393889 +0100
 @@ -14,6 +14,32 @@
  
  namespace gpu {
@@ -359,10 +359,10 @@ diff -up chromium-119.0.6045.159/gpu/vulkan/vulkan_image_linux.cc.6~ chromium-11
  bool VulkanImage::InitializeWithExternalMemoryAndModifiers(
      VulkanDeviceQueue* device_queue,
      const gfx::Size& size,
-diff -up chromium-119.0.6045.159/media/gpu/vaapi/vaapi_wrapper.cc.6~ chromium-119.0.6045.159/media/gpu/vaapi/vaapi_wrapper.cc
---- chromium-119.0.6045.159/media/gpu/vaapi/vaapi_wrapper.cc.6~	2023-11-14 23:56:43.744484700 +0100
-+++ chromium-119.0.6045.159/media/gpu/vaapi/vaapi_wrapper.cc	2023-11-16 23:44:10.346093264 +0100
-@@ -2649,14 +2649,19 @@ VaapiWrapper::ExportVASurfaceAsNativePix
+diff -up chromium-122.0.6261.69/media/gpu/vaapi/vaapi_wrapper.cc.6~ chromium-122.0.6261.69/media/gpu/vaapi/vaapi_wrapper.cc
+--- chromium-122.0.6261.69/media/gpu/vaapi/vaapi_wrapper.cc.6~	2024-02-22 22:43:11.870899700 +0100
++++ chromium-122.0.6261.69/media/gpu/vaapi/vaapi_wrapper.cc	2024-02-23 15:31:08.175393889 +0100
+@@ -2505,14 +2505,19 @@ VaapiWrapper::ExportVASurfaceAsNativePix
                           nullptr);
    }
  
@@ -390,7 +390,7 @@ diff -up chromium-119.0.6045.159/media/gpu/vaapi/vaapi_wrapper.cc.6~ chromium-11
    const uint64_t bo_modifier = descriptor.objects[0].drm_format_modifier;
  
    // Translate the pixel format to a gfx::BufferFormat.
-@@ -2690,9 +2695,22 @@ VaapiWrapper::ExportVASurfaceAsNativePix
+@@ -2546,9 +2551,22 @@ VaapiWrapper::ExportVASurfaceAsNativePix
      // specified, each layer should contain one plane.
      DCHECK_EQ(1u, descriptor.layers[layer].num_planes);
  
@@ -415,7 +415,7 @@ diff -up chromium-119.0.6045.159/media/gpu/vaapi/vaapi_wrapper.cc.6~ chromium-11
      PCHECK(plane_fd.is_valid());
      constexpr uint64_t kZeroSizeToPreventMapping = 0u;
      handle.planes.emplace_back(
-@@ -2713,6 +2731,7 @@ VaapiWrapper::ExportVASurfaceAsNativePix
+@@ -2569,6 +2587,7 @@ VaapiWrapper::ExportVASurfaceAsNativePix
    exported_pixmap->va_surface_resolution =
        gfx::Size(base::checked_cast<int>(descriptor.width),
                  base::checked_cast<int>(descriptor.height));
@@ -423,10 +423,10 @@ diff -up chromium-119.0.6045.159/media/gpu/vaapi/vaapi_wrapper.cc.6~ chromium-11
    exported_pixmap->byte_size =
        base::strict_cast<size_t>(descriptor.objects[0].size);
    if (!gfx::Rect(exported_pixmap->va_surface_resolution)
-diff -up chromium-119.0.6045.159/third_party/skia/src/gpu/ganesh/vk/GrVkCaps.cpp.6~ chromium-119.0.6045.159/third_party/skia/src/gpu/ganesh/vk/GrVkCaps.cpp
---- chromium-119.0.6045.159/third_party/skia/src/gpu/ganesh/vk/GrVkCaps.cpp.6~	2023-11-14 23:57:44.701814400 +0100
-+++ chromium-119.0.6045.159/third_party/skia/src/gpu/ganesh/vk/GrVkCaps.cpp	2023-11-16 23:44:10.347093275 +0100
-@@ -1475,11 +1475,11 @@ static bool backend_format_is_external(c
+diff -up chromium-122.0.6261.69/third_party/skia/src/gpu/ganesh/vk/GrVkCaps.cpp.6~ chromium-122.0.6261.69/third_party/skia/src/gpu/ganesh/vk/GrVkCaps.cpp
+--- chromium-122.0.6261.69/third_party/skia/src/gpu/ganesh/vk/GrVkCaps.cpp.6~	2024-02-22 22:44:30.704287800 +0100
++++ chromium-122.0.6261.69/third_party/skia/src/gpu/ganesh/vk/GrVkCaps.cpp	2024-02-23 15:31:08.175393889 +0100
+@@ -1521,11 +1521,11 @@ static bool backend_format_is_external(c
      SkASSERT(ycbcrInfo);
  
      // All external formats have a valid ycbcrInfo used for sampling and a non zero external format.
@@ -440,7 +440,7 @@ diff -up chromium-119.0.6045.159/third_party/skia/src/gpu/ganesh/vk/GrVkCaps.cpp
  #endif
          return true;
      }
-@@ -1701,12 +1701,16 @@ bool GrVkCaps::onAreColorTypeAndFormatCo
+@@ -1747,12 +1747,16 @@ bool GrVkCaps::onAreColorTypeAndFormatCo
  
      if (ycbcrInfo->isValid() && !skgpu::VkFormatNeedsYcbcrSampler(vkFormat)) {
          // Format may be undefined for external images, which are required to have YCbCr conversion.
@@ -458,7 +458,7 @@ diff -up chromium-119.0.6045.159/third_party/skia/src/gpu/ganesh/vk/GrVkCaps.cpp
      const auto& info = this->getFormatInfo(vkFormat);
      for (int i = 0; i < info.fColorTypeInfoCount; ++i) {
          if (info.fColorTypeInfos[i].fColorType == ct) {
-@@ -1778,7 +1782,7 @@ skgpu::Swizzle GrVkCaps::onGetReadSwizzl
+@@ -1824,7 +1828,7 @@ skgpu::Swizzle GrVkCaps::onGetReadSwizzl
      SkAssertResult(GrBackendFormats::AsVkFormat(format, &vkFormat));
      const GrVkYcbcrConversionInfo* ycbcrInfo = GrBackendFormats::GetVkYcbcrConversionInfo(format);
      SkASSERT(ycbcrInfo);
@@ -467,9 +467,9 @@ diff -up chromium-119.0.6045.159/third_party/skia/src/gpu/ganesh/vk/GrVkCaps.cpp
          // We allow these to work with any color type and never swizzle. See
          // onAreColorTypeAndFormatCompatible.
          return skgpu::Swizzle{"rgba"};
-diff -up chromium-119.0.6045.159/third_party/skia/src/gpu/ganesh/vk/GrVkGpu.cpp.6~ chromium-119.0.6045.159/third_party/skia/src/gpu/ganesh/vk/GrVkGpu.cpp
---- chromium-119.0.6045.159/third_party/skia/src/gpu/ganesh/vk/GrVkGpu.cpp.6~	2023-11-14 23:57:44.701814400 +0100
-+++ chromium-119.0.6045.159/third_party/skia/src/gpu/ganesh/vk/GrVkGpu.cpp	2023-11-16 23:44:10.347093275 +0100
+diff -up chromium-122.0.6261.69/third_party/skia/src/gpu/ganesh/vk/GrVkGpu.cpp.6~ chromium-122.0.6261.69/third_party/skia/src/gpu/ganesh/vk/GrVkGpu.cpp
+--- chromium-122.0.6261.69/third_party/skia/src/gpu/ganesh/vk/GrVkGpu.cpp.6~	2024-02-22 22:44:29.708288200 +0100
++++ chromium-122.0.6261.69/third_party/skia/src/gpu/ganesh/vk/GrVkGpu.cpp	2024-02-23 15:31:08.175393889 +0100
 @@ -1337,7 +1337,7 @@ static bool check_tex_image_info(const G
          return false;
      }

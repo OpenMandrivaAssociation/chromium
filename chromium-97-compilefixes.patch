@@ -23,25 +23,6 @@ diff -up chromium-119.0.6045.105/third_party/zlib/google/zip_internal.cc.20~ chr
    NOTREACHED();
    return 0;
  }
-@@ -261,12 +261,12 @@ zip_fileinfo TimeToZipFileInfo(const bas
-     // Hence the fail safe option is to leave the date unset. Some programs
-     // might show the unset date as 1980-0-0 which is invalid.
-     zip_info.tmz_date = {
--        .tm_sec = static_cast<uInt>(file_time_parts.second),
--        .tm_min = static_cast<uInt>(file_time_parts.minute),
--        .tm_hour = static_cast<uInt>(file_time_parts.hour),
--        .tm_mday = static_cast<uInt>(file_time_parts.day_of_month),
--        .tm_mon = static_cast<uInt>(file_time_parts.month - 1),
--        .tm_year = static_cast<uInt>(file_time_parts.year)};
-+        .tm_sec = static_cast<int>(file_time_parts.second),
-+        .tm_min = static_cast<int>(file_time_parts.minute),
-+        .tm_hour = static_cast<int>(file_time_parts.hour),
-+        .tm_mday = static_cast<int>(file_time_parts.day_of_month),
-+        .tm_mon = static_cast<int>(file_time_parts.month - 1),
-+        .tm_year = static_cast<int>(file_time_parts.year)};
-   }
- 
-   return zip_info;
 @@ -358,7 +358,7 @@ bool ZipOpenNewFileInZip(zipFile zip_fil
                           Compression compression) {
    // Section 4.4.4 http://www.pkware.com/documents/casestudies/APPNOTE.TXT

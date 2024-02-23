@@ -67,7 +67,7 @@
 %if %{with libcxx}
 %global system_libs brotli dav1d flac ffmpeg fontconfig harfbuzz-ng libjpeg libjxl libpng libdrm libwebp libxml libxslt opus libusb openh264 zlib libjxl freetype zstd
 %else
-%global system_libs brotli dav1d flac ffmpeg fontconfig harfbuzz-ng libjpeg libjxl libpng libdrm libwebp libxml libxslt opus libusb openh264 zlib libjxl freetype zstd re2 jsoncpp snappy
+%global system_libs brotli dav1d flac ffmpeg fontconfig harfbuzz-ng libjpeg libjxl libpng libdrm libwebp libxml libxslt opus libusb openh264 zlib libjxl freetype zstd re2 jsoncpp snappy libaom
 %endif
 %define system() %(if echo %{system_libs} |grep -q -E '(^| )%{1}( |$)'; then echo -n 1; else echo -n 0;  fi)
 
@@ -81,13 +81,14 @@
 Name:		chromium-browser-%{channel}
 # Working version numbers can be found at
 # https://chromiumdash.appspot.com/releases?platform=Linux
-Version:	120.0.6099.224
+Version:	122.0.6261.69
 ### Don't be evil!!! ###
-%define ungoogled 120.0.6099.224-1
+%define ungoogled 122.0.6261.57-1
 %if %{with cef}
 # To find the CEF commit matching the Chromium version, look up the
 # right branch at
 # https://bitbucket.org/chromiumembedded/cef/wiki/BranchesAndBuilding
+# (Typically this will match the 3rd component of the version number)
 # then check the commit for the branch at the branch download page,
 # https://bitbucket.org/chromiumembedded/cef/downloads/?tab=branches
 #
@@ -95,7 +96,7 @@ Version:	120.0.6099.224
 # https://github.com/chromiumembedded/cef/issues/3616 fixed in cef upstream.
 # If we run into this problem, we need to either use custom libxml or build
 # system libxml with TLS disabled.
-%define cef 6099:618ea46b1b4fba8bd4af660e2d968570d087cdfa
+%define cef 6261:dd187af0019f19c953f3686554a55809ecd6237d
 %endif
 Release:	1
 Summary:	A fast webkit-based web browser
@@ -145,13 +146,12 @@ Patch53:	chromium-81-unbundle-zlib.patch
 Patch54:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-77.0.3865.75-gcc-include-memory.patch
 Patch55:	chromium-113.0.5672.63-compile.patch
 Patch56:	https://src.fedoraproject.org/rpms/chromium/raw/rawhide/f/chromium-103.0.5060.53-update-rjsmin-to-1.2.0.patch
-Patch57:	https://src.fedoraproject.org/rpms/chromium/raw/rawhide/f/chromium-105.0.5195.52-python-six-1.16.0.patch
 Patch58:	https://src.fedoraproject.org/rpms/chromium/raw/rawhide/f/chromium-108-system-opus.patch
+Patch59:	chromium-121-rust-clang_lib.patch
 
 # From Arch and Gentoo
 # https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=chromium-dev
 # https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=chromium-wayland-vaapi
-Patch101:	https://aur.archlinux.org/cgit/aur.git/plain/0001-vaapi-flag-ozone-wayland.patch?h=chromium-wayland-vaapi#/0001-vaapi-flag-ozone-wayland.patch
 Patch102:	https://aur.archlinux.org/cgit/aur.git/plain/0001-adjust-buffer-format-order.patch?h=chromium-wayland-vaapi#/0001-adjust-buffer-format-order.patch
 Patch103:	https://aur.archlinux.org/cgit/aur.git/tree/0001-ozone-wayland-implement-text_input_manager_v3.patch?h=chromium-wayland-vaapi#/0001-ozone-wayland-implement-text_input_manager_v3.patch
 Patch104:	https://aur.archlinux.org/cgit/aur.git/tree/0001-ozone-wayland-implement-text_input_manager-fixes.patch?h=chromium-wayland-vaapi#/0001-ozone-wayland-implement-text_input_manager-fixes.patch
@@ -160,9 +160,8 @@ Patch111:	reverse-roll-src-third_party-ffmpeg.patch
 
 # https://gitlab.com/Matt.Jolly/chromium-patches
 # Often has patches needed to build with libstdc++, sometimes other
-# interesting buts
+# interesting bugs
 Patch121:	https://gitlab.com/Matt.Jolly/chromium-patches/-/raw/master/chromium-117-system-zstd.patch?ref_type=heads&inline=false#/chromium-117-system-zstd.patch
-Patch122:	https://gitlab.com/Matt.Jolly/chromium-patches/-/raw/master/chromium-120-incomplete-type.patch?ref_type=heads&inline=false#/chromium-120-incomplete-type.patch
 
 %if 0%{?ungoogled:1}
 Source1000:	https://github.com/ungoogled-software/ungoogled-chromium/archive/%{ungoogled}.tar.gz
@@ -191,7 +190,7 @@ Patch1008:	chromium-116-system-brotli.patch
 Patch1009:	chromium-97-compilefixes.patch
 #Patch1012:	chromium-112-compile.patch
 Patch1013:	chromium-105-minizip-ng.patch
-Patch1014:	chromium-fix-buildsystem-breakages.patch
+#Patch1014:	chromium-fix-buildsystem-breakages.patch
 Patch1015:	chromium-117-compile.patch
 Patch1016:	chromium-118-libstdc++.patch
 # Flag seems to be specific to LLVM master of google's LLVM fork
@@ -199,17 +198,17 @@ Patch1017:	chromium-120-no-invalid-optflag.patch
 %if ! %{with libcxx}
 Patch1018:	chromium-120-libstdc++.patch
 %endif
-Patch1019:	chromium-120-libxml-2.12.patch
+#Patch1019:	chromium-120-libxml-2.12.patch
 %if 0%{?cef:1}
-Patch1020:	cef-drop-unneeded-libxml-patch.patch
+#Patch1020:	cef-drop-unneeded-libxml-patch.patch
 Patch1021:	chromium-115-fix-generate_fontconfig_caches.patch
 Patch1022:	cef-115-minizip-ng.patch
 %if 0%{?ungoogled:1}
-Patch1023:	cef-rebase-patches.patch
+Patch1023:	cef-122-rebase-to-ungoogled.patch
 Patch1024:	cef-115-ungoogling.patch
 %endif
 Patch1025:	cef-zlib-linkage.patch
-Patch1026:	cef-120-libxml-2.12.patch
+#Patch1026:	cef-120-libxml-2.12.patch
 %endif
 
 Provides:	%{crname}
@@ -226,6 +225,7 @@ BuildRequires:	bison
 BuildRequires:	re2c
 BuildRequires:	flex
 BuildRequires:	git
+BuildRequires:	rust
 BuildRequires:	pkgconfig(alsa)
 BuildRequires:	pkgconfig(krb5)
 BuildRequires:	pkgconfig(libunwind)
@@ -250,6 +250,11 @@ BuildRequires:	pkgconfig(Qt5DBus)
 BuildRequires:	pkgconfig(Qt5Gui)
 BuildRequires:	pkgconfig(Qt5Widgets)
 BuildRequires:	pkgconfig(Qt5OpenGL)
+BuildRequires:	pkgconfig(Qt6Core)
+BuildRequires:	pkgconfig(Qt6DBus)
+BuildRequires:	pkgconfig(Qt6Gui)
+BuildRequires:	pkgconfig(Qt6Widgets)
+BuildRequires:	pkgconfig(Qt6OpenGL)
 BuildRequires:	pkgconfig(xkbcommon)
 BuildRequires:	pkgconfig(atspi-2)
 BuildRequires:	pkgconfig(atk)
@@ -380,6 +385,40 @@ This is the stable channel Chromium browser. It offers a rock solid
 browser which is updated with features and fixes once they have been
 thoroughly tested. If you want the latest features, install the
 chromium-browser-dev package instead.
+
+%package qt5
+Summary: Qt 5.x integration for Chromium
+Group: System/Libraries
+Requires: %{name} = %{EVRD}
+
+%description qt5
+Qt 5.x integration for Chromium
+
+%package qt6
+Summary: Qt 6.x integration for Chromium
+Group: System/Libraries
+Requires: %{name} = %{EVRD}
+Supplements: %{name} = %{EVRD}
+
+%description qt6
+Qt 6.x integration for Chromium
+
+%package -n cef-qt5
+Summary: Qt 5.x integration for CEF
+Group: System/Libraries
+Requires: %{name} = %{EVRD}
+
+%description -n cef-qt5
+Qt 5.x integration for CEF
+
+%package -n cef-qt6
+Summary: Qt 6.x integration for CEF
+Group: System/Libraries
+Requires: %{name} = %{EVRD}
+Supplements: cef = %{EVRD}
+
+%description -n cef-qt6
+Qt 6.x integration for CEF
 
 %if 0%{?cef:1}
 %package -n cef
@@ -568,6 +607,9 @@ if [ $_lto_cpus -gt 4 ]; then
 	_lto_cpus=4
 fi
 
+# FIXME error: the option `Z` is only accepted on the nightly compiler
+export RUSTC_BOOTSTRAP=1
+
 GN_DEFINES=""
 %if 0%{?ungoogled:1}
 GN_DEFINES+=" $(cat $UGDIR/flags.gn |tr '\n' ' ')"
@@ -605,7 +647,7 @@ GN_DEFINES+=" use_system_wayland_client=true "
 GN_DEFINES+=" use_system_wayland_scanner=true "
 GN_DEFINES+=" use_system_wayland_server=true "
 GN_DEFINES+=" use_xkbcommon=true "
-GN_DEFINES+=" use_gtk=false use_qt=true "
+GN_DEFINES+=" use_gtk=false use_qt=true use_qt6=true moc_qt6_path=\"%{_qtdir}/libexec\""
 if ! echo %{system_libs} |grep -q icu; then
 GN_DEFINES+=" icu_use_data_file=true"
 fi
@@ -668,7 +710,8 @@ GN_DEFINES+=" perfetto_use_system_zlib=true"
 GN_DEFINES+=" rtc_link_pipewire=true rtc_use_pipewire=true"
 GN_DEFINES+=" use_libinput=true use_real_dbus_clients=true"
 GN_DEFINES+=" use_vaapi_image_codecs=true"
-GN_DEFINES+=" enable_rust=false"
+GN_DEFINES+=' rust_sysroot_absolute="%{_prefix}"'
+GN_DEFINES+=" rustc_version=\"$(rustc --version | awk '{ print $2; }')\""
 # 107: Build failure: GN_DEFINES+=" enable_wayland_server=true"
 # 107: Build failure: GN_DEFINES+=" perfetto_use_system_protobuf=true"
 # 107: Build failure: GN_DEFINES+=" use_v4l2_codec=true use_v4lplugin=true"
@@ -737,6 +780,7 @@ install -m 644 out/Release/locales/*.pak %{buildroot}%{_libdir}/%{name}/locales/
 install -m 644 out/Release/chrome_100_percent.pak %{buildroot}%{_libdir}/%{name}/
 install -m 644 out/Release/resources.pak %{buildroot}%{_libdir}/%{name}/
 install -m 755 out/Release/libqt5_shim.so %{buildroot}%{_libdir}/%{name}/
+install -m 755 out/Release/libqt6_shim.so %{buildroot}%{_libdir}/%{name}/
 # libGLESv2.so/libEGL.so look like dupes from the system, but aren't:
 # Loading happens in ui/ozone/common/egl_util.cc -- indicating libGLESv2.so
 # and libEGL.so (as opposed to their .1/.2 counterparts) are ANGLE (OpenGL ES
@@ -795,11 +839,11 @@ cp %{S:4} %{buildroot}%{_datadir}/drirc.d/10-%{name}.conf
 # such as
 # http://d2ettrnqo7v976.cloudfront.net/cef/5414/linux_64/cef_binary.7z
 # Is there a better option?
-# Adding qt5_shim stuff is OM specific, hoping to get Qt integration
+# Adding qt5_shim/qt6_shim stuff is OM specific, hoping to get Qt integration
 cd out/Release-CEF
 mkdir -p %{buildroot}%{_libdir}/cef/Release \
 	%{buildroot}%{_libdir}/cef/Resources
-cp -a chrome_sandbox libcef.so libEGL.so libGLESv2.so libvk_swiftshader.so libvulkan.so.1 snapshot_blob.bin v8_context_snapshot.bin vk_swiftshader_icd.json libqt5_shim.so %{buildroot}%{_libdir}/cef/Release
+cp -a chrome_sandbox libcef.so libEGL.so libGLESv2.so libvk_swiftshader.so libvulkan.so.1 snapshot_blob.bin v8_context_snapshot.bin vk_swiftshader_icd.json libqt5_shim.so libqt6_shim.so %{buildroot}%{_libdir}/cef/Release
 # The build process generates chrome_sandbox, but cef binary builds ship chrome-sandbox
 # It's the same thing, so let's provide both names to be on the safe side
 ln -s chrome_sandbox %{buildroot}%{_libdir}/cef/Release/chrome-sandbox
@@ -818,7 +862,15 @@ cp -a cef/libcef_dll cef/tests %{buildroot}%{_libdir}/cef
 %files -n cef
 %dir %{_libdir}/cef
 %{_libdir}/cef/Release
+%exclude %{_libdir}/cef/Release/libqt5_shim.so
+%exclude %{_libdir}/cef/Release/libqt6_shim.so
 %{_libdir}/cef/Resources
+
+%files -n cef-qt5
+%{_libdir}/cef/Release/libqt5_shim.so
+
+%files -n cef-qt6
+%{_libdir}/cef/Release/libqt6_shim.so
 
 %files -n cef-devel
 %{_libdir}/cef/include
@@ -838,6 +890,8 @@ cp -a cef/libcef_dll cef/tests %{buildroot}%{_libdir}/cef
 %{_bindir}/%{name}
 %{_libdir}/%{name}/*.bin
 %{_libdir}/%{name}/*.so*
+%exclude %{_libdir}/%{name}/libqt5_shim.so
+%exclude %{_libdir}/%{name}/libqt6_shim.so
 %{_libdir}/%{name}/*.json
 %{_libdir}/%{name}/angledata
 %{_libdir}/%{name}/chromium-wrapper
@@ -852,6 +906,12 @@ cp -a cef/libcef_dll cef/tests %{buildroot}%{_libdir}/cef
 %{_libdir}/%{name}/default_apps
 %{_datadir}/applications/*.desktop
 %{_datadir}/icons/hicolor/*/apps/%{name}.png
+
+%files qt5
+%{_libdir}/%{name}/libqt5_shim.so
+
+%files qt6
+%{_libdir}/%{name}/libqt6_shim.so
 
 %ifarch %{x86_64}
 %files -n chromedriver%{namesuffix}

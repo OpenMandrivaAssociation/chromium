@@ -19,7 +19,7 @@
 					<li id="anb-packages"><a href="https://www.archlinux.org/packages/" title="Arch Package Database">Packages</a></li>
 					<li id="anb-forums"><a href="https://bbs.archlinux.org/" title="Community forums">Forums</a></li>
 					<li id="anb-wiki"><a href="https://wiki.archlinux.org/" title="Community documentation">Wiki</a></li>
-					<li id="anb-bugs"><a href="https://bugs.archlinux.org/" title="Report and track bugs">Bugs</a></li>
+					<li id="anb-gitlab"><a href="https://gitlab.archlinux.org/archlinux" title="GitLab">GitLab</a></li>
 					<li id="anb-security"><a href="https://security.archlinux.org/" title="Arch Linux Security Tracker">Security</a></li>
 					<li id="anb-aur"><a href="/" title="Arch Linux User Repository">AUR</a></li>
 					<li id="anb-download"><a href="https://www.archlinux.org/download/" title="Get Arch Linux">Download</a></li>
@@ -42,7 +42,7 @@
 <input type='submit' value='search'/>
 </form>
 </td></tr></table>
-<div class='path'>path: <a href='/cgit/aur.git/tree/?h=chromium-wayland-vaapi'>root</a>/<a href='/cgit/aur.git/tree/0001-ozone-wayland-implement-text_input_manager_v3.patch?h=chromium-wayland-vaapi'>0001-ozone-wayland-implement-text_input_manager_v3.patch</a></div><div class='content'>blob: 7691178bee0be5d14c3f599f20cd5f7a49eb88c0 (<a href='/cgit/aur.git/plain/0001-ozone-wayland-implement-text_input_manager_v3.patch?h=chromium-wayland-vaapi'>plain</a>)
+<div class='path'>path: <a href='/cgit/aur.git/tree/?h=chromium-wayland-vaapi'>root</a>/<a href='/cgit/aur.git/tree/0001-ozone-wayland-implement-text_input_manager_v3.patch?h=chromium-wayland-vaapi'>0001-ozone-wayland-implement-text_input_manager_v3.patch</a></div><div class='content'>blob: 025b555cd79b15b5931f20f281cce9a5ba3e0d57 (<a href='/cgit/aur.git/plain/0001-ozone-wayland-implement-text_input_manager_v3.patch?h=chromium-wayland-vaapi'>plain</a>)
 <table summary='blob content' class='blob'>
 <tr><td class='linenumbers'><pre><a id='n1' href='#n1'>1</a>
 <a id='n2' href='#n2'>2</a>
@@ -578,10 +578,10 @@ Change-Id: Ib883c9087377c9f1a0dfacc45a27e3e67ccf042e
 <span class="hl kwa">---</span>
 
 diff --git a/AUTHORS b/AUTHORS
-index f275151..a43a528 100644
+index dec500d..5dcd06c 100644
 <span class="hl kwa">--- a/AUTHORS</span>
 <span class="hl kwb">+++ b/AUTHORS</span>
-&#64;&#64; -942,6 +942,7 &#64;&#64; Mohit Bhalla &lt;bhallam&#64;amazon.com&gt;
+&#64;&#64; -952,6 +952,7 &#64;&#64; Mohit Bhalla &lt;bhallam&#64;amazon.com&gt;
  Moiseanu Rares-Marian &lt;moiseanurares&#64;gmail.com&gt;
  Momoka Yamamoto &lt;momoka.my6&#64;gmail.com&gt;
  Momoko Hattori &lt;momohatt10&#64;gmail.com&gt;
@@ -590,7 +590,7 @@ index f275151..a43a528 100644
  Mrunal Kapade &lt;mrunal.kapade&#64;intel.com&gt;
  Munira Tursunova &lt;moonira&#64;google.com&gt;
 diff --git a/third_party/wayland-protocols/BUILD.gn b/third_party/wayland-protocols/BUILD.gn
-index c84ec11..dffa0aa 100644
+index b0c0082..6be47a8 100644
 <span class="hl kwa">--- a/third_party/wayland-protocols/BUILD.gn</span>
 <span class="hl kwb">+++ b/third_party/wayland-protocols/BUILD.gn</span>
 &#64;&#64; -141,7 +141,10 &#64;&#64; wayland_protocol(&quot;text_input_extension_protocol&quot;) {
@@ -606,7 +606,7 @@ index c84ec11..dffa0aa 100644
  
  wayland_protocol(&quot;touchpad_haptics_protocol&quot;) {
 diff --git a/ui/ozone/platform/wayland/BUILD.gn b/ui/ozone/platform/wayland/BUILD.gn
-index 31314f3..c22888c 100644
+index 1ec252c..467d0d0 100644
 <span class="hl kwa">--- a/ui/ozone/platform/wayland/BUILD.gn</span>
 <span class="hl kwb">+++ b/ui/ozone/platform/wayland/BUILD.gn</span>
 &#64;&#64; -221,6 +221,8 &#64;&#64; source_set(&quot;wayland&quot;) {
@@ -653,10 +653,10 @@ index c84c084..0817e78 100644
  DECLARE_WAYLAND_OBJECT_TRAITS(zxdg_exporter_v1)
  DECLARE_WAYLAND_OBJECT_TRAITS(zxdg_exported_v1)
 diff --git a/ui/ozone/platform/wayland/host/wayland_connection.cc b/ui/ozone/platform/wayland/host/wayland_connection.cc
-index ad3bbd6..995b1e2 100644
+index a7c0943..94ef3da 100644
 <span class="hl kwa">--- a/ui/ozone/platform/wayland/host/wayland_connection.cc</span>
 <span class="hl kwb">+++ b/ui/ozone/platform/wayland/host/wayland_connection.cc</span>
-&#64;&#64; -647,6 +647,14 &#64;&#64; void WaylandConnection::HandleGlobal(wl_registry* registry,
+&#64;&#64; -642,6 +642,14 &#64;&#64; void WaylandConnection::HandleGlobal(wl_registry* registry,
               strcmp(interface, &quot;zcr_text_input_extension_v1&quot;) == 0) {
      text_input_extension_v1_ = wl::Bind&lt;zcr_text_input_extension_v1&gt;(
          registry, name, std::min(version, kMaxTextInputExtensionVersion));
@@ -672,7 +672,7 @@ index ad3bbd6..995b1e2 100644
               strcmp(interface, &quot;zxdg_decoration_manager_v1&quot;) == 0) {
      xdg_decoration_manager_ = wl::Bind&lt;zxdg_decoration_manager_v1&gt;(
 diff --git a/ui/ozone/platform/wayland/host/wayland_connection.h b/ui/ozone/platform/wayland/host/wayland_connection.h
-index 6659bc5..f9739ea 100644
+index c78d900..da2537e 100644
 <span class="hl kwa">--- a/ui/ozone/platform/wayland/host/wayland_connection.h</span>
 <span class="hl kwb">+++ b/ui/ozone/platform/wayland/host/wayland_connection.h</span>
 &#64;&#64; -149,6 +149,9 &#64;&#64; class WaylandConnection {
