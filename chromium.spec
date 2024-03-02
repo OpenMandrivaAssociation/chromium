@@ -78,12 +78,16 @@
 %define google_default_client_id 1089316189405-m0ropn3qa4p1phesfvi2urs7qps1d79o.apps.googleusercontent.com
 %define google_default_client_secret RDdr-pHq2gStY4uw0m-zxXeo
 
+%if "%{channel}" == "stable"
+Name:		chromium
+%else
 Name:		chromium-browser-%{channel}
+%endif
 # Working version numbers can be found at
 # https://chromiumdash.appspot.com/releases?platform=Linux
-Version:	122.0.6261.69
+Version:	122.0.6261.94
 ### Don't be evil!!! ###
-%define ungoogled 122.0.6261.57-1
+%define ungoogled 122.0.6261.94-1
 %if %{with cef}
 # To find the CEF commit matching the Chromium version, look up the
 # right branch at
@@ -96,7 +100,7 @@ Version:	122.0.6261.69
 # https://github.com/chromiumembedded/cef/issues/3616 fixed in cef upstream.
 # If we run into this problem, we need to either use custom libxml or build
 # system libxml with TLS disabled.
-%define cef 6261:dd187af0019f19c953f3686554a55809ecd6237d
+%define cef 6261:d14e0517a1d326a3a8c89a385383814a9d0eaf80
 %endif
 Release:	1
 Summary:	A fast webkit-based web browser
@@ -137,7 +141,7 @@ Patch9:		chromium-119.0.6045.159-more-search-engines-for-CH.patch
 # Fix VAAPI video decoding on AMD
 # https://bugs.chromium.org/p/chromium/issues/detail?id=1445074
 # Based on https://gist.githubusercontent.com/thubble/235806c4c64b159653de879173d24d9f/raw/dd9366083a6c635b7accd53cb9c01f7bece1185f/chromium-support-disjoint-vaapi-export-import.patch
-Patch10:	chromium-119-fix-vaapi-video-decode-on-amd.patch
+#Patch10:	chromium-119-fix-vaapi-video-decode-on-amd.patch
 # Try to load widevine from other places
 Patch11:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-100.0.4896.60-widevine-other-locations.patch
 # https://gitweb.gentoo.org/repo/gentoo.git/tree/www-client/chromium/files/chromium-unbundle-zlib.patch
@@ -152,11 +156,11 @@ Patch59:	chromium-121-rust-clang_lib.patch
 # From Arch and Gentoo
 # https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=chromium-dev
 # https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=chromium-wayland-vaapi
-Patch102:	https://aur.archlinux.org/cgit/aur.git/plain/0001-adjust-buffer-format-order.patch?h=chromium-wayland-vaapi#/0001-adjust-buffer-format-order.patch
+#Patch102:	https://aur.archlinux.org/cgit/aur.git/plain/0001-adjust-buffer-format-order.patch?h=chromium-wayland-vaapi#/0001-adjust-buffer-format-order.patch
 Patch103:	https://aur.archlinux.org/cgit/aur.git/tree/0001-ozone-wayland-implement-text_input_manager_v3.patch?h=chromium-wayland-vaapi#/0001-ozone-wayland-implement-text_input_manager_v3.patch
 Patch104:	https://aur.archlinux.org/cgit/aur.git/tree/0001-ozone-wayland-implement-text_input_manager-fixes.patch?h=chromium-wayland-vaapi#/0001-ozone-wayland-implement-text_input_manager-fixes.patch
 Patch110:	https://raw.githubusercontent.com/archlinux/svntogit-packages/packages/chromium/trunk/use-oauth2-client-switches-as-default.patch
-Patch111:	reverse-roll-src-third_party-ffmpeg.patch
+#Patch111:	reverse-roll-src-third_party-ffmpeg.patch
 
 # https://gitlab.com/Matt.Jolly/chromium-patches
 # Often has patches needed to build with libstdc++, sometimes other
@@ -209,6 +213,11 @@ Patch1024:	cef-115-ungoogling.patch
 %endif
 Patch1025:	cef-zlib-linkage.patch
 #Patch1026:	cef-120-libxml-2.12.patch
+# From OBS CEF fork
+# https://github.com/obsproject/cef/commits/6261-shared-textures
+Patch2000:	https://github.com/obsproject/cef/commit/27e977332df56c6251f4ee418d6bd51be073767d.patch
+Patch2001:	https://github.com/obsproject/cef/commit/f88220be4c4c02db5f9f0170dfc515d86a6f0c48.patch
+Patch2002:	https://github.com/obsproject/cef/commit/b73732b5bc5c42948b1505a3170f3980f0f95464.patch
 %endif
 
 Provides:	%{crname}
@@ -218,6 +227,7 @@ Obsoletes:	chromium-browser-dev < %{EVRD}
 %endif
 %if "%{channel}" == "stable"
 Obsoletes:	chromium-browser-beta < %{EVRD}
+%rename chromium-browser-stable
 %endif
 BuildRequires:	glibc-static-devel
 BuildRequires:	gperf
@@ -406,7 +416,7 @@ Qt 6.x integration for Chromium
 %package -n cef-qt5
 Summary: Qt 5.x integration for CEF
 Group: System/Libraries
-Requires: %{name} = %{EVRD}
+Requires: cef = %{EVRD}
 
 %description -n cef-qt5
 Qt 5.x integration for CEF
@@ -414,7 +424,7 @@ Qt 5.x integration for CEF
 %package -n cef-qt6
 Summary: Qt 6.x integration for CEF
 Group: System/Libraries
-Requires: %{name} = %{EVRD}
+Requires: cef = %{EVRD}
 Supplements: cef = %{EVRD}
 
 %description -n cef-qt6
@@ -504,6 +514,7 @@ git init
 cd third_party/pdfium ; git init; cd ../..
 cd cef; git init; cd ..
 cd cef
+%autopatch -p1 -m 2000
 COMMIT_NUMBER=%(echo %{cef} |cut -d: -f1) COMMIT_HASH=%(echo %{cef} |cut -d: -f2) python tools/make_version_header.py include/cef_version.h --cef_version VERSION.in --chrome_version ../chrome/VERSION --cpp_header_dir include
 cd ..
 
@@ -516,7 +527,7 @@ tar xf %{S:11}
 cd ../..
 %endif
 
-%autopatch -p1
+%autopatch -p1 -M 1999
 
 rm -rf third_party/binutils/
 # Get rid of the pre-built eu-strip binary, it is x86_64 and of mysterious origin
