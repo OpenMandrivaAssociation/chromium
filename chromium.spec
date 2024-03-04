@@ -222,6 +222,7 @@ Patch2002:	https://github.com/obsproject/cef/commit/b73732b5bc5c42948b1505a3170f
 
 Provides:	%{crname}
 Obsoletes:	chromium-browser-unstable < %{EVRD}
+Obsoletes:	chromium-browser < %{EVRD}
 %if "%{channel}" == "stable" || "%{channel}" == "beta"
 Obsoletes:	chromium-browser-dev < %{EVRD}
 %endif
@@ -400,6 +401,7 @@ chromium-browser-dev package instead.
 Summary: Qt 5.x integration for Chromium
 Group: System/Libraries
 Requires: %{name} = %{EVRD}
+Obsoletes: chromium-browser-stable-qt5
 
 %description qt5
 Qt 5.x integration for Chromium
@@ -409,6 +411,7 @@ Summary: Qt 6.x integration for Chromium
 Group: System/Libraries
 Requires: %{name} = %{EVRD}
 Supplements: %{name} = %{EVRD}
+Obsoletes: chromium-browser-stable-qt6
 
 %description qt6
 Qt 6.x integration for Chromium
@@ -449,22 +452,6 @@ Requires: cef = %{EVRD}
 
 %description -n cef-devel
 Chromium Embedded Framework - library for embeddind Chromium in custom applications
-%endif
-
-%if "%{channel}" == "stable"
-%package -n chromium-browser
-Summary:	A fast webkit-based web browser (transition package)
-Epoch:		1
-Group:		Networking/WWW
-Requires:	%{name} = %{version}-%{release}
-
-%description -n chromium-browser
-Chromium is a browser that combines a minimal design with sophisticated
-technology to make the web faster, safer, and easier.
-
-This is a transition package that installs the stable channel Chromium
-browser. If you prefer the dev channel browser, install the
-chromium-browser-dev package instead.
 %endif
 
 %package -n chromedriver%{namesuffix}
