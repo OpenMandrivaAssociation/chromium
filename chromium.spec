@@ -877,10 +877,6 @@ cp -a cef/libcef_dll cef/tests %{buildroot}%{_libdir}/cef
 %endif
 
 %if %{with browser}
-%if "%{channel}" == "stable"
-%files -n chromium-browser
-%endif
-
 %files
 %doc LICENSE AUTHORS
 %config %{_sysconfdir}/chromium
