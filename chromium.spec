@@ -85,9 +85,9 @@ Name:		chromium-browser-%{channel}
 %endif
 # Working version numbers can be found at
 # https://chromiumdash.appspot.com/releases?platform=Linux
-Version:	122.0.6261.111
+Version:	122.0.6261.128
 ### Don't be evil!!! ###
-%define ungoogled 122.0.6261.94-1
+%define ungoogled 122.0.6261.111-1
 %if %{with cef}
 # To find the CEF commit matching the Chromium version, look up the
 # right branch at
@@ -100,7 +100,7 @@ Version:	122.0.6261.111
 # https://github.com/chromiumembedded/cef/issues/3616 fixed in cef upstream.
 # If we run into this problem, we need to either use custom libxml or build
 # system libxml with TLS disabled.
-%define cef 6261:d14e0517a1d326a3a8c89a385383814a9d0eaf80
+%define cef 6261:6e69d20878e251e57816d6a79ccb000307c9536a
 %endif
 Release:	1
 Summary:	A fast webkit-based web browser
@@ -846,6 +846,9 @@ cp -a chrome_sandbox libcef.so libEGL.so libGLESv2.so libvk_swiftshader.so libvu
 # It's the same thing, so let's provide both names to be on the safe side
 ln -s chrome_sandbox %{buildroot}%{_libdir}/cef/Release/chrome-sandbox
 cp -a chrome_100_percent.pak chrome_200_percent.pak icudtl.dat locales resources.pak %{buildroot}%{_libdir}/cef/Resources
+# This is expected by the OBS browser plugin
+mkdir -p %{buildroot}%{_libdir}/cef/libcef_dll_wrapper
+cp obj/cef/libcef_dll_wrapper.a %{buildroot}%{_libdir}/cef/libcef_dll_wrapper
 cd ../..
 
 # -devel package layout is based on what we see in OnlyOffice's
@@ -874,6 +877,7 @@ cp -a cef/libcef_dll cef/tests %{buildroot}%{_libdir}/cef
 %{_libdir}/cef/include
 %{_libdir}/cef/libcef_dll
 %{_libdir}/cef/tests
+%{_libdir}/cef/libcef_dll_wrapper
 %endif
 
 %if %{with browser}
