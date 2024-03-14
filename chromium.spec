@@ -30,7 +30,7 @@
 # clashes when using e.g. Qt and Chromium at the same time
 # (especially with cef!), but some versions of chromium make
 # it necessary
-# Main problem: https://github.com/llvm/llvm-project/issues/50248
+# Main problem: https://github.com/llvm/llvm-project/issues/80210
 %bcond_without libcxx
 
 # FIXME As of 97.0.4688.2, Chromium crashes frequently when
@@ -67,7 +67,7 @@
 %if %{with libcxx}
 %global system_libs brotli dav1d flac ffmpeg fontconfig harfbuzz-ng libjpeg libjxl libpng libdrm libwebp libxml libxslt opus libusb openh264 zlib libjxl freetype zstd
 %else
-%global system_libs brotli dav1d flac ffmpeg fontconfig harfbuzz-ng libjpeg libjxl libpng libdrm libwebp libxml libxslt opus libusb openh264 zlib libjxl freetype zstd re2 jsoncpp snappy libaom
+%global system_libs brotli dav1d flac ffmpeg fontconfig harfbuzz-ng libjpeg libjxl libpng libdrm libwebp libxml libxslt opus libusb openh264 zlib libjxl freetype zstd re2 jsoncpp snappy
 %endif
 %define system() %(if echo %{system_libs} |grep -q -E '(^| )%{1}( |$)'; then echo -n 1; else echo -n 0;  fi)
 
@@ -178,6 +178,23 @@ Source1000:	https://github.com/ungoogled-software/ungoogled-chromium/archive/%{u
 # FIXME reenable once the patchset has caught up with upstream
 # https://github.com/saiarcot895/chromium-ubuntu-build
 
+# From Debian
+# https://sources.debian.org/patches/chromium/
+# Mostly fixes for libstdc++ related failures
+Patch200:	https://sources.debian.org/data/main/c/chromium/122.0.6261.128-1/debian/patches/fixes/gcc13-headers.patch
+Patch201:	https://sources.debian.org/data/main/c/chromium/122.0.6261.128-1/debian/patches/fixes/material-utils.patch
+Patch202:	https://sources.debian.org/data/main/c/chromium/122.0.6261.128-1/debian/patches/fixes/perfetto.patch
+Patch203:	https://sources.debian.org/data/main/c/chromium/122.0.6261.128-1/debian/patches/fixes/blink-frags.patch
+Patch205:	https://sources.debian.org/data/main/c/chromium/122.0.6261.128-1/debian/patches/fixes/optional.patch
+Patch206:	https://sources.debian.org/data/main/c/chromium/122.0.6261.128-1/debian/patches/upstream/uniqptr.patch
+Patch207:	https://sources.debian.org/data/main/c/chromium/122.0.6261.128-1/debian/patches/upstream/optional.patch#/upstream_optional.patch
+Patch208:	https://sources.debian.org/data/main/c/chromium/122.0.6261.128-1/debian/patches/upstream/bookmarknode.patch
+Patch209:	https://sources.debian.org/data/main/c/chromium/122.0.6261.128-1/debian/patches/upstream/bitset.patch
+%if %{without libcxx}
+Patch210:	https://sources.debian.org/data/main/c/chromium/122.0.6261.128-1/debian/patches/bookworm/undo-internal-alloc.patch
+%endif
+Patch211:	https://sources.debian.org/data/main/c/chromium/122.0.6261.128-1/debian/patches/system/openjpeg.patch
+
 # omv
 Patch1001:	chromium-64-system-curl.patch
 Patch1002:	chromium-69-no-static-libstdc++.patch
@@ -192,6 +209,7 @@ Patch1006:	https://raw.githubusercontent.com/ungoogled-software/ungoogled-chromi
 Patch1007:	chromium-116-dont-override-thinlto-cache-policy.patch
 Patch1008:	chromium-116-system-brotli.patch
 Patch1009:	chromium-97-compilefixes.patch
+Patch1010:	chromium-122-qt6-buildfix.patch
 #Patch1012:	chromium-112-compile.patch
 Patch1013:	chromium-105-minizip-ng.patch
 #Patch1014:	chromium-fix-buildsystem-breakages.patch
@@ -199,9 +217,6 @@ Patch1015:	chromium-117-compile.patch
 Patch1016:	chromium-118-libstdc++.patch
 # Flag seems to be specific to LLVM master of google's LLVM fork
 Patch1017:	chromium-120-no-invalid-optflag.patch
-%if ! %{with libcxx}
-Patch1018:	chromium-120-libstdc++.patch
-%endif
 #Patch1019:	chromium-120-libxml-2.12.patch
 %if 0%{?cef:1}
 #Patch1020:	cef-drop-unneeded-libxml-patch.patch
@@ -848,8 +863,14 @@ ln -s chrome_sandbox %{buildroot}%{_libdir}/cef/Release/chrome-sandbox
 cp -a chrome_100_percent.pak chrome_200_percent.pak icudtl.dat locales resources.pak %{buildroot}%{_libdir}/cef/Resources
 # This is expected by the OBS browser plugin
 mkdir -p %{buildroot}%{_libdir}/cef/libcef_dll_wrapper
-cp obj/cef/libcef_dll_wrapper.a %{buildroot}%{_libdir}/cef/libcef_dll_wrapper
-cd ../..
+cd obj/cef
+# libcef_dll_wrapper.a is a thin archive, containing references to the object
+# files rather than the object files themselves
+llvm-ar -t libcef_dll_wrapper.a |xargs llvm-ar cru libcef_dll_wrapper_full.a
+mv -f libcef_dll_wrapper_full.a libcef_dll_wrapper.a
+llvm-ranlib libcef_dll_wrapper.a
+cp libcef_dll_wrapper.a %{buildroot}%{_libdir}/cef/libcef_dll_wrapper
+cd ../../../..
 
 # -devel package layout is based on what we see in OnlyOffice's
 # desktop-sdk/ChromiumBasedEditors/lib/src/cef/linux
