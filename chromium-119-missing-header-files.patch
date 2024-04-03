@@ -444,17 +444,6 @@ diff -up chromium-117.0.5938.48/third_party/ipcz/src/ipcz/router_link.h.me chrom
  #include <cstddef>
  #include <functional>
  #include <string>
-diff -up chromium-117.0.5938.48/third_party/material_color_utilities/src/cpp/palettes/tones.cc.me chromium-117.0.5938.48/third_party/material_color_utilities/src/cpp/palettes/tones.cc
---- chromium-117.0.5938.48/third_party/material_color_utilities/src/cpp/palettes/tones.cc.me	2023-09-10 17:36:27.199841051 +0200
-+++ chromium-117.0.5938.48/third_party/material_color_utilities/src/cpp/palettes/tones.cc	2023-09-10 17:44:51.870554233 +0200
-@@ -14,6 +14,7 @@
-  * limitations under the License.
-  */
- 
-+#include <cmath>
- #include "cpp/palettes/tones.h"
- 
- #include "cpp/cam/cam.h"
 diff -up chromium-118.0.5993.32/services/device/public/cpp/generic_sensor/sensor_reading.h.me chromium-118.0.5993.32/services/device/public/cpp/generic_sensor/sensor_reading.h
 --- chromium-118.0.5993.32/services/device/public/cpp/generic_sensor/sensor_reading.h.me	2023-10-01 13:55:01.913193186 +0200
 +++ chromium-118.0.5993.32/services/device/public/cpp/generic_sensor/sensor_reading.h	2023-10-01 14:05:38.488038429 +0200

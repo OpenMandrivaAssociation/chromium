@@ -31,7 +31,7 @@
 # (especially with cef!), but some versions of chromium make
 # it necessary
 # Main problem: https://github.com/llvm/llvm-project/issues/80210
-%bcond_without libcxx
+%bcond_with libcxx
 
 # FIXME As of 97.0.4688.2, Chromium crashes frequently when
 # built with fortification enabled.
@@ -85,9 +85,9 @@ Name:		chromium-browser-%{channel}
 %endif
 # Working version numbers can be found at
 # https://chromiumdash.appspot.com/releases?platform=Linux
-Version:	122.0.6261.128
+Version:	123.0.6312.86
 ### Don't be evil!!! ###
-%define ungoogled 122.0.6261.111-1
+%define ungoogled 123.0.6312.86-1
 %if %{with cef}
 # To find the CEF commit matching the Chromium version, look up the
 # right branch at
@@ -100,7 +100,7 @@ Version:	122.0.6261.128
 # https://github.com/chromiumembedded/cef/issues/3616 fixed in cef upstream.
 # If we run into this problem, we need to either use custom libxml or build
 # system libxml with TLS disabled.
-%define cef 6261:6e69d20878e251e57816d6a79ccb000307c9536a
+%define cef 6312:6a2150951b57eff2d64289bd3746b577b8b74e0b
 %endif
 Release:	1
 Summary:	A fast webkit-based web browser
@@ -150,7 +150,6 @@ Patch53:	chromium-81-unbundle-zlib.patch
 Patch54:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-77.0.3865.75-gcc-include-memory.patch
 Patch55:	chromium-113.0.5672.63-compile.patch
 Patch56:	https://src.fedoraproject.org/rpms/chromium/raw/rawhide/f/chromium-103.0.5060.53-update-rjsmin-to-1.2.0.patch
-Patch58:	https://src.fedoraproject.org/rpms/chromium/raw/rawhide/f/chromium-108-system-opus.patch
 Patch59:	chromium-121-rust-clang_lib.patch
 
 # From Arch and Gentoo
@@ -182,18 +181,26 @@ Source1000:	https://github.com/ungoogled-software/ungoogled-chromium/archive/%{u
 # https://sources.debian.org/patches/chromium/
 # Mostly fixes for libstdc++ related failures
 Patch200:	https://sources.debian.org/data/main/c/chromium/122.0.6261.128-1/debian/patches/fixes/gcc13-headers.patch
-Patch201:	https://sources.debian.org/data/main/c/chromium/122.0.6261.128-1/debian/patches/fixes/material-utils.patch
+Patch201:	https://sources.debian.org/data/main/c/chromium/123.0.6312.86-1/debian/patches/fixes/ps-print.patch
 Patch202:	https://sources.debian.org/data/main/c/chromium/122.0.6261.128-1/debian/patches/fixes/perfetto.patch
 Patch203:	https://sources.debian.org/data/main/c/chromium/122.0.6261.128-1/debian/patches/fixes/blink-frags.patch
-Patch205:	https://sources.debian.org/data/main/c/chromium/122.0.6261.128-1/debian/patches/fixes/optional.patch
-Patch206:	https://sources.debian.org/data/main/c/chromium/122.0.6261.128-1/debian/patches/upstream/uniqptr.patch
-Patch207:	https://sources.debian.org/data/main/c/chromium/122.0.6261.128-1/debian/patches/upstream/optional.patch#/upstream_optional.patch
-Patch208:	https://sources.debian.org/data/main/c/chromium/122.0.6261.128-1/debian/patches/upstream/bookmarknode.patch
-Patch209:	https://sources.debian.org/data/main/c/chromium/122.0.6261.128-1/debian/patches/upstream/bitset.patch
-%if %{without libcxx}
-Patch210:	https://sources.debian.org/data/main/c/chromium/122.0.6261.128-1/debian/patches/bookworm/undo-internal-alloc.patch
-%endif
-Patch211:	https://sources.debian.org/data/main/c/chromium/122.0.6261.128-1/debian/patches/system/openjpeg.patch
+Patch204:	https://sources.debian.org/data/main/c/chromium/123.0.6312.86-1/debian/patches/fixes/material-utils.patch
+Patch208:	https://sources.debian.org/data/main/c/chromium/123.0.6312.86-1/debian/patches/fixes/strlcpy.patch
+Patch209:	https://sources.debian.org/data/main/c/chromium/123.0.6312.86-1/debian/patches/fixes/optional2.patch
+Patch210:	https://sources.debian.org/data/main/c/chromium/123.0.6312.86-1/debian/patches/fixes/stats-collector.patch
+Patch211:	https://sources.debian.org/data/main/c/chromium/123.0.6312.86-1/debian/patches/fixes/blink-fonts-shape-result.patch
+Patch212:	https://sources.debian.org/data/main/c/chromium/123.0.6312.86-1/debian/patches/fixes/bad-font-gc1.patch
+Patch213:	https://sources.debian.org/data/main/c/chromium/123.0.6312.86-1/debian/patches/fixes/bad-font-gc2.patch
+Patch214:	https://sources.debian.org/data/main/c/chromium/123.0.6312.86-1/debian/patches/upstream/mojo.patch
+Patch215:	https://sources.debian.org/data/main/c/chromium/123.0.6312.86-1/debian/patches/upstream/std-to-address.patch
+Patch216:	https://sources.debian.org/data/main/c/chromium/123.0.6312.86-1/debian/patches/disable/screen-ai-blob.patch
+Patch217:	https://sources.debian.org/data/main/c/chromium/123.0.6312.86-1/debian/patches/system/icu-shim.patch
+Patch218:	https://sources.debian.org/data/main/c/chromium/123.0.6312.86-1/debian/patches/system/jpeg.patch
+Patch219:	https://sources.debian.org/data/main/c/chromium/123.0.6312.86-1/debian/patches/system/openjpeg.patch
+Patch220:	https://sources.debian.org/data/main/c/chromium/123.0.6312.86-1/debian/patches/system/clang-format.patch
+Patch221:	https://sources.debian.org/data/main/c/chromium/123.0.6312.86-1/debian/patches/system/opus.patch
+Patch222:	https://sources.debian.org/data/main/c/chromium/123.0.6312.86-1/debian/patches/system/eu-strip.patch
+Patch224:	https://sources.debian.org/data/main/c/chromium/123.0.6312.86-1/debian/patches/system/rollup.patch
 
 # omv
 Patch1001:	chromium-64-system-curl.patch
@@ -210,11 +217,11 @@ Patch1007:	chromium-116-dont-override-thinlto-cache-policy.patch
 Patch1008:	chromium-116-system-brotli.patch
 Patch1009:	chromium-97-compilefixes.patch
 Patch1010:	chromium-122-qt6-buildfix.patch
+Patch1011:	chromium-123-clang_version.patch
 #Patch1012:	chromium-112-compile.patch
 Patch1013:	chromium-105-minizip-ng.patch
 #Patch1014:	chromium-fix-buildsystem-breakages.patch
 Patch1015:	chromium-117-compile.patch
-Patch1016:	chromium-118-libstdc++.patch
 # Flag seems to be specific to LLVM master of google's LLVM fork
 Patch1017:	chromium-120-no-invalid-optflag.patch
 #Patch1019:	chromium-120-libxml-2.12.patch
@@ -223,7 +230,7 @@ Patch1017:	chromium-120-no-invalid-optflag.patch
 Patch1021:	chromium-115-fix-generate_fontconfig_caches.patch
 Patch1022:	cef-115-minizip-ng.patch
 %if 0%{?ungoogled:1}
-Patch1023:	cef-122-rebase-to-ungoogled.patch
+Patch1023:	cef-123-rebase-to-ungoogled.patch
 Patch1024:	cef-115-ungoogling.patch
 %endif
 Patch1025:	cef-zlib-linkage.patch

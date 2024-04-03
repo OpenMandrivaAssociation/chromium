@@ -1,0 +1,12 @@
+diff -up chromium-123.0.6312.86/build/toolchain/toolchain.gni.omv~ chromium-123.0.6312.86/build/toolchain/toolchain.gni
+--- chromium-123.0.6312.86/build/toolchain/toolchain.gni.omv~	2024-03-31 03:03:01.309388636 +0200
++++ chromium-123.0.6312.86/build/toolchain/toolchain.gni	2024-03-31 03:03:41.605844476 +0200
+@@ -47,7 +47,7 @@ declare_args() {
+   if (llvm_android_mainline) {  # https://crbug.com/1481060
+     clang_version = "17"
+   } else {
+-    clang_version = "19"
++    clang_version = "18"
+   }
+ }
+ 

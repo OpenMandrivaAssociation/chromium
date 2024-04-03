@@ -1,14 +1,15 @@
-diff -up chromium-119.0.6045.159/base/feature_list.cc.omv~ chromium-119.0.6045.159/base/feature_list.cc
---- chromium-119.0.6045.159/base/feature_list.cc.omv~	2023-11-15 22:57:19.674387460 +0100
-+++ chromium-119.0.6045.159/base/feature_list.cc	2023-11-15 22:57:33.958547326 +0100
-@@ -64,10 +64,11 @@ class EarlyFeatureAccessTracker {
+diff -up chromium-123.0.6312.86/base/feature_list.cc.3~ chromium-123.0.6312.86/base/feature_list.cc
+--- chromium-123.0.6312.86/base/feature_list.cc.3~	2024-04-01 20:05:26.535470975 +0200
++++ chromium-123.0.6312.86/base/feature_list.cc	2024-04-01 20:40:41.335487558 +0200
+@@ -74,11 +74,12 @@ class EarlyFeatureAccessTracker {
  
    // Makes calls to AccessedFeature() fail instantly.
    void FailOnFeatureAccessWithoutFeatureList() {
 -    AutoLock lock(lock_);
 +/*    AutoLock lock(lock_);
-     if (feature_)
-       Fail(feature_);
+     if (feature_) {
+       Fail(feature_, feature_had_feature_allow_list_);
+     }
 -    fail_instantly_ = true;
 +    fail_instantly_ = true; */
 +    Reset();
