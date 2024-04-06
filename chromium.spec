@@ -102,7 +102,7 @@ Version:	123.0.6312.105
 # system libxml with TLS disabled.
 %define cef 6312:6a2150951b57eff2d64289bd3746b577b8b74e0b
 %endif
-Release:	2
+Release:	3
 Summary:	A fast webkit-based web browser
 Group:		Networking/WWW
 License:	BSD, LGPL
