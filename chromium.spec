@@ -241,6 +241,12 @@ Patch2000:	https://github.com/obsproject/cef/commit/27e977332df56c6251f4ee418d6b
 Patch2001:	https://github.com/obsproject/cef/commit/f88220be4c4c02db5f9f0170dfc515d86a6f0c48.patch
 Patch2002:	https://github.com/obsproject/cef/commit/b73732b5bc5c42948b1505a3170f3980f0f95464.patch
 %endif
+# Patches for/from 3rd party trees
+# webrtc from https://webrtc.googlesource.com/src
+Patch3000:	webrtc-e7d10047096880feb5e9846375f2da54aef91202.patch
+# media from https://chromium.googlesource.com/chromium/src/media.git
+Patch3010:	media-ce20fa742f2525e0d7bf36373557615de05a6104.patch
+Patch3011:	media-e522b8156f88771fd9d930f88de12600fb479afe.patch
 
 Provides:	%{crname}
 Obsoletes:	chromium-browser-unstable < %{EVRD}
@@ -523,7 +529,7 @@ git init
 cd third_party/pdfium ; git init; cd ../..
 cd cef; git init; cd ..
 cd cef
-%autopatch -p1 -m 2000
+%autopatch -p1 -m 2000 -M 2999
 COMMIT_NUMBER=%(echo %{cef} |cut -d: -f1) COMMIT_HASH=%(echo %{cef} |cut -d: -f2) python tools/make_version_header.py include/cef_version.h --cef_version VERSION.in --chrome_version ../chrome/VERSION --cpp_header_dir include
 cd ..
 
@@ -537,6 +543,13 @@ cd ../..
 %endif
 
 %autopatch -p1 -M 1999
+
+cd third_party/webrtc
+%autopatch -p1 -m 3000 -M 3009
+cd -
+cd media
+%autopatch -p1 -m 3010 -M 3019
+cd -
 
 rm -rf third_party/binutils/
 # Get rid of the pre-built eu-strip binary, it is x86_64 and of mysterious origin
