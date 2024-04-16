@@ -1,6 +1,6 @@
-diff -up chromium-123.0.6312.86/cef/patch/patch.cfg.omv~ chromium-123.0.6312.86/cef/patch/patch.cfg
---- chromium-123.0.6312.86/cef/patch/patch.cfg.omv~	2024-04-02 00:52:52.001179304 +0200
-+++ chromium-123.0.6312.86/cef/patch/patch.cfg	2024-04-02 00:54:50.014427940 +0200
+diff -up chromium-123.0.6312.122/cef/patch/patch.cfg.54~ chromium-123.0.6312.122/cef/patch/patch.cfg
+--- chromium-123.0.6312.122/cef/patch/patch.cfg.54~	2024-04-16 15:52:52.000000000 +0200
++++ chromium-123.0.6312.122/cef/patch/patch.cfg	2024-04-16 17:48:19.106956545 +0200
 @@ -452,11 +452,6 @@ patches = [
      'name': 'linux_blink_thread_local',
    },
@@ -25,9 +25,9 @@ diff -up chromium-123.0.6312.86/cef/patch/patch.cfg.omv~ chromium-123.0.6312.86/
      # Fix unbound AssociatedRemote error in SetBackgroundOpaque.
      # https://bugs.chromium.org/p/chromium/issues/detail?id=1070713
      'name': 'renderer_host_1070713',
-diff -up chromium-123.0.6312.86/cef/patch/patches/base_sandbox_2743.patch.omv~ chromium-123.0.6312.86/cef/patch/patches/base_sandbox_2743.patch
---- chromium-123.0.6312.86/cef/patch/patches/base_sandbox_2743.patch.omv~	2024-04-02 00:53:45.765749703 +0200
-+++ chromium-123.0.6312.86/cef/patch/patches/base_sandbox_2743.patch	2024-04-02 00:53:56.481863075 +0200
+diff -up chromium-123.0.6312.122/cef/patch/patches/base_sandbox_2743.patch.54~ chromium-123.0.6312.122/cef/patch/patches/base_sandbox_2743.patch
+--- chromium-123.0.6312.122/cef/patch/patches/base_sandbox_2743.patch.54~	2024-04-16 15:52:52.000000000 +0200
++++ chromium-123.0.6312.122/cef/patch/patches/base_sandbox_2743.patch	2024-04-16 17:48:19.106956545 +0200
 @@ -1,7 +1,6 @@
 -diff --git base/BUILD.gn base/BUILD.gn
 -index a989a351a8765..3f7af447dd187 100644
@@ -191,9 +191,9 @@ diff -up chromium-123.0.6312.86/cef/patch/patches/base_sandbox_2743.patch.omv~ c
            reinterpret_cast<uint8_t*>(&rids[2]));
     return FromSubAuthorities(SECURITY_APP_PACKAGE_AUTHORITY, std::size(rids),
                               rids);
-diff -up chromium-123.0.6312.86/cef/patch/patches/chrome_runtime_views.patch.omv~ chromium-123.0.6312.86/cef/patch/patches/chrome_runtime_views.patch
---- chromium-123.0.6312.86/cef/patch/patches/chrome_runtime_views.patch.omv~	2024-04-02 00:46:56.205314440 +0200
-+++ chromium-123.0.6312.86/cef/patch/patches/chrome_runtime_views.patch	2024-04-02 00:48:59.446674399 +0200
+diff -up chromium-123.0.6312.122/cef/patch/patches/chrome_runtime_views.patch.54~ chromium-123.0.6312.122/cef/patch/patches/chrome_runtime_views.patch
+--- chromium-123.0.6312.122/cef/patch/patches/chrome_runtime_views.patch.54~	2024-04-16 15:52:52.000000000 +0200
++++ chromium-123.0.6312.122/cef/patch/patches/chrome_runtime_views.patch	2024-04-16 17:48:19.106956545 +0200
 @@ -1,8 +1,7 @@
 -diff --git chrome/browser/ui/browser_command_controller.cc chrome/browser/ui/browser_command_controller.cc
 -index 81a995b02dd7b..c539455c80ccc 100644
@@ -867,9 +867,9 @@ diff -up chromium-123.0.6312.86/cef/patch/patches/chrome_runtime_views.patch.omv
     }
   
     auto* app_browser_controller = browser->app_controller();
-diff -up chromium-123.0.6312.86/cef/patch/patches/content_2015.patch.omv~ chromium-123.0.6312.86/cef/patch/patches/content_2015.patch
---- chromium-123.0.6312.86/cef/patch/patches/content_2015.patch.omv~	2024-04-02 00:49:53.643264509 +0200
-+++ chromium-123.0.6312.86/cef/patch/patches/content_2015.patch	2024-04-02 00:50:12.755471594 +0200
+diff -up chromium-123.0.6312.122/cef/patch/patches/content_2015.patch.54~ chromium-123.0.6312.122/cef/patch/patches/content_2015.patch
+--- chromium-123.0.6312.122/cef/patch/patches/content_2015.patch.54~	2024-04-16 15:52:52.000000000 +0200
++++ chromium-123.0.6312.122/cef/patch/patches/content_2015.patch	2024-04-16 17:48:19.106956545 +0200
 @@ -1,7 +1,6 @@
 -diff --git content/browser/devtools/devtools_http_handler.cc content/browser/devtools/devtools_http_handler.cc
 -index b7430b7d7027f..721144dde86d8 100644
@@ -1002,39 +1002,7 @@ diff -up chromium-123.0.6312.86/cef/patch/patches/content_2015.patch.omv~ chromi
  @@ -545,6 +545,8 @@ void RenderThreadImpl::Init() {
         GetContentClient()->renderer()->CreateURLLoaderThrottleProvider(
             blink::URLLoaderThrottleProviderType::kFrame);
-@@ -149,11 +143,10 @@ index fef1829ebda85..23df06b6c60bb 10064
-    GetAssociatedInterfaceRegistry()->AddInterface<mojom::Renderer>(
-        base::BindRepeating(&RenderThreadImpl::OnRendererInterfaceReceiver,
-                            base::Unretained(this)));
--diff --git content/renderer/renderer_blink_platform_impl.cc content/renderer/renderer_blink_platform_impl.cc
--index 132aca6cb29e9..39374c08425b1 100644
----- content/renderer/renderer_blink_platform_impl.cc
--+++ content/renderer/renderer_blink_platform_impl.cc
--@@ -1011,6 +1011,15 @@ SkBitmap* RendererBlinkPlatformImpl::GetSadPageBitmap() {
-+diff -up content/renderer/renderer_blink_platform_impl.cc.c2015~ content/renderer/renderer_blink_platform_impl.cc
-+--- content/renderer/renderer_blink_platform_impl.cc.c2015~	2024-03-26 22:36:59.049883000 +0100
-++++ content/renderer/renderer_blink_platform_impl.cc	2024-04-02 00:49:40.371120401 +0200
-+@@ -1011,6 +1011,15 @@ SkBitmap* RendererBlinkPlatformImpl::Get
-  
-  //------------------------------------------------------------------------------
-  
-@@ -169,11 +162,10 @@ index 132aca6cb29e9..39374c08425b1 10064
-  std::unique_ptr<blink::WebV8ValueConverter>
-  RendererBlinkPlatformImpl::CreateWebV8ValueConverter() {
-    return std::make_unique<V8ValueConverterImpl>();
--diff --git content/renderer/renderer_blink_platform_impl.h content/renderer/renderer_blink_platform_impl.h
--index c1b86ec95d41c..8dca87a7201a4 100644
----- content/renderer/renderer_blink_platform_impl.h
--+++ content/renderer/renderer_blink_platform_impl.h
--@@ -237,6 +237,9 @@ class CONTENT_EXPORT RendererBlinkPlatformImpl : public BlinkPlatformImpl {
-+diff -up content/renderer/renderer_blink_platform_impl.h.c2015~ content/renderer/renderer_blink_platform_impl.h
-+--- content/renderer/renderer_blink_platform_impl.h.c2015~	2024-03-26 22:37:00.049883000 +0100
-++++ content/renderer/renderer_blink_platform_impl.h	2024-04-02 00:49:40.371120401 +0200
-+@@ -237,6 +237,9 @@ class CONTENT_EXPORT RendererBlinkPlatfo
-    InertAndMinimumIntervalOfUserLevelMemoryPressureSignal() override;
-  #endif  // BUILDFLAG(IS_ANDROID)
-  
-@@ -181,13 +173,12 @@ index c1b86ec95d41c..8dca87a7201a4 10064
+@@ -181,13 +175,12 @@ index ecbcf12493f77..2c529b2f07a14 10064
  +  void DevToolsAgentDetached() override;
  +
     // Tells this platform that the renderer is locked to a site (i.e., a scheme
@@ -1053,7 +1021,7 @@ diff -up chromium-123.0.6312.86/cef/patch/patches/content_2015.patch.omv~ chromi
   #endif
   }
   
-@@ -196,7 +187,7 @@ index 194a43ae9f6ee..77d6b4bf2a810 10064
+@@ -196,7 +189,7 @@ index 194a43ae9f6ee..77d6b4bf2a810 10064
       BrowserContext* context,
       bool in_memory,
       const base::FilePath& relative_partition_path,
@@ -1062,7 +1030,7 @@ diff -up chromium-123.0.6312.86/cef/patch/patches/content_2015.patch.omv~ chromi
           cert_verifier_creation_params) {
     ConfigureNetworkContextParamsForShell(context, network_context_params,
                                           cert_verifier_creation_params);
-@@ -204,11 +195,10 @@ index 194a43ae9f6ee..77d6b4bf2a810 10064
+@@ -204,11 +197,10 @@ index 194a43ae9f6ee..77d6b4bf2a810 10064
   }
   
   std::vector<base::FilePath>
@@ -1078,7 +1046,7 @@ diff -up chromium-123.0.6312.86/cef/patch/patches/content_2015.patch.omv~ chromi
     device::GeolocationManager* GetGeolocationManager() override;
     void OnNetworkServiceCreated(
         network::mojom::NetworkService* network_service) override;
-@@ -217,11 +207,10 @@ index 0fa1c7c38a387..5d878d3fda793 10064
+@@ -217,11 +209,10 @@ index 0fa1c7c38a387..5d878d3fda793 10064
         BrowserContext* context,
         bool in_memory,
         const base::FilePath& relative_partition_path,
@@ -1094,7 +1062,7 @@ diff -up chromium-123.0.6312.86/cef/patch/patches/content_2015.patch.omv~ chromi
     return true;
   }
   
-@@ -230,7 +219,7 @@ index c9c460444236d..0fbdbed1da9d7 10064
+@@ -230,7 +221,7 @@ index c9c460444236d..0fbdbed1da9d7 10064
       content::BrowserContext* context,
       bool in_memory,
       const base::FilePath& relative_partition_path,
@@ -1103,7 +1071,7 @@ diff -up chromium-123.0.6312.86/cef/patch/patches/content_2015.patch.omv~ chromi
     HeadlessBrowserContextImpl::From(context)->ConfigureNetworkContextParams(
         in_memory, relative_partition_path, network_context_params,
         cert_verifier_creation_params);
-@@ -238,11 +227,10 @@ index c9c460444236d..0fbdbed1da9d7 10064
+@@ -238,11 +229,10 @@ index c9c460444236d..0fbdbed1da9d7 10064
   }
   
   std::string HeadlessContentBrowserClient::GetProduct() {
@@ -1119,4 +1087,3 @@ diff -up chromium-123.0.6312.86/cef/patch/patches/content_2015.patch.omv~ chromi
         const url::Origin& accessing_origin,
         std::string* out_debug_message = nullptr) override;
   
-diff -up chromium-123.0.6312.86/cef/patch/patches/linux_chrome_widevine_3149.patch.omv~ chromium-123.0.6312.86/cef/patch/patches/linux_chrome_widevine_3149.patch
