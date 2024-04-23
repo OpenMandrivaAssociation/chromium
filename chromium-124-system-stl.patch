@@ -1,0 +1,13 @@
+diff -up chromium-124.0.6367.60/third_party/blink/renderer/bindings/core/v8/script_streamer.cc.omv~ chromium-124.0.6367.60/third_party/blink/renderer/bindings/core/v8/script_streamer.cc
+--- chromium-124.0.6367.60/third_party/blink/renderer/bindings/core/v8/script_streamer.cc.omv~	2024-04-19 14:55:35.479680149 +0200
++++ chromium-124.0.6367.60/third_party/blink/renderer/bindings/core/v8/script_streamer.cc	2024-04-19 14:55:44.087754523 +0200
+@@ -60,7 +60,8 @@
+ #include "third_party/blink/renderer/platform/wtf/shared_buffer.h"
+ #include "third_party/blink/renderer/platform/wtf/text/string_builder.h"
+ #include "third_party/blink/renderer/platform/wtf/text/text_encoding_registry.h"
+-#include "third_party/libc++/src/include/__atomic/atomic.h"
++//#include "third_party/libc++/src/include/__atomic/atomic.h"
++#include <atomic>
+ 
+ namespace blink {
+ namespace {
