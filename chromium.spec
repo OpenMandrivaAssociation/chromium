@@ -24,14 +24,14 @@
 %endif
 
 %bcond_without browser
-%bcond_with cef
+%bcond_without cef
 # Use the internal libc++ instead of libstdc++
 # This should usually be avoided because of potential symbol
 # clashes when using e.g. Qt and Chromium at the same time
 # (especially with cef!), but some versions of chromium make
 # it necessary
-# Main problem: https://github.com/llvm/llvm-project/issues/80210
-%bcond_with libcxx
+# in 124.x, chromium with libstdc++ crashes on startup.
+%bcond_without libcxx
 
 # FIXME As of 97.0.4688.2, Chromium crashes frequently when
 # built with fortification enabled.
@@ -102,7 +102,7 @@ Version:	124.0.6367.118
 # https://github.com/chromiumembedded/cef/issues/3616 fixed in cef upstream.
 # If we run into this problem, we need to either use custom libxml or build
 # system libxml with TLS disabled.
-%define cef 6367:ccc63c9e55a7f6b516f85a2e79e160a5d7488ddf
+%define cef 6367:b6e819b32943724c1a62a74df919cc54d99ea4df
 %endif
 Release:	1
 Summary:	A fast webkit-based web browser
@@ -248,7 +248,6 @@ Patch1025:	cef-zlib-linkage.patch
 # https://github.com/obsproject/cef/commits/6261-shared-textures
 Patch2000:	https://github.com/obsproject/cef/commit/27e977332df56c6251f4ee418d6bd51be073767d.patch
 Patch2001:	https://github.com/obsproject/cef/commit/f88220be4c4c02db5f9f0170dfc515d86a6f0c48.patch
-Patch2002:	https://github.com/obsproject/cef/commit/b73732b5bc5c42948b1505a3170f3980f0f95464.patch
 %endif
 # Patches for/from 3rd party trees
 # webrtc from https://webrtc.googlesource.com/src
