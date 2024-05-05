@@ -87,9 +87,9 @@ Name:		chromium-browser-%{channel}
 %endif
 # Working version numbers can be found at
 # https://chromiumdash.appspot.com/releases?platform=Linux
-Version:	124.0.6367.78
+Version:	124.0.6367.118
 ### Don't be evil!!! ###
-%define ungoogled 124.0.6367.78-1
+%define ungoogled 124.0.6367.118-1
 %if %{with cef}
 # To find the CEF commit matching the Chromium version, look up the
 # right branch at
@@ -184,31 +184,31 @@ Source1000:	https://github.com/ungoogled-software/ungoogled-chromium/archive/%{u
 # From Debian
 # https://sources.debian.org/patches/chromium/
 # Mostly fixes for libstdc++ related failures
-Patch200:	https://sources.debian.org/data/main/c/chromium/124.0.6367.60-1/debian/patches/fixes/ps-print.patch
-Patch201:	https://sources.debian.org/data/main/c/chromium/124.0.6367.60-1/debian/patches/fixes/perfetto.patch
-Patch202:	https://sources.debian.org/data/main/c/chromium/124.0.6367.60-1/debian/patches/fixes/blink-frags.patch
-Patch203:	https://sources.debian.org/data/main/c/chromium/124.0.6367.60-1/debian/patches/fixes/material-utils.patch
-Patch204:	https://sources.debian.org/data/main/c/chromium/124.0.6367.60-1/debian/patches/fixes/strlcpy.patch
-Patch205:	https://sources.debian.org/data/main/c/chromium/124.0.6367.60-1/debian/patches/fixes/stats-collector.patch
-Patch206:	https://sources.debian.org/data/main/c/chromium/124.0.6367.60-1/debian/patches/fixes/bad-font-gc0000.patch
-Patch207:	https://sources.debian.org/data/main/c/chromium/124.0.6367.60-1/debian/patches/fixes/bad-font-gc000.patch
-Patch208:	https://sources.debian.org/data/main/c/chromium/124.0.6367.60-1/debian/patches/fixes/bad-font-gc00.patch
-Patch209:	https://sources.debian.org/data/main/c/chromium/124.0.6367.60-1/debian/patches/fixes/bad-font-gc0.patch
-Patch210:	https://sources.debian.org/data/main/c/chromium/124.0.6367.60-1/debian/patches/fixes/bad-font-gc1.patch
-Patch211:	https://sources.debian.org/data/main/c/chromium/124.0.6367.60-1/debian/patches/fixes/bad-font-gc11.patch
-Patch212:	https://sources.debian.org/data/main/c/chromium/124.0.6367.60-1/debian/patches/fixes/bad-font-gc2.patch
-Patch213:	https://sources.debian.org/data/main/c/chromium/124.0.6367.60-1/debian/patches/fixes/bad-font-gc3.patch
-Patch214:	https://sources.debian.org/data/main/c/chromium/124.0.6367.60-1/debian/patches/upstream/mojo.patch
-Patch215:	https://sources.debian.org/data/main/c/chromium/124.0.6367.60-1/debian/patches/upstream/mojo-null.patch
-Patch216:	https://sources.debian.org/data/main/c/chromium/124.0.6367.60-1/debian/patches/upstream/uint-includes.patch
-Patch217:	https://sources.debian.org/data/main/c/chromium/124.0.6367.60-1/debian/patches/disable/screen-ai-blob.patch
-Patch218:	https://sources.debian.org/data/main/c/chromium/124.0.6367.60-1/debian/patches/system/icu-shim.patch
-Patch219:	https://sources.debian.org/data/main/c/chromium/124.0.6367.60-1/debian/patches/system/jpeg.patch
-Patch220:	https://sources.debian.org/data/main/c/chromium/124.0.6367.60-1/debian/patches/system/openjpeg.patch
-Patch221:	https://sources.debian.org/data/main/c/chromium/124.0.6367.60-1/debian/patches/system/clang-format.patch
-Patch222:	https://sources.debian.org/data/main/c/chromium/124.0.6367.60-1/debian/patches/system/opus.patch
-Patch223:	https://sources.debian.org/data/main/c/chromium/124.0.6367.60-1/debian/patches/system/eu-strip.patch
-Patch224:	https://sources.debian.org/data/main/c/chromium/124.0.6367.60-1/debian/patches/system/rollup.patch
+Patch200:	https://sources.debian.org/data/main/c/chromium/124.0.6367.118-1/debian/patches/fixes/ps-print.patch
+Patch201:	https://sources.debian.org/data/main/c/chromium/124.0.6367.118-1/debian/patches/fixes/perfetto.patch
+Patch202:	https://sources.debian.org/data/main/c/chromium/124.0.6367.118-1/debian/patches/fixes/blink-frags.patch
+Patch203:	https://sources.debian.org/data/main/c/chromium/124.0.6367.118-1/debian/patches/fixes/material-utils.patch
+Patch204:	https://sources.debian.org/data/main/c/chromium/124.0.6367.118-1/debian/patches/fixes/strlcpy.patch
+Patch205:	https://sources.debian.org/data/main/c/chromium/124.0.6367.118-1/debian/patches/fixes/stats-collector.patch
+Patch206:	https://sources.debian.org/data/main/c/chromium/124.0.6367.118-1/debian/patches/fixes/bad-font-gc0000.patch
+Patch207:	https://sources.debian.org/data/main/c/chromium/124.0.6367.118-1/debian/patches/fixes/bad-font-gc000.patch
+Patch208:	https://sources.debian.org/data/main/c/chromium/124.0.6367.118-1/debian/patches/fixes/bad-font-gc00.patch
+Patch209:	https://sources.debian.org/data/main/c/chromium/124.0.6367.118-1/debian/patches/fixes/bad-font-gc0.patch
+Patch210:	https://sources.debian.org/data/main/c/chromium/124.0.6367.118-1/debian/patches/fixes/bad-font-gc1.patch
+Patch211:	https://sources.debian.org/data/main/c/chromium/124.0.6367.118-1/debian/patches/fixes/bad-font-gc11.patch
+Patch212:	https://sources.debian.org/data/main/c/chromium/124.0.6367.118-1/debian/patches/fixes/bad-font-gc2.patch
+Patch213:	https://sources.debian.org/data/main/c/chromium/124.0.6367.118-1/debian/patches/fixes/bad-font-gc3.patch
+Patch214:	https://sources.debian.org/data/main/c/chromium/124.0.6367.118-1/debian/patches/upstream/mojo.patch
+Patch215:	https://sources.debian.org/data/main/c/chromium/124.0.6367.118-1/debian/patches/upstream/mojo-null.patch
+Patch216:	https://sources.debian.org/data/main/c/chromium/124.0.6367.118-1/debian/patches/upstream/uint-includes.patch
+Patch217:	https://sources.debian.org/data/main/c/chromium/124.0.6367.118-1/debian/patches/disable/screen-ai-blob.patch
+Patch218:	https://sources.debian.org/data/main/c/chromium/124.0.6367.118-1/debian/patches/system/icu-shim.patch
+Patch219:	https://sources.debian.org/data/main/c/chromium/124.0.6367.118-1/debian/patches/system/jpeg.patch
+Patch220:	https://sources.debian.org/data/main/c/chromium/124.0.6367.118-1/debian/patches/system/openjpeg.patch
+Patch221:	https://sources.debian.org/data/main/c/chromium/124.0.6367.118-1/debian/patches/system/clang-format.patch
+Patch222:	https://sources.debian.org/data/main/c/chromium/124.0.6367.118-1/debian/patches/system/opus.patch
+Patch223:	https://sources.debian.org/data/main/c/chromium/124.0.6367.118-1/debian/patches/system/eu-strip.patch
+Patch224:	https://sources.debian.org/data/main/c/chromium/124.0.6367.118-1/debian/patches/system/rollup.patch
 
 # omv
 Patch1001:	chromium-64-system-curl.patch
