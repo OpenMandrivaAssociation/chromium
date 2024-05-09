@@ -1,6 +1,6 @@
-diff -up chromium-124.0.6367.60/cef/libcef/browser/alloy/chrome_browser_process_alloy.cc.50~ chromium-124.0.6367.60/cef/libcef/browser/alloy/chrome_browser_process_alloy.cc
---- chromium-124.0.6367.60/cef/libcef/browser/alloy/chrome_browser_process_alloy.cc.50~	2024-04-16 15:52:24.000000000 +0200
-+++ chromium-124.0.6367.60/cef/libcef/browser/alloy/chrome_browser_process_alloy.cc	2024-04-19 00:25:34.486208358 +0200
+diff -up chromium-124.0.6367.155/cef/libcef/browser/alloy/chrome_browser_process_alloy.cc.62~ chromium-124.0.6367.155/cef/libcef/browser/alloy/chrome_browser_process_alloy.cc
+--- chromium-124.0.6367.155/cef/libcef/browser/alloy/chrome_browser_process_alloy.cc.62~	2024-05-06 22:56:41.000000000 +0200
++++ chromium-124.0.6367.155/cef/libcef/browser/alloy/chrome_browser_process_alloy.cc	2024-05-09 02:09:18.318706842 +0200
 @@ -359,10 +359,12 @@ StatusTray* ChromeBrowserProcessAlloy::s
    return nullptr;
  }
@@ -14,9 +14,9 @@ diff -up chromium-124.0.6367.60/cef/libcef/browser/alloy/chrome_browser_process_
  
  subresource_filter::RulesetService*
  ChromeBrowserProcessAlloy::subresource_filter_ruleset_service() {
-diff -up chromium-124.0.6367.60/cef/libcef/browser/alloy/chrome_browser_process_alloy.h.50~ chromium-124.0.6367.60/cef/libcef/browser/alloy/chrome_browser_process_alloy.h
---- chromium-124.0.6367.60/cef/libcef/browser/alloy/chrome_browser_process_alloy.h.50~	2024-04-16 15:52:24.000000000 +0200
-+++ chromium-124.0.6367.60/cef/libcef/browser/alloy/chrome_browser_process_alloy.h	2024-04-19 00:25:34.486208358 +0200
+diff -up chromium-124.0.6367.155/cef/libcef/browser/alloy/chrome_browser_process_alloy.h.62~ chromium-124.0.6367.155/cef/libcef/browser/alloy/chrome_browser_process_alloy.h
+--- chromium-124.0.6367.155/cef/libcef/browser/alloy/chrome_browser_process_alloy.h.62~	2024-05-06 22:56:41.000000000 +0200
++++ chromium-124.0.6367.155/cef/libcef/browser/alloy/chrome_browser_process_alloy.h	2024-05-09 02:09:18.318706842 +0200
 @@ -89,7 +89,7 @@ class ChromeBrowserProcessAlloy : public
        std::unique_ptr<BackgroundModeManager> manager) override;
  #endif
@@ -26,10 +26,10 @@ diff -up chromium-124.0.6367.60/cef/libcef/browser/alloy/chrome_browser_process_
    subresource_filter::RulesetService* subresource_filter_ruleset_service()
        override;
    StartupData* startup_data() override;
-diff -up chromium-124.0.6367.60/cef/libcef/browser/prefs/browser_prefs.cc.50~ chromium-124.0.6367.60/cef/libcef/browser/prefs/browser_prefs.cc
---- chromium-124.0.6367.60/cef/libcef/browser/prefs/browser_prefs.cc.50~	2024-04-16 15:52:24.000000000 +0200
-+++ chromium-124.0.6367.60/cef/libcef/browser/prefs/browser_prefs.cc	2024-04-19 00:38:40.802221945 +0200
-@@ -59,7 +59,7 @@
+diff -up chromium-124.0.6367.155/cef/libcef/browser/prefs/browser_prefs.cc.62~ chromium-124.0.6367.155/cef/libcef/browser/prefs/browser_prefs.cc
+--- chromium-124.0.6367.155/cef/libcef/browser/prefs/browser_prefs.cc.62~	2024-05-06 22:56:41.000000000 +0200
++++ chromium-124.0.6367.155/cef/libcef/browser/prefs/browser_prefs.cc	2024-05-09 02:10:06.951197121 +0200
+@@ -60,7 +60,7 @@
  #include "components/privacy_sandbox/privacy_sandbox_prefs.h"
  #include "components/proxy_config/pref_proxy_config_tracker_impl.h"
  #include "components/proxy_config/proxy_config_dictionary.h"
@@ -38,9 +38,9 @@ diff -up chromium-124.0.6367.60/cef/libcef/browser/prefs/browser_prefs.cc.50~ ch
  #include "components/safe_search_api/safe_search_util.h"
  #include "components/spellcheck/browser/pref_names.h"
  #include "components/supervised_user/core/common/buildflags.h"
-@@ -273,7 +273,7 @@ std::unique_ptr<PrefService> CreatePrefS
-     privacy_sandbox::RegisterProfilePrefs(registry.get());
+@@ -275,7 +275,7 @@ std::unique_ptr<PrefService> CreatePrefS
      ProfileNetworkContextService::RegisterProfilePrefs(registry.get());
+     QuietNotificationPermissionUiState::RegisterProfilePrefs(registry.get());
      RegisterBrowserViewProfilePrefs(registry.get());
 -    safe_browsing::RegisterProfilePrefs(registry.get());
 +    //safe_browsing::RegisterProfilePrefs(registry.get());
