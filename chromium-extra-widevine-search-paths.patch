@@ -1,0 +1,64 @@
+diff -up chromium-124.0.6367.155/chrome/common/chrome_paths.cc.omv~ chromium-124.0.6367.155/chrome/common/chrome_paths.cc
+--- chromium-124.0.6367.155/chrome/common/chrome_paths.cc.omv~	2024-05-09 22:38:44.434821421 +0200
++++ chromium-124.0.6367.155/chrome/common/chrome_paths.cc	2024-05-09 22:57:43.791516739 +0200
+@@ -410,6 +410,60 @@ bool PathProvider(int key, base::FilePat
+ 
+ #if BUILDFLAG(ENABLE_WIDEVINE)
+     case chrome::DIR_BUNDLED_WIDEVINE_CDM:
++      /* WideVine may come from different sources: */
++
++      /* OpenMandriva widevine-installer package */
++      cur = base::FilePath(FILE_PATH_LITERAL("/opt/widevine/libwidevinecdm.so"));
++      if (base::PathExists(cur))
++        break;
++
++#ifdef __x86_64__
++      /* Chrome unstable */
++      cur = base::FilePath(FILE_PATH_LITERAL("/opt/google/chrome-unstable/WidevineCdm/_platform_specific/linux_x64/libwidevinecdm.so"));
++      if (base::PathExists(cur))
++        break;
++
++      /* Chrome beta */
++      cur = base::FilePath(FILE_PATH_LITERAL("/opt/google/chrome-beta/WidevineCdm/_platform_specific/linux_x64/libwidevinecdm.so"));
++      if (base::PathExists(cur))
++        break;
++
++      /* Chrome stable */
++      cur = base::FilePath(FILE_PATH_LITERAL("/opt/google/chrome/WidevineCdm/_platform_specific/linux_x64/libwidevinecdm.so"));
++      if (base::PathExists(cur))
++        break;
++
++      /* Edge unstable */
++      cur = base::FilePath(FILE_PATH_LITERAL("/opt/microsoft/msedge-dev/WidevineCdm/_platform_specific/linux_x64/libwidevinecdm.so"));
++      if (base::PathExists(cur))
++        break;
++
++      /* Edge stable */
++      cur = base::FilePath(FILE_PATH_LITERAL("/opt/microsoft/msedge/WidevineCdm/_platform_specific/linux_x64/libwidevinecdm.so"));
++      if (base::PathExists(cur))
++        break;
++
++      /* Brave nightly */
++      base::PathService::Get(base::DIR_HOME, &cur);
++      cur = cur.Append(FILE_PATH_LITERAL(".config/BraveSoftware/Brave-Browser-Nightly/WidevineCdm/4.10.2710.0/_platform_specific/linux_x64/libwidevinecdm.so"));
++      if (base::PathExists(cur))
++        break;
++
++      /* Brave stable */
++      base::PathService::Get(base::DIR_HOME, &cur);
++      cur = cur.Append(FILE_PATH_LITERAL(".config/BraveSoftware/Brave-Browser/WidevineCdm/4.10.2710.0/_platform_specific/linux_x64/libwidevinecdm.so"));
++      if (base::PathExists(cur))
++        break;
++#endif
++
++#ifdef __aarch64__
++      /* https://support.brave.com/hc/en-us/articles/23881756488717-How-do-I-enable-Widevine-DRM-on-Linux */
++      cur = base::FilePath(FILE_PATH_LITERAL("/opt/brave.com/brave/WidevineCdm/libwidevinecdm.so"));
++      if (base::PathExists(cur))
++        break;
++#endif
++
++      /* local per-user installation */
+       base::PathService::Get(base::DIR_HOME, &cur);
+       cur = cur.Append(FILE_PATH_LITERAL(".local/lib/libwidevinecdm.so"));
+       if (base::PathExists(cur)) {

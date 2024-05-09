@@ -67,9 +67,9 @@
 # libwebp (as of 124.x): //third_party/libavif:libavif_enc(//build/toolchain/linux/unbundle:default) needs //third_party/libwebp:libwebp_sharpyuv(//build/toolchain/linux/unbundle:default)
 # re2 (as of 124.x): //third_party/googletest:gtest_config(//build/toolchain/linux/unbundle:default) needs //third_party/re2:re2_config(//build/toolchain/linux/unbundle:default) (+ libc++/libstdc++ issue)
 %if %{with libcxx}
-%global system_libs brotli dav1d flac ffmpeg fontconfig harfbuzz-ng libjpeg libjxl libpng libdrm libxml libxslt opus libusb openh264 zlib libjxl freetype zstd
+%global system_libs brotli dav1d flac ffmpeg fontconfig harfbuzz-ng libjpeg libjxl libpng libdrm libxml libxslt opus libusb openh264 zlib freetype zstd libwebp
 %else
-%global system_libs brotli dav1d flac ffmpeg fontconfig harfbuzz-ng libjpeg libjxl libpng libdrm libxml libxslt opus libusb openh264 zlib libjxl freetype zstd jsoncpp snappy
+%global system_libs brotli dav1d flac ffmpeg fontconfig harfbuzz-ng libjpeg libjxl libpng libdrm libxml libxslt opus libusb openh264 zlib freetype zstd libwebp jsoncpp snappy
 %endif
 %define system() %(if echo %{system_libs} |grep -q -E '(^| )%{1}( |$)'; then echo -n 1; else echo -n 0;  fi)
 
@@ -104,7 +104,7 @@ Version:	124.0.6367.155
 # system libxml with TLS disabled.
 %define cef 6367:ff7dcd851eab996935594cd9986256de2ca74c1e
 %endif
-Release:	1
+Release:	2
 Summary:	A fast webkit-based web browser
 Group:		Networking/WWW
 License:	BSD, LGPL
@@ -126,17 +126,16 @@ Source100:	%{name}.rpmlintrc
 ### Chromium Fedora Patches ###
 %if ! 0%{?ungoogled:1}
 # Ungoogled Chromium already builds a PIE sandbox
-Patch0:		https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-70.0.3538.67-sandbox-pie.patch
+Patch0:		https://src.fedoraproject.org/rpms/chromium/raw/rawhide/f/chromium-70.0.3538.67-sandbox-pie.patch
 %endif
 # Use /etc/chromium for master_prefs
-Patch1:		https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-68.0.3440.106-master-prefs-path.patch
+Patch1:		https://src.fedoraproject.org/rpms/chromium/raw/rawhide/f/chromium-68.0.3440.106-master-prefs-path.patch
+Patch2:		https://src.fedoraproject.org/rpms/chromium/raw/rawhide/f/chromium-67.0.3396.62-gn-system.patch
+Patch3:		https://src.fedoraproject.org/rpms/chromium/raw/rawhide/f/chromium-103.0.5060.53-update-rjsmin-to-1.2.0.patch
 # Use gn system files
 # Do not mangle zlib
-Patch6:		https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-77.0.3865.75-no-zlib-mangle.patch
+Patch6:		https://src.fedoraproject.org/rpms/chromium/raw/rawhide/f/chromium-77.0.3865.75-no-zlib-mangle.patch
 Patch7:		chroimum-119-workaround-crash-on-startup.patch
-# Use Gentoo's Widevine hack
-# https://gitweb.gentoo.org/repo/gentoo.git/tree/www-client/chromium/files/chromium-widevine-r3.patch
-Patch8:		https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-71.0.3578.98-widevine-r3.patch
 # More and better search engines
 # https://bugs.chromium.org/p/chromium/issues/detail?id=1502905
 Patch9:		chromium-124-search-engine-choice.patch
@@ -144,26 +143,30 @@ Patch9:		chromium-124-search-engine-choice.patch
 # https://bugs.chromium.org/p/chromium/issues/detail?id=1445074
 # Based on https://gist.githubusercontent.com/thubble/235806c4c64b159653de879173d24d9f/raw/dd9366083a6c635b7accd53cb9c01f7bece1185f/chromium-support-disjoint-vaapi-export-import.patch
 #Patch10:	chromium-119-fix-vaapi-video-decode-on-amd.patch
-# Try to load widevine from other places
-Patch11:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-100.0.4896.60-widevine-other-locations.patch
 # https://gitweb.gentoo.org/repo/gentoo.git/tree/www-client/chromium/files/chromium-unbundle-zlib.patch
 Patch53:	chromium-81-unbundle-zlib.patch
 # Needs to be submitted..
-Patch54:	https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-77.0.3865.75-gcc-include-memory.patch
+Patch54:	https://src.fedoraproject.org/rpms/chromium/raw/rawhide/f/chromium-77.0.3865.75-gcc-include-memory.patch
 Patch55:	chromium-113.0.5672.63-compile.patch
-Patch56:	https://src.fedoraproject.org/rpms/chromium/raw/rawhide/f/chromium-103.0.5060.53-update-rjsmin-to-1.2.0.patch
+Patch56:	https://src.fedoraproject.org/rpms/chromium/raw/rawhide/f/chromium-107-proprietary-codecs.patch
 Patch59:	chromium-121-rust-clang_lib.patch
 Patch60:	chromium-124-libstdc++.patch
 Patch61:	chromium-124-system-stl.patch
+# Disable whitelist, allow everything
+Patch62:	https://src.fedoraproject.org/rpms/chromium/raw/rawhide/f/chromium-122-disable-FFmpegAllowLists.patch
 
-# From Arch and Gentoo
+# From Arch
 # https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=chromium-dev
 # https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=chromium-wayland-vaapi
 #Patch102:	https://aur.archlinux.org/cgit/aur.git/plain/0001-adjust-buffer-format-order.patch?h=chromium-wayland-vaapi#/0001-adjust-buffer-format-order.patch
-Patch103:	https://aur.archlinux.org/cgit/aur.git/tree/0001-ozone-wayland-implement-text_input_manager_v3.patch?h=chromium-wayland-vaapi#/0001-ozone-wayland-implement-text_input_manager_v3.patch
-Patch104:	https://aur.archlinux.org/cgit/aur.git/tree/0001-ozone-wayland-implement-text_input_manager-fixes.patch?h=chromium-wayland-vaapi#/0001-ozone-wayland-implement-text_input_manager-fixes.patch
-Patch110:	https://raw.githubusercontent.com/archlinux/svntogit-packages/packages/chromium/trunk/use-oauth2-client-switches-as-default.patch
-#Patch111:	reverse-roll-src-third_party-ffmpeg.patch
+Patch100:	https://aur.archlinux.org/cgit/aur.git/plain/0001-ozone-wayland-implement-text_input_manager_v3.patch?h=chromium-wayland-vaapi#/0001-ozone-wayland-implement-text_input_manager_v3.patch
+Patch101:	https://aur.archlinux.org/cgit/aur.git/plain/0001-ozone-wayland-implement-text_input_manager-fixes.patch?h=chromium-wayland-vaapi#/0001-ozone-wayland-implement-text_input_manager-fixes.patch
+Patch102:	https://aur.archlinux.org/cgit/aur.git/plain/chromium-qt6.patch?h=chromium-dev#/chromium-qt6.patch
+Patch103:	https://raw.githubusercontent.com/archlinux/svntogit-packages/packages/chromium/trunk/use-oauth2-client-switches-as-default.patch
+
+# From Gentoo
+Patch105:	https://gitweb.gentoo.org/repo/gentoo.git/plain/www-client/chromium/files/chromium-124-libwebp-shim-sharpyuv.patch
+Patch106:	https://gitweb.gentoo.org/repo/gentoo.git/plain/www-client/chromium/files/chromium-125-ninja-1-12.patch
 
 # https://gitlab.com/Matt.Jolly/chromium-patches
 # Often has patches needed to build with libstdc++, sometimes other
@@ -209,6 +212,8 @@ Patch221:	https://sources.debian.org/data/main/c/chromium/124.0.6367.155-1/debia
 Patch222:	https://sources.debian.org/data/main/c/chromium/124.0.6367.155-1/debian/patches/system/opus.patch
 Patch223:	https://sources.debian.org/data/main/c/chromium/124.0.6367.155-1/debian/patches/system/eu-strip.patch
 Patch224:	https://sources.debian.org/data/main/c/chromium/124.0.6367.155-1/debian/patches/system/rollup.patch
+Patch225:	https://sources.debian.org/data/main/c/chromium/124.0.6367.155-1/debian/patches/fixes/widevine-revision.patch
+Patch226:	https://sources.debian.org/data/main/c/chromium/124.0.6367.155-1/debian/patches/fixes/widevine-locations.patch
 
 # omv
 Patch1001:	chromium-64-system-curl.patch
@@ -216,18 +221,13 @@ Patch1002:	chromium-69-no-static-libstdc++.patch
 Patch1003:	chromium-system-zlib.patch
 Patch1004:	chromium-107-system-libs.patch
 Patch1005:	chromium-restore-jpeg-xl-support.patch
-Patch1012:	jxl-port-chromium-124.patch
-# Without this, final linking throws a bad_alloc exception.
-# Probably the limits set upstream are too low.
-#Patch1007:	chromium-81-enable-gpu-features.patch
-Patch2:		https://src.fedoraproject.org/rpms/chromium/raw/master/f/chromium-67.0.3396.62-gn-system.patch
-Patch1006:	https://raw.githubusercontent.com/ungoogled-software/ungoogled-chromium-fedora/master/chromium-91.0.4472.77-java-only-allowed-in-android-builds.patch
-Patch1007:	chromium-116-dont-override-thinlto-cache-policy.patch
-Patch1008:	chromium-116-system-brotli.patch
-Patch1009:	chromium-97-compilefixes.patch
-Patch1010:	chromium-122-qt6-buildfix.patch
+Patch1006:	chromium-extra-widevine-search-paths.patch
+Patch1007:	https://raw.githubusercontent.com/ungoogled-software/ungoogled-chromium-fedora/master/chromium-91.0.4472.77-java-only-allowed-in-android-builds.patch
+Patch1008:	chromium-116-dont-override-thinlto-cache-policy.patch
+Patch1009:	chromium-116-system-brotli.patch
+Patch1010:	chromium-97-compilefixes.patch
 Patch1011:	chromium-123-clang_version.patch
-#Patch1012:	chromium-112-compile.patch
+Patch1012:	jxl-port-chromium-124.patch
 Patch1013:	chromium-105-minizip-ng.patch
 #Patch1014:	chromium-fix-buildsystem-breakages.patch
 Patch1015:	chromium-117-compile.patch
@@ -302,6 +302,7 @@ BuildRequires:	pkgconfig(Qt6DBus)
 BuildRequires:	pkgconfig(Qt6Gui)
 BuildRequires:	pkgconfig(Qt6Widgets)
 BuildRequires:	pkgconfig(Qt6OpenGL)
+BuildRequires:	pkgconfig(RapidJSON)
 BuildRequires:	pkgconfig(xkbcommon)
 BuildRequires:	pkgconfig(atspi-2)
 BuildRequires:	pkgconfig(atk)
@@ -754,9 +755,16 @@ GN_DEFINES+=" use_vaapi_image_codecs=true"
 GN_DEFINES+=' rust_sysroot_absolute="%{_prefix}"'
 GN_DEFINES+=" rustc_version=\"$(rustc --version | awk '{ print $2; }')\""
 # 107: Build failure: GN_DEFINES+=" enable_wayland_server=true"
-# 107: Build failure: GN_DEFINES+=" perfetto_use_system_protobuf=true"
-# 107: Build failure: GN_DEFINES+=" use_v4l2_codec=true use_v4lplugin=true"
-# 107: Build failure: GN_DEFINES+=" use_webaudio_ffmpeg=true"
+# 124: Fails with 
+# ld.lld: error: undefined symbol: google::protobuf::compiler::CodeGenerator::GenerateAll(std::__Cr::vector<google::protobuf::FileDescriptor const*, std::__Cr::allocator<google::protobuf::FileDescriptor const*>> const&, std::__Cr::basic_string<char, std::__Cr::char_traits<char>, std::__Cr::allocator<char>> const&, google::protobuf::compiler::GeneratorContext*, std::__Cr::basic_string<char, std::__Cr::char_traits<char>, std::__Cr::allocator<char>>*) const
+# >>> referenced by ld-temp.o
+# (probably hardcoded use of bundled headers somewhere...)
+#GN_DEFINES+=" perfetto_use_system_protobuf=true"
+GN_DEFINES+=" use_v4lplugin=true"
+# Can't use vaapi and v4l2_codec at the same time, there is no
+# selection at runtime
+# GN_DEFINES+=" use_v4l2_codec=true"
+GN_DEFINES+=" use_webaudio_ffmpeg=true"
 
 # -gdwarf-4 is for the sake of debugedit
 # https://sourceware.org/bugzilla/show_bug.cgi?id=29773
