@@ -1,0 +1,52 @@
+diff -up chromium-125.0.6422.60/cef/libcef/browser/alloy/chrome_browser_process_alloy.cc.omv~ chromium-125.0.6422.60/cef/libcef/browser/alloy/chrome_browser_process_alloy.cc
+--- chromium-125.0.6422.60/cef/libcef/browser/alloy/chrome_browser_process_alloy.cc.omv~	2024-05-20 19:58:46.501130638 +0200
++++ chromium-125.0.6422.60/cef/libcef/browser/alloy/chrome_browser_process_alloy.cc	2024-05-20 19:58:56.725268980 +0200
+@@ -359,10 +359,12 @@ StatusTray* ChromeBrowserProcessAlloy::s
+   return nullptr;
+ }
+ 
++#ifdef NOT_UNGOOGLED
+ safe_browsing::SafeBrowsingService*
+ ChromeBrowserProcessAlloy::safe_browsing_service() {
+   return nullptr;
+ }
++#endif
+ 
+ subresource_filter::RulesetService*
+ ChromeBrowserProcessAlloy::subresource_filter_ruleset_service() {
+diff -up chromium-125.0.6422.60/cef/libcef/browser/alloy/chrome_browser_process_alloy.h.omv~ chromium-125.0.6422.60/cef/libcef/browser/alloy/chrome_browser_process_alloy.h
+--- chromium-125.0.6422.60/cef/libcef/browser/alloy/chrome_browser_process_alloy.h.omv~	2024-05-20 19:58:26.860863067 +0200
++++ chromium-125.0.6422.60/cef/libcef/browser/alloy/chrome_browser_process_alloy.h	2024-05-20 19:58:43.637091770 +0200
+@@ -89,7 +89,9 @@ class ChromeBrowserProcessAlloy : public
+       std::unique_ptr<BackgroundModeManager> manager) override;
+ #endif
+   StatusTray* status_tray() override;
++#ifdef NOT_UNGOOGLED
+   safe_browsing::SafeBrowsingService* safe_browsing_service() override;
++#endif
+   subresource_filter::RulesetService* subresource_filter_ruleset_service()
+       override;
+   subresource_filter::RulesetService*
+diff -up chromium-125.0.6422.60/cef/libcef/browser/prefs/browser_prefs.cc.omv~ chromium-125.0.6422.60/cef/libcef/browser/prefs/browser_prefs.cc
+--- chromium-125.0.6422.60/cef/libcef/browser/prefs/browser_prefs.cc.omv~	2024-05-20 20:40:49.061858733 +0200
++++ chromium-125.0.6422.60/cef/libcef/browser/prefs/browser_prefs.cc	2024-05-20 20:41:33.562349813 +0200
+@@ -61,7 +61,9 @@
+ #include "components/privacy_sandbox/privacy_sandbox_prefs.h"
+ #include "components/proxy_config/pref_proxy_config_tracker_impl.h"
+ #include "components/proxy_config/proxy_config_dictionary.h"
++#ifdef NOT_UNGOOGLED
+ #include "components/safe_browsing/core/common/safe_browsing_prefs.h"
++#endif
+ #include "components/safe_search_api/safe_search_util.h"
+ #include "components/spellcheck/browser/pref_names.h"
+ #include "components/supervised_user/core/browser/supervised_user_pref_store.h"
+@@ -268,7 +270,9 @@ std::unique_ptr<PrefService> CreatePrefS
+     ProfileNetworkContextService::RegisterProfilePrefs(registry.get());
+     QuietNotificationPermissionUiState::RegisterProfilePrefs(registry.get());
+     RegisterBrowserViewProfilePrefs(registry.get());
++#ifdef NOT_UNGOOGLED
+     safe_browsing::RegisterProfilePrefs(registry.get());
++#endif
+     unified_consent::UnifiedConsentService::RegisterPrefs(registry.get());
+ 
+     const std::string& locale =

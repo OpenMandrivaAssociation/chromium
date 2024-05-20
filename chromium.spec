@@ -250,7 +250,7 @@ Patch1022:	chromium-115-fix-generate_fontconfig_caches.patch
 Patch1023:	cef-115-minizip-ng.patch
 %if 0%{?ungoogled:1}
 Patch1024:	cef-125-rebase-to-ungoogled.patch
-#Patch1025:	cef-115-ungoogling.patch
+Patch1025:	cef-125-ungoogling.patch
 %endif
 Patch1026:	cef-zlib-linkage.patch
 %endif
