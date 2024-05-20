@@ -1,0 +1,1137 @@
+diff -up chromium-125.0.6422.60/cef/patch/patches/base_sandbox_2743.patch.omv~ chromium-125.0.6422.60/cef/patch/patches/base_sandbox_2743.patch
+--- chromium-125.0.6422.60/cef/patch/patches/base_sandbox_2743.patch.omv~	2024-05-19 23:51:57.898894712 +0200
++++ chromium-125.0.6422.60/cef/patch/patches/base_sandbox_2743.patch	2024-05-20 00:06:28.632473480 +0200
+@@ -1,7 +1,6 @@
+-diff --git base/BUILD.gn base/BUILD.gn
+-index 5dc15da08eeff..4d98f417eabc3 100644
+---- base/BUILD.gn
+-+++ base/BUILD.gn
++diff -up base/BUILD.gn.sb2743~ base/BUILD.gn
++--- base/BUILD.gn.sb2743~	2024-05-15 23:45:50.827913500 +0200
+++++ base/BUILD.gn	2024-05-20 00:06:14.940332535 +0200
+ @@ -41,6 +41,7 @@ import("//build/nocompile.gni")
+  import("//build/timestamp.gni")
+  import("//build/util/process_version.gni")
+@@ -36,10 +35,9 @@ index 5dc15da08eeff..4d98f417eabc3 10064
+      libs += [
+        "cfgmgr32.lib",
+        "ntdll.lib",
+-diff --git base/allocator/dispatcher/dispatcher.cc base/allocator/dispatcher/dispatcher.cc
+-index 78f706cd6bef8..87eafa7a762f6 100644
+---- base/allocator/dispatcher/dispatcher.cc
+-+++ base/allocator/dispatcher/dispatcher.cc
++diff -up base/allocator/dispatcher/dispatcher.cc.sb2743~ base/allocator/dispatcher/dispatcher.cc
++--- base/allocator/dispatcher/dispatcher.cc.sb2743~	2024-05-15 23:45:49.827913500 +0200
+++++ base/allocator/dispatcher/dispatcher.cc	2024-05-20 00:06:14.940332535 +0200
+ @@ -8,6 +8,7 @@
+  #include "base/check.h"
+  #include "base/dcheck_is_on.h"
+@@ -57,10 +55,9 @@ index 78f706cd6bef8..87eafa7a762f6 10064
+      DCHECK([&]() {
+        auto const was_set = is_initialized_check_flag_.test_and_set();
+        is_initialized_check_flag_.clear();
+-diff --git base/hash/md5.h base/hash/md5.h
+-index 215d636fec275..922e88f31b999 100644
+---- base/hash/md5.h
+-+++ base/hash/md5.h
++diff -up base/hash/md5.h.sb2743~ base/hash/md5.h
++--- base/hash/md5.h.sb2743~	2024-05-15 23:45:49.999929200 +0200
+++++ base/hash/md5.h	2024-05-20 00:06:14.940332535 +0200
+ @@ -11,8 +11,9 @@
+  #include "base/base_export.h"
+  #include "base/containers/span.h"
+@@ -72,10 +69,9 @@ index 215d636fec275..922e88f31b999 10064
+  #include "base/hash/md5_nacl.h"
+  #else
+  #include "base/hash/md5_boringssl.h"
+-diff --git base/hash/sha1.h base/hash/sha1.h
+-index 1891e95fa387d..fc190dc39ae7d 100644
+---- base/hash/sha1.h
+-+++ base/hash/sha1.h
++diff -up base/hash/sha1.h.sb2743~ base/hash/sha1.h
++--- base/hash/sha1.h.sb2743~	2024-05-15 23:45:49.999929200 +0200
+++++ base/hash/sha1.h	2024-05-20 00:06:14.940332535 +0200
+ @@ -14,7 +14,9 @@
+  #include "base/base_export.h"
+  #include "base/containers/span.h"
+@@ -87,10 +83,9 @@ index 1891e95fa387d..fc190dc39ae7d 10064
+  #include "base/hash/sha1_nacl.h"
+  #else
+  #include "base/hash/sha1_boringssl.h"
+-diff --git base/rand_util.h base/rand_util.h
+-index a24e93122172e..5084668cb93a7 100644
+---- base/rand_util.h
+-+++ base/rand_util.h
++diff -up base/rand_util.h.sb2743~ base/rand_util.h
++--- base/rand_util.h.sb2743~	2024-05-15 23:45:50.079936500 +0200
+++++ base/rand_util.h	2024-05-20 00:06:14.940332535 +0200
+ @@ -17,8 +17,9 @@
+  #include "base/containers/span.h"
+  #include "base/gtest_prod_util.h"
+@@ -111,10 +106,9 @@ index a24e93122172e..5084668cb93a7 10064
+  class NonAllocatingRandomBitGenerator {
+   public:
+    using result_type = uint64_t;
+-diff --git base/rand_util_win.cc base/rand_util_win.cc
+-index 299e54300a09d..cdc43cc48dce6 100644
+---- base/rand_util_win.cc
+-+++ base/rand_util_win.cc
++diff -up base/rand_util_win.cc.sb2743~ base/rand_util_win.cc
++--- base/rand_util_win.cc.sb2743~	2024-05-15 23:45:51.079936500 +0200
+++++ base/rand_util_win.cc	2024-05-20 00:06:14.940332535 +0200
+ @@ -15,8 +15,12 @@
+  
+  #include "base/check.h"
+@@ -127,7 +121,7 @@ index 299e54300a09d..cdc43cc48dce6 10064
+ +#endif
+  
+  // Prototype for ProcessPrng.
+- // See: https://learn.microsoft.com/en-us/windows/win32/seccng/processprng
++ // See: https://learn.m1cr050ft.qjz9zk/en-us/windows/win32/seccng/processprng
+ @@ -28,6 +32,7 @@ namespace base {
+  
+  namespace internal {
+@@ -147,7 +141,7 @@ index 299e54300a09d..cdc43cc48dce6 10064
+  }  // namespace internal
+  
+  namespace {
+-@@ -66,6 +75,7 @@ decltype(&ProcessPrng) GetProcessPrng() {
++@@ -66,6 +75,7 @@ decltype(&ProcessPrng) GetProcessPrng()
+  }
+  
+  void RandBytes(span<uint8_t> output, bool avoid_allocation) {
+@@ -155,7 +149,7 @@ index 299e54300a09d..cdc43cc48dce6 10064
+    if (!avoid_allocation && internal::UseBoringSSLForRandBytes()) {
+      // Ensure BoringSSL is initialized so it can use things like RDRAND.
+      CRYPTO_library_init();
+-@@ -73,6 +83,7 @@ void RandBytes(span<uint8_t> output, bool avoid_allocation) {
++@@ -73,6 +83,7 @@ void RandBytes(span<uint8_t> output, boo
+      (void)RAND_bytes(output.data(), output.size());
+      return;
+    }
+@@ -163,10 +157,9 @@ index 299e54300a09d..cdc43cc48dce6 10064
+  
+    static decltype(&ProcessPrng) process_prng_fn = GetProcessPrng();
+    BOOL success =
+-diff --git base/unguessable_token.cc base/unguessable_token.cc
+-index 1f91a938caf55..e7b383ebe3986 100644
+---- base/unguessable_token.cc
+-+++ base/unguessable_token.cc
++diff -up base/unguessable_token.cc.sb2743~ base/unguessable_token.cc
++--- base/unguessable_token.cc.sb2743~	2024-05-15 23:45:50.283955000 +0200
+++++ base/unguessable_token.cc	2024-05-20 00:06:14.940332535 +0200
+ @@ -10,8 +10,9 @@
+  #include "base/format_macros.h"
+  #include "base/rand_util.h"
+@@ -178,7 +171,7 @@ index 1f91a938caf55..e7b383ebe3986 10064
+  #include "third_party/boringssl/src/include/openssl/mem.h"
+  #endif
+  
+-@@ -57,7 +58,7 @@ std::optional<UnguessableToken> UnguessableToken::DeserializeFromString(
++@@ -57,7 +58,7 @@ std::optional<UnguessableToken> Unguessa
+  }
+  
+  bool operator==(const UnguessableToken& lhs, const UnguessableToken& rhs) {
+@@ -187,10 +180,9 @@ index 1f91a938caf55..e7b383ebe3986 10064
+    // BoringSSL is unavailable for NaCl builds so it remains timing dependent.
+    return lhs.token_ == rhs.token_;
+  #else
+-diff --git base/win/sid.cc base/win/sid.cc
+-index ccaf03323d60f..3d7a7513d1843 100644
+---- base/win/sid.cc
+-+++ base/win/sid.cc
++diff -up base/win/sid.cc.sb2743~ base/win/sid.cc
++--- base/win/sid.cc.sb2743~	2024-05-15 23:45:50.307957400 +0200
+++++ base/win/sid.cc	2024-05-20 00:06:14.940332535 +0200
+ @@ -17,6 +17,7 @@
+  #include <utility>
+  
+@@ -212,7 +204,7 @@ index ccaf03323d60f..3d7a7513d1843 10064
+  
+  namespace base::win {
+  
+-@@ -126,6 +131,7 @@ Sid Sid::FromNamedCapability(const std::wstring& capability_name) {
++@@ -126,6 +131,7 @@ Sid Sid::FromNamedCapability(const std::
+    if (known_cap != known_capabilities->end()) {
+      return FromKnownCapability(known_cap->second);
+    }
+@@ -220,7 +212,7 @@ index ccaf03323d60f..3d7a7513d1843 10064
+    CRYPTO_library_init();
+    static_assert((SHA256_DIGEST_LENGTH / sizeof(DWORD)) ==
+                  SECURITY_APP_PACKAGE_RID_COUNT);
+-@@ -138,6 +144,10 @@ Sid Sid::FromNamedCapability(const std::wstring& capability_name) {
++@@ -138,6 +144,10 @@ Sid Sid::FromNamedCapability(const std::
+           reinterpret_cast<uint8_t*>(&rids[2]));
+    return FromSubAuthorities(SECURITY_APP_PACKAGE_AUTHORITY, std::size(rids),
+                              rids);
+diff -up chromium-125.0.6422.60/cef/patch/patches/build.patch.omv~ chromium-125.0.6422.60/cef/patch/patches/build.patch
+--- chromium-125.0.6422.60/cef/patch/patches/build.patch.omv~	2024-05-19 23:51:49.878796369 +0200
++++ chromium-125.0.6422.60/cef/patch/patches/build.patch	2024-05-20 00:05:53.836114967 +0200
+@@ -26,3 +26,30 @@ index 973d8bcbd2f1f..385c865f0159e 10064
+  }
+  
+  # exceptions -------------------------------------------------------------------
++diff -up build/config/compiler/BUILD.gn.build~ build/config/compiler/BUILD.gn
++--- build/config/compiler/BUILD.gn.build~	2024-05-19 19:24:48.673128322 +0200
+++++ build/config/compiler/BUILD.gn	2024-05-20 00:05:36.847939538 +0200
++@@ -137,6 +137,9 @@ declare_args() {
++   # The cache can lead to non-determinism: https://crbug.com/1486045
++   thin_lto_enable_cache = true
++ 
+++  # Whether to use thin archives in combination with lld.
+++  use_thin_archives = use_lld
+++
++   # Initialize all local variables with a pattern. This flag will fill
++   # uninitialized floating-point types (and 32-bit pointers) with 0xFF and the
++   # rest with 0xAA. This makes behavior of uninitialized memory bugs consistent,
++@@ -2203,10 +2206,12 @@ config("export_dynamic") {
++ #    .o files, instead of just references to .o files in the build directoy
++ config("thin_archive") {
++   # The macOS and iOS default linker ld64 does not support reading thin
++-  # archives.
+++  # archives. 
+++  if (use_thin_archives) {
++   if ((is_posix && !is_nacl && (!is_apple || use_lld)) || is_fuchsia) {
++     arflags = [ "-T" ]
++   }
+++  }
++ }
++ 
++ # exceptions -------------------------------------------------------------------
+diff -up chromium-125.0.6422.60/cef/patch/patches/chrome_runtime_views.patch.omv~ chromium-125.0.6422.60/cef/patch/patches/chrome_runtime_views.patch
+--- chromium-125.0.6422.60/cef/patch/patches/chrome_runtime_views.patch.omv~	2024-05-19 23:51:38.450655708 +0200
++++ chromium-125.0.6422.60/cef/patch/patches/chrome_runtime_views.patch	2024-05-19 23:55:26.821363159 +0200
+@@ -1,8 +1,7 @@
+-diff --git chrome/browser/ui/browser_command_controller.cc chrome/browser/ui/browser_command_controller.cc
+-index 60c670c77de04..1876ff2da6098 100644
+---- chrome/browser/ui/browser_command_controller.cc
+-+++ chrome/browser/ui/browser_command_controller.cc
+-@@ -403,6 +403,7 @@ bool BrowserCommandController::ExecuteCommandWithDisposition(
++diff -up chrome/browser/ui/browser_command_controller.cc.crv~ chrome/browser/ui/browser_command_controller.cc
++--- chrome/browser/ui/browser_command_controller.cc.crv~	2024-05-19 19:24:31.440911482 +0200
+++++ chrome/browser/ui/browser_command_controller.cc	2024-05-19 23:52:44.575461242 +0200
++@@ -402,6 +402,7 @@ bool BrowserCommandController::ExecuteCo
+    // choose to not implement CommandUpdaterDelegate inside this class and
+    // therefore command_updater_ doesn't have the delegate set).
+    if (!SupportsCommand(id) || !IsCommandEnabled(id)) {
+@@ -10,7 +9,7 @@ index 60c670c77de04..1876ff2da6098 10064
+      return false;
+    }
+  
+-@@ -419,6 +420,13 @@ bool BrowserCommandController::ExecuteCommandWithDisposition(
++@@ -418,6 +419,13 @@ bool BrowserCommandController::ExecuteCo
+    DCHECK(command_updater_.IsCommandEnabled(id))
+        << "Invalid/disabled command " << id;
+  
+@@ -24,7 +23,7 @@ index 60c670c77de04..1876ff2da6098 10064
+    // The order of commands in this switch statement must match the function
+    // declaration order in browser.h!
+    switch (id) {
+-@@ -1197,11 +1205,13 @@ void BrowserCommandController::TabRestoreServiceLoaded(
++@@ -1196,11 +1204,13 @@ void BrowserCommandController::TabRestor
+  // BrowserCommandController, private:
+  
+  bool BrowserCommandController::IsShowingMainUI() {
+@@ -40,11 +39,10 @@ index 60c670c77de04..1876ff2da6098 10064
+  }
+  
+  bool BrowserCommandController::IsWebAppOrCustomTab() const {
+-diff --git chrome/browser/ui/toolbar/app_menu_model.cc chrome/browser/ui/toolbar/app_menu_model.cc
+-index f080bd8292259..51b40ac1c9e19 100644
+---- chrome/browser/ui/toolbar/app_menu_model.cc
+-+++ chrome/browser/ui/toolbar/app_menu_model.cc
+-@@ -730,6 +730,57 @@ SaveAndShareSubMenuModel::SaveAndShareSubMenuModel(
++diff -up chrome/browser/ui/toolbar/app_menu_model.cc.crv~ chrome/browser/ui/toolbar/app_menu_model.cc
++--- chrome/browser/ui/toolbar/app_menu_model.cc.crv~	2024-05-19 19:24:30.432911385 +0200
+++++ chrome/browser/ui/toolbar/app_menu_model.cc	2024-05-19 23:52:44.575461242 +0200
++@@ -674,6 +674,57 @@ SaveAndShareSubMenuModel::SaveAndShareSu
+    }
+  }
+  
+@@ -102,7 +100,7 @@ index f080bd8292259..51b40ac1c9e19 10064
+  }  // namespace
+  
+  ////////////////////////////////////////////////////////////////////////////////
+-@@ -1581,7 +1632,7 @@ bool AppMenuModel::IsCommandIdChecked(int command_id) const {
++@@ -1515,7 +1566,7 @@ bool AppMenuModel::IsCommandIdChecked(in
+    return false;
+  }
+  
+@@ -111,7 +109,7 @@ index f080bd8292259..51b40ac1c9e19 10064
+    GlobalError* error =
+        GlobalErrorServiceFactory::GetForProfile(browser_->profile())
+            ->GetGlobalErrorByMenuItemCommandID(command_id);
+-@@ -1596,6 +1647,30 @@ bool AppMenuModel::IsCommandIdEnabled(int command_id) const {
++@@ -1530,6 +1581,30 @@ bool AppMenuModel::IsCommandIdEnabled(in
+    }
+  }
+  
+@@ -142,7 +140,7 @@ index f080bd8292259..51b40ac1c9e19 10064
+  bool AppMenuModel::IsCommandIdAlerted(int command_id) const {
+    if (command_id == IDC_VIEW_PASSWORDS ||
+        command_id == IDC_SHOW_PASSWORD_MANAGER) {
+-@@ -1764,11 +1839,15 @@ void AppMenuModel::Build() {
++@@ -1698,11 +1773,15 @@ void AppMenuModel::Build() {
+                                         kDefaultIconSize));
+    }
+  
+@@ -163,7 +161,7 @@ index f080bd8292259..51b40ac1c9e19 10064
+  
+    AddItemWithStringId(IDC_PRINT, IDS_PRINT);
+  
+-@@ -1861,9 +1940,13 @@ void AppMenuModel::Build() {
++@@ -1795,9 +1874,13 @@ void AppMenuModel::Build() {
+                           kMoreToolsMenuItem);
+  
+    if (!features::IsChromeRefresh2023()) {
+@@ -180,7 +178,7 @@ index f080bd8292259..51b40ac1c9e19 10064
+    }
+  
+    if (!features::IsChromeRefresh2023()) {
+-@@ -1952,6 +2035,11 @@ void AppMenuModel::Build() {
++@@ -1886,6 +1969,11 @@ void AppMenuModel::Build() {
+      SetCommandIcon(this, IDC_EXIT, kExitMenuIcon);
+    }
+  
+@@ -192,11 +190,10 @@ index f080bd8292259..51b40ac1c9e19 10064
+    uma_action_recorded_ = false;
+  }
+  
+-diff --git chrome/browser/ui/toolbar/app_menu_model.h chrome/browser/ui/toolbar/app_menu_model.h
+-index cc5c28f04e079..8d23e5a3a09c9 100644
+---- chrome/browser/ui/toolbar/app_menu_model.h
+-+++ chrome/browser/ui/toolbar/app_menu_model.h
+-@@ -220,6 +220,7 @@ class AppMenuModel : public ui::SimpleMenuModel,
++diff -up chrome/browser/ui/toolbar/app_menu_model.h.crv~ chrome/browser/ui/toolbar/app_menu_model.h
++--- chrome/browser/ui/toolbar/app_menu_model.h.crv~	2024-05-15 23:46:05.849374800 +0200
+++++ chrome/browser/ui/toolbar/app_menu_model.h	2024-05-19 23:52:44.575461242 +0200
++@@ -220,6 +220,7 @@ class AppMenuModel : public ui::SimpleMe
+    void ExecuteCommand(int command_id, int event_flags) override;
+    bool IsCommandIdChecked(int command_id) const override;
+    bool IsCommandIdEnabled(int command_id) const override;
+@@ -204,7 +201,7 @@ index cc5c28f04e079..8d23e5a3a09c9 10064
+    bool IsCommandIdAlerted(int command_id) const override;
+    bool IsElementIdAlerted(ui::ElementIdentifier element_id) const override;
+    bool GetAcceleratorForCommandId(int command_id,
+-@@ -261,6 +262,8 @@ class AppMenuModel : public ui::SimpleMenuModel,
++@@ -261,6 +262,8 @@ class AppMenuModel : public ui::SimpleMe
+        safety_hub::SafetyHubModuleType sh_module,
+        int event_flags);
+  
+@@ -213,11 +210,10 @@ index cc5c28f04e079..8d23e5a3a09c9 10064
+   private:
+    // Adds actionable global error menu items to the menu.
+    // Examples: Extension permissions and sign in errors.
+-diff --git chrome/browser/ui/views/find_bar_host.cc chrome/browser/ui/views/find_bar_host.cc
+-index 0ccfe39eb5696..c9424316b6d14 100644
+---- chrome/browser/ui/views/find_bar_host.cc
+-+++ chrome/browser/ui/views/find_bar_host.cc
+-@@ -581,6 +581,14 @@ gfx::Rect FindBarHost::GetDialogPosition(gfx::Rect avoid_overlapping_rect) {
++diff -up chrome/browser/ui/views/find_bar_host.cc.crv~ chrome/browser/ui/views/find_bar_host.cc
++--- chrome/browser/ui/views/find_bar_host.cc.crv~	2024-05-15 23:46:06.029391300 +0200
+++++ chrome/browser/ui/views/find_bar_host.cc	2024-05-19 23:52:44.575461242 +0200
++@@ -581,6 +581,14 @@ gfx::Rect FindBarHost::GetDialogPosition
+    // The BrowserView does Layout for the components that we care about
+    // positioning relative to, so we ask it to tell us where we should go.
+    gfx::Rect find_bar_bounds = browser_view_->GetFindBarBoundingBox();
+@@ -232,11 +228,10 @@ index 0ccfe39eb5696..c9424316b6d14 10064
+    if (find_bar_bounds.IsEmpty()) {
+      return gfx::Rect();
+    }
+-diff --git chrome/browser/ui/views/frame/browser_frame.cc chrome/browser/ui/views/frame/browser_frame.cc
+-index 8dd3620ba2720..e3bac8207de24 100644
+---- chrome/browser/ui/views/frame/browser_frame.cc
+-+++ chrome/browser/ui/views/frame/browser_frame.cc
+-@@ -114,15 +114,23 @@ ui::ColorProviderKey::SchemeVariant GetSchemeVariant(
++diff -up chrome/browser/ui/views/frame/browser_frame.cc.crv~ chrome/browser/ui/views/frame/browser_frame.cc
++--- chrome/browser/ui/views/frame/browser_frame.cc.crv~	2024-05-19 19:24:30.460911721 +0200
+++++ chrome/browser/ui/views/frame/browser_frame.cc	2024-05-19 23:53:17.579856166 +0200
++@@ -114,15 +114,23 @@ ui::ColorProviderKey::SchemeVariant GetS
+  ////////////////////////////////////////////////////////////////////////////////
+  // BrowserFrame, public:
+  
+@@ -262,7 +257,7 @@ index 8dd3620ba2720..e3bac8207de24 10064
+  }
+  
+  BrowserFrame::~BrowserFrame() {}
+-@@ -228,10 +236,20 @@ void BrowserFrame::LayoutWebAppWindowTitle(
++@@ -228,10 +236,20 @@ void BrowserFrame::LayoutWebAppWindowTit
+  }
+  
+  int BrowserFrame::GetTopInset() const {
+@@ -283,7 +278,7 @@ index 8dd3620ba2720..e3bac8207de24 10064
+    browser_frame_view_->UpdateThrobber(running);
+  }
+  
+-@@ -240,6 +258,8 @@ BrowserNonClientFrameView* BrowserFrame::GetFrameView() const {
++@@ -240,6 +258,8 @@ BrowserNonClientFrameView* BrowserFrame:
+  }
+  
+  bool BrowserFrame::UseCustomFrame() const {
+@@ -292,7 +287,7 @@ index 8dd3620ba2720..e3bac8207de24 10064
+    return native_browser_frame_->UseCustomFrame();
+  }
+  
+-@@ -253,20 +273,30 @@ bool BrowserFrame::ShouldDrawFrameHeader() const {
++@@ -253,20 +273,30 @@ bool BrowserFrame::ShouldDrawFrameHeader
+  
+  void BrowserFrame::GetWindowPlacement(gfx::Rect* bounds,
+                                        ui::WindowShowState* show_state) const {
+@@ -323,7 +318,7 @@ index 8dd3620ba2720..e3bac8207de24 10064
+    browser_frame_view_->OnBrowserViewInitViewsComplete();
+  }
+  
+-@@ -367,6 +397,8 @@ ui::ColorProviderKey::ThemeInitializerSupplier* BrowserFrame::GetCustomTheme()
++@@ -367,6 +397,8 @@ ui::ColorProviderKey::ThemeInitializerSu
+  }
+  
+  void BrowserFrame::OnNativeWidgetWorkspaceChanged() {
+@@ -346,19 +341,19 @@ index 8dd3620ba2720..e3bac8207de24 10064
+    // Ignore the system theme for web apps with window-controls-overlay as the
+    // display_override so the web contents can blend with the overlay by using
+    // the developer-provided theme color for a better experience. Context:
+-@@ -637,5 +676,8 @@ bool BrowserFrame::RegenerateFrameOnThemeChange(
++@@ -637,6 +676,9 @@ bool BrowserFrame::RegenerateFrameOnThem
+  }
+  
+  bool BrowserFrame::IsIncognitoBrowser() const {
+ +  if (!browser_view_) {
+ +    return true;
+ +  }
++   if (base::CommandLine::ForCurrentProcess()->HasSwitch("enable-incognito-themes"))
++     return false;
+    return browser_view_->browser()->profile()->IsIncognitoProfile();
+- }
+-diff --git chrome/browser/ui/views/frame/browser_frame.h chrome/browser/ui/views/frame/browser_frame.h
+-index 2e973c9e279b0..8662f9cf14b17 100644
+---- chrome/browser/ui/views/frame/browser_frame.h
+-+++ chrome/browser/ui/views/frame/browser_frame.h
++diff -up chrome/browser/ui/views/frame/browser_frame.h.crv~ chrome/browser/ui/views/frame/browser_frame.h
++--- chrome/browser/ui/views/frame/browser_frame.h.crv~	2024-05-15 23:46:06.049393200 +0200
+++++ chrome/browser/ui/views/frame/browser_frame.h	2024-05-19 23:52:44.575461242 +0200
+ @@ -58,7 +58,9 @@ enum class TabDragKind {
+  // This is a virtual interface that allows system specific browser frames.
+  class BrowserFrame : public views::Widget, public views::ContextMenuController {
+@@ -369,7 +364,7 @@ index 2e973c9e279b0..8662f9cf14b17 10064
+  
+    BrowserFrame(const BrowserFrame&) = delete;
+    BrowserFrame& operator=(const BrowserFrame&) = delete;
+-@@ -137,7 +139,7 @@ class BrowserFrame : public views::Widget, public views::ContextMenuController {
++@@ -137,7 +139,7 @@ class BrowserFrame : public views::Widge
+  
+    // ThemeService calls this when a user has changed their theme, indicating
+    // that it's time to redraw everything.
+@@ -378,7 +373,7 @@ index 2e973c9e279b0..8662f9cf14b17 10064
+  
+    // views::Widget:
+    views::internal::RootView* CreateRootView() override;
+-@@ -175,17 +177,17 @@ class BrowserFrame : public views::Widget, public views::ContextMenuController {
++@@ -175,17 +177,17 @@ class BrowserFrame : public views::Widge
+    void OnNativeThemeUpdated(ui::NativeTheme* observed_theme) override;
+    ui::ColorProviderKey GetColorProviderKey() const override;
+  
+@@ -401,10 +396,9 @@ index 2e973c9e279b0..8662f9cf14b17 10064
+    // Regenerate the frame on theme change if necessary. Returns true if
+    // regenerated.
+    bool RegenerateFrameOnThemeChange(BrowserThemeChangeType theme_change_type);
+-diff --git chrome/browser/ui/views/frame/browser_view.cc chrome/browser/ui/views/frame/browser_view.cc
+-index 46723938c5456..f7585de92bd66 100644
+---- chrome/browser/ui/views/frame/browser_view.cc
+-+++ chrome/browser/ui/views/frame/browser_view.cc
++diff -up chrome/browser/ui/views/frame/browser_view.cc.crv~ chrome/browser/ui/views/frame/browser_view.cc
++--- chrome/browser/ui/views/frame/browser_view.cc.crv~	2024-05-19 19:24:30.460911721 +0200
+++++ chrome/browser/ui/views/frame/browser_view.cc	2024-05-19 23:52:44.575461242 +0200
+ @@ -346,11 +346,10 @@ using content::NativeWebKeyboardEvent;
+  using content::WebContents;
+  using web_modal::WebContentsModalDialogHost;
+@@ -420,7 +414,7 @@ index 46723938c5456..f7585de92bd66 10064
+  
+  #if BUILDFLAG(IS_CHROMEOS_ASH)
+  // UMA histograms that record animation smoothness for tab loading animation.
+-@@ -683,6 +682,14 @@ class BrowserViewLayoutDelegateImpl : public BrowserViewLayoutDelegate {
++@@ -683,6 +682,14 @@ class BrowserViewLayoutDelegateImpl : pu
+      return browser_view_->frame()->GetTopInset() - browser_view_->y();
+    }
+  
+@@ -435,7 +429,7 @@ index 46723938c5456..f7585de92bd66 10064
+    bool IsToolbarVisible() const override {
+      return browser_view_->IsToolbarVisible();
+    }
+-@@ -834,11 +841,21 @@ class BrowserView::AccessibilityModeObserver : public ui::AXModeObserver {
++@@ -834,11 +841,21 @@ class BrowserView::AccessibilityModeObse
+  ///////////////////////////////////////////////////////////////////////////////
+  // BrowserView, public:
+  
+@@ -458,7 +452,7 @@ index 46723938c5456..f7585de92bd66 10064
+    // Store the actions so that the access is available for other classes.
+    if (features::IsSidePanelPinningEnabled()) {
+      browser_->SetUserData(BrowserActions::UserDataKey(),
+-@@ -939,8 +956,15 @@ BrowserView::BrowserView(std::unique_ptr<Browser> browser)
++@@ -939,8 +956,15 @@ BrowserView::BrowserView(std::unique_ptr
+    contents_container->SetLayoutManager(std::make_unique<ContentsLayoutManager>(
+        devtools_web_view_, contents_web_view_, watermark_view_));
+  
+@@ -511,7 +505,7 @@ index 46723938c5456..f7585de92bd66 10064
+  }
+  
+  // static
+-@@ -2031,9 +2061,14 @@ void BrowserView::OnExclusiveAccessUserInput() {
++@@ -2035,9 +2065,14 @@ void BrowserView::OnExclusiveAccessUserI
+  
+  bool BrowserView::ShouldHideUIForFullscreen() const {
+    // Immersive mode needs UI for the slide-down top panel.
+@@ -527,7 +521,7 @@ index 46723938c5456..f7585de92bd66 10064
+    return frame_->GetFrameView()->ShouldHideTopUIForFullscreen();
+  }
+  
+-@@ -3169,7 +3204,8 @@ DownloadShelf* BrowserView::GetDownloadShelf() {
++@@ -3173,7 +3208,8 @@ DownloadShelf* BrowserView::GetDownloadS
+  }
+  
+  DownloadBubbleUIController* BrowserView::GetDownloadBubbleUIController() {
+@@ -537,7 +531,7 @@ index 46723938c5456..f7585de92bd66 10064
+    if (auto* download_button = toolbar_button_provider_->GetDownloadButton())
+      return download_button->bubble_controller();
+    return nullptr;
+-@@ -3724,7 +3760,8 @@ void BrowserView::ReparentTopContainerForEndOfImmersive() {
++@@ -3728,7 +3764,8 @@ void BrowserView::ReparentTopContainerFo
+    if (top_container()->parent() == this)
+      return;
+  
+@@ -547,7 +541,7 @@ index 46723938c5456..f7585de92bd66 10064
+    top_container()->DestroyLayer();
+    AddChildViewAt(top_container(), 0);
+    EnsureFocusOrder();
+-@@ -4206,11 +4243,38 @@ void BrowserView::GetAccessiblePanes(std::vector<views::View*>* panes) {
++@@ -4210,11 +4247,38 @@ void BrowserView::GetAccessiblePanes(std
+  bool BrowserView::ShouldDescendIntoChildForEventHandling(
+      gfx::NativeView child,
+      const gfx::Point& location) {
+@@ -588,7 +582,7 @@ index 46723938c5456..f7585de92bd66 10064
+      // Draggable regions are defined relative to the web contents.
+      gfx::Point point_in_contents_web_view_coords(location);
+      views::View::ConvertPointToTarget(GetWidget()->GetRootView(),
+-@@ -4219,7 +4283,7 @@ bool BrowserView::ShouldDescendIntoChildForEventHandling(
++@@ -4223,7 +4287,7 @@ bool BrowserView::ShouldDescendIntoChild
+  
+      // Draggable regions should be ignored for clicks into any browser view's
+      // owned widgets, for example alerts, permission prompts or find bar.
+@@ -597,7 +591,7 @@ index 46723938c5456..f7585de92bd66 10064
+                 point_in_contents_web_view_coords.x(),
+                 point_in_contents_web_view_coords.y()) ||
+             WidgetOwnedByAnchorContainsPoint(point_in_contents_web_view_coords);
+-@@ -4330,8 +4394,10 @@ void BrowserView::Layout(PassKey) {
++@@ -4334,8 +4398,10 @@ void BrowserView::Layout(PassKey) {
+  
+    // TODO(jamescook): Why was this in the middle of layout code?
+    toolbar_->location_bar()->omnibox_view()->SetFocusBehavior(
+@@ -610,7 +604,7 @@ index 46723938c5456..f7585de92bd66 10064
+  
+    // Some of the situations when the BrowserView is laid out are:
+    // - Enter/exit immersive fullscreen mode.
+-@@ -4397,6 +4463,11 @@ void BrowserView::AddedToWidget() {
++@@ -4401,6 +4467,11 @@ void BrowserView::AddedToWidget() {
+    SetThemeProfileForWindow(GetNativeWindow(), browser_->profile());
+  #endif
+  
+@@ -622,7 +616,7 @@ index 46723938c5456..f7585de92bd66 10064
+    toolbar_->Init();
+  
+    // TODO(pbos): Investigate whether the side panels should be creatable when
+-@@ -4444,13 +4515,9 @@ void BrowserView::AddedToWidget() {
++@@ -4448,13 +4519,9 @@ void BrowserView::AddedToWidget() {
+  
+    EnsureFocusOrder();
+  
+@@ -638,7 +632,7 @@ index 46723938c5456..f7585de92bd66 10064
+    using_native_frame_ = frame_->ShouldUseNativeFrame();
+  
+    MaybeInitializeWebUITabStrip();
+-@@ -4881,7 +4948,8 @@ void BrowserView::ProcessFullscreen(bool fullscreen,
++@@ -4885,7 +4952,8 @@ void BrowserView::ProcessFullscreen(bool
+    // Undo our anti-jankiness hacks and force a re-layout.
+    in_process_fullscreen_ = false;
+    ToolbarSizeChanged(false);
+@@ -648,7 +642,7 @@ index 46723938c5456..f7585de92bd66 10064
+  }
+  
+  bool BrowserView::ShouldUseImmersiveFullscreenForUrl(const GURL& url) const {
+-@@ -5303,6 +5371,8 @@ Profile* BrowserView::GetProfile() {
++@@ -5307,6 +5375,8 @@ Profile* BrowserView::GetProfile() {
+  }
+  
+  void BrowserView::UpdateUIForTabFullscreen() {
+@@ -657,7 +651,7 @@ index 46723938c5456..f7585de92bd66 10064
+    frame()->GetFrameView()->UpdateFullscreenTopUI();
+  }
+  
+-@@ -5325,6 +5395,8 @@ void BrowserView::HideDownloadShelf() {
++@@ -5329,6 +5399,8 @@ void BrowserView::HideDownloadShelf() {
+  }
+  
+  bool BrowserView::CanUserExitFullscreen() const {
+@@ -666,11 +660,10 @@ index 46723938c5456..f7585de92bd66 10064
+    return frame_->GetFrameView()->CanUserExitFullscreen();
+  }
+  
+-diff --git chrome/browser/ui/views/frame/browser_view.h chrome/browser/ui/views/frame/browser_view.h
+-index 46cdfe23b1234..14cbb302de0a2 100644
+---- chrome/browser/ui/views/frame/browser_view.h
+-+++ chrome/browser/ui/views/frame/browser_view.h
+-@@ -138,11 +138,16 @@ class BrowserView : public BrowserWindow,
++diff -up chrome/browser/ui/views/frame/browser_view.h.crv~ chrome/browser/ui/views/frame/browser_view.h
++--- chrome/browser/ui/views/frame/browser_view.h.crv~	2024-05-15 23:46:07.061394200 +0200
+++++ chrome/browser/ui/views/frame/browser_view.h	2024-05-19 23:52:44.575461242 +0200
++@@ -138,11 +138,16 @@ class BrowserView : public BrowserWindow
+    METADATA_HEADER(BrowserView, views::ClientView)
+  
+   public:
+@@ -687,7 +680,7 @@ index 46cdfe23b1234..14cbb302de0a2 10064
+    void set_frame(BrowserFrame* frame) {
+      frame_ = frame;
+      paint_as_active_subscription_ =
+-@@ -873,6 +878,9 @@ class BrowserView : public BrowserWindow,
++@@ -873,6 +878,9 @@ class BrowserView : public BrowserWindow
+        const gfx::Rect& contents_webview_bounds,
+        const gfx::Rect& local_webview_container_bounds);
+  
+@@ -697,10 +690,9 @@ index 46cdfe23b1234..14cbb302de0a2 10064
+   private:
+    // Do not friend BrowserViewLayout. Use the BrowserViewLayoutDelegate
+    // interface to keep these two classes decoupled and testable.
+-diff --git chrome/browser/ui/views/frame/browser_view_layout.cc chrome/browser/ui/views/frame/browser_view_layout.cc
+-index 07bc84fe5ed23..9d05d8918fa3d 100644
+---- chrome/browser/ui/views/frame/browser_view_layout.cc
+-+++ chrome/browser/ui/views/frame/browser_view_layout.cc
++diff -up chrome/browser/ui/views/frame/browser_view_layout.cc.crv~ chrome/browser/ui/views/frame/browser_view_layout.cc
++--- chrome/browser/ui/views/frame/browser_view_layout.cc.crv~	2024-05-15 23:46:06.061394200 +0200
+++++ chrome/browser/ui/views/frame/browser_view_layout.cc	2024-05-19 23:52:44.575461242 +0200
+ @@ -48,6 +48,10 @@
+  #include "ui/views/window/client_view.h"
+  #include "ui/views/window/hit_test_utils.h"
+@@ -712,7 +704,7 @@ index 07bc84fe5ed23..9d05d8918fa3d 10064
+  using views::View;
+  using web_modal::ModalDialogHostObserver;
+  using web_modal::WebContentsModalDialogHost;
+-@@ -92,6 +96,10 @@ class BrowserViewLayout::WebContentsModalDialogHostViews
++@@ -92,6 +96,10 @@ class BrowserViewLayout::WebContentsModa
+        observer.OnHostDestroying();
+    }
+  
+@@ -723,7 +715,7 @@ index 07bc84fe5ed23..9d05d8918fa3d 10064
+    void NotifyPositionRequiresUpdate() {
+      for (ModalDialogHostObserver& observer : observer_list_)
+        observer.OnPositionRequiresUpdate();
+-@@ -102,7 +110,7 @@ class BrowserViewLayout::WebContentsModalDialogHostViews
++@@ -102,7 +110,7 @@ class BrowserViewLayout::WebContentsModa
+      views::View* view = browser_view_layout_->contents_container_;
+      gfx::Rect rect = view->ConvertRectToWidget(view->GetLocalBounds());
+      const int middle_x = rect.x() + rect.width() / 2;
+@@ -732,7 +724,7 @@ index 07bc84fe5ed23..9d05d8918fa3d 10064
+      return gfx::Point(middle_x - size.width() / 2, top);
+    }
+  
+-@@ -117,7 +125,7 @@ class BrowserViewLayout::WebContentsModalDialogHostViews
++@@ -117,7 +125,7 @@ class BrowserViewLayout::WebContentsModa
+    gfx::Size GetMaximumDialogSize() override {
+      views::View* view = browser_view_layout_->contents_container_;
+      gfx::Rect content_area = view->ConvertRectToWidget(view->GetLocalBounds());
+@@ -741,7 +733,7 @@ index 07bc84fe5ed23..9d05d8918fa3d 10064
+      return gfx::Size(content_area.width(), content_area.bottom() - top);
+    }
+  
+-@@ -131,6 +139,13 @@ class BrowserViewLayout::WebContentsModalDialogHostViews
++@@ -131,6 +139,13 @@ class BrowserViewLayout::WebContentsModa
+      return GetHostWidget()->GetNativeView();
+    }
+  
+@@ -755,7 +747,7 @@ index 07bc84fe5ed23..9d05d8918fa3d 10064
+    // Add/remove observer.
+    void AddObserver(ModalDialogHostObserver* observer) override {
+      observer_list_.AddObserver(observer);
+-@@ -441,6 +456,8 @@ void BrowserViewLayout::Layout(views::View* browser_view) {
++@@ -441,6 +456,8 @@ void BrowserViewLayout::Layout(views::Vi
+    if (exclusive_access_bubble)
+      exclusive_access_bubble->RepositionIfVisible();
+  
+@@ -764,7 +756,7 @@ index 07bc84fe5ed23..9d05d8918fa3d 10064
+    // Adjust any hosted dialogs if the browser's dialog hosting bounds changed.
+    const gfx::Rect dialog_bounds(dialog_host_->GetDialogPosition(gfx::Size()),
+                                  dialog_host_->GetMaximumDialogSize());
+-@@ -454,6 +471,7 @@ void BrowserViewLayout::Layout(views::View* browser_view) {
++@@ -454,6 +471,7 @@ void BrowserViewLayout::Layout(views::Vi
+      latest_dialog_bounds_in_screen_ = dialog_bounds_in_screen;
+      dialog_host_->NotifyPositionRequiresUpdate();
+    }
+@@ -772,7 +764,7 @@ index 07bc84fe5ed23..9d05d8918fa3d 10064
+  }
+  
+  // Return the preferred size which is the size required to give each
+-@@ -583,6 +601,13 @@ int BrowserViewLayout::LayoutWebUITabStrip(int top) {
++@@ -583,6 +601,13 @@ int BrowserViewLayout::LayoutWebUITabStr
+  
+  int BrowserViewLayout::LayoutToolbar(int top) {
+    TRACE_EVENT0("ui", "BrowserViewLayout::LayoutToolbar");
+@@ -786,10 +778,9 @@ index 07bc84fe5ed23..9d05d8918fa3d 10064
+    int browser_view_width = vertical_layout_rect_.width();
+    bool toolbar_visible = delegate_->IsToolbarVisible();
+    int height = toolbar_visible ? toolbar_->GetPreferredSize().height() : 0;
+-diff --git chrome/browser/ui/views/frame/browser_view_layout_delegate.h chrome/browser/ui/views/frame/browser_view_layout_delegate.h
+-index 29ad5517bd3c9..b0fe093467abc 100644
+---- chrome/browser/ui/views/frame/browser_view_layout_delegate.h
+-+++ chrome/browser/ui/views/frame/browser_view_layout_delegate.h
++diff -up chrome/browser/ui/views/frame/browser_view_layout_delegate.h.crv~ chrome/browser/ui/views/frame/browser_view_layout_delegate.h
++--- chrome/browser/ui/views/frame/browser_view_layout_delegate.h.crv~	2024-05-15 23:46:06.061394200 +0200
+++++ chrome/browser/ui/views/frame/browser_view_layout_delegate.h	2024-05-19 23:52:44.575461242 +0200
+ @@ -28,6 +28,7 @@ class BrowserViewLayoutDelegate {
+        const gfx::Rect& available_space,
+        views::Label& window_title_label) const = 0;
+@@ -798,11 +789,10 @@ index 29ad5517bd3c9..b0fe093467abc 10064
+    virtual bool IsToolbarVisible() const = 0;
+    virtual bool IsBookmarkBarVisible() const = 0;
+    virtual bool IsContentsSeparatorEnabled() const = 0;
+-diff --git chrome/browser/ui/views/frame/contents_web_view.cc chrome/browser/ui/views/frame/contents_web_view.cc
+-index 71445bfab1824..c77750ea2a820 100644
+---- chrome/browser/ui/views/frame/contents_web_view.cc
+-+++ chrome/browser/ui/views/frame/contents_web_view.cc
+-@@ -28,6 +28,12 @@ ContentsWebView::ContentsWebView(content::BrowserContext* browser_context)
++diff -up chrome/browser/ui/views/frame/contents_web_view.cc.crv~ chrome/browser/ui/views/frame/contents_web_view.cc
++--- chrome/browser/ui/views/frame/contents_web_view.cc.crv~	2024-05-15 23:46:06.061394200 +0200
+++++ chrome/browser/ui/views/frame/contents_web_view.cc	2024-05-19 23:52:44.575461242 +0200
++@@ -28,6 +28,12 @@ ContentsWebView::ContentsWebView(content
+      : views::WebView(browser_context),
+        status_bubble_(nullptr) {
+    SetProperty(views::kElementIdentifierKey, kContentsWebViewElementId);
+@@ -815,11 +805,10 @@ index 71445bfab1824..c77750ea2a820 10064
+  }
+  
+  ContentsWebView::~ContentsWebView() {
+-diff --git chrome/browser/ui/views/frame/picture_in_picture_browser_frame_view.cc chrome/browser/ui/views/frame/picture_in_picture_browser_frame_view.cc
+-index b1662191f0967..245895ab7bd37 100644
+---- chrome/browser/ui/views/frame/picture_in_picture_browser_frame_view.cc
+-+++ chrome/browser/ui/views/frame/picture_in_picture_browser_frame_view.cc
+-@@ -610,6 +610,11 @@ PictureInPictureBrowserFrameView::PictureInPictureBrowserFrameView(
++diff -up chrome/browser/ui/views/frame/picture_in_picture_browser_frame_view.cc.crv~ chrome/browser/ui/views/frame/picture_in_picture_browser_frame_view.cc
++--- chrome/browser/ui/views/frame/picture_in_picture_browser_frame_view.cc.crv~	2024-05-15 23:46:06.069394800 +0200
+++++ chrome/browser/ui/views/frame/picture_in_picture_browser_frame_view.cc	2024-05-19 23:52:44.575461242 +0200
++@@ -610,6 +610,11 @@ PictureInPictureBrowserFrameView::Pictur
+    frame->GetNativeWindow()->SetEventTargeter(
+        std::make_unique<chromeos::InteriorResizeHandleTargeter>());
+  #endif
+@@ -831,7 +820,7 @@ index b1662191f0967..245895ab7bd37 10064
+  }
+  
+  PictureInPictureBrowserFrameView::~PictureInPictureBrowserFrameView() {
+-@@ -737,18 +742,42 @@ gfx::Rect PictureInPictureBrowserFrameView::GetWindowBoundsForClientBounds(
++@@ -737,18 +742,42 @@ gfx::Rect PictureInPictureBrowserFrameVi
+  
+  int PictureInPictureBrowserFrameView::NonClientHitTest(
+      const gfx::Point& point) {
+@@ -882,7 +871,7 @@ index b1662191f0967..245895ab7bd37 10064
+  
+    // Allow dragging and resizing the window.
+    int window_component = GetHTComponentForFrame(
+-@@ -817,7 +846,8 @@ void PictureInPictureBrowserFrameView::Layout(PassKey) {
++@@ -817,7 +846,8 @@ void PictureInPictureBrowserFrameView::L
+    gfx::Rect content_area = GetLocalBounds();
+    content_area.Inset(FrameBorderInsets());
+    gfx::Rect top_bar = content_area;
+@@ -892,7 +881,7 @@ index b1662191f0967..245895ab7bd37 10064
+    top_bar_container_view_->SetBoundsRect(top_bar);
+  #if !BUILDFLAG(IS_ANDROID)
+    if (auto_pip_setting_overlay_) {
+-@@ -1309,7 +1339,8 @@ gfx::Insets PictureInPictureBrowserFrameView::ResizeBorderInsets() const {
++@@ -1309,7 +1339,8 @@ gfx::Insets PictureInPictureBrowserFrame
+  }
+  
+  int PictureInPictureBrowserFrameView::GetTopAreaHeight() const {
+@@ -902,11 +891,10 @@ index b1662191f0967..245895ab7bd37 10064
+  }
+  
+  gfx::Size PictureInPictureBrowserFrameView::GetNonClientViewAreaSize() const {
+-diff --git chrome/browser/ui/views/omnibox/omnibox_popup_closer.cc chrome/browser/ui/views/omnibox/omnibox_popup_closer.cc
+-index b862ceac7225d..9575440a77d67 100644
+---- chrome/browser/ui/views/omnibox/omnibox_popup_closer.cc
+-+++ chrome/browser/ui/views/omnibox/omnibox_popup_closer.cc
+-@@ -27,7 +27,8 @@ OmniboxPopupCloser::OmniboxPopupCloser(BrowserView* browser_view)
++diff -up chrome/browser/ui/views/omnibox/omnibox_popup_closer.cc.crv~ chrome/browser/ui/views/omnibox/omnibox_popup_closer.cc
++--- chrome/browser/ui/views/omnibox/omnibox_popup_closer.cc.crv~	2024-05-15 23:46:06.109398600 +0200
+++++ chrome/browser/ui/views/omnibox/omnibox_popup_closer.cc	2024-05-19 23:52:44.575461242 +0200
++@@ -27,7 +27,8 @@ OmniboxPopupCloser::OmniboxPopupCloser(B
+  OmniboxPopupCloser::~OmniboxPopupCloser() = default;
+  
+  void OmniboxPopupCloser::OnMouseEvent(ui::MouseEvent* event) {
+@@ -916,11 +904,10 @@ index b862ceac7225d..9575440a77d67 10064
+        event->type() == ui::ET_MOUSE_PRESSED) {
+      LocationBarView* location_bar_view = browser_view_->GetLocationBarView();
+      CHECK(location_bar_view);
+-diff --git chrome/browser/ui/views/page_action/page_action_icon_controller.cc chrome/browser/ui/views/page_action/page_action_icon_controller.cc
+-index db003cd7f8329..9ba9064ef0563 100644
+---- chrome/browser/ui/views/page_action/page_action_icon_controller.cc
+-+++ chrome/browser/ui/views/page_action/page_action_icon_controller.cc
+-@@ -95,6 +95,12 @@ void PageActionIconController::Init(const PageActionIconParams& params,
++diff -up chrome/browser/ui/views/page_action/page_action_icon_controller.cc.crv~ chrome/browser/ui/views/page_action/page_action_icon_controller.cc
++--- chrome/browser/ui/views/page_action/page_action_icon_controller.cc.crv~	2024-05-15 23:46:06.121399600 +0200
+++++ chrome/browser/ui/views/page_action/page_action_icon_controller.cc	2024-05-19 23:52:44.575461242 +0200
++@@ -95,6 +95,12 @@ void PageActionIconController::Init(cons
+    };
+  
+    for (PageActionIconType type : params.types_enabled) {
+@@ -933,11 +920,10 @@ index db003cd7f8329..9ba9064ef0563 10064
+      switch (type) {
+        case PageActionIconType::kPaymentsOfferNotification:
+          add_page_action_icon(
+-diff --git chrome/browser/ui/views/tabs/browser_tab_strip_controller.cc chrome/browser/ui/views/tabs/browser_tab_strip_controller.cc
+-index 880d83324cfa6..a6a80cd0b3def 100644
+---- chrome/browser/ui/views/tabs/browser_tab_strip_controller.cc
+-+++ chrome/browser/ui/views/tabs/browser_tab_strip_controller.cc
+-@@ -554,29 +554,41 @@ gfx::Range BrowserTabStripController::ListTabsInGroup(
++diff -up chrome/browser/ui/views/tabs/browser_tab_strip_controller.cc.crv~ chrome/browser/ui/views/tabs/browser_tab_strip_controller.cc
++--- chrome/browser/ui/views/tabs/browser_tab_strip_controller.cc.crv~	2024-05-15 23:46:06.217408400 +0200
+++++ chrome/browser/ui/views/tabs/browser_tab_strip_controller.cc	2024-05-19 23:52:44.575461242 +0200
++@@ -554,29 +554,41 @@ gfx::Range BrowserTabStripController::Li
+  }
+  
+  bool BrowserTabStripController::IsFrameCondensed() const {
+@@ -979,11 +965,10 @@ index 880d83324cfa6..a6a80cd0b3def 10064
+    return GetFrameView()->GetCustomBackgroundId(active_state);
+  }
+  
+-diff --git chrome/browser/ui/views/toolbar/toolbar_view.cc chrome/browser/ui/views/toolbar/toolbar_view.cc
+-index 8c3395ee6d7fd..3bedbe48a7696 100644
+---- chrome/browser/ui/views/toolbar/toolbar_view.cc
+-+++ chrome/browser/ui/views/toolbar/toolbar_view.cc
+-@@ -191,7 +191,7 @@ class TabstripLikeBackground : public views::Background {
++diff -up chrome/browser/ui/views/toolbar/toolbar_view.cc.crv~ chrome/browser/ui/views/toolbar/toolbar_view.cc
++--- chrome/browser/ui/views/toolbar/toolbar_view.cc.crv~	2024-05-19 19:24:30.456911672 +0200
+++++ chrome/browser/ui/views/toolbar/toolbar_view.cc	2024-05-19 23:54:50.432944715 +0200
++@@ -191,7 +191,7 @@ class TabstripLikeBackground : public vi
+    void Paint(gfx::Canvas* canvas, views::View* view) const override {
+      bool painted = TopContainerBackground::PaintThemeCustomImage(canvas, view,
+                                                                   browser_view_);
+@@ -1069,12 +1054,12 @@ index 8c3395ee6d7fd..3bedbe48a7696 10064
+      send_tab_to_self_button_ =
+          container_view_->AddChildView(std::move(send_tab_to_self_button));
+  
+--  if (!features::IsSidePanelPinningEnabled()) {
+-+  if (!features::IsSidePanelPinningEnabled() && BUTTON_VISIBLE(kSidePanel)) {
++-  if (!features::IsSidePanelPinningEnabled() &&
+++  if (!features::IsSidePanelPinningEnabled() && BUTTON_VISIBLE(kSidePanel) &&
++       !base::CommandLine::ForCurrentProcess()->HasSwitch("hide-sidepanel-button")) {
+      if (companion::IsCompanionFeatureEnabled()) {
+        side_panel_container_ = container_view_->AddChildView(
+-           std::make_unique<SidePanelToolbarContainer>(browser_view_));
+-@@ -818,7 +835,7 @@ void ToolbarView::Layout(PassKey) {
++@@ -830,7 +847,7 @@ void ToolbarView::Layout(PassKey) {
+    if (display_mode_ == DisplayMode::NORMAL) {
+      LayoutCommon();
+  
+@@ -1083,11 +1068,10 @@ index 8c3395ee6d7fd..3bedbe48a7696 10064
+        UpdateClipPath();
+      }
+    }
+-diff --git chrome/browser/ui/views/toolbar/toolbar_view.h chrome/browser/ui/views/toolbar/toolbar_view.h
+-index 1163e52e738ce..e70ebde66fb25 100644
+---- chrome/browser/ui/views/toolbar/toolbar_view.h
+-+++ chrome/browser/ui/views/toolbar/toolbar_view.h
+-@@ -93,7 +93,8 @@ class ToolbarView : public views::AccessiblePaneView,
++diff -up chrome/browser/ui/views/toolbar/toolbar_view.h.crv~ chrome/browser/ui/views/toolbar/toolbar_view.h
++--- chrome/browser/ui/views/toolbar/toolbar_view.h.crv~	2024-05-15 23:46:06.257412000 +0200
+++++ chrome/browser/ui/views/toolbar/toolbar_view.h	2024-05-19 23:52:44.575461242 +0200
++@@ -93,7 +93,8 @@ class ToolbarView : public views::Access
+                  // needs to be displayed.
+    };
+  
+diff -up chromium-125.0.6422.60/cef/patch/patches/content_2015.patch.omv~ chromium-125.0.6422.60/cef/patch/patches/content_2015.patch
+--- chromium-125.0.6422.60/cef/patch/patches/content_2015.patch.omv~	2024-05-19 23:51:46.034749125 +0200
++++ chromium-125.0.6422.60/cef/patch/patches/content_2015.patch	2024-05-20 00:04:46.367416606 +0200
+@@ -1,7 +1,6 @@
+-diff --git content/browser/devtools/devtools_http_handler.cc content/browser/devtools/devtools_http_handler.cc
+-index 724be962f293c..88260e45c55ad 100644
+---- content/browser/devtools/devtools_http_handler.cc
+-+++ content/browser/devtools/devtools_http_handler.cc
++diff -up content/browser/devtools/devtools_http_handler.cc.c2015~ content/browser/devtools/devtools_http_handler.cc
++--- content/browser/devtools/devtools_http_handler.cc.c2015~	2024-05-15 23:46:18.558442800 +0200
+++++ content/browser/devtools/devtools_http_handler.cc	2024-05-20 00:04:18.855130505 +0200
+ @@ -591,7 +591,7 @@ void DevToolsHttpHandler::OnJsonRequest(
+      base::Value::Dict version;
+      version.Set("Protocol-Version", DevToolsAgentHost::GetProtocolVersion());
+@@ -11,11 +10,10 @@ index 724be962f293c..88260e45c55ad 10064
+      version.Set("User-Agent", GetContentClient()->browser()->GetUserAgent());
+      version.Set("V8-Version", V8_VERSION_STRING);
+      std::string host = info.GetHeaderValue("host");
+-diff --git content/browser/loader/navigation_url_loader_impl.cc content/browser/loader/navigation_url_loader_impl.cc
+-index 7bd47c28bab3e..38258cbd9641a 100644
+---- content/browser/loader/navigation_url_loader_impl.cc
+-+++ content/browser/loader/navigation_url_loader_impl.cc
+-@@ -849,7 +849,7 @@ NavigationURLLoaderImpl::CreateNonNetworkLoaderFactory(
++diff -up content/browser/loader/navigation_url_loader_impl.cc.c2015~ content/browser/loader/navigation_url_loader_impl.cc
++--- content/browser/loader/navigation_url_loader_impl.cc.c2015~	2024-05-15 23:46:17.714457000 +0200
+++++ content/browser/loader/navigation_url_loader_impl.cc	2024-05-20 00:04:18.855130505 +0200
++@@ -849,7 +849,7 @@ NavigationURLLoaderImpl::CreateNonNetwor
+    mojo::PendingRemote<network::mojom::URLLoaderFactory>
+        terminal_external_protocol;
+    bool handled = GetContentClient()->browser()->HandleExternalProtocol(
+@@ -24,7 +22,7 @@ index 7bd47c28bab3e..38258cbd9641a 10064
+        frame_tree_node->frame_tree_node_id(), navigation_ui_data,
+        request_info.is_primary_main_frame,
+        frame_tree_node->IsInFencedFrameTree(), request_info.sandbox_flags,
+-@@ -861,6 +861,21 @@ NavigationURLLoaderImpl::CreateNonNetworkLoaderFactory(
++@@ -861,6 +861,21 @@ NavigationURLLoaderImpl::CreateNonNetwor
+                  *request_info.initiator_document_token)
+            : nullptr,
+        &terminal_external_protocol);
+@@ -46,11 +44,10 @@ index 7bd47c28bab3e..38258cbd9641a 10064
+    if (terminal_external_protocol) {
+      return std::make_pair(
+          /*is_cacheable=*/false,
+-diff --git content/public/browser/content_browser_client.cc content/public/browser/content_browser_client.cc
+-index d2975a6c36e2c..70040d91977ca 100644
+---- content/public/browser/content_browser_client.cc
+-+++ content/public/browser/content_browser_client.cc
+-@@ -1090,7 +1090,7 @@ ContentBrowserClient::CreateURLLoaderHandlerForServiceWorkerNavigationPreload(
++diff -up content/public/browser/content_browser_client.cc.c2015~ content/public/browser/content_browser_client.cc
++--- content/public/browser/content_browser_client.cc.c2015~	2024-05-15 23:46:18.782554400 +0200
+++++ content/public/browser/content_browser_client.cc	2024-05-20 00:04:18.855130505 +0200
++@@ -1090,7 +1090,7 @@ ContentBrowserClient::CreateURLLoaderHan
+  void ContentBrowserClient::OnNetworkServiceCreated(
+      network::mojom::NetworkService* network_service) {}
+  
+@@ -59,7 +56,7 @@ index d2975a6c36e2c..70040d91977ca 10064
+      BrowserContext* context,
+      bool in_memory,
+      const base::FilePath& relative_partition_path,
+-@@ -1099,6 +1099,7 @@ void ContentBrowserClient::ConfigureNetworkContextParams(
++@@ -1099,6 +1099,7 @@ void ContentBrowserClient::ConfigureNetw
+          cert_verifier_creation_params) {
+    network_context_params->user_agent = GetUserAgentBasedOnPolicy(context);
+    network_context_params->accept_language = "en-us,en";
+@@ -67,11 +64,10 @@ index d2975a6c36e2c..70040d91977ca 10064
+  }
+  
+  std::vector<base::FilePath>
+-diff --git content/public/browser/content_browser_client.h content/public/browser/content_browser_client.h
+-index 6aea068af5ab0..82f40ed3b70fb 100644
+---- content/public/browser/content_browser_client.h
+-+++ content/public/browser/content_browser_client.h
+-@@ -2061,7 +2061,7 @@ class CONTENT_EXPORT ContentBrowserClient {
++diff -up content/public/browser/content_browser_client.h.c2015~ content/public/browser/content_browser_client.h
++--- content/public/browser/content_browser_client.h.c2015~	2024-05-15 23:46:19.782554400 +0200
+++++ content/public/browser/content_browser_client.h	2024-05-20 00:04:18.859130545 +0200
++@@ -2061,7 +2061,7 @@ class CONTENT_EXPORT ContentBrowserClien
+    //
+    // If |relative_partition_path| is the empty string, it means this needs to
+    // create the default NetworkContext for the BrowserContext.
+@@ -80,7 +76,7 @@ index 6aea068af5ab0..82f40ed3b70fb 10064
+        BrowserContext* context,
+        bool in_memory,
+        const base::FilePath& relative_partition_path,
+-@@ -2282,6 +2282,21 @@ class CONTENT_EXPORT ContentBrowserClient {
++@@ -2282,6 +2282,21 @@ class CONTENT_EXPORT ContentBrowserClien
+        RenderFrameHost* initiator_document,
+        mojo::PendingRemote<network::mojom::URLLoaderFactory>* out_factory);
+  
+@@ -102,7 +98,7 @@ index 6aea068af5ab0..82f40ed3b70fb 10064
+    // Creates an OverlayWindow to be used for video or Picture-in-Picture.
+    // This window will house the content shown when in Picture-in-Picture mode.
+    // This will return a new OverlayWindow.
+-@@ -2339,6 +2354,10 @@ class CONTENT_EXPORT ContentBrowserClient {
++@@ -2339,6 +2354,10 @@ class CONTENT_EXPORT ContentBrowserClien
+    // Used as part of the user agent string.
+    virtual std::string GetProduct();
+  
+@@ -113,11 +109,10 @@ index 6aea068af5ab0..82f40ed3b70fb 10064
+    // Returns the user agent. This can also return the reduced user agent, based
+    // on blink::features::kUserAgentReduction. Content may cache this value.
+    virtual std::string GetUserAgent();
+-diff --git content/public/renderer/content_renderer_client.h content/public/renderer/content_renderer_client.h
+-index a062418a22ec9..9b97b77a1f916 100644
+---- content/public/renderer/content_renderer_client.h
+-+++ content/public/renderer/content_renderer_client.h
+-@@ -108,6 +108,9 @@ class CONTENT_EXPORT ContentRendererClient {
++diff -up content/public/renderer/content_renderer_client.h.c2015~ content/public/renderer/content_renderer_client.h
++--- content/public/renderer/content_renderer_client.h.c2015~	2024-05-15 23:46:18.830558800 +0200
+++++ content/public/renderer/content_renderer_client.h	2024-05-20 00:04:18.859130545 +0200
++@@ -108,6 +108,9 @@ class CONTENT_EXPORT ContentRendererClie
+    // a crash handler (such as crashpad) is already in use.
+    virtual void SetUpWebAssemblyTrapHandler();
+  
+@@ -127,7 +122,7 @@ index a062418a22ec9..9b97b77a1f916 10064
+    // Notifies that a new RenderFrame has been created.
+    virtual void RenderFrameCreated(RenderFrame* render_frame) {}
+  
+-@@ -337,6 +340,10 @@ class CONTENT_EXPORT ContentRendererClient {
++@@ -337,6 +340,10 @@ class CONTENT_EXPORT ContentRendererClie
+    // This method may invalidate the frame.
+    virtual void RunScriptsAtDocumentIdle(RenderFrame* render_frame) {}
+  
+@@ -138,10 +133,9 @@ index a062418a22ec9..9b97b77a1f916 10064
+    // Allows subclasses to enable some runtime features before Blink has
+    // started.
+    virtual void SetRuntimeFeaturesDefaultsBeforeBlinkInitialization() {}
+-diff --git content/renderer/render_thread_impl.cc content/renderer/render_thread_impl.cc
+-index d38d1cbd515be..7ac2dfe95fdd0 100644
+---- content/renderer/render_thread_impl.cc
+-+++ content/renderer/render_thread_impl.cc
++diff -up content/renderer/render_thread_impl.cc.c2015~ content/renderer/render_thread_impl.cc
++--- content/renderer/render_thread_impl.cc.c2015~	2024-05-15 23:46:19.954570000 +0200
+++++ content/renderer/render_thread_impl.cc	2024-05-20 00:04:18.859130545 +0200
+ @@ -548,6 +548,8 @@ void RenderThreadImpl::Init() {
+        GetContentClient()->renderer()->CreateURLLoaderThrottleProvider(
+            blink::URLLoaderThrottleProviderType::kFrame);
+@@ -151,11 +145,10 @@ index d38d1cbd515be..7ac2dfe95fdd0 10064
+    GetAssociatedInterfaceRegistry()->AddInterface<mojom::Renderer>(
+        base::BindRepeating(&RenderThreadImpl::OnRendererInterfaceReceiver,
+                            base::Unretained(this)));
+-diff --git content/renderer/renderer_blink_platform_impl.cc content/renderer/renderer_blink_platform_impl.cc
+-index 81b4ff933b5d9..859ad94d4c224 100644
+---- content/renderer/renderer_blink_platform_impl.cc
+-+++ content/renderer/renderer_blink_platform_impl.cc
+-@@ -1001,6 +1001,15 @@ SkBitmap* RendererBlinkPlatformImpl::GetSadPageBitmap() {
++diff -up content/renderer/renderer_blink_platform_impl.cc.c2015~ content/renderer/renderer_blink_platform_impl.cc
++--- content/renderer/renderer_blink_platform_impl.cc.c2015~	2024-05-15 23:46:18.958570500 +0200
+++++ content/renderer/renderer_blink_platform_impl.cc	2024-05-20 00:04:18.859130545 +0200
++@@ -1001,6 +1001,15 @@ SkBitmap* RendererBlinkPlatformImpl::Get
+  
+  //------------------------------------------------------------------------------
+  
+@@ -171,11 +164,10 @@ index 81b4ff933b5d9..859ad94d4c224 10064
+  std::unique_ptr<blink::WebV8ValueConverter>
+  RendererBlinkPlatformImpl::CreateWebV8ValueConverter() {
+    return std::make_unique<V8ValueConverterImpl>();
+-diff --git content/renderer/renderer_blink_platform_impl.h content/renderer/renderer_blink_platform_impl.h
+-index d5ab3967f21cc..b6494070f6840 100644
+---- content/renderer/renderer_blink_platform_impl.h
+-+++ content/renderer/renderer_blink_platform_impl.h
+-@@ -236,6 +236,9 @@ class CONTENT_EXPORT RendererBlinkPlatformImpl : public BlinkPlatformImpl {
++diff -up content/renderer/renderer_blink_platform_impl.h.c2015~ content/renderer/renderer_blink_platform_impl.h
++--- content/renderer/renderer_blink_platform_impl.h.c2015~	2024-05-15 23:46:19.958570500 +0200
+++++ content/renderer/renderer_blink_platform_impl.h	2024-05-20 00:04:18.859130545 +0200
++@@ -236,6 +236,9 @@ class CONTENT_EXPORT RendererBlinkPlatfo
+    InertAndMinimumIntervalOfUserLevelMemoryPressureSignal() override;
+  #endif  // BUILDFLAG(IS_ANDROID)
+  
+@@ -183,13 +175,12 @@ index d5ab3967f21cc..b6494070f6840 10064
+ +  void DevToolsAgentDetached() override;
+ +
+    // Tells this platform that the renderer is locked to a site (i.e., a scheme
+-   // plus eTLD+1, such as https://google.com), or to a more specific origin.
++   // plus eTLD+1, such as https://9oo91e.qjz9zk), or to a more specific origin.
+    void SetIsLockedToSite();
+-diff --git content/shell/browser/shell_content_browser_client.cc content/shell/browser/shell_content_browser_client.cc
+-index 5f2cc5ce07558..8e3324ebefc12 100644
+---- content/shell/browser/shell_content_browser_client.cc
+-+++ content/shell/browser/shell_content_browser_client.cc
+-@@ -734,7 +734,7 @@ void ShellContentBrowserClient::OnNetworkServiceCreated(
++diff -up content/shell/browser/shell_content_browser_client.cc.c2015~ content/shell/browser/shell_content_browser_client.cc
++--- content/shell/browser/shell_content_browser_client.cc.c2015~	2024-05-15 23:46:19.034577400 +0200
+++++ content/shell/browser/shell_content_browser_client.cc	2024-05-20 00:04:18.859130545 +0200
++@@ -734,7 +734,7 @@ void ShellContentBrowserClient::OnNetwor
+  #endif
+  }
+  
+@@ -198,7 +189,7 @@ index 5f2cc5ce07558..8e3324ebefc12 10064
+      BrowserContext* context,
+      bool in_memory,
+      const base::FilePath& relative_partition_path,
+-@@ -743,6 +743,7 @@ void ShellContentBrowserClient::ConfigureNetworkContextParams(
++@@ -743,6 +743,7 @@ void ShellContentBrowserClient::Configur
+          cert_verifier_creation_params) {
+    ConfigureNetworkContextParamsForShell(context, network_context_params,
+                                          cert_verifier_creation_params);
+@@ -206,11 +197,10 @@ index 5f2cc5ce07558..8e3324ebefc12 10064
+  }
+  
+  std::vector<base::FilePath>
+-diff --git content/shell/browser/shell_content_browser_client.h content/shell/browser/shell_content_browser_client.h
+-index f73d9b1264238..145052c3cadd4 100644
+---- content/shell/browser/shell_content_browser_client.h
+-+++ content/shell/browser/shell_content_browser_client.h
+-@@ -146,7 +146,7 @@ class ShellContentBrowserClient : public ContentBrowserClient {
++diff -up content/shell/browser/shell_content_browser_client.h.c2015~ content/shell/browser/shell_content_browser_client.h
++--- content/shell/browser/shell_content_browser_client.h.c2015~	2024-05-15 23:46:19.034577400 +0200
+++++ content/shell/browser/shell_content_browser_client.h	2024-05-20 00:04:18.859130545 +0200
++@@ -146,7 +146,7 @@ class ShellContentBrowserClient : public
+    GetGeolocationSystemPermissionManager() override;
+    void OnNetworkServiceCreated(
+        network::mojom::NetworkService* network_service) override;
+@@ -219,11 +209,10 @@ index f73d9b1264238..145052c3cadd4 10064
+        BrowserContext* context,
+        bool in_memory,
+        const base::FilePath& relative_partition_path,
+-diff --git headless/lib/browser/headless_content_browser_client.cc headless/lib/browser/headless_content_browser_client.cc
+-index 9e6c52dab9abb..e5c3bc53e27d3 100644
+---- headless/lib/browser/headless_content_browser_client.cc
+-+++ headless/lib/browser/headless_content_browser_client.cc
+-@@ -297,7 +297,7 @@ bool HeadlessContentBrowserClient::IsSharedStorageSelectURLAllowed(
++diff -up headless/lib/browser/headless_content_browser_client.cc.c2015~ headless/lib/browser/headless_content_browser_client.cc
++--- headless/lib/browser/headless_content_browser_client.cc.c2015~	2024-05-15 23:46:22.314876600 +0200
+++++ headless/lib/browser/headless_content_browser_client.cc	2024-05-20 00:04:18.859130545 +0200
++@@ -297,7 +297,7 @@ bool HeadlessContentBrowserClient::IsSha
+    return true;
+  }
+  
+@@ -232,7 +221,7 @@ index 9e6c52dab9abb..e5c3bc53e27d3 10064
+      content::BrowserContext* context,
+      bool in_memory,
+      const base::FilePath& relative_partition_path,
+-@@ -307,6 +307,7 @@ void HeadlessContentBrowserClient::ConfigureNetworkContextParams(
++@@ -307,6 +307,7 @@ void HeadlessContentBrowserClient::Confi
+    HeadlessBrowserContextImpl::From(context)->ConfigureNetworkContextParams(
+        in_memory, relative_partition_path, network_context_params,
+        cert_verifier_creation_params);
+@@ -240,11 +229,10 @@ index 9e6c52dab9abb..e5c3bc53e27d3 10064
+  }
+  
+  std::string HeadlessContentBrowserClient::GetProduct() {
+-diff --git headless/lib/browser/headless_content_browser_client.h headless/lib/browser/headless_content_browser_client.h
+-index c5413f8d2979f..f323ff7843dc4 100644
+---- headless/lib/browser/headless_content_browser_client.h
+-+++ headless/lib/browser/headless_content_browser_client.h
+-@@ -83,7 +83,7 @@ class HeadlessContentBrowserClient : public content::ContentBrowserClient {
++diff -up headless/lib/browser/headless_content_browser_client.h.c2015~ headless/lib/browser/headless_content_browser_client.h
++--- headless/lib/browser/headless_content_browser_client.h.c2015~	2024-05-15 23:46:22.314876600 +0200
+++++ headless/lib/browser/headless_content_browser_client.h	2024-05-20 00:04:18.859130545 +0200
++@@ -83,7 +83,7 @@ class HeadlessContentBrowserClient : pub
+        const url::Origin& accessing_origin,
+        std::string* out_debug_message = nullptr) override;
+  
+diff -up chromium-125.0.6422.60/cef/patch/patches/libxml_visibility.patch.omv~ chromium-125.0.6422.60/cef/patch/patches/libxml_visibility.patch
+--- chromium-125.0.6422.60/cef/patch/patches/libxml_visibility.patch.omv~	2024-05-19 23:52:03.494963153 +0200
++++ chromium-125.0.6422.60/cef/patch/patches/libxml_visibility.patch	2024-05-20 00:08:12.417536933 +0200
+@@ -1,12 +1,11 @@
+-diff --git third_party/libxml/BUILD.gn third_party/libxml/BUILD.gn
+-index 1621a215784c9..5a13a75cea0dd 100644
+---- third_party/libxml/BUILD.gn
+-+++ third_party/libxml/BUILD.gn
+-@@ -140,6 +140,7 @@ static_library("libxml") {
+-     ":libxml_utils",
++diff -up third_party/libxml/BUILD.gn.xml~ third_party/libxml/BUILD.gn
++--- third_party/libxml/BUILD.gn.xml~	2024-05-20 00:06:51.244705902 +0200
+++++ third_party/libxml/BUILD.gn	2024-05-20 00:07:53.869347471 +0200
++@@ -19,6 +19,7 @@ static_library("libxml_utils") {
++   visibility = [
+      ":xml_reader",
+      ":xml_writer",
+ +    "//cef:*",
+-     "//chromecast/internal",
+-     "//testing/libfuzzer/*",
+-     "//third_party/blink/renderer/*",
++     "//base/test:test_support",
++     "//services/data_decoder:lib",
++     "//services/data_decoder:xml_parser_fuzzer_deps",
+diff -up chromium-125.0.6422.60/cef/patch/patch.cfg.omv~ chromium-125.0.6422.60/cef/patch/patch.cfg
+--- chromium-125.0.6422.60/cef/patch/patch.cfg.omv~	2024-05-20 11:48:46.381482465 +0200
++++ chromium-125.0.6422.60/cef/patch/patch.cfg	2024-05-20 11:49:10.657697761 +0200
+@@ -446,11 +446,6 @@ patches = [
+     'name': 'printing_context_2196',
+   },
+   {
+-    # Disable thin archives with cef_sandbox builds.
+-    # https://github.com/chromiumembedded/cef/issues/3674
+-    'name': 'build',
+-  },
+-  {
+     # Changes necessary to support chrome extensions. Add a new
+     # ExtensionHost constructor that allows CEF to create the WebContents.
+     # https://github.com/chromiumembedded/cef/issues/1947

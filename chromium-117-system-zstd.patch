@@ -12,7 +12,7 @@ diff -up chromium-120.0.6099.71/build/linux/unbundle/replace_gn_files.py.20~ chr
 diff -up chromium-120.0.6099.71/build/linux/unbundle/zstd.gn.20~ chromium-120.0.6099.71/build/linux/unbundle/zstd.gn
 --- chromium-120.0.6099.71/build/linux/unbundle/zstd.gn.20~	2023-12-12 11:23:03.637514316 +0100
 +++ chromium-120.0.6099.71/build/linux/unbundle/zstd.gn	2023-12-12 11:23:03.637514316 +0100
-@@ -0,0 +1,25 @@
+@@ -0,0 +1,30 @@
 +import("//build/config/linux/pkg_config.gni")
 +import("//build/shim_headers.gni")
 +
@@ -30,6 +30,11 @@ diff -up chromium-120.0.6099.71/build/linux/unbundle/zstd.gn.20~ chromium-120.0.
 +}
 +
 +source_set("zstd") {
++  deps = [ ":zstd_shim" ]
++  public_configs = [ ":system_zstd" ]
++}
++
++source_set("compress") {
 +  deps = [ ":zstd_shim" ]
 +  public_configs = [ ":system_zstd" ]
 +}

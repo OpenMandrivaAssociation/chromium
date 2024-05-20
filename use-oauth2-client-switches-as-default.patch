@@ -1,7 +1,7 @@
-diff -upr chromium-89.0.4389.58.orig/google_apis/google_api_keys.cc chromium-89.0.4389.58/google_apis/google_api_keys.cc
---- chromium-89.0.4389.58.orig/google_apis/google_api_keys.cc	2021-02-24 22:37:18.494007649 +0000
-+++ chromium-89.0.4389.58/google_apis/google_api_keys.cc	2021-02-24 22:35:00.865777600 +0000
-@@ -154,11 +154,11 @@ class APIKeyCache {
+diff -up chromium-125.0.6422.60/google_apis/google_api_keys-inc.cc.11~ chromium-125.0.6422.60/google_apis/google_api_keys-inc.cc
+--- chromium-125.0.6422.60/google_apis/google_api_keys-inc.cc.11~	2024-05-16 19:32:01.649760273 +0200
++++ chromium-125.0.6422.60/google_apis/google_api_keys-inc.cc	2024-05-16 19:33:10.442553290 +0200
+@@ -182,11 +182,11 @@ class APIKeyCache {
  
      std::string default_client_id = CalculateKeyValue(
          GOOGLE_DEFAULT_CLIENT_ID,
@@ -15,3 +15,4 @@ diff -upr chromium-89.0.4389.58.orig/google_apis/google_api_keys.cc chromium-89.
          std::string(), environment.get(), command_line, gaia_config);
  
      // We currently only allow overriding the baked-in values for the
+diff -up chromium-125.0.6422.60/google_apis/google_api_keys.cc.11~ chromium-125.0.6422.60/google_apis/google_api_keys.cc

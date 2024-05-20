@@ -137,7 +137,7 @@ diff -up chromium-124.0.6367.60/components/search_engines/search_engine_countrie
      {SearchEngineTier::kTopEngines, &bing},
      {SearchEngineTier::kTopEngines, &duckduckgo},
      {SearchEngineTier::kTopEngines, &mail_ru},
-@@ -179,43 +186,58 @@ constexpr EngineAndTier engines_BY[] = {
+@@ -179,43 +186,53 @@ constexpr EngineAndTier engines_BY[] = {
  
  // Belize
  constexpr EngineAndTier engines_BZ[] = {
@@ -168,15 +168,10 @@ diff -up chromium-124.0.6367.60/components/search_engines/search_engine_countrie
      {SearchEngineTier::kTopEngines, &yahoo_ch},
      {SearchEngineTier::kTopEngines, &ecosia},
 +    {SearchEngineTier::kRemainingEngines, &qwant},
-+    {SearchEngineTier::kRemainingEngines, &mojeek},
-+    {SearchEngineTier::kRemainingEngines, &yep},
 +    {SearchEngineTier::kRemainingEngines, &brave},
-+    {SearchEngineTier::kRemainingEngines, &nona},
-+    {SearchEngineTier::kRemainingEngines, &quendu},
 +    {SearchEngineTier::kRemainingEngines, &panda},
 +    {SearchEngineTier::kRemainingEngines, &metager_de},
 +    {SearchEngineTier::kRemainingEngines, &oceanhero},
-+    {SearchEngineTier::kRemainingEngines, &info_com},
 +    {SearchEngineTier::kRemainingEngines, &karma},
 +    {SearchEngineTier::kRemainingEngines, &privacywall},
 +    {SearchEngineTier::kRemainingEngines, &lilo},

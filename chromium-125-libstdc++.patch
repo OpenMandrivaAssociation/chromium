@@ -1,0 +1,11 @@
+diff -up chromium-125.0.6422.60/third_party/vulkan-deps/vulkan-utility-libraries/src/include/vulkan/utility/vk_small_containers.hpp.omv~ chromium-125.0.6422.60/third_party/vulkan-deps/vulkan-utility-libraries/src/include/vulkan/utility/vk_small_containers.hpp
+--- chromium-125.0.6422.60/third_party/vulkan-deps/vulkan-utility-libraries/src/include/vulkan/utility/vk_small_containers.hpp.omv~	2024-05-17 15:10:25.774872331 +0200
++++ chromium-125.0.6422.60/third_party/vulkan-deps/vulkan-utility-libraries/src/include/vulkan/utility/vk_small_containers.hpp	2024-05-17 15:10:31.078931330 +0200
+@@ -11,6 +11,7 @@
+ #include <cassert>
+ #include <unordered_map>
+ #include <unordered_set>
++#include <memory>
+ 
+ namespace vku {
+ namespace small {

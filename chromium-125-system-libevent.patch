@@ -1,0 +1,24 @@
+diff -up chromium-125.0.6422.60/base/message_loop/message_pump_libevent.h.omv~ chromium-125.0.6422.60/base/message_loop/message_pump_libevent.h
+--- chromium-125.0.6422.60/base/message_loop/message_pump_libevent.h.omv~	2024-05-17 15:47:46.347600514 +0200
++++ chromium-125.0.6422.60/base/message_loop/message_pump_libevent.h	2024-05-17 15:48:50.903734261 +0200
+@@ -18,7 +18,7 @@
+ #include "base/message_loop/message_pump_buildflags.h"
+ #include "base/message_loop/watchable_io_message_pump_posix.h"
+ #include "base/threading/thread_checker.h"
+-#include "third_party/libevent/event.h"
++#include <event.h>
+ 
+ // Declare structs we need from libevent.h rather than including it
+ struct event_base;
+diff -up chromium-125.0.6422.60/base/message_loop/message_pump_libevent_unittest.cc.omv~ chromium-125.0.6422.60/base/message_loop/message_pump_libevent_unittest.cc
+--- chromium-125.0.6422.60/base/message_loop/message_pump_libevent_unittest.cc.omv~	2024-05-17 15:48:05.419650710 +0200
++++ chromium-125.0.6422.60/base/message_loop/message_pump_libevent_unittest.cc	2024-05-17 15:48:43.211717923 +0200
+@@ -37,7 +37,7 @@
+ #include "base/threading/thread.h"
+ #include "build/build_config.h"
+ #include "testing/gtest/include/gtest/gtest.h"
+-#include "third_party/libevent/event.h"
++#include <event.h>
+ 
+ #if BUILDFLAG(ENABLE_MESSAGE_PUMP_EPOLL)
+ #include "base/message_loop/message_pump_epoll.h"

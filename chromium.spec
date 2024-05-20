@@ -56,7 +56,8 @@
 # openh264: Fails to compile
 # icu: Causes crash when loading some websites, e.g.
 #      build logs from abf, anti-spiegel.ru
-# libevent: Works-ish, but causes weird random freezes
+# libevent: Seems to be ok in 125. Observed earlier:
+#           Works-ish, but causes weird random freezes
 #           observed e.g. while running multiple Slack
 #           sessions in browser mode
 # libvpx: Fails to compile
@@ -67,9 +68,9 @@
 # libwebp (as of 124.x): //third_party/libavif:libavif_enc(//build/toolchain/linux/unbundle:default) needs //third_party/libwebp:libwebp_sharpyuv(//build/toolchain/linux/unbundle:default)
 # re2 (as of 124.x): //third_party/googletest:gtest_config(//build/toolchain/linux/unbundle:default) needs //third_party/re2:re2_config(//build/toolchain/linux/unbundle:default) (+ libc++/libstdc++ issue)
 %if %{with libcxx}
-%global system_libs brotli dav1d flac ffmpeg fontconfig harfbuzz-ng libjpeg libjxl libpng libdrm libxml libxslt opus libusb openh264 zlib freetype zstd libwebp
+%global system_libs brotli dav1d flac ffmpeg fontconfig harfbuzz-ng libjpeg libjxl libpng libdrm libxml libxslt opus libusb openh264 zlib freetype zstd libwebp libevent
 %else
-%global system_libs brotli dav1d flac ffmpeg fontconfig harfbuzz-ng libjpeg libjxl libpng libdrm libxml libxslt opus libusb openh264 zlib freetype zstd libwebp jsoncpp snappy
+%global system_libs brotli dav1d flac ffmpeg fontconfig harfbuzz-ng libjpeg libjxl libpng libdrm libxml libxslt opus libusb openh264 zlib freetype zstd libwebp jsoncpp snappy libevent
 %endif
 %define system() %(if echo %{system_libs} |grep -q -E '(^| )%{1}( |$)'; then echo -n 1; else echo -n 0;  fi)
 
@@ -87,9 +88,9 @@ Name:		chromium-browser-%{channel}
 %endif
 # Working version numbers can be found at
 # https://chromiumdash.appspot.com/releases?platform=Linux
-Version:	124.0.6367.155
+Version:	125.0.6422.60
 ### Don't be evil!!! ###
-%define ungoogled 124.0.6367.155-1
+%define ungoogled 125.0.6422.60-1
 %if %{with cef}
 # To find the CEF commit matching the Chromium version, look up the
 # right branch at
@@ -102,9 +103,9 @@ Version:	124.0.6367.155
 # https://github.com/chromiumembedded/cef/issues/3616 fixed in cef upstream.
 # If we run into this problem, we need to either use custom libxml or build
 # system libxml with TLS disabled.
-%define cef 6367:ff7dcd851eab996935594cd9986256de2ca74c1e
+%define cef 6422:6da73a3d31f7e86cb5a485c7c3a303a39369d6ba
 %endif
-Release:	2
+Release:	1
 Summary:	A fast webkit-based web browser
 Group:		Networking/WWW
 License:	BSD, LGPL
@@ -162,43 +163,57 @@ Patch103:	https://raw.githubusercontent.com/archlinux/svntogit-packages/packages
 
 ### 200-299: Gentoo
 Patch200:	https://gitweb.gentoo.org/repo/gentoo.git/plain/www-client/chromium/files/chromium-124-libwebp-shim-sharpyuv.patch
-Patch201:	https://gitweb.gentoo.org/repo/gentoo.git/plain/www-client/chromium/files/chromium-125-ninja-1-12.patch
 
 ### 300-399: Debian
 # https://sources.debian.org/patches/chromium/
 # Mostly fixes for libstdc++ related failures
-Patch300:	https://sources.debian.org/data/main/c/chromium/124.0.6367.155-1/debian/patches/fixes/ps-print.patch
-Patch301:	https://sources.debian.org/data/main/c/chromium/124.0.6367.155-1/debian/patches/fixes/perfetto.patch
-Patch302:	https://sources.debian.org/data/main/c/chromium/124.0.6367.155-1/debian/patches/fixes/blink-frags.patch
-Patch303:	https://sources.debian.org/data/main/c/chromium/124.0.6367.155-1/debian/patches/fixes/material-utils.patch
-Patch304:	https://sources.debian.org/data/main/c/chromium/124.0.6367.155-1/debian/patches/fixes/strlcpy.patch
-Patch305:	https://sources.debian.org/data/main/c/chromium/124.0.6367.155-1/debian/patches/fixes/stats-collector.patch
-Patch306:	https://sources.debian.org/data/main/c/chromium/124.0.6367.155-1/debian/patches/fixes/bad-font-gc0000.patch
-Patch307:	https://sources.debian.org/data/main/c/chromium/124.0.6367.155-1/debian/patches/fixes/bad-font-gc000.patch
-Patch308:	https://sources.debian.org/data/main/c/chromium/124.0.6367.155-1/debian/patches/fixes/bad-font-gc00.patch
-Patch309:	https://sources.debian.org/data/main/c/chromium/124.0.6367.155-1/debian/patches/fixes/bad-font-gc0.patch
-Patch310:	https://sources.debian.org/data/main/c/chromium/124.0.6367.155-1/debian/patches/fixes/bad-font-gc1.patch
-Patch311:	https://sources.debian.org/data/main/c/chromium/124.0.6367.155-1/debian/patches/fixes/bad-font-gc11.patch
-Patch312:	https://sources.debian.org/data/main/c/chromium/124.0.6367.155-1/debian/patches/fixes/bad-font-gc2.patch
-Patch313:	https://sources.debian.org/data/main/c/chromium/124.0.6367.155-1/debian/patches/fixes/bad-font-gc3.patch
-Patch314:	https://sources.debian.org/data/main/c/chromium/124.0.6367.155-1/debian/patches/upstream/mojo.patch
-Patch315:	https://sources.debian.org/data/main/c/chromium/124.0.6367.155-1/debian/patches/upstream/mojo-null.patch
-Patch316:	https://sources.debian.org/data/main/c/chromium/124.0.6367.155-1/debian/patches/upstream/uint-includes.patch
-Patch317:	https://sources.debian.org/data/main/c/chromium/124.0.6367.155-1/debian/patches/disable/screen-ai-blob.patch
-Patch318:	https://sources.debian.org/data/main/c/chromium/124.0.6367.155-1/debian/patches/system/icu-shim.patch
-Patch319:	https://sources.debian.org/data/main/c/chromium/124.0.6367.155-1/debian/patches/system/jpeg.patch
-Patch320:	https://sources.debian.org/data/main/c/chromium/124.0.6367.155-1/debian/patches/system/openjpeg.patch
-Patch321:	https://sources.debian.org/data/main/c/chromium/124.0.6367.155-1/debian/patches/system/clang-format.patch
-Patch322:	https://sources.debian.org/data/main/c/chromium/124.0.6367.155-1/debian/patches/system/opus.patch
-Patch323:	https://sources.debian.org/data/main/c/chromium/124.0.6367.155-1/debian/patches/system/eu-strip.patch
-Patch324:	https://sources.debian.org/data/main/c/chromium/124.0.6367.155-1/debian/patches/system/rollup.patch
-Patch325:	https://sources.debian.org/data/main/c/chromium/124.0.6367.155-1/debian/patches/fixes/widevine-revision.patch
-Patch326:	https://sources.debian.org/data/main/c/chromium/124.0.6367.155-1/debian/patches/fixes/widevine-locations.patch
+Patch300:	https://sources.debian.org/data/main/c/chromium/125.0.6422.60-1/debian/patches/fixes/ps-print.patch
+Patch301:	https://sources.debian.org/data/main/c/chromium/125.0.6422.60-1/debian/patches/fixes/perfetto.patch
+Patch302:	https://sources.debian.org/data/main/c/chromium/125.0.6422.60-1/debian/patches/fixes/blink-frags.patch
+Patch303:	https://sources.debian.org/data/main/c/chromium/125.0.6422.60-1/debian/patches/fixes/material-utils.patch
+Patch304:	https://sources.debian.org/data/main/c/chromium/125.0.6422.60-1/debian/patches/fixes/strlcpy.patch
+Patch305:	https://sources.debian.org/data/main/c/chromium/125.0.6422.60-1/debian/patches/fixes/stats-collector.patch
+Patch306:	https://sources.debian.org/data/main/c/chromium/125.0.6422.60-1/debian/patches/fixes/bad-font-gc00000.patch
+Patch307:	https://sources.debian.org/data/main/c/chromium/125.0.6422.60-1/debian/patches/fixes/bad-font-gc0000.patch
+Patch308:	https://sources.debian.org/data/main/c/chromium/125.0.6422.60-1/debian/patches/fixes/bad-font-gc000.patch
+Patch309:	https://sources.debian.org/data/main/c/chromium/125.0.6422.60-1/debian/patches/fixes/bad-font-gc00.patch
+Patch310:	https://sources.debian.org/data/main/c/chromium/125.0.6422.60-1/debian/patches/fixes/bad-font-gc0.patch
+Patch311:	https://sources.debian.org/data/main/c/chromium/125.0.6422.60-1/debian/patches/fixes/bad-font-gc1.patch
+Patch312:	https://sources.debian.org/data/main/c/chromium/125.0.6422.60-1/debian/patches/fixes/bad-font-gc11.patch
+Patch313:	https://sources.debian.org/data/main/c/chromium/125.0.6422.60-1/debian/patches/fixes/bad-font-gc2.patch
+Patch314:	https://sources.debian.org/data/main/c/chromium/125.0.6422.60-1/debian/patches/fixes/bad-font-gc3.patch
+Patch315:	https://sources.debian.org/data/main/c/chromium/125.0.6422.60-1/debian/patches/upstream/mojo.patch
+Patch316:	https://sources.debian.org/data/main/c/chromium/125.0.6422.60-1/debian/patches/upstream/mojo-null.patch
+Patch317:	https://sources.debian.org/data/main/c/chromium/125.0.6422.60-1/debian/patches/upstream/ruy-include.patch
+Patch318:	https://sources.debian.org/data/main/c/chromium/125.0.6422.60-1/debian/patches/upstream/mojo-bindings-include.patch
+Patch319:	https://sources.debian.org/data/main/c/chromium/125.0.6422.60-1/debian/patches/upstream/appservice-include.patch
+Patch320:	https://sources.debian.org/data/main/c/chromium/125.0.6422.60-1/debian/patches/upstream/no-vector-consts.patch
+Patch321:	https://sources.debian.org/data/main/c/chromium/125.0.6422.60-1/debian/patches/upstream/lens-include.patch
+Patch322:	https://sources.debian.org/data/main/c/chromium/125.0.6422.60-1/debian/patches/upstream/ninja.patch
+Patch323:	https://sources.debian.org/data/main/c/chromium/125.0.6422.60-1/debian/patches/disable/driver-chrome-path.patch
+Patch324:	https://sources.debian.org/data/main/c/chromium/125.0.6422.60-1/debian/patches/disable/widevine-cdm-cu.patch
+Patch325:	https://sources.debian.org/data/main/c/chromium/125.0.6422.60-1/debian/patches/disable/screen-ai-blob.patch
+Patch326:	https://sources.debian.org/data/main/c/chromium/125.0.6422.60-1/debian/patches/system/icu-shim.patch
+Patch327:	https://sources.debian.org/data/main/c/chromium/125.0.6422.60-1/debian/patches/system/jpeg.patch
+Patch328:	https://sources.debian.org/data/main/c/chromium/125.0.6422.60-1/debian/patches/system/zlib.patch
+Patch329:	https://sources.debian.org/data/main/c/chromium/125.0.6422.60-1/debian/patches/system/openjpeg.patch
+Patch330:	https://sources.debian.org/data/main/c/chromium/125.0.6422.60-1/debian/patches/system/clang-format.patch
+Patch331:	https://sources.debian.org/data/main/c/chromium/125.0.6422.60-1/debian/patches/system/opus.patch
+Patch332:	https://sources.debian.org/data/main/c/chromium/125.0.6422.60-1/debian/patches/system/eu-strip.patch
+Patch333:	https://sources.debian.org/data/main/c/chromium/125.0.6422.60-1/debian/patches/system/rollup.patch
+%if %{system libevent}
+Patch334:	https://sources.debian.org/data/main/c/chromium/125.0.6422.60-1/debian/patches/system/event.patch
+# Looks like Debian is missing a few spots... Let's add our own
+Patch335:	chromium-125-system-libevent.patch
+%endif
+Patch336:	https://sources.debian.org/data/main/c/chromium/125.0.6422.60-1/debian/patches/fixes/widevine-revision.patch
+Patch337:	https://sources.debian.org/data/main/c/chromium/125.0.6422.60-1/debian/patches/fixes/widevine-locations.patch
 
 ### 400-999: Patches from 3rd party projects that aren't distro packages
 # https://gitlab.com/Matt.Jolly/chromium-patches
 # Often has patches needed to build with libstdc++, sometimes other
 # interesting bugs
+# Modified by OM to make it work with chromium 125
 Patch400:	https://gitlab.com/Matt.Jolly/chromium-patches/-/raw/master/chromium-117-system-zstd.patch?ref_type=heads&inline=false#/chromium-117-system-zstd.patch
 Patch410:	https://raw.githubusercontent.com/ungoogled-software/ungoogled-chromium-fedora/master/chromium-91.0.4472.77-java-only-allowed-in-android-builds.patch
 # From OBS CEF fork
@@ -229,14 +244,13 @@ Patch1016:	chroimum-119-workaround-crash-on-startup.patch
 Patch1017:	chromium-124-search-engine-choice.patch
 Patch1018:	chromium-81-unbundle-zlib.patch
 Patch1019:	chromium-121-rust-clang_lib.patch
-Patch1020:	chromium-124-libstdc++.patch
-Patch1021:	chromium-124-system-stl.patch
+Patch1020:	chromium-125-libstdc++.patch
 %if 0%{?cef:1}
 Patch1022:	chromium-115-fix-generate_fontconfig_caches.patch
 Patch1023:	cef-115-minizip-ng.patch
 %if 0%{?ungoogled:1}
-Patch1024:	cef-124-rebase-to-ungoogled.patch
-Patch1025:	cef-115-ungoogling.patch
+Patch1024:	cef-125-rebase-to-ungoogled.patch
+#Patch1025:	cef-115-ungoogling.patch
 %endif
 Patch1026:	cef-zlib-linkage.patch
 %endif
@@ -250,11 +264,11 @@ Patch1026:	cef-zlib-linkage.patch
 # Patches 3000+ are from the various chromium upstream repositories
 # and applied inside their respective directories.
 # ============================================================================
-# 3000-3009: third_party/webrtc - from https://webrtc.googlesource.com/src
-Patch3000:	webrtc-e7d10047096880feb5e9846375f2da54aef91202.patch
-# 3010-3019: media -- from https://chromium.googlesource.com/chromium/src/media.git
-Patch3010:	media-ce20fa742f2525e0d7bf36373557615de05a6104.patch
-Patch3011:	media-e522b8156f88771fd9d930f88de12600fb479afe.patch
+
+# ============================================================================
+# Patches 4000+ are applied inside the ungoogled-chromium tree before
+# the ungoogling scripts are run
+# ============================================================================
 
 Provides:	%{crname}
 Obsoletes:	chromium-browser-unstable < %{EVRD}
@@ -569,7 +583,7 @@ ln -s %{_bindir}/eu-strip buildtools/third_party/eu-strip/bin/eu-strip
 
 echo "%{revision}" > build/LASTCHANGE.in
 
-sed -i 's!-nostdlib++!!g'  build/config/posix/BUILD.gn
+#sed -i 's!-nostdlib++!!g'  build/config/posix/BUILD.gn
 sed -i 's!ffmpeg_buildflags!ffmpeg_features!g' build/linux/unbundle/ffmpeg.gn
 
 # Allow building against system libraries in official builds
