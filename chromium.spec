@@ -88,9 +88,9 @@ Name:		chromium-browser-%{channel}
 %endif
 # Working version numbers can be found at
 # https://chromiumdash.appspot.com/releases?platform=Linux
-Version:	125.0.6422.76
+Version:	125.0.6422.112
 ### Don't be evil!!! ###
-%define ungoogled 125.0.6422.60-1
+%define ungoogled 125.0.6422.112-1
 %if %{with cef}
 # To find the CEF commit matching the Chromium version, look up the
 # right branch at
@@ -103,7 +103,7 @@ Version:	125.0.6422.76
 # https://github.com/chromiumembedded/cef/issues/3616 fixed in cef upstream.
 # If we run into this problem, we need to either use custom libxml or build
 # system libxml with TLS disabled.
-%define cef 6422:6da73a3d31f7e86cb5a485c7c3a303a39369d6ba
+%define cef 6422:3d8f1c9064eb5da14bbb2ab4d5eb1c2df540aacd
 %endif
 Release:	1
 Summary:	A fast webkit-based web browser
@@ -167,47 +167,50 @@ Patch200:	https://gitweb.gentoo.org/repo/gentoo.git/plain/www-client/chromium/fi
 ### 300-399: Debian
 # https://sources.debian.org/patches/chromium/
 # Mostly fixes for libstdc++ related failures
-Patch300:	https://sources.debian.org/data/main/c/chromium/125.0.6422.60-1/debian/patches/fixes/ps-print.patch
-Patch301:	https://sources.debian.org/data/main/c/chromium/125.0.6422.60-1/debian/patches/fixes/perfetto.patch
-Patch302:	https://sources.debian.org/data/main/c/chromium/125.0.6422.60-1/debian/patches/fixes/blink-frags.patch
-Patch303:	https://sources.debian.org/data/main/c/chromium/125.0.6422.60-1/debian/patches/fixes/material-utils.patch
-Patch304:	https://sources.debian.org/data/main/c/chromium/125.0.6422.60-1/debian/patches/fixes/strlcpy.patch
-Patch305:	https://sources.debian.org/data/main/c/chromium/125.0.6422.60-1/debian/patches/fixes/stats-collector.patch
-Patch306:	https://sources.debian.org/data/main/c/chromium/125.0.6422.60-1/debian/patches/fixes/bad-font-gc00000.patch
-Patch307:	https://sources.debian.org/data/main/c/chromium/125.0.6422.60-1/debian/patches/fixes/bad-font-gc0000.patch
-Patch308:	https://sources.debian.org/data/main/c/chromium/125.0.6422.60-1/debian/patches/fixes/bad-font-gc000.patch
-Patch309:	https://sources.debian.org/data/main/c/chromium/125.0.6422.60-1/debian/patches/fixes/bad-font-gc00.patch
-Patch310:	https://sources.debian.org/data/main/c/chromium/125.0.6422.60-1/debian/patches/fixes/bad-font-gc0.patch
-Patch311:	https://sources.debian.org/data/main/c/chromium/125.0.6422.60-1/debian/patches/fixes/bad-font-gc1.patch
-Patch312:	https://sources.debian.org/data/main/c/chromium/125.0.6422.60-1/debian/patches/fixes/bad-font-gc11.patch
-Patch313:	https://sources.debian.org/data/main/c/chromium/125.0.6422.60-1/debian/patches/fixes/bad-font-gc2.patch
-Patch314:	https://sources.debian.org/data/main/c/chromium/125.0.6422.60-1/debian/patches/fixes/bad-font-gc3.patch
-Patch315:	https://sources.debian.org/data/main/c/chromium/125.0.6422.60-1/debian/patches/upstream/mojo.patch
-Patch316:	https://sources.debian.org/data/main/c/chromium/125.0.6422.60-1/debian/patches/upstream/mojo-null.patch
-Patch317:	https://sources.debian.org/data/main/c/chromium/125.0.6422.60-1/debian/patches/upstream/ruy-include.patch
-Patch318:	https://sources.debian.org/data/main/c/chromium/125.0.6422.60-1/debian/patches/upstream/mojo-bindings-include.patch
-Patch319:	https://sources.debian.org/data/main/c/chromium/125.0.6422.60-1/debian/patches/upstream/appservice-include.patch
-Patch320:	https://sources.debian.org/data/main/c/chromium/125.0.6422.60-1/debian/patches/upstream/no-vector-consts.patch
-Patch321:	https://sources.debian.org/data/main/c/chromium/125.0.6422.60-1/debian/patches/upstream/lens-include.patch
-Patch322:	https://sources.debian.org/data/main/c/chromium/125.0.6422.60-1/debian/patches/upstream/ninja.patch
-Patch323:	https://sources.debian.org/data/main/c/chromium/125.0.6422.60-1/debian/patches/disable/driver-chrome-path.patch
-Patch324:	https://sources.debian.org/data/main/c/chromium/125.0.6422.60-1/debian/patches/disable/widevine-cdm-cu.patch
-Patch325:	https://sources.debian.org/data/main/c/chromium/125.0.6422.60-1/debian/patches/disable/screen-ai-blob.patch
-Patch326:	https://sources.debian.org/data/main/c/chromium/125.0.6422.60-1/debian/patches/system/icu-shim.patch
-Patch327:	https://sources.debian.org/data/main/c/chromium/125.0.6422.60-1/debian/patches/system/jpeg.patch
-Patch328:	https://sources.debian.org/data/main/c/chromium/125.0.6422.60-1/debian/patches/system/zlib.patch
-Patch329:	https://sources.debian.org/data/main/c/chromium/125.0.6422.60-1/debian/patches/system/openjpeg.patch
-Patch330:	https://sources.debian.org/data/main/c/chromium/125.0.6422.60-1/debian/patches/system/clang-format.patch
-Patch331:	https://sources.debian.org/data/main/c/chromium/125.0.6422.60-1/debian/patches/system/opus.patch
-Patch332:	https://sources.debian.org/data/main/c/chromium/125.0.6422.60-1/debian/patches/system/eu-strip.patch
-Patch333:	https://sources.debian.org/data/main/c/chromium/125.0.6422.60-1/debian/patches/system/rollup.patch
+Patch300:	https://sources.debian.org/data/main/c/chromium/125.0.6422.112-1/debian/patches/fixes/ps-print.patch
+Patch301:	https://sources.debian.org/data/main/c/chromium/125.0.6422.112-1/debian/patches/fixes/perfetto.patch
+Patch302:	https://sources.debian.org/data/main/c/chromium/125.0.6422.112-1/debian/patches/fixes/blink-frags.patch
+Patch303:	https://sources.debian.org/data/main/c/chromium/125.0.6422.112-1/debian/patches/fixes/material-utils.patch
+Patch304:	https://sources.debian.org/data/main/c/chromium/125.0.6422.112-1/debian/patches/fixes/strlcpy.patch
+Patch305:	https://sources.debian.org/data/main/c/chromium/125.0.6422.112-1/debian/patches/fixes/stats-collector.patch
+Patch306:	https://sources.debian.org/data/main/c/chromium/125.0.6422.112-1/debian/patches/fixes/bad-font-gc00000.patch
+Patch307:	https://sources.debian.org/data/main/c/chromium/125.0.6422.112-1/debian/patches/fixes/bad-font-gc0000.patch
+Patch308:	https://sources.debian.org/data/main/c/chromium/125.0.6422.112-1/debian/patches/fixes/bad-font-gc000.patch
+Patch309:	https://sources.debian.org/data/main/c/chromium/125.0.6422.112-1/debian/patches/fixes/bad-font-gc00.patch
+Patch310:	https://sources.debian.org/data/main/c/chromium/125.0.6422.112-1/debian/patches/fixes/bad-font-gc0.patch
+Patch311:	https://sources.debian.org/data/main/c/chromium/125.0.6422.112-1/debian/patches/fixes/bad-font-gc1.patch
+Patch312:	https://sources.debian.org/data/main/c/chromium/125.0.6422.112-1/debian/patches/fixes/bad-font-gc11.patch
+Patch313:	https://sources.debian.org/data/main/c/chromium/125.0.6422.112-1/debian/patches/fixes/bad-font-gc2.patch
+Patch314:	https://sources.debian.org/data/main/c/chromium/125.0.6422.112-1/debian/patches/fixes/bad-font-gc3.patch
+Patch315:	https://sources.debian.org/data/main/c/chromium/125.0.6422.112-1/debian/patches/upstream/mojo.patch
+Patch316:	https://sources.debian.org/data/main/c/chromium/125.0.6422.112-1/debian/patches/upstream/mojo-null.patch
+Patch317:	https://sources.debian.org/data/main/c/chromium/125.0.6422.112-1/debian/patches/upstream/ruy-include.patch
+Patch318:	https://sources.debian.org/data/main/c/chromium/125.0.6422.112-1/debian/patches/upstream/mojo-bindings-include.patch
+Patch319:	https://sources.debian.org/data/main/c/chromium/125.0.6422.112-1/debian/patches/upstream/appservice-include.patch
+Patch320:	https://sources.debian.org/data/main/c/chromium/125.0.6422.112-1/debian/patches/upstream/no-vector-consts.patch
+Patch321:	https://sources.debian.org/data/main/c/chromium/125.0.6422.112-1/debian/patches/upstream/lens-include.patch
+Patch322:	https://sources.debian.org/data/main/c/chromium/125.0.6422.112-1/debian/patches/upstream/ninja.patch
+Patch323:	https://sources.debian.org/data/main/c/chromium/125.0.6422.112-1/debian/patches/disable/driver-chrome-path.patch
+Patch324:	https://sources.debian.org/data/main/c/chromium/125.0.6422.112-1/debian/patches/disable/widevine-cdm-cu.patch
+Patch325:	https://sources.debian.org/data/main/c/chromium/125.0.6422.112-1/debian/patches/disable/screen-ai-blob.patch
+Patch326:	https://sources.debian.org/data/main/c/chromium/125.0.6422.112-1/debian/patches/system/icu-shim.patch
+Patch327:	https://sources.debian.org/data/main/c/chromium/125.0.6422.112-1/debian/patches/system/jpeg.patch
+Patch328:	https://sources.debian.org/data/main/c/chromium/125.0.6422.112-1/debian/patches/system/zlib.patch
+Patch329:	https://sources.debian.org/data/main/c/chromium/125.0.6422.112-1/debian/patches/system/openjpeg.patch
+Patch330:	https://sources.debian.org/data/main/c/chromium/125.0.6422.112-1/debian/patches/system/clang-format.patch
+Patch331:	https://sources.debian.org/data/main/c/chromium/125.0.6422.112-1/debian/patches/system/opus.patch
+Patch332:	https://sources.debian.org/data/main/c/chromium/125.0.6422.112-1/debian/patches/system/eu-strip.patch
+Patch333:	https://sources.debian.org/data/main/c/chromium/125.0.6422.112-1/debian/patches/system/rollup.patch
 %if %{system libevent}
-Patch334:	https://sources.debian.org/data/main/c/chromium/125.0.6422.60-1/debian/patches/system/event.patch
-# Looks like Debian is missing a few spots... Let's add our own
+Patch334:	https://sources.debian.org/data/main/c/chromium/125.0.6422.112-1/debian/patches/system/event.patch
+# Looks like Debian is missing a few spots... Let's add our own. Mixed in with the Debian
+# patches because it's an addition to 334.
 Patch335:	chromium-125-system-libevent.patch
 %endif
-Patch336:	https://sources.debian.org/data/main/c/chromium/125.0.6422.60-1/debian/patches/fixes/widevine-revision.patch
-Patch337:	https://sources.debian.org/data/main/c/chromium/125.0.6422.60-1/debian/patches/fixes/widevine-locations.patch
+Patch336:	https://sources.debian.org/data/main/c/chromium/125.0.6422.112-1/debian/patches/fixes/widevine-revision.patch
+Patch337:	https://sources.debian.org/data/main/c/chromium/125.0.6422.112-1/debian/patches/fixes/widevine-locations.patch
+Patch338:	https://sources.debian.org/data/main/c/chromium/125.0.6422.112-1/debian/patches/disable/swiftshader.patch
+Patch339:	https://sources.debian.org/data/main/c/chromium/125.0.6422.112-1/debian/patches/disable/swiftshader-2.patch
 
 ### 400-999: Patches from 3rd party projects that aren't distro packages
 # https://gitlab.com/Matt.Jolly/chromium-patches
