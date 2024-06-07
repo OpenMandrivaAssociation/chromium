@@ -1,0 +1,57 @@
+diff -up chromium-126.0.6478.36/ui/ozone/platform/drm/gpu/hardware_display_plane_manager.cc.omv~ chromium-126.0.6478.36/ui/ozone/platform/drm/gpu/hardware_display_plane_manager.cc
+--- chromium-126.0.6478.36/ui/ozone/platform/drm/gpu/hardware_display_plane_manager.cc.omv~	2024-06-07 02:53:24.233221601 +0200
++++ chromium-126.0.6478.36/ui/ozone/platform/drm/gpu/hardware_display_plane_manager.cc	2024-06-07 02:54:16.357782108 +0200
+@@ -346,9 +346,11 @@ void HardwareDisplayPlaneManager::SetOut
+     return;
+   }
+   crtc_state.output_primaries = primaries;
++#if BUILDFLAG(IS_CHROMEOS)
+   if (base::FeatureList::IsEnabled(display::features::kCtmColorManagement)) {
+     UpdatePendingCrtcState(crtc_state);
+   }
++#endif
+ }
+ 
+ void HardwareDisplayPlaneManager::SetColorSpaceForAllPlanes(
+@@ -364,9 +366,11 @@ void HardwareDisplayPlaneManager::SetCol
+   }
+   CHECK(primaries != SkNamedPrimariesExt::kInvalid);
+   crtc_state.planes_primaries = primaries;
++#if BUILDFLAG(IS_CHROMEOS)
+   if (base::FeatureList::IsEnabled(display::features::kCtmColorManagement)) {
+     UpdatePendingCrtcState(crtc_state);
+   }
++#endif
+ }
+ 
+ void HardwareDisplayPlaneManager::SetColorTemperatureAdjustment(
+@@ -606,9 +610,11 @@ void HardwareDisplayPlaneManager::Update
+   // This is being done as a trade-off sacrificing precise correctness in
+   // color conversion for power savings.
+   const skcms_Matrix3x3 plane_to_device_matrix =
++#if BUILDFLAG(IS_CHROMEOS)
+       base::FeatureList::IsEnabled(display::features::kCtmColorManagement)
+-          ? PlaneToOutputMatrix(crtc_state)
+-          : crtc_state.color_calibration.srgb_to_device_matrix;
++          ? PlaneToOutputMatrix(crtc_state) :
++#endif
++          crtc_state.color_calibration.srgb_to_device_matrix;
+   const skcms_Matrix3x3 ctm = skcms_Matrix3x3_concat(
+       &plane_to_device_matrix,
+       &crtc_state.color_temperature_adjustment.srgb_matrix);
+diff -up chromium-126.0.6478.36/ui/ozone/platform/drm/gpu/hardware_display_plane_manager_atomic.cc.omv~ chromium-126.0.6478.36/ui/ozone/platform/drm/gpu/hardware_display_plane_manager_atomic.cc
+--- chromium-126.0.6478.36/ui/ozone/platform/drm/gpu/hardware_display_plane_manager_atomic.cc.omv~	2024-06-07 02:54:30.569933389 +0200
++++ chromium-126.0.6478.36/ui/ozone/platform/drm/gpu/hardware_display_plane_manager_atomic.cc	2024-06-07 02:55:05.754305245 +0200
+@@ -325,10 +325,12 @@ void HardwareDisplayPlaneManagerAtomic::
+ 
+     AddPropertyIfValid(atomic_request, crtc,
+                        crtc_state_[*idx].properties.background_color);
++#if BUILDFLAG(IS_CHROMEOS)
+     if (base::FeatureList::IsEnabled(display::features::kCtmColorManagement)) {
+       AddAllPendingCrtcProperties(atomic_request, crtc_state_[*idx],
+                                   pending_blobs);
+     }
++#endif
+   }
+ 
+   if (test_only) {

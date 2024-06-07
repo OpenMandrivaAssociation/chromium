@@ -88,7 +88,7 @@ Name:		chromium-browser-%{channel}
 %endif
 # Working version numbers can be found at
 # https://chromiumdash.appspot.com/releases?platform=Linux
-Version:	125.0.6422.141
+Version:	126.0.6478.36
 ### Don't be evil!!! ###
 %define ungoogled 125.0.6422.141-1
 %if %{with cef}
@@ -103,7 +103,7 @@ Version:	125.0.6422.141
 # https://github.com/chromiumembedded/cef/issues/3616 fixed in cef upstream.
 # If we run into this problem, we need to either use custom libxml or build
 # system libxml with TLS disabled.
-%define cef 6422:3d8f1c9064eb5da14bbb2ab4d5eb1c2df540aacd
+%define cef 6478:e14495b5cb9771a99b711c79b0f8efc6ad3af2e3
 %endif
 Release:	1
 Summary:	A fast webkit-based web browser
@@ -173,23 +173,29 @@ Patch302:	https://sources.debian.org/data/main/c/chromium/125.0.6422.112-1/debia
 Patch303:	https://sources.debian.org/data/main/c/chromium/125.0.6422.112-1/debian/patches/fixes/material-utils.patch
 Patch304:	https://sources.debian.org/data/main/c/chromium/125.0.6422.112-1/debian/patches/fixes/strlcpy.patch
 Patch305:	https://sources.debian.org/data/main/c/chromium/125.0.6422.112-1/debian/patches/fixes/stats-collector.patch
-Patch306:	https://sources.debian.org/data/main/c/chromium/125.0.6422.112-1/debian/patches/fixes/bad-font-gc00000.patch
-Patch307:	https://sources.debian.org/data/main/c/chromium/125.0.6422.112-1/debian/patches/fixes/bad-font-gc0000.patch
-Patch308:	https://sources.debian.org/data/main/c/chromium/125.0.6422.112-1/debian/patches/fixes/bad-font-gc000.patch
-Patch309:	https://sources.debian.org/data/main/c/chromium/125.0.6422.112-1/debian/patches/fixes/bad-font-gc00.patch
-Patch310:	https://sources.debian.org/data/main/c/chromium/125.0.6422.112-1/debian/patches/fixes/bad-font-gc0.patch
-Patch311:	https://sources.debian.org/data/main/c/chromium/125.0.6422.112-1/debian/patches/fixes/bad-font-gc1.patch
-Patch312:	https://sources.debian.org/data/main/c/chromium/125.0.6422.112-1/debian/patches/fixes/bad-font-gc11.patch
-Patch313:	https://sources.debian.org/data/main/c/chromium/125.0.6422.112-1/debian/patches/fixes/bad-font-gc2.patch
-Patch314:	https://sources.debian.org/data/main/c/chromium/125.0.6422.112-1/debian/patches/fixes/bad-font-gc3.patch
+# FIXME needs rebasing
+#Patch306:	https://sources.debian.org/data/main/c/chromium/125.0.6422.112-1/debian/patches/fixes/bad-font-gc00000.patch
+#Patch307:	https://sources.debian.org/data/main/c/chromium/125.0.6422.112-1/debian/patches/fixes/bad-font-gc0000.patch
+#Patch308:	https://sources.debian.org/data/main/c/chromium/125.0.6422.112-1/debian/patches/fixes/bad-font-gc000.patch
+#Patch309:	https://sources.debian.org/data/main/c/chromium/125.0.6422.112-1/debian/patches/fixes/bad-font-gc00.patch
+#Patch310:	https://sources.debian.org/data/main/c/chromium/125.0.6422.112-1/debian/patches/fixes/bad-font-gc0.patch
+#Patch311:	https://sources.debian.org/data/main/c/chromium/125.0.6422.112-1/debian/patches/fixes/bad-font-gc1.patch
+#Patch312:	https://sources.debian.org/data/main/c/chromium/125.0.6422.112-1/debian/patches/fixes/bad-font-gc11.patch
+#Patch313:	https://sources.debian.org/data/main/c/chromium/125.0.6422.112-1/debian/patches/fixes/bad-font-gc2.patch
+#Patch314:	https://sources.debian.org/data/main/c/chromium/125.0.6422.112-1/debian/patches/fixes/bad-font-gc3.patch
 Patch315:	https://sources.debian.org/data/main/c/chromium/125.0.6422.112-1/debian/patches/upstream/mojo.patch
 Patch316:	https://sources.debian.org/data/main/c/chromium/125.0.6422.112-1/debian/patches/upstream/mojo-null.patch
 Patch317:	https://sources.debian.org/data/main/c/chromium/125.0.6422.112-1/debian/patches/upstream/ruy-include.patch
-Patch318:	https://sources.debian.org/data/main/c/chromium/125.0.6422.112-1/debian/patches/upstream/mojo-bindings-include.patch
-Patch319:	https://sources.debian.org/data/main/c/chromium/125.0.6422.112-1/debian/patches/upstream/appservice-include.patch
-Patch320:	https://sources.debian.org/data/main/c/chromium/125.0.6422.112-1/debian/patches/upstream/no-vector-consts.patch
-Patch321:	https://sources.debian.org/data/main/c/chromium/125.0.6422.112-1/debian/patches/upstream/lens-include.patch
-Patch322:	https://sources.debian.org/data/main/c/chromium/125.0.6422.112-1/debian/patches/upstream/ninja.patch
+# Seems obsolete
+#Patch318:	https://sources.debian.org/data/main/c/chromium/125.0.6422.112-1/debian/patches/upstream/mojo-bindings-include.patch
+# Seems obsolete
+#Patch319:	https://sources.debian.org/data/main/c/chromium/125.0.6422.112-1/debian/patches/upstream/appservice-include.patch
+# Maybe needs porting, probably obsolete
+#Patch320:	https://sources.debian.org/data/main/c/chromium/125.0.6422.112-1/debian/patches/upstream/no-vector-consts.patch
+# Probably obsolete
+#Patch321:	https://sources.debian.org/data/main/c/chromium/125.0.6422.112-1/debian/patches/upstream/lens-include.patch
+# Obsolete
+#Patch322:	https://sources.debian.org/data/main/c/chromium/125.0.6422.112-1/debian/patches/upstream/ninja.patch
 Patch323:	https://sources.debian.org/data/main/c/chromium/125.0.6422.112-1/debian/patches/disable/driver-chrome-path.patch
 Patch324:	https://sources.debian.org/data/main/c/chromium/125.0.6422.112-1/debian/patches/disable/widevine-cdm-cu.patch
 Patch325:	https://sources.debian.org/data/main/c/chromium/125.0.6422.112-1/debian/patches/disable/screen-ai-blob.patch
@@ -197,7 +203,8 @@ Patch326:	https://sources.debian.org/data/main/c/chromium/125.0.6422.112-1/debia
 Patch327:	https://sources.debian.org/data/main/c/chromium/125.0.6422.112-1/debian/patches/system/jpeg.patch
 Patch328:	https://sources.debian.org/data/main/c/chromium/125.0.6422.112-1/debian/patches/system/zlib.patch
 Patch329:	https://sources.debian.org/data/main/c/chromium/125.0.6422.112-1/debian/patches/system/openjpeg.patch
-Patch330:	https://sources.debian.org/data/main/c/chromium/125.0.6422.112-1/debian/patches/system/clang-format.patch
+# May need porting
+#Patch330:	https://sources.debian.org/data/main/c/chromium/125.0.6422.112-1/debian/patches/system/clang-format.patch
 Patch331:	https://sources.debian.org/data/main/c/chromium/125.0.6422.112-1/debian/patches/system/opus.patch
 Patch332:	https://sources.debian.org/data/main/c/chromium/125.0.6422.112-1/debian/patches/system/eu-strip.patch
 Patch333:	https://sources.debian.org/data/main/c/chromium/125.0.6422.112-1/debian/patches/system/rollup.patch
@@ -237,9 +244,8 @@ Patch1009:	chromium-97-compilefixes.patch
 Patch1010:	chromium-123-clang_version.patch
 Patch1011:	jxl-port-chromium-124.patch
 Patch1012:	chromium-105-minizip-ng.patch
-Patch1013:	chromium-117-compile.patch
-# Flag seems to be specific to LLVM master of google's LLVM fork
-Patch1014:	chromium-120-no-invalid-optflag.patch
+Patch1013:	chromium-126-compile.patch
+Patch1014:	chromium-126-fix-build-on-non-ChromeOS-linux.patch
 Patch1015:	chromium-113.0.5672.63-compile.patch
 Patch1016:	chroimum-119-workaround-crash-on-startup.patch
 # More and better search engines
@@ -247,12 +253,14 @@ Patch1016:	chroimum-119-workaround-crash-on-startup.patch
 Patch1017:	chromium-124-search-engine-choice.patch
 Patch1018:	chromium-81-unbundle-zlib.patch
 Patch1019:	chromium-121-rust-clang_lib.patch
-Patch1020:	chromium-125-libstdc++.patch
+#Patch1020:	chromium-125-libstdc++.patch
 %if 0%{?cef:1}
 Patch1022:	chromium-115-fix-generate_fontconfig_caches.patch
-Patch1023:	cef-115-minizip-ng.patch
+# FIXME probably needs porting
+#Patch1023:	cef-115-minizip-ng.patch
 %if 0%{?ungoogled:1}
-Patch1024:	cef-125-rebase-to-ungoogled.patch
+# FIXME needs porting
+Patch1024:	cef-126-rebase-to-ungoogled.patch
 Patch1025:	cef-125-ungoogling.patch
 %endif
 Patch1026:	cef-zlib-linkage.patch
@@ -272,6 +280,7 @@ Patch1026:	cef-zlib-linkage.patch
 # Patches 4000+ are applied inside the ungoogled-chromium tree before
 # the ungoogling scripts are run
 # ============================================================================
+Patch4000:	https://github.com/ungoogled-software/ungoogled-chromium/pull/2902.patch
 
 Provides:	%{crname}
 Obsoletes:	chromium-browser-unstable < %{EVRD}
@@ -559,10 +568,6 @@ cd cef
 COMMIT_NUMBER=%(echo %{cef} |cut -d: -f1) COMMIT_HASH=%(echo %{cef} |cut -d: -f2) python tools/make_version_header.py include/cef_version.h --cef_version VERSION.in --chrome_version ../chrome/VERSION --cpp_header_dir include
 cd ..
 
-if [ "$(cat third_party/test_fonts/test_fonts.tar.gz.sha1)" != "336e775eec536b2d785cc80eff6ac39051931286" ]; then
-	echo "Please update the test_fonts (Source11) to $(cat third_party/test_fonts/test_fonts.tar.gz.sha1)"
-	exit 1
-fi
 cd third_party/test_fonts
 tar xf %{S:11}
 cd ../..

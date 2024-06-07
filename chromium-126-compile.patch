@@ -1,0 +1,23 @@
+diff -up chromium-126.0.6478.36/build/config/compiler/BUILD.gn.omv~ chromium-126.0.6478.36/build/config/compiler/BUILD.gn
+--- chromium-126.0.6478.36/build/config/compiler/BUILD.gn.omv~	2024-06-07 01:47:03.891356011 +0200
++++ chromium-126.0.6478.36/build/config/compiler/BUILD.gn	2024-06-07 01:47:28.419642269 +0200
+@@ -780,7 +780,7 @@ config("compiler") {
+ 
+       # We only use one version of LLVM within a build so there's no need to
+       # upgrade debug info, which can be expensive since it runs the verifier.
+-      ldflags += [ "-Wl,-mllvm,-disable-auto-upgrade-debug-info" ]
++      #ldflags += [ "-Wl,-mllvm,-disable-auto-upgrade-debug-info" ]
+     }
+ 
+     # TODO(crbug.com/335365324): Enable on other platforms.
+diff -up chromium-126.0.6478.36/third_party/perfetto/gn/BUILD.gn.omv~ chromium-126.0.6478.36/third_party/perfetto/gn/BUILD.gn
+--- chromium-126.0.6478.36/third_party/perfetto/gn/BUILD.gn.omv~	2024-06-07 01:46:13.246764806 +0200
++++ chromium-126.0.6478.36/third_party/perfetto/gn/BUILD.gn	2024-06-07 01:46:34.799016424 +0200
+@@ -404,7 +404,6 @@ config("system_zlib_config") {
+ if (enable_perfetto_zlib) {
+   group("zlib") {
+     if (perfetto_use_system_zlib) {
+-      public_configs = [ "//gn:system_zlib_config" ]
+     } else if (perfetto_root_path == "//") {
+       public_configs = [ "//buildtools:zlib_config" ]
+       public_deps = [ "//buildtools:zlib" ]
