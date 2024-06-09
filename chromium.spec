@@ -265,6 +265,7 @@ Patch1025:	cef-125-ungoogling.patch
 %endif
 Patch1026:	cef-zlib-linkage.patch
 Patch1027:	cef-126-compile.patch
+Patch1028:	cef-126-zlib-ng.patch
 %endif
 
 # ============================================================================

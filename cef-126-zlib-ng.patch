@@ -1,0 +1,62 @@
+diff -up chromium-126.0.6478.36/cef/libcef/browser/zip_reader_impl.cc.omv~ chromium-126.0.6478.36/cef/libcef/browser/zip_reader_impl.cc
+--- chromium-126.0.6478.36/cef/libcef/browser/zip_reader_impl.cc.omv~	2024-06-09 15:11:54.322730788 +0200
++++ chromium-126.0.6478.36/cef/libcef/browser/zip_reader_impl.cc	2024-06-09 15:16:23.229593140 +0200
+@@ -11,6 +11,10 @@
+ #include "base/time/time.h"
+ #include "cef/include/cef_stream.h"
+ 
++#define ZCALLBACK
++#define OF(x) x
++typedef unsigned long uLong;
++
+ // Static functions
+ 
+ // static
+@@ -27,7 +31,7 @@ CefRefPtr<CefZipReader> CefZipReader::Cr
+ 
+ namespace {
+ 
+-voidpf ZCALLBACK zlib_open_callback OF((voidpf opaque,
++void* ZCALLBACK zlib_open_callback OF((void* opaque,
+                                         const void* filename,
+                                         int mode)) {
+   // The stream is already implicitly open so just return the pointer.
+@@ -35,18 +39,18 @@ voidpf ZCALLBACK zlib_open_callback OF((
+ }
+ 
+ uLong ZCALLBACK zlib_read_callback
+-OF((voidpf opaque, voidpf stream, void* buf, uLong size)) {
++OF((void* opaque, void* stream, void* buf, uLong size)) {
+   CefRefPtr<CefStreamReader> reader(static_cast<CefStreamReader*>(opaque));
+   return reader->Read(buf, 1, size);
+ }
+ 
+-ZPOS64_T ZCALLBACK zlib_tell_callback OF((voidpf opaque, voidpf stream)) {
++ZPOS64_T ZCALLBACK zlib_tell_callback OF((void* opaque, void* stream)) {
+   CefRefPtr<CefStreamReader> reader(static_cast<CefStreamReader*>(opaque));
+   return reader->Tell();
+ }
+ 
+ long ZCALLBACK zlib_seek_callback
+-OF((voidpf opaque, voidpf stream, ZPOS64_T offset, int origin)) {
++OF((void* opaque, void* stream, ZPOS64_T offset, int origin)) {
+   CefRefPtr<CefStreamReader> reader(static_cast<CefStreamReader*>(opaque));
+   int whence;
+   switch (origin) {
+@@ -66,14 +70,14 @@ OF((voidpf opaque, voidpf stream, ZPOS64
+   return reader->Seek(offset, whence);
+ }
+ 
+-int ZCALLBACK zlib_close_callback OF((voidpf opaque, voidpf stream)) {
++int ZCALLBACK zlib_close_callback OF((void* opaque, void* stream)) {
+   CefRefPtr<CefStreamReader> reader(static_cast<CefStreamReader*>(opaque));
+   // Release the reference added by CefZipReaderImpl::Initialize().
+   reader->Release();
+   return 0;
+ }
+ 
+-int ZCALLBACK zlib_error_callback OF((voidpf opaque, voidpf stream)) {
++int ZCALLBACK zlib_error_callback OF((void* opaque, void* stream)) {
+   return 0;
+ }
+ 
