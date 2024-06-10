@@ -935,7 +935,7 @@ cd ../../../..
 # -devel package layout is based on what we see in OnlyOffice's
 # desktop-sdk/ChromiumBasedEditors/lib/src/cef/linux
 cp -a cef/include %{buildroot}%{_libdir}/cef/
-cp -a out/Release-CEF/includes/include/* %{buildroot}%{_libdir}/cef/include/
+cp -a out/Release-CEF/includes/cef/include/* %{buildroot}%{_libdir}/cef/include/
 # Header referenced by cef but not included there
 mkdir -p %{buildroot}%{_libdir}/cef/include/base/internal/net/base
 cp -a net/base/net_error_list.h %{buildroot}%{_libdir}/cef/include/base/internal/net/base/
