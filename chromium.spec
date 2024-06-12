@@ -88,7 +88,7 @@ Name:		chromium-browser-%{channel}
 %endif
 # Working version numbers can be found at
 # https://chromiumdash.appspot.com/releases?platform=Linux
-Version:	126.0.6478.36
+Version:	126.0.6478.55
 ### Don't be evil!!! ###
 %define ungoogled 125.0.6422.141-1
 %if %{with cef}
@@ -103,7 +103,7 @@ Version:	126.0.6478.36
 # https://github.com/chromiumembedded/cef/issues/3616 fixed in cef upstream.
 # If we run into this problem, we need to either use custom libxml or build
 # system libxml with TLS disabled.
-%define cef 6478:e14495b5cb9771a99b711c79b0f8efc6ad3af2e3
+%define cef 3cd94714f7eaca01026b07e1e02a77afa514ebcf
 %endif
 Release:	1
 Summary:	A fast webkit-based web browser
@@ -119,7 +119,7 @@ Source3:	master_preferences
 # https://aur.archlinux.org/cgit/aur.git/tree/chromium-drirc-disable-10bpc-color-configs.conf?h=chromium-vaapi
 Source4:	chromium-drirc-disable-10bpc-color-configs.conf
 %if 0%{?cef:1}
-Source10:	https://bitbucket.org/chromiumembedded/cef/get/%(echo %{cef} |cut -d: -f2).tar.bz2
+Source10:	https://bitbucket.org/chromiumembedded/cef/get/%{cef}.tar.bz2
 Source11:	https://chromium-fonts.storage.googleapis.com/336e775eec536b2d785cc80eff6ac39051931286#/test_fonts.tar.gz
 %endif
 Source100:	%{name}.rpmlintrc
@@ -151,7 +151,7 @@ Patch4:		https://src.fedoraproject.org/rpms/chromium/raw/rawhide/f/chromium-77.0
 Patch5:		https://src.fedoraproject.org/rpms/chromium/raw/rawhide/f/chromium-77.0.3865.75-gcc-include-memory.patch
 Patch6:		https://src.fedoraproject.org/rpms/chromium/raw/rawhide/f/chromium-107-proprietary-codecs.patch
 # Disable whitelist, allow everything
-Patch7:		https://src.fedoraproject.org/rpms/chromium/raw/rawhide/f/chromium-122-disable-FFmpegAllowLists.patch
+##Patch7:		https://src.fedoraproject.org/rpms/chromium/raw/rawhide/f/chromium-122-disable-FFmpegAllowLists.patch
 
 ### 100-199: Arch
 # https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=chromium-dev
@@ -567,7 +567,7 @@ cd third_party/pdfium ; git init; cd ../..
 cd cef; git init; cd ..
 cd cef
 %autopatch -p1 -m 2000 -M 2999
-COMMIT_NUMBER=%(echo %{cef} |cut -d: -f1) COMMIT_HASH=%(echo %{cef} |cut -d: -f2) python tools/make_version_header.py include/cef_version.h --cef_version VERSION.in --chrome_version ../chrome/VERSION --cpp_header_dir include
+COMMIT_NUMBER=%(echo %{version} |cut -d. -f3) COMMIT_HASH=%{cef} python tools/make_version_header.py include/cef_version.h --cef_version VERSION.in --chrome_version ../chrome/VERSION --cpp_header_dir include
 cd ..
 
 cd third_party/test_fonts
