@@ -88,9 +88,9 @@ Name:		chromium-browser-%{channel}
 %endif
 # Working version numbers can be found at
 # https://chromiumdash.appspot.com/releases?platform=Linux
-Version:	126.0.6478.114
+Version:	126.0.6478.126
 ### Don't be evil!!! ###
-%define ungoogled 126.0.6478.114-1
+%define ungoogled 126.0.6478.126-1
 %if %{with cef}
 # To find the CEF commit matching the Chromium version, look up the
 # right branch at
@@ -103,7 +103,7 @@ Version:	126.0.6478.114
 # https://github.com/chromiumembedded/cef/issues/3616 fixed in cef upstream.
 # If we run into this problem, we need to either use custom libxml or build
 # system libxml with TLS disabled.
-%define cef 4fc5399f88e9cc8a38d690d06590d07b7b0f3aac
+%define cef 169fea9e417ded6d9ce39656b1574c0910215e0c
 %endif
 Release:	1
 Summary:	A fast webkit-based web browser
