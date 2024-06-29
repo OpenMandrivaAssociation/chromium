@@ -24,7 +24,10 @@
 %endif
 
 %bcond_without browser
-%bcond_without cef
+# Disabled for now because we need libc++ anyway (therefore
+# can't use it in most other applications) and rust linkage
+# fails in 126.x
+%bcond_with cef
 # Use the internal libc++ instead of libstdc++
 # This should usually be avoided because of potential symbol
 # clashes when using e.g. Qt and Chromium at the same time
