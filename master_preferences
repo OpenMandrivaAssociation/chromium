@@ -27,4 +27,16 @@
   ],
   "homepage": "http://openmandriva.org",
   "homepage_is_newtabpage": false
+  "default_search_provider_data": {
+    "template_url_data": {
+      "keyword": "duckduckgo.com",
+      "short_name": "DuckDuckGo",
+      "suggestions_url": "https://duckduckgo.com/ac/?q={searchTerms}&type=list",
+      "url": "https://duckduckgo.com/?q={searchTerms}&t=canonical"
+    }
+  },
+  "enable_do_not_track": true,
+  "search": {
+    "suggest_enabled": true
+  },
 }
