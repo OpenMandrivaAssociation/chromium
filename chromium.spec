@@ -108,7 +108,7 @@ Version:	126.0.6478.126
 # system libxml with TLS disabled.
 %define cef 169fea9e417ded6d9ce39656b1574c0910215e0c
 %endif
-Release:	1
+Release:	2
 Summary:	A fast webkit-based web browser
 Group:		Networking/WWW
 License:	BSD, LGPL
@@ -154,7 +154,7 @@ Patch4:		https://src.fedoraproject.org/rpms/chromium/raw/rawhide/f/chromium-77.0
 Patch5:		https://src.fedoraproject.org/rpms/chromium/raw/rawhide/f/chromium-77.0.3865.75-gcc-include-memory.patch
 Patch6:		https://src.fedoraproject.org/rpms/chromium/raw/rawhide/f/chromium-107-proprietary-codecs.patch
 # Disable whitelist, allow everything
-##Patch7:		https://src.fedoraproject.org/rpms/chromium/raw/rawhide/f/chromium-122-disable-FFmpegAllowLists.patch
+Patch7:		https://src.fedoraproject.org/rpms/chromium/raw/rawhide/f/chromium-122-disable-FFmpegAllowLists.patch
 
 ### 100-199: Arch
 # https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=chromium-dev
