@@ -91,7 +91,7 @@ Name:		chromium-browser-%{channel}
 %endif
 # Working version numbers can be found at
 # https://chromiumdash.appspot.com/releases?platform=Linux
-Version:	126.0.6478.126
+Version:	126.0.6478.182
 ### Don't be evil!!! ###
 %define ungoogled 126.0.6478.126-1
 %if %{with cef}
@@ -108,7 +108,7 @@ Version:	126.0.6478.126
 # system libxml with TLS disabled.
 %define cef 169fea9e417ded6d9ce39656b1574c0910215e0c
 %endif
-Release:	2
+Release:	1
 Summary:	A fast webkit-based web browser
 Group:		Networking/WWW
 License:	BSD, LGPL
@@ -280,6 +280,7 @@ Patch1028:	cef-126-zlib-ng.patch
 # Patches 4000+ are applied inside the ungoogled-chromium tree before
 # the ungoogling scripts are run
 # ============================================================================
+Patch4000:	https://github.com/ungoogled-software/ungoogled-chromium/pull/2953.patch
 
 Provides:	%{crname}
 Obsoletes:	chromium-browser-unstable < %{EVRD}
