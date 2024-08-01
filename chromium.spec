@@ -333,6 +333,8 @@ BuildRequires:	pkgconfig(xkbcommon)
 BuildRequires:	pkgconfig(atspi-2)
 BuildRequires:	pkgconfig(atk)
 BuildRequires:	pkgconfig(atk-bridge-2.0)
+BuildRequires:	pkgconfig(gtk+-3.0)
+BuildRequires:	pkgconfig(gtk4)
 BuildRequires:	pkgconfig(pangocairo)
 BuildRequires:	pkgconfig(libopenjp2)
 BuildRequires:	pkgconfig(libpipewire-0.3)
@@ -711,7 +713,7 @@ GN_DEFINES+=" use_system_wayland_client=true "
 GN_DEFINES+=" use_system_wayland_scanner=true "
 GN_DEFINES+=" use_system_wayland_server=true "
 GN_DEFINES+=" use_xkbcommon=true "
-GN_DEFINES+=" use_gtk=false use_qt=true use_qt6=true moc_qt6_path=\"%{_qtdir}/libexec\""
+GN_DEFINES+=" use_gtk=true gtk_version=4 use_qt=true use_qt6=true moc_qt6_path=\"%{_qtdir}/libexec\""
 if ! echo %{system_libs} |grep -q icu; then
 GN_DEFINES+=" icu_use_data_file=true"
 fi
