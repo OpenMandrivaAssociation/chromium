@@ -228,7 +228,6 @@ Patch1006:	chromium-extra-widevine-search-paths.patch
 Patch1007:	chromium-116-dont-override-thinlto-cache-policy.patch
 Patch1008:	chromium-116-system-brotli.patch
 #Patch1009:	chromium-97-compilefixes.patch
-Patch1010:	chromium-123-clang_version.patch
 Patch1011:	perfetto-system-gn.patch
 Patch1012:	chromium-105-minizip-ng.patch
 #Patch1013:	chromium-126-compile.patch
