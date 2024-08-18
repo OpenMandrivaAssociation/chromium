@@ -1,0 +1,13 @@
+diff -up chromium-127.0.6533.119/third_party/zlib/google/zip_internal.cc.omv~ chromium-127.0.6533.119/third_party/zlib/google/zip_internal.cc
+--- chromium-127.0.6533.119/third_party/zlib/google/zip_internal.cc.omv~	2024-08-17 22:48:59.985778432 +0200
++++ chromium-127.0.6533.119/third_party/zlib/google/zip_internal.cc	2024-08-17 22:51:47.446701844 +0200
+@@ -29,6 +29,9 @@
+ #elif defined(OS_POSIX)
+ #include "third_party/zlib/contrib/minizip/ioapi.h"
+ #endif  // defined(OS_POSIX)
++typedef unsigned long uLong;
++#define Z_DEFAULT_COMPRESSION -1
++#define Z_DEFAULT_STRATEGY 0
+ #endif  // defined(USE_SYSTEM_MINIZIP)
+ 
+ namespace {

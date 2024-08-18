@@ -1,0 +1,12 @@
+diff -up chromium-127.0.6533.88/third_party/perfetto/gn/BUILD.gn.omv~ chromium-127.0.6533.88/third_party/perfetto/gn/BUILD.gn
+--- chromium-127.0.6533.88/third_party/perfetto/gn/BUILD.gn.omv~	2024-08-01 22:07:23.044718661 +0200
++++ chromium-127.0.6533.88/third_party/perfetto/gn/BUILD.gn	2024-08-01 22:07:38.825131547 +0200
+@@ -405,7 +405,7 @@ config("system_zlib_config") {
+ if (enable_perfetto_zlib) {
+   group("zlib") {
+     if (perfetto_use_system_zlib) {
+-      public_configs = [ "//gn:system_zlib_config" ]
++      public_configs = [ ":system_zlib_config" ]
+     } else if (perfetto_root_path == "//") {
+       public_configs = [ "//buildtools:zlib_config" ]
+       public_deps = [ "//buildtools:zlib" ]

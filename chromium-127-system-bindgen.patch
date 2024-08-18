@@ -1,0 +1,12 @@
+diff -up chromium-127.0.6533.88/build/rust/rust_bindgen.gni.omv~ chromium-127.0.6533.88/build/rust/rust_bindgen.gni
+--- chromium-127.0.6533.88/build/rust/rust_bindgen.gni.omv~	2024-08-01 22:26:49.682207301 +0200
++++ chromium-127.0.6533.88/build/rust/rust_bindgen.gni	2024-08-01 22:27:39.039461416 +0200
+@@ -11,7 +11,7 @@ if (is_win) {
+   import("//build/toolchain/win/win_toolchain_data.gni")
+ }
+ 
+-_bindgen_path = "${rust_bindgen_root}/bin/bindgen"
++_bindgen_path = "/usr/bin/bindgen"
+ if (host_os == "win") {
+   _bindgen_path = "${_bindgen_path}.exe"
+ }
