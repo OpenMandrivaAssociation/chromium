@@ -744,7 +744,7 @@ GN_DEFINES+=" google_api_key=\"%{google_api_key}\""
 GN_DEFINES+=" google_default_client_id=\"%{google_default_client_id}\""
 GN_DEFINES+=" google_default_client_secret=\"%{google_default_client_secret}\""
 %endif
-GN_DEFINES+=" thin_lto_enable_optimizations=true is_clang=true use_lld=true use_thin_lto=true"
+GN_DEFINES+=" thin_lto_enable_optimizations=true use_lld=true use_thin_lto=true"
 GN_DEFINES+=" custom_toolchain=\"//build/toolchain/linux/unbundle:default\""
 GN_DEFINES+=" host_toolchain=\"//build/toolchain/linux/unbundle:default\""
 GN_DEFINES+=" v8_snapshot_toolchain=\"//build/toolchain/linux/unbundle:default\""
@@ -783,8 +783,6 @@ GN_DEFINES+=" use_v4lplugin=true"
 # selection at runtime
 # GN_DEFINES+=" use_v4l2_codec=true"
 GN_DEFINES+=" use_webaudio_ffmpeg=true"
-
-export LIBCLANG_PATH=%{_libdir}/libclang.so
 
 # -gdwarf-4 is for the sake of debugedit
 # https://sourceware.org/bugzilla/show_bug.cgi?id=29773
