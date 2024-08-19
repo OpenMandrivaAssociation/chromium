@@ -287,6 +287,7 @@ BuildRequires:	re2c
 BuildRequires:	flex
 BuildRequires:	git
 BuildRequires:	rust
+BuildRequires:	rust-bindgen-cli
 BuildRequires:	pkgconfig(alsa)
 BuildRequires:	pkgconfig(krb5)
 BuildRequires:	pkgconfig(libunwind)
