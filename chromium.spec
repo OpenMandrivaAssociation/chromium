@@ -91,9 +91,9 @@ Name:		chromium-browser-%{channel}
 %endif
 # Working version numbers can be found at
 # https://chromiumdash.appspot.com/releases?platform=Linux
-Version:	127.0.6533.119
+Version:	128.0.6613.84
 ### Don't be evil!!! ###
-%define ungoogled 127.0.6533.119-1
+%define ungoogled 128.0.6613.84-1
 %if %{with cef}
 # To find the CEF commit matching the Chromium version, look up the
 # right branch at
@@ -159,7 +159,6 @@ Patch7:		https://src.fedoraproject.org/rpms/chromium/raw/rawhide/f/chromium-122-
 ### 100-199: Arch
 # https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=chromium-dev
 # https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=chromium-wayland-vaapi
-Patch100:	https://aur.archlinux.org/cgit/aur.git/plain/0001-ozone-wayland-implement-text_input_manager_v3.patch?h=chromium-wayland-vaapi#/0001-ozone-wayland-implement-text_input_manager_v3.patch
 Patch101:	https://aur.archlinux.org/cgit/aur.git/plain/0001-ozone-wayland-implement-text_input_manager-fixes.patch?h=chromium-wayland-vaapi#/0001-ozone-wayland-implement-text_input_manager-fixes.patch
 Patch102:	https://aur.archlinux.org/cgit/aur.git/plain/chromium-qt6.patch?h=chromium-dev#/chromium-qt6.patch
 Patch103:	https://raw.githubusercontent.com/archlinux/svntogit-packages/packages/chromium/trunk/use-oauth2-client-switches-as-default.patch
@@ -170,21 +169,15 @@ Patch200:	https://gitweb.gentoo.org/repo/gentoo.git/plain/www-client/chromium/fi
 ### 300-399: Debian
 # https://sources.debian.org/patches/chromium/
 # Mostly fixes for libstdc++ related failures
-Patch300:	https://sources.debian.org/data/main/c/chromium/127.0.6533.88-1/debian/patches/fixes/ps-print.patch
+#Patch300:	https://sources.debian.org/data/main/c/chromium/127.0.6533.88-1/debian/patches/fixes/ps-print.patch
 Patch301:	https://sources.debian.org/data/main/c/chromium/127.0.6533.88-1/debian/patches/fixes/perfetto.patch
-Patch302:	https://sources.debian.org/data/main/c/chromium/127.0.6533.88-1/debian/patches/fixes/blink-frags.patch
 Patch303:	https://sources.debian.org/data/main/c/chromium/127.0.6533.88-1/debian/patches/fixes/material-utils.patch
 Patch304:	https://sources.debian.org/data/main/c/chromium/127.0.6533.88-1/debian/patches/fixes/strlcpy.patch
-Patch305:	https://sources.debian.org/data/main/c/chromium/127.0.6533.88-1/debian/patches/fixes/stats-collector.patch
 Patch306:	https://sources.debian.org/data/main/c/chromium/127.0.6533.88-1/debian/patches/fixes/memory-allocator-dcheck-assert-fix.patch
-Patch307:	https://sources.debian.org/data/main/c/chromium/127.0.6533.88-1/debian/patches/fixes/chromium-browser-ui-missing-deps.patch
+#Patch307:	https://sources.debian.org/data/main/c/chromium/127.0.6533.88-1/debian/patches/fixes/chromium-browser-ui-missing-deps.patch
 Patch308:	https://sources.debian.org/data/main/c/chromium/127.0.6533.88-1/debian/patches/upstream/mojo.patch
 Patch309:	https://sources.debian.org/data/main/c/chromium/127.0.6533.88-1/debian/patches/upstream/mojo-null.patch
 Patch310:	https://sources.debian.org/data/main/c/chromium/127.0.6533.88-1/debian/patches/upstream/ruy-include.patch
-Patch311:	https://sources.debian.org/data/main/c/chromium/127.0.6533.88-1/debian/patches/upstream/crabbyav1f.patch
-Patch312:	https://sources.debian.org/data/main/c/chromium/127.0.6533.88-1/debian/patches/upstream/lock-impl.patch
-Patch313:	https://sources.debian.org/data/main/c/chromium/127.0.6533.88-1/debian/patches/upstream/containers-header.patch
-Patch314:	https://sources.debian.org/data/main/c/chromium/127.0.6533.88-1/debian/patches/upstream/paint-layer-header.patch
 Patch315:	https://sources.debian.org/data/main/c/chromium/127.0.6533.88-1/debian/patches/disable/driver-chrome-path.patch
 Patch316:	https://sources.debian.org/data/main/c/chromium/127.0.6533.88-1/debian/patches/disable/widevine-cdm-cu.patch
 Patch317:	https://sources.debian.org/data/main/c/chromium/127.0.6533.88-1/debian/patches/disable/screen-ai-blob.patch

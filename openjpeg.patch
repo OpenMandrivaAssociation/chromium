@@ -1,14 +1,15 @@
---- a/third_party/pdfium/BUILD.gn
-+++ b/third_party/pdfium/BUILD.gn
+diff -up chromium-128.0.6613.84/third_party/pdfium/BUILD.gn.25~ chromium-128.0.6613.84/third_party/pdfium/BUILD.gn
+--- chromium-128.0.6613.84/third_party/pdfium/BUILD.gn.25~	2024-08-22 00:48:21.604075000 +0200
++++ chromium-128.0.6613.84/third_party/pdfium/BUILD.gn	2024-08-23 15:30:57.278640215 +0200
 @@ -4,6 +4,7 @@
  
  import("//build/config/clang/clang.gni")
  import("//build/config/gclient_args.gni")
 +import("//build/config/linux/pkg_config.gni")
- import("//build/config/rust.gni")
  import("//testing/test.gni")
  import("pdfium.gni")
-@@ -25,6 +26,13 @@ group("freetype_common") {
+ 
+@@ -24,6 +25,13 @@ group("freetype_common") {
    }
  }
  
@@ -22,7 +23,7 @@
  config("pdfium_common_config") {
    cflags = []
    cflags_cc = []
-@@ -32,7 +40,9 @@ config("pdfium_common_config") {
+@@ -31,7 +39,9 @@ config("pdfium_common_config") {
    include_dirs = [ "." ]
    defines = []
  
