@@ -33,8 +33,8 @@
 # clashes when using e.g. Qt and Chromium at the same time
 # (especially with cef!), but some versions of chromium make
 # it necessary
-# in 124.x, chromium with libstdc++ crashes on startup.
-%bcond_with libcxx
+# in 128.x, chromium with libstdc++ crashes on startup.
+%bcond_without libcxx
 
 # FIXME As of 97.0.4688.2, Chromium crashes frequently when
 # built with fortification enabled.
