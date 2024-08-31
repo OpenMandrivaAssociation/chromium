@@ -34,7 +34,7 @@
 # (especially with cef!), but some versions of chromium make
 # it necessary
 # in 124.x, chromium with libstdc++ crashes on startup.
-%bcond_without libcxx
+%bcond_with libcxx
 
 # FIXME As of 97.0.4688.2, Chromium crashes frequently when
 # built with fortification enabled.
@@ -91,9 +91,9 @@ Name:		chromium-browser-%{channel}
 %endif
 # Working version numbers can be found at
 # https://chromiumdash.appspot.com/releases?platform=Linux
-Version:	128.0.6613.84
+Version:	128.0.6613.113
 ### Don't be evil!!! ###
-%define ungoogled 128.0.6613.84-1
+%define ungoogled 128.0.6613.113-1
 %if %{with cef}
 # To find the CEF commit matching the Chromium version, look up the
 # right branch at
@@ -220,7 +220,7 @@ Patch1005:	chromium-restore-jpeg-xl-support.patch
 Patch1006:	chromium-extra-widevine-search-paths.patch
 Patch1007:	chromium-116-dont-override-thinlto-cache-policy.patch
 Patch1008:	chromium-116-system-brotli.patch
-#Patch1009:	chromium-97-compilefixes.patch
+Patch1009:	chromium-128-libstdc++-compile.patch
 Patch1011:	perfetto-system-gn.patch
 Patch1012:	chromium-105-minizip-ng.patch
 #Patch1013:	chromium-126-compile.patch
@@ -580,6 +580,12 @@ sed -i 's!ffmpeg_buildflags!ffmpeg_features!g' build/linux/unbundle/ffmpeg.gn
 # Allow building against system libraries in official builds
 sed -i 's/OFFICIAL_BUILD/GOOGLE_CHROME_BUILD/' \
 	tools/generate_shim_headers/generate_shim_headers.py
+
+%if ! %{with libcxx}
+# Get rid of internal libc++ headers to make sure they aren't accidentally
+# used instead of their libstdc++ counterparts
+rm -rf third_party/libc++ third_party/libc++abi
+%endif
 
 # Hard code extra version
 FILE=chrome/common/channel_info_posix.cc
