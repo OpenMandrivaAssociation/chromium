@@ -91,7 +91,7 @@ Name:		chromium-browser-%{channel}
 %endif
 # Working version numbers can be found at
 # https://chromiumdash.appspot.com/releases?platform=Linux
-Version:	128.0.6613.113
+Version:	128.0.6613.119
 ### Don't be evil!!! ###
 %define ungoogled 128.0.6613.113-1
 %if %{with cef}
@@ -169,36 +169,36 @@ Patch200:	https://gitweb.gentoo.org/repo/gentoo.git/plain/www-client/chromium/fi
 ### 300-399: Debian
 # https://sources.debian.org/patches/chromium/
 # Mostly fixes for libstdc++ related failures
-#Patch300:	https://sources.debian.org/data/main/c/chromium/127.0.6533.88-1/debian/patches/fixes/ps-print.patch
-Patch301:	https://sources.debian.org/data/main/c/chromium/127.0.6533.88-1/debian/patches/fixes/perfetto.patch
-Patch303:	https://sources.debian.org/data/main/c/chromium/127.0.6533.88-1/debian/patches/fixes/material-utils.patch
-Patch304:	https://sources.debian.org/data/main/c/chromium/127.0.6533.88-1/debian/patches/fixes/strlcpy.patch
-Patch306:	https://sources.debian.org/data/main/c/chromium/127.0.6533.88-1/debian/patches/fixes/memory-allocator-dcheck-assert-fix.patch
-#Patch307:	https://sources.debian.org/data/main/c/chromium/127.0.6533.88-1/debian/patches/fixes/chromium-browser-ui-missing-deps.patch
-Patch308:	https://sources.debian.org/data/main/c/chromium/127.0.6533.88-1/debian/patches/upstream/mojo.patch
-Patch309:	https://sources.debian.org/data/main/c/chromium/127.0.6533.88-1/debian/patches/upstream/mojo-null.patch
-Patch310:	https://sources.debian.org/data/main/c/chromium/127.0.6533.88-1/debian/patches/upstream/ruy-include.patch
-Patch315:	https://sources.debian.org/data/main/c/chromium/127.0.6533.88-1/debian/patches/disable/driver-chrome-path.patch
-Patch316:	https://sources.debian.org/data/main/c/chromium/127.0.6533.88-1/debian/patches/disable/widevine-cdm-cu.patch
-Patch317:	https://sources.debian.org/data/main/c/chromium/127.0.6533.88-1/debian/patches/disable/screen-ai-blob.patch
-Patch318:	https://sources.debian.org/data/main/c/chromium/127.0.6533.88-1/debian/patches/system/icu-shim.patch
-Patch319:	https://sources.debian.org/data/main/c/chromium/127.0.6533.88-1/debian/patches/system/jpeg.patch
-Patch320:	https://sources.debian.org/data/main/c/chromium/127.0.6533.88-1/debian/patches/system/zlib.patch
-Patch321:	https://sources.debian.org/data/main/c/chromium/127.0.6533.88-1/debian/patches/system/openjpeg.patch
-Patch322:	https://sources.debian.org/data/main/c/chromium/127.0.6533.88-1/debian/patches/system/opus.patch
-Patch323:	https://sources.debian.org/data/main/c/chromium/127.0.6533.88-1/debian/patches/system/eu-strip.patch
-Patch324:	https://sources.debian.org/data/main/c/chromium/127.0.6533.88-1/debian/patches/system/rollup.patch
+Patch300:	https://sources.debian.org/data/main/c/chromium/128.0.6613.113-1/debian/patches/fixes/ps-print.patch
+Patch301:	https://sources.debian.org/data/main/c/chromium/128.0.6613.113-1/debian/patches/fixes/perfetto.patch
+Patch303:	https://sources.debian.org/data/main/c/chromium/128.0.6613.113-1/debian/patches/fixes/material-utils.patch
+Patch304:	https://sources.debian.org/data/main/c/chromium/128.0.6613.113-1/debian/patches/fixes/strlcpy.patch
+Patch306:	https://sources.debian.org/data/main/c/chromium/128.0.6613.113-1/debian/patches/fixes/memory-allocator-dcheck-assert-fix.patch
+#Patch307:	https://sources.debian.org/data/main/c/chromium/128.0.6613.113-1/debian/patches/fixes/chromium-browser-ui-missing-deps.patch
+Patch308:	https://sources.debian.org/data/main/c/chromium/128.0.6613.113-1/debian/patches/upstream/mojo.patch
+Patch309:	https://sources.debian.org/data/main/c/chromium/128.0.6613.113-1/debian/patches/upstream/mojo-null.patch
+Patch310:	https://sources.debian.org/data/main/c/chromium/128.0.6613.113-1/debian/patches/upstream/ruy-include.patch
+Patch315:	https://sources.debian.org/data/main/c/chromium/128.0.6613.113-1/debian/patches/disable/driver-chrome-path.patch
+Patch316:	https://sources.debian.org/data/main/c/chromium/128.0.6613.113-1/debian/patches/disable/widevine-cdm-cu.patch
+Patch317:	https://sources.debian.org/data/main/c/chromium/128.0.6613.113-1/debian/patches/disable/screen-ai-blob.patch
+Patch318:	https://sources.debian.org/data/main/c/chromium/128.0.6613.113-1/debian/patches/system/icu-shim.patch
+Patch319:	https://sources.debian.org/data/main/c/chromium/128.0.6613.113-1/debian/patches/system/jpeg.patch
+Patch320:	https://sources.debian.org/data/main/c/chromium/128.0.6613.113-1/debian/patches/system/zlib.patch
+Patch321:	https://sources.debian.org/data/main/c/chromium/128.0.6613.113-1/debian/patches/system/openjpeg.patch
+Patch322:	https://sources.debian.org/data/main/c/chromium/128.0.6613.113-1/debian/patches/system/opus.patch
+Patch323:	https://sources.debian.org/data/main/c/chromium/128.0.6613.113-1/debian/patches/system/eu-strip.patch
+Patch324:	https://sources.debian.org/data/main/c/chromium/128.0.6613.113-1/debian/patches/system/rollup.patch
 %if %{system libevent}
-Patch337:	https://sources.debian.org/data/main/c/chromium/127.0.6533.88-1/debian/patches/system/event.patch
+Patch337:	https://sources.debian.org/data/main/c/chromium/128.0.6613.113-1/debian/patches/system/event.patch
 # Looks like Debian is missing a few spots... Let's add our own. Mixed in with the Debian
 # patches because it's an addition to 334.
 Patch338:	chromium-125-system-libevent.patch
 %endif
-Patch339:	https://sources.debian.org/data/main/c/chromium/127.0.6533.88-1/debian/patches/fixes/widevine-revision.patch
-Patch340:	https://sources.debian.org/data/main/c/chromium/127.0.6533.88-1/debian/patches/fixes/widevine-locations.patch
-Patch341:	https://sources.debian.org/data/main/c/chromium/127.0.6533.88-1/debian/patches/fixes/bindgen.patch
-Patch342:	https://sources.debian.org/data/main/c/chromium/127.0.6533.88-1/debian/patches/disable/swiftshader.patch
-Patch343:	https://sources.debian.org/data/main/c/chromium/127.0.6533.88-1/debian/patches/disable/swiftshader-2.patch
+Patch339:	https://sources.debian.org/data/main/c/chromium/128.0.6613.113-1/debian/patches/fixes/widevine-revision.patch
+Patch340:	https://sources.debian.org/data/main/c/chromium/128.0.6613.113-1/debian/patches/fixes/widevine-locations.patch
+Patch341:	https://sources.debian.org/data/main/c/chromium/128.0.6613.113-1/debian/patches/fixes/bindgen.patch
+Patch342:	https://sources.debian.org/data/main/c/chromium/128.0.6613.113-1/debian/patches/disable/swiftshader.patch
+Patch343:	https://sources.debian.org/data/main/c/chromium/128.0.6613.113-1/debian/patches/disable/swiftshader-2.patch
 
 ### 400-999: Patches from 3rd party projects that aren't distro packages
 # https://gitlab.com/Matt.Jolly/chromium-patches

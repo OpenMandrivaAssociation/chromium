@@ -1,17 +1,16 @@
-diff -up chromium-127.0.6533.88/chrome/test/chromedriver/chrome/chrome_finder.cc.28~ chromium-127.0.6533.88/chrome/test/chromedriver/chrome/chrome_finder.cc
---- chromium-127.0.6533.88/chrome/test/chromedriver/chrome/chrome_finder.cc.28~	2024-07-31 02:00:00.145018600 +0200
-+++ chromium-127.0.6533.88/chrome/test/chromedriver/chrome/chrome_finder.cc	2024-08-01 21:10:30.077173980 +0200
-@@ -68,9 +68,6 @@ void GetApplicationDirs(std::vector<base
-   locations->emplace_back("/usr/bin");
-   locations->emplace_back("/sbin");
+diff -up chromium-128.0.6613.119/chrome/test/chromedriver/chrome/chrome_finder.cc.20~ chromium-128.0.6613.119/chrome/test/chromedriver/chrome/chrome_finder.cc
+--- chromium-128.0.6613.119/chrome/test/chromedriver/chrome/chrome_finder.cc.20~	2024-09-02 23:02:09.932225700 +0200
++++ chromium-128.0.6613.119/chrome/test/chromedriver/chrome/chrome_finder.cc	2024-09-03 20:07:22.730855170 +0200
+@@ -70,7 +70,7 @@ void GetApplicationDirs(std::vector<base
    locations->emplace_back("/bin");
--  // Lastly, try the default installation location.
--  locations->emplace_back("/opt/google/chrome");
+   // Lastly, try the default installation location.
+   locations->emplace_back("/opt/google/chrome");
 -  locations->emplace_back("/opt/ch40m1um.qjz9zk/chromium");
++  locations->emplace_back("/opt/chromium.org/chromium");
  }
  #elif BUILDFLAG(IS_ANDROID)
  void GetApplicationDirs(std::vector<base::FilePath>* locations) {
-@@ -126,9 +123,7 @@ std::vector<base::FilePath> GetChromePro
+@@ -126,9 +126,7 @@ std::vector<base::FilePath> GetChromePro
          base::FilePath(chrome::kGoogleChromeBrowserProcessExecutablePath),
          base::FilePath(chrome::kChromiumBrowserProcessExecutablePath),
  #elif BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS)

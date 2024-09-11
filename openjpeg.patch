@@ -1,6 +1,5 @@
-diff -up chromium-128.0.6613.84/third_party/pdfium/BUILD.gn.25~ chromium-128.0.6613.84/third_party/pdfium/BUILD.gn
---- chromium-128.0.6613.84/third_party/pdfium/BUILD.gn.25~	2024-08-22 00:48:21.604075000 +0200
-+++ chromium-128.0.6613.84/third_party/pdfium/BUILD.gn	2024-08-23 15:30:57.278640215 +0200
+--- a/third_party/pdfium/BUILD.gn
++++ b/third_party/pdfium/BUILD.gn
 @@ -4,6 +4,7 @@
  
  import("//build/config/clang/clang.gni")
