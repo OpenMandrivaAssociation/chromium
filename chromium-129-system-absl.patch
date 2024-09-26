@@ -1,0 +1,111 @@
+diff -up chromium-129.0.6668.58/BUILD.gn.39~ chromium-129.0.6668.58/BUILD.gn
+--- chromium-129.0.6668.58/BUILD.gn.39~	2024-09-25 11:06:01.452372745 +0200
++++ chromium-129.0.6668.58/BUILD.gn	2024-09-25 11:06:01.686378253 +0200
+@@ -122,7 +122,7 @@ group("gn_all") {
+       "//url:url_unittests",
+     ]
+ 
+-    if (!is_component_build) {
++    if (!is_component_build && false) {
+       deps += [ "//third_party/abseil-cpp:absl_tests" ]
+     }
+ 
+diff -up chromium-129.0.6668.58/build/linux/unbundle/absl_log.gn.39~ chromium-129.0.6668.58/build/linux/unbundle/absl_log.gn
+--- chromium-129.0.6668.58/build/linux/unbundle/absl_log.gn.39~	2024-09-25 11:37:42.055359280 +0200
++++ chromium-129.0.6668.58/build/linux/unbundle/absl_log.gn	2024-09-25 11:51:41.424976400 +0200
+@@ -17,6 +17,22 @@ pkg_config("system_absl_die_if_null") {
+   packages = [ "absl_die_if_null" ]
+ }
+ 
++pkg_config("system_absl_absl_vlog_is_on") {
++  packages = [ "absl_absl_vlog_is_on" ]
++}
++
++pkg_config("system_log_entry") {
++  packages = [ "absl_log_entry" ]
++}
++
++pkg_config("system_log_sink") {
++  packages = [ "absl_log_sink" ]
++}
++
++pkg_config("system_log_sink_registry") {
++  packages = [ "absl_log_sink_registry" ]
++}
++
+ pkg_config("system_absl_log") {
+   packages = [ "absl_log" ]
+ }
+@@ -73,6 +77,50 @@ source_set("die_if_null") {
+   public_configs = [ ":system_absl_die_if_null" ]
+ }
+ 
++shim_headers("absl_vlog_is_on_shim") {
++  root_path = "."
++  prefix = "absl/log/"
++  headers = [ "absl_vlog_is_on.h" ]
++}
++
++source_set("absl_vlog_is_on") {
++  deps = [ ":absl_vlog_is_on_shim" ]
++  public_configs = [ ":system_absl_absl_vlog_is_on" ]
++}
++
++shim_headers("log_entry_shim") {
++  root_path = "."
++  prefix = "absl/log/"
++  headers = [ "log_entry.h" ]
++}
++
++source_set("log_entry") {
++  deps = [ ":log_entry_shim" ]
++  public_configs = [ ":system_log_entry" ]
++}
++
++shim_headers("log_sink_shim") {
++  root_path = "."
++  prefix = "absl/log/"
++  headers = [ "log_sink.h" ]
++}
++
++source_set("log_sink") {
++  deps = [ ":log_sink_shim" ]
++  public_configs = [ ":system_log_sink" ]
++}
++
++shim_headers("log_sink_registry_shim") {
++  root_path = "."
++  prefix = "absl/log/"
++  headers = [ "log_sink_registry.h" ]
++}
++
++source_set("log_sink_registry") {
++  deps = [ ":log_sink_registry_shim" ]
++  public_configs = [ ":system_log_sink_registry" ]
++}
++
+ shim_headers("globals_shim") {
+   root_path = "."
+   prefix = "absl/log/"
+@@ -116,6 +131,8 @@ source_set("check_test") {
+ }
+ source_set("die_if_null_test") {
+ }
++source_set("absl_vlog_is_on_test") {
++}
+ source_set("flags_test") {
+ }
+ source_set("globals_test") {
+diff -up chromium-129.0.6668.58/third_party/abseil-cpp/absl.gni.39~ chromium-129.0.6668.58/third_party/abseil-cpp/absl.gni
+--- chromium-129.0.6668.58/third_party/abseil-cpp/absl.gni.39~	2024-09-18 00:00:15.585443300 +0200
++++ chromium-129.0.6668.58/third_party/abseil-cpp/absl.gni	2024-09-25 11:06:01.691378370 +0200
+@@ -20,7 +20,8 @@
+ import("//build_overrides/build.gni")
+ 
+ declare_args() {
+-  absl_build_tests = build_with_chromium
++  absl_build_tests = false 
++#build_with_chromium
+ }
+ 
+ template("absl_source_set") {

@@ -1,7 +1,7 @@
-diff -up chromium-107.0.5304.121/media/BUILD.gn.me chromium-107.0.5304.121/media/BUILD.gn
---- chromium-107.0.5304.121/media/BUILD.gn.me	2022-12-17 12:35:44.546779129 +0100
-+++ chromium-107.0.5304.121/media/BUILD.gn	2022-12-17 12:35:59.296047028 +0100
-@@ -64,12 +64,6 @@ buildflag_header("media_buildflags") {
+diff -up chromium-129.0.6668.58/media/BUILD.gn.6~ chromium-129.0.6668.58/media/BUILD.gn
+--- chromium-129.0.6668.58/media/BUILD.gn.6~	2024-09-23 12:32:17.957669199 +0200
++++ chromium-129.0.6668.58/media/BUILD.gn	2024-09-23 12:53:16.960496949 +0200
+@@ -77,12 +77,6 @@ buildflag_header("media_buildflags") {
    }
  }
  
@@ -12,5 +12,5 @@ diff -up chromium-107.0.5304.121/media/BUILD.gn.me chromium-107.0.5304.121/media
 -}
 -
  # Common configuration for targets in the media directory; these must not be
- # exported since things like USE_NEON and USE_CRAS have different meanings
- # elsewhere in the code base.
+ # exported since things like USE_NEON have different meanings elsewhere in the
+ # code base.

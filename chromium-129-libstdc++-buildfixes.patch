@@ -1,0 +1,45 @@
+diff -up chromium-129.0.6668.58/chrome/browser/ai/ai_context_bound_object_set.h.omv~ chromium-129.0.6668.58/chrome/browser/ai/ai_context_bound_object_set.h
+--- chromium-129.0.6668.58/chrome/browser/ai/ai_context_bound_object_set.h.omv~	2024-09-26 16:41:26.923016499 +0200
++++ chromium-129.0.6668.58/chrome/browser/ai/ai_context_bound_object_set.h	2024-09-26 16:41:34.058190930 +0200
+@@ -5,6 +5,8 @@
+ #ifndef CHROME_BROWSER_AI_AI_CONTEXT_BOUND_OBJECT_SET_H_
+ #define CHROME_BROWSER_AI_AI_CONTEXT_BOUND_OBJECT_SET_H_
+ 
++#include <variant>
++
+ #include "base/containers/unique_ptr_adapters.h"
+ #include "base/memory/weak_ptr.h"
+ #include "chrome/browser/ai/ai_context_bound_object.h"
+diff -up chromium-129.0.6668.58/components/site_engagement/content/site_engagement_observer.h.omv~ chromium-129.0.6668.58/components/site_engagement/content/site_engagement_observer.h
+--- chromium-129.0.6668.58/components/site_engagement/content/site_engagement_observer.h.omv~	2024-09-26 14:16:04.727676420 +0200
++++ chromium-129.0.6668.58/components/site_engagement/content/site_engagement_observer.h	2024-09-26 14:16:11.591837857 +0200
+@@ -5,6 +5,7 @@
+ #ifndef COMPONENTS_SITE_ENGAGEMENT_CONTENT_SITE_ENGAGEMENT_OBSERVER_H_
+ #define COMPONENTS_SITE_ENGAGEMENT_CONTENT_SITE_ENGAGEMENT_OBSERVER_H_
+ 
++#include <optional>
+ #include "base/gtest_prod_util.h"
+ #include "base/memory/raw_ptr.h"
+ #include "components/webapps/common/web_app_id.h"
+diff -up chromium-129.0.6668.58/content/browser/ai/echo_ai_manager_impl.h.omv~ chromium-129.0.6668.58/content/browser/ai/echo_ai_manager_impl.h
+--- chromium-129.0.6668.58/content/browser/ai/echo_ai_manager_impl.h.omv~	2024-09-26 10:39:13.558603081 +0200
++++ chromium-129.0.6668.58/content/browser/ai/echo_ai_manager_impl.h	2024-09-26 10:39:46.403347386 +0200
+@@ -5,6 +5,7 @@
+ #ifndef CONTENT_BROWSER_AI_ECHO_AI_MANAGER_IMPL_H_
+ #define CONTENT_BROWSER_AI_ECHO_AI_MANAGER_IMPL_H_
+ 
++#include <variant>
+ #include "base/no_destructor.h"
+ #include "content/public/browser/browser_context.h"
+ #include "content/public/browser/render_frame_host.h"
+diff -up chromium-129.0.6668.58/content/public/browser/content_browser_client.h.omv~ chromium-129.0.6668.58/content/public/browser/content_browser_client.h
+--- chromium-129.0.6668.58/content/public/browser/content_browser_client.h.omv~	2024-09-25 17:53:18.689496362 +0200
++++ chromium-129.0.6668.58/content/public/browser/content_browser_client.h	2024-09-25 17:53:28.084747636 +0200
+@@ -13,6 +13,7 @@
+ #include <set>
+ #include <string>
+ #include <string_view>
++#include <variant>
+ #include <vector>
+ 
+ #include "base/containers/flat_map.h"

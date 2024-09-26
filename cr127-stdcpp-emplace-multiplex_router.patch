@@ -1,0 +1,36 @@
+From a8ae9c03acb3482fc94a4ec231feddcc13cb24e1 Mon Sep 17 00:00:00 2001
+From: "lauren n. liberda" <lauren@selfisekai.rocks>
+Date: Thu, 27 Jun 2024 02:34:44 +0200
+Subject: [PATCH] stdc++: workaround an std::optional bug in
+ multiplex_router.cc
+
+workarounds https://gcc.gnu.org/bugzilla/show_bug.cgi?id=101227
+
+Bug: 41455655
+Change-Id: Iad91574de68348ad393cc096f3e77cebc822af70
+---
+ mojo/public/cpp/bindings/lib/multiplex_router.cc | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/mojo/public/cpp/bindings/lib/multiplex_router.cc b/mojo/public/cpp/bindings/lib/multiplex_router.cc
+index 8487e80f4ab98..f8cdf8615262a 100644
+--- a/mojo/public/cpp/bindings/lib/multiplex_router.cc
++++ b/mojo/public/cpp/bindings/lib/multiplex_router.cc
+@@ -388,7 +388,7 @@ MultiplexRouter::MultiplexRouter(
+       control_message_handler_(this),
+       control_message_proxy_(&connector_) {
+   if (config_ == MULTI_INTERFACE)
+-    lock_.emplace();
++    MayAutoLock locker(&lock_);
+ 
+   connector_.set_incoming_receiver(&dispatcher_);
+ 
+@@ -893,7 +893,7 @@ bool MultiplexRouter::ExclusiveSyncWaitForReply(InterfaceId interface_id,
+   DCHECK(!exclusive_sync_wait_);
+ 
+   scoped_refptr<MultiplexRouter> keep_alive(this);
+-  exclusive_sync_wait_.emplace();
++  exclusive_sync_wait_.emplace(ExclusiveSyncWaitInfo());
+   exclusive_sync_wait_->interface_id = interface_id;
+   exclusive_sync_wait_->request_id = request_id;
+   while (!exclusive_sync_wait_->finished) {
