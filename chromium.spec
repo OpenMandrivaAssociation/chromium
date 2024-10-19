@@ -93,9 +93,9 @@ Name:		chromium-browser-%{channel}
 %endif
 # Working version numbers can be found at
 # https://chromiumdash.appspot.com/releases?platform=Linux
-Version:	129.0.6668.100
+Version:	130.0.6723.58
 ### Don't be evil!!! ###
-%define ungoogled 129.0.6668.89-1
+%define ungoogled 129.0.6668.100-1
 %if %{with cef}
 # To find the CEF commit matching the Chromium version, look up the
 # right branch at
@@ -185,20 +185,16 @@ Patch316:	https://sources.debian.org/data/main/c/chromium/129.0.6668.58-1/debian
 Patch317:	https://sources.debian.org/data/main/c/chromium/129.0.6668.58-1/debian/patches/disable/screen-ai-blob.patch
 Patch318:	https://sources.debian.org/data/main/c/chromium/129.0.6668.58-1/debian/patches/system/icu-shim.patch
 Patch319:	https://sources.debian.org/data/main/c/chromium/129.0.6668.58-1/debian/patches/system/jpeg.patch
-Patch320:	https://sources.debian.org/data/main/c/chromium/129.0.6668.58-1/debian/patches/system/zlib.patch
 Patch321:	https://sources.debian.org/data/main/c/chromium/129.0.6668.58-1/debian/patches/system/openjpeg.patch
 Patch322:	https://sources.debian.org/data/main/c/chromium/129.0.6668.58-1/debian/patches/system/opus.patch
 Patch323:	https://sources.debian.org/data/main/c/chromium/129.0.6668.58-1/debian/patches/system/eu-strip.patch
 Patch324:	https://sources.debian.org/data/main/c/chromium/129.0.6668.58-1/debian/patches/system/rollup.patch
 %if %{system libevent}
 Patch337:	https://sources.debian.org/data/main/c/chromium/129.0.6668.58-1/debian/patches/system/event.patch
-# Looks like Debian is missing a few spots... Let's add our own. Mixed in with the Debian
-# patches because it's an addition to 334.
-Patch338:	chromium-125-system-libevent.patch
 %endif
 Patch339:	https://sources.debian.org/data/main/c/chromium/129.0.6668.58-1/debian/patches/fixes/widevine-revision.patch
 Patch340:	https://sources.debian.org/data/main/c/chromium/129.0.6668.58-1/debian/patches/fixes/widevine-locations.patch
-Patch341:	https://sources.debian.org/data/main/c/chromium/129.0.6668.58-1/debian/patches/fixes/bindgen.patch
+#Patch341:	https://sources.debian.org/data/main/c/chromium/129.0.6668.58-1/debian/patches/fixes/bindgen.patch
 
 ### 400-999: Patches from 3rd party projects that aren't distro packages
 Patch400:	https://codeberg.org/selfisekai/copium/raw/branch/main/cr129-ffmpeg-no-noh264parse.patch
@@ -206,7 +202,7 @@ Patch402:	https://codeberg.org/selfisekai/copium/raw/branch/main/cr127-stdcpp-em
 Patch403:	https://codeberg.org/selfisekai/copium/raw/branch/main/cr127-stdcpp-emplace-surface_aggregator.patch
 Patch406:	https://codeberg.org/selfisekai/copium/raw/branch/main/cr128-stdcpp-emplace-shared_image_backing.patch
 Patch407:	chromium-129-system-absl.patch
-Patch408:	chromium-129-libstdc++-buildfixes.patch
+#Patch408:	chromium-129-libstdc++-buildfixes.patch
 # https://gitlab.com/Matt.Jolly/chromium-patches
 # [nothing currently relevant; make sure to check release branches, master branch is abandoned]
 # https://github.com/ungoogled-software/ungoogled-chromium-fedora
@@ -267,6 +263,7 @@ Patch1029:	chromium-127-minizip-ng.patch
 # Patches 4000+ are applied inside the ungoogled-chromium tree before
 # the ungoogling scripts are run
 # ============================================================================
+Patch4000:	https://github.com/ungoogled-software/ungoogled-chromium/pull/3057.patch
 
 Provides:	%{crname}
 Obsoletes:	chromium-browser-unstable < %{EVRD}

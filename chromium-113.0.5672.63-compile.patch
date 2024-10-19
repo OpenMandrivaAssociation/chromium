@@ -1,7 +1,7 @@
-diff -up chromium-113.0.5672.63/media/video/av1_video_encoder.cc.omv~ chromium-113.0.5672.63/media/video/av1_video_encoder.cc
---- chromium-113.0.5672.63/media/video/av1_video_encoder.cc.omv~	2023-05-05 07:48:00.399770780 +0200
-+++ chromium-113.0.5672.63/media/video/av1_video_encoder.cc	2023-05-05 07:48:36.156148634 +0200
-@@ -423,7 +423,9 @@ void Av1VideoEncoder::Encode(scoped_refp
+diff -up chromium-130.0.6723.58/media/video/av1_video_encoder.cc.51~ chromium-130.0.6723.58/media/video/av1_video_encoder.cc
+--- chromium-130.0.6723.58/media/video/av1_video_encoder.cc.51~	2024-10-17 21:44:24.583132769 +0200
++++ chromium-130.0.6723.58/media/video/av1_video_encoder.cc	2024-10-17 21:46:25.874116347 +0200
+@@ -546,7 +546,9 @@ void Av1VideoEncoder::Encode(scoped_refp
      int qp = static_cast<int>(std::lround(encode_options.quantizer.value()));
      qp = std::clamp(qp, static_cast<int>(config_.rc_min_quantizer),
                      static_cast<int>(config_.rc_max_quantizer));
@@ -10,4 +10,4 @@ diff -up chromium-113.0.5672.63/media/video/av1_video_encoder.cc.omv~ chromium-1
 +#endif
    }
  
-   TRACE_EVENT1("media", "aom_codec_encode", "timestamp", frame->timestamp());
+   if (options_.manual_reference_buffer_control) {
