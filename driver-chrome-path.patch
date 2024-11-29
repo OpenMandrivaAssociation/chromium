@@ -1,6 +1,6 @@
-diff -up chromium-129.0.6668.58/chrome/test/chromedriver/chrome/chrome_finder.cc.20~ chromium-129.0.6668.58/chrome/test/chromedriver/chrome/chrome_finder.cc
---- chromium-129.0.6668.58/chrome/test/chromedriver/chrome/chrome_finder.cc.20~	2024-09-18 00:00:02.681535000 +0200
-+++ chromium-129.0.6668.58/chrome/test/chromedriver/chrome/chrome_finder.cc	2024-09-23 13:17:20.489554629 +0200
+diff -up chromium-131.0.6778.85/chrome/test/chromedriver/chrome/chrome_finder.cc.32~ chromium-131.0.6778.85/chrome/test/chromedriver/chrome/chrome_finder.cc
+--- chromium-131.0.6778.85/chrome/test/chromedriver/chrome/chrome_finder.cc.32~	2024-11-19 23:47:59.007714700 +0100
++++ chromium-131.0.6778.85/chrome/test/chromedriver/chrome/chrome_finder.cc	2024-11-23 16:03:42.971750949 +0100
 @@ -68,9 +68,6 @@ void GetApplicationDirs(std::vector<base
    locations->emplace_back("/usr/bin");
    locations->emplace_back("/sbin");

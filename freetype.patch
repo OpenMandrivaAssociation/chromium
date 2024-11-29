@@ -1,0 +1,18 @@
+author: Andres Salomon <dilinger@debian.org>
+
+Upstream added an enable_freetype arg (744782efe9622b4), but only
+declares it for the bundled freetype. When building against the
+system's freetype, we get errors about enable_freetype being undeclared.
+
+--- a/build/linux/unbundle/freetype.gn
++++ b/build/linux/unbundle/freetype.gn
+@@ -11,4 +11,9 @@ declare_args() {
+   # System FreeType configurations other than as described WILL INTRODUCE TEXT
+   # RENDERING AND SECURITY REGRESSIONS.
+   use_system_freetype = true
++
++  # Use FreeType for font rendering. If this is set to false, FreeType is
++  # replaced with the Rust-based Fontations set of libraries plus Skia
++  # path rendering.
++  enable_freetype = true
+ }

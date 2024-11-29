@@ -1,0 +1,21 @@
+diff -up chromium-131.0.6778.86/tools/v8_context_snapshot/v8_context_snapshot_generator.cc.omv~ chromium-131.0.6778.86/tools/v8_context_snapshot/v8_context_snapshot_generator.cc
+--- chromium-131.0.6778.86/tools/v8_context_snapshot/v8_context_snapshot_generator.cc.omv~	2024-11-28 14:21:27.817551408 +0100
++++ chromium-131.0.6778.86/tools/v8_context_snapshot/v8_context_snapshot_generator.cc	2024-11-28 14:28:51.762441186 +0100
+@@ -16,6 +16,8 @@
+ #include "third_party/blink/public/web/web_v8_context_snapshot.h"
+ #include "v8/include/v8.h"
+ 
++#include <iostream>
++
+ namespace {
+ 
+ constexpr char kPredictableFlag[] = "--predictable";
+@@ -42,7 +44,7 @@ int main(int argc, char** argv) {
+   // Initialize an empty feature list for gin startup.
+   auto early_access_feature_list = std::make_unique<base::FeatureList>();
+   // This should be called after CommandLine::Init().
+-  base::FeatureList::SetInstance(std::move(early_access_feature_list));
++//  base::FeatureList::SetInstance(std::move(early_access_feature_list));
+ #ifdef V8_USE_EXTERNAL_STARTUP_DATA
+   gin::V8Initializer::LoadV8Snapshot();
+ #endif

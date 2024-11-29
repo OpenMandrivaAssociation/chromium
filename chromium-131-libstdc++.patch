@@ -1,0 +1,94 @@
+diff -up chromium-131.0.6778.85/chrome/browser/bookmarks/bookmark_merged_surface_service.h.omv~ chromium-131.0.6778.85/chrome/browser/bookmarks/bookmark_merged_surface_service.h
+--- chromium-131.0.6778.85/chrome/browser/bookmarks/bookmark_merged_surface_service.h.omv~	2024-11-27 16:06:20.852841936 +0100
++++ chromium-131.0.6778.85/chrome/browser/bookmarks/bookmark_merged_surface_service.h	2024-11-27 16:06:27.152910991 +0100
+@@ -6,6 +6,7 @@
+ #define CHROME_BROWSER_BOOKMARKS_BOOKMARK_MERGED_SURFACE_SERVICE_H_
+ 
+ #include <vector>
++#include <variant>
+ 
+ #include "base/memory/raw_ptr.h"
+ #include "base/observer_list.h"
+diff -up chromium-131.0.6778.85/components/saved_tab_groups/public/types.h.omv~ chromium-131.0.6778.85/components/saved_tab_groups/public/types.h
+--- chromium-131.0.6778.85/components/saved_tab_groups/public/types.h.omv~	2024-11-27 15:41:36.116578564 +0100
++++ chromium-131.0.6778.85/components/saved_tab_groups/public/types.h	2024-11-27 15:41:42.886652601 +0100
+@@ -6,6 +6,7 @@
+ #define COMPONENTS_SAVED_TAB_GROUPS_PUBLIC_TYPES_H_
+ 
+ #include <optional>
++#include <variant>
+ 
+ #include "base/logging.h"
+ #include "base/token.h"
+diff -up chromium-131.0.6778.85/components/sync/service/local_data_description.h.omv~ chromium-131.0.6778.85/components/sync/service/local_data_description.h
+--- chromium-131.0.6778.85/components/sync/service/local_data_description.h.omv~	2024-11-24 21:45:18.077497217 +0100
++++ chromium-131.0.6778.85/components/sync/service/local_data_description.h	2024-11-24 21:45:23.777526337 +0100
+@@ -7,6 +7,7 @@
+ 
+ #include <string>
+ #include <vector>
++#include <variant>
+ 
+ #include "components/sync/base/data_type.h"
+ #include "url/gurl.h"
+diff -up chromium-131.0.6778.85/third_party/dawn/src/dawn/common/StringViewUtils.cpp.omv~ chromium-131.0.6778.85/third_party/dawn/src/dawn/common/StringViewUtils.cpp
+--- chromium-131.0.6778.85/third_party/dawn/src/dawn/common/StringViewUtils.cpp.omv~	2024-11-24 19:30:53.379746707 +0100
++++ chromium-131.0.6778.85/third_party/dawn/src/dawn/common/StringViewUtils.cpp	2024-11-24 19:31:00.159813067 +0100
+@@ -26,6 +26,7 @@
+ // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ 
+ #include "dawn/common/StringViewUtils.h"
++#include <cstring>
+ 
+ bool operator==(WGPUStringView a, WGPUStringView b) {
+     return wgpu::StringView(a) == wgpu::StringView(b);
+diff -up chromium-131.0.6778.85/third_party/ink/src/ink/brush/brush_paint.cc.omv~ chromium-131.0.6778.85/third_party/ink/src/ink/brush/brush_paint.cc
+--- chromium-131.0.6778.85/third_party/ink/src/ink/brush/brush_paint.cc.omv~	2024-11-27 16:26:38.287518493 +0100
++++ chromium-131.0.6778.85/third_party/ink/src/ink/brush/brush_paint.cc	2024-11-27 16:29:17.129492791 +0100
+@@ -84,7 +84,7 @@ absl::Status ValidateBrushPaintTextureKe
+         keyframe.progress));
+   }
+   if (keyframe.size.has_value()) {
+-    if (!isfinite(keyframe.size->x) || !isfinite(keyframe.size->y) ||
++    if (!std::isfinite(keyframe.size->x) || !std::isfinite(keyframe.size->y) ||
+         keyframe.size->x <= 0 || keyframe.size->y <= 0) {
+       return absl::InvalidArgumentError(
+           absl::StrFormat("`BrushPaint::TextureKeyframe::size` components must "
+@@ -102,7 +102,7 @@ absl::Status ValidateBrushPaintTextureKe
+     }
+   }
+   if (keyframe.rotation.has_value()) {
+-    if (!isfinite(keyframe.rotation->ValueInRadians())) {
++    if (!std::isfinite(keyframe.rotation->ValueInRadians())) {
+       return absl::InvalidArgumentError(
+           absl::StrFormat("`BrushPaint::TextureKeyframe::rotation` must be "
+                           "finite. Got %v",
+@@ -159,7 +159,7 @@ absl::Status ValidateBrushPaintTextureLa
+                         "interval [0, 1]. Got %v",
+                         layer.offset));
+   }
+-  if (!isfinite(layer.rotation.ValueInRadians())) {
++  if (!std::isfinite(layer.rotation.ValueInRadians())) {
+     return absl::InvalidArgumentError(
+         absl::StrFormat("`BrushPaint::TextureLayer::rotation` must be finite. "
+                         "Got %v",
+@@ -179,7 +179,7 @@ absl::Status ValidateBrushPaintTextureLa
+         "interval [0, 1]. Got %v",
+         layer.offset_jitter));
+   }
+-  if (!isfinite(layer.rotation_jitter.ValueInRadians())) {
++  if (!std::isfinite(layer.rotation_jitter.ValueInRadians())) {
+     return absl::InvalidArgumentError(absl::StrFormat(
+         "`BrushPaint::TextureLayer::rotation_jitter` must be finite. "
+         "Got %v",
+diff -up chromium-131.0.6778.85/third_party/webrtc/rtc_base/ssl_stream_adapter.h.omv~ chromium-131.0.6778.85/third_party/webrtc/rtc_base/ssl_stream_adapter.h
+--- chromium-131.0.6778.85/third_party/webrtc/rtc_base/ssl_stream_adapter.h.omv~	2024-11-24 19:50:42.391486181 +0100
++++ chromium-131.0.6778.85/third_party/webrtc/rtc_base/ssl_stream_adapter.h	2024-11-24 19:50:49.121552907 +0100
+@@ -17,6 +17,7 @@
+ #include <memory>
+ #include <string>
+ #include <vector>
++#include <optional>
+ 
+ #include "absl/functional/any_invocable.h"
+ #include "absl/memory/memory.h"
