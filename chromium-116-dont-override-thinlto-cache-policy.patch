@@ -1,7 +1,7 @@
-diff -up chromium-124.0.6367.60/build/config/compiler/BUILD.gn.40~ chromium-124.0.6367.60/build/config/compiler/BUILD.gn
---- chromium-124.0.6367.60/build/config/compiler/BUILD.gn.40~	2024-04-15 22:33:43.985039200 +0200
-+++ chromium-124.0.6367.60/build/config/compiler/BUILD.gn	2024-04-19 00:11:11.880507555 +0200
-@@ -734,26 +734,26 @@ config("compiler") {
+diff -up chromium-132.0.6834.83/build/config/compiler/BUILD.gn.53~ chromium-132.0.6834.83/build/config/compiler/BUILD.gn
+--- chromium-132.0.6834.83/build/config/compiler/BUILD.gn.53~	2025-01-07 20:49:02.000000000 +0100
++++ chromium-132.0.6834.83/build/config/compiler/BUILD.gn	2025-01-13 04:14:00.628168850 +0100
+@@ -739,26 +739,26 @@ config("compiler") {
        "-fsplit-lto-unit",
      ]
  
@@ -46,10 +46,10 @@ diff -up chromium-124.0.6367.60/build/config/compiler/BUILD.gn.40~ chromium-124.
  
      # An import limit of 30 has better performance (per speedometer) and lower
      # binary size than the default setting of 100.
-@@ -2182,8 +2182,6 @@ config("thin_archive") {
-   # archives.
-   if ((is_posix && !is_nacl && (!is_apple || use_lld)) || is_fuchsia) {
-     arflags = [ "-T" ]
+@@ -2320,8 +2320,6 @@ config("thin_archive") {
+       "-T",
+       "-S",
+     ]
 -  } else if (is_win && use_lld) {
 -    arflags = [ "/llvmlibthin" ]
    }

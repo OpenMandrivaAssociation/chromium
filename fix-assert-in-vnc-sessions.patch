@@ -1,12 +1,12 @@
---- a/ui/gl/init/gl_factory_ozone.cc
-+++ b/ui/gl/init/gl_factory_ozone.cc
-@@ -59,8 +59,10 @@
+diff -up chromium-132.0.6834.83/ui/gl/init/gl_factory_ozone.cc.20~ chromium-132.0.6834.83/ui/gl/init/gl_factory_ozone.cc
+--- chromium-132.0.6834.83/ui/gl/init/gl_factory_ozone.cc.20~	2025-01-13 04:00:55.068975819 +0100
++++ chromium-132.0.6834.83/ui/gl/init/gl_factory_ozone.cc	2025-01-13 04:02:56.824668218 +0100
+@@ -59,7 +59,9 @@ scoped_refptr<GLContext> CreateGLContext
      case kGLImplementationDisabled:
        break;
      default:
 +#if 0
-       NOTREACHED_IN_MIGRATION()
-           << "Expected Mock or Stub, actual:" << GetGLImplementation();
+       NOTREACHED() << "Expected Mock or Stub, actual:" << GetGLImplementation();
 +#endif
    }
    return nullptr;
