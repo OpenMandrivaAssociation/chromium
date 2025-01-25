@@ -94,9 +94,9 @@ Name:		chromium-browser-%{channel}
 %endif
 # Working version numbers can be found at
 # https://chromiumdash.appspot.com/releases?platform=Linux
-Version:	132.0.6834.83
+Version:	132.0.6834.110
 ### Don't be evil!!! ###
-%define ungoogled 131.0.6778.264-1
+%define ungoogled 132.0.6834.110-1
 %if %{with cef}
 # To find the CEF commit matching the Chromium version, look up the
 # right branch at
@@ -187,7 +187,6 @@ Patch312:	https://sources.debian.org/data/main/c/chromium/132.0.6834.83-1/debian
 Patch313:	https://sources.debian.org/data/main/c/chromium/132.0.6834.83-1/debian/patches/fixes/fix-assert-in-vnc-sessions.patch
 Patch314:	https://sources.debian.org/data/main/c/chromium/132.0.6834.83-1/debian/patches/fixes/armhf-timespec.patch
 Patch316:	https://sources.debian.org/data/main/c/chromium/132.0.6834.83-1/debian/patches/fixes/updater-test.patch
-Patch317:	https://sources.debian.org/data/main/c/chromium/132.0.6834.83-1/debian/patches/upstream/mojo.patch
 Patch318:	https://sources.debian.org/data/main/c/chromium/132.0.6834.83-1/debian/patches/upstream/ruy-include.patch
 # (Mostly) duplicates from ungoogled patchset
 ###Patch320:	https://sources.debian.org/data/main/c/chromium/132.0.6834.83-1/debian/patches/disable/tests.patch
@@ -289,7 +288,6 @@ Patch1030:	chromium-131-compilefix-crbug-381407882.patch
 # Patches 4000+ are applied inside the ungoogled-chromium tree before
 # the ungoogling scripts are run
 # ============================================================================
-Patch4000:	https://github.com/ungoogled-software/ungoogled-chromium/pull/3143.patch
 
 Provides:	%{crname}
 Obsoletes:	chromium-browser-unstable < %{EVRD}
@@ -560,6 +558,7 @@ echo %{version} >$UGDIR/chromium_version.txt
 sed -i \
 	-e '/disable-autofill/d' \
 	-e '/prefs-only-keep-cookies-until-exit/d' \
+	-e '/disable-webstore-urls.patch/d' \
 	$UGDIR/patches/series
 python $UGDIR/utils/prune_binaries.py ./ $UGDIR/pruning.list --verbose
 python $UGDIR/utils/patches.py apply ./ $UGDIR/patches
