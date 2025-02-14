@@ -60,10 +60,6 @@
 # openh264: Fails to compile
 # icu: Causes crash when loading some websites, e.g.
 #      build logs from abf, anti-spiegel.ru
-# libevent: Seems to be ok in 125. Observed earlier:
-#           Works-ish, but causes weird random freezes
-#           observed e.g. while running multiple Slack
-#           sessions in browser mode
 # libvpx: Fails to compile
 # re2 jsoncpp snappy: Use C++, therefore won't work while
 #                     system uses libstdc++ but chromium
@@ -72,9 +68,9 @@
 # libwebp (as of 124.x): //third_party/libavif:libavif_enc(//build/toolchain/linux/unbundle:default) needs //third_party/libwebp:libwebp_sharpyuv(//build/toolchain/linux/unbundle:default)
 # re2 (as of 124.x): //third_party/googletest:gtest_config(//build/toolchain/linux/unbundle:default) needs //third_party/re2:re2_config(//build/toolchain/linux/unbundle:default) (+ libc++/libstdc++ issue)
 %if %{with libcxx}
-%global system_libs brotli dav1d flac ffmpeg fontconfig harfbuzz-ng libjpeg libjxl libpng libdrm libxml libxslt opus libusb openh264 zlib freetype zstd libwebp libevent
+%global system_libs fontconfig harfbuzz-ng libjpeg libjxl libpng libdrm libxml libxslt opus libusb openh264 zlib freetype zstd libwebp
 %else
-%global system_libs brotli dav1d flac ffmpeg fontconfig harfbuzz-ng libjpeg libjxl libpng libdrm libxml libxslt opus libusb openh264 zlib freetype zstd libwebp jsoncpp snappy libevent
+%global system_libs fontconfig harfbuzz-ng libjpeg libjxl libpng libdrm libxml libxslt opus libusb openh264 zlib freetype zstd libwebp jsoncpp snappy
 # System absl is not quite working yet
 # absl_algorithm absl_base absl_cleanup absl_container absl_crc absl_debugging absl_flags absl_functional absl_hash absl_log absl_log_internal absl_memory absl_meta absl_numeric absl_random absl_status absl_strings absl_synchronization absl_time absl_types absl_utility
 %endif
@@ -94,9 +90,9 @@ Name:		chromium-browser-%{channel}
 %endif
 # Working version numbers can be found at
 # https://chromiumdash.appspot.com/releases?platform=Linux
-Version:	132.0.6834.110
+Version:	133.0.6943.98
 ### Don't be evil!!! ###
-%define ungoogled 132.0.6834.110-1
+%define ungoogled 133.0.6943.53-1
 %if %{with cef}
 # To find the CEF commit matching the Chromium version, look up the
 # right branch at
@@ -116,7 +112,7 @@ Summary:	A fast webkit-based web browser
 Group:		Networking/WWW
 License:	BSD, LGPL
 # From : http://gsdview.appspot.com/chromium-browser-official/
-Source0:	https://commondatastorage.googleapis.com/chromium-browser-official/chromium-%{version}.tar.xz
+Source0:	https://commondatastorage.googleapis.com/chromium-browser-official/chromium-%{version}-lite.tar.xz
 Source1:	chromium-wrapper
 Source2:	chromium-browser%{namesuffix}.desktop
 Source3:	master_preferences
@@ -156,7 +152,7 @@ Patch4:		https://src.fedoraproject.org/rpms/chromium/raw/rawhide/f/chromium-77.0
 # Needs to be submitted..
 Patch6:		https://src.fedoraproject.org/rpms/chromium/raw/rawhide/f/chromium-107-proprietary-codecs.patch
 # Disable whitelist, allow everything
-Patch7:		https://src.fedoraproject.org/rpms/chromium/raw/rawhide/f/chromium-122-disable-FFmpegAllowLists.patch
+#Patch7:		https://src.fedoraproject.org/rpms/chromium/raw/rawhide/f/chromium-122-disable-FFmpegAllowLists.patch
 
 ### 100-199: Arch
 # https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=chromium-dev
@@ -170,54 +166,54 @@ Patch200:	https://gitweb.gentoo.org/repo/gentoo.git/plain/www-client/chromium/fi
 ### 300-399: Debian
 # https://sources.debian.org/patches/chromium/
 # Mostly fixes for libstdc++ related failures
-Patch300:	https://sources.debian.org/data/main/c/chromium/132.0.6834.83-1/debian/patches/fixes/ps-print.patch
-Patch301:	https://sources.debian.org/data/main/c/chromium/132.0.6834.83-1/debian/patches/fixes/widevine-revision.patch
-Patch302:	https://sources.debian.org/data/main/c/chromium/132.0.6834.83-1/debian/patches/fixes/widevine-locations.patch
+Patch300:	https://sources.debian.org/data/main/c/chromium/133.0.6943.53-1/debian/patches/fixes/ps-print.patch
+Patch301:	https://sources.debian.org/data/main/c/chromium/133.0.6943.53-1/debian/patches/fixes/widevine-revision.patch
+Patch302:	https://sources.debian.org/data/main/c/chromium/133.0.6943.53-1/debian/patches/fixes/widevine-locations.patch
 # Not needed for OM
-###Patch303:	https://sources.debian.org/data/main/c/chromium/132.0.6834.83-1/debian/patches/fixes/rust-clanglib.patch
-Patch304:	https://sources.debian.org/data/main/c/chromium/132.0.6834.83-1/debian/patches/fixes/material-utils.patch
-Patch305:	https://sources.debian.org/data/main/c/chromium/132.0.6834.83-1/debian/patches/fixes/perfetto.patch
-Patch306:	https://sources.debian.org/data/main/c/chromium/132.0.6834.83-1/debian/patches/fixes/strlcpy.patch
+###Patch303:	https://sources.debian.org/data/main/c/chromium/133.0.6943.53-1/debian/patches/fixes/rust-clanglib.patch
+Patch304:	https://sources.debian.org/data/main/c/chromium/133.0.6943.53-1/debian/patches/fixes/material-utils.patch
+Patch305:	https://sources.debian.org/data/main/c/chromium/133.0.6943.53-1/debian/patches/fixes/strlcpy.patch
 # Not needed for OM
-###Patch307:	https://sources.debian.org/data/main/c/chromium/132.0.6834.83-1/debian/patches/fixes/bindgen.patch
-Patch308:	https://sources.debian.org/data/main/c/chromium/132.0.6834.83-1/debian/patches/fixes/memory-allocator-dcheck-assert-fix.patch
-Patch309:	https://sources.debian.org/data/main/c/chromium/132.0.6834.83-1/debian/patches/fixes/clang-rust-target.patch
-Patch310:	https://sources.debian.org/data/main/c/chromium/132.0.6834.83-1/debian/patches/fixes/highway-include-path.patch
-Patch312:	https://sources.debian.org/data/main/c/chromium/132.0.6834.83-1/debian/patches/fixes/predictor-denial-of-service.patch
-Patch313:	https://sources.debian.org/data/main/c/chromium/132.0.6834.83-1/debian/patches/fixes/fix-assert-in-vnc-sessions.patch
-Patch314:	https://sources.debian.org/data/main/c/chromium/132.0.6834.83-1/debian/patches/fixes/armhf-timespec.patch
-Patch316:	https://sources.debian.org/data/main/c/chromium/132.0.6834.83-1/debian/patches/fixes/updater-test.patch
-Patch318:	https://sources.debian.org/data/main/c/chromium/132.0.6834.83-1/debian/patches/upstream/ruy-include.patch
+###Patch307:	https://sources.debian.org/data/main/c/chromium/133.0.6943.53-1/debian/patches/fixes/bindgen.patch
+Patch306:	https://sources.debian.org/data/main/c/chromium/133.0.6943.53-1/debian/patches/fixes/memory-allocator-dcheck-assert-fix.patch
+Patch307:	https://sources.debian.org/data/main/c/chromium/133.0.6943.53-1/debian/patches/fixes/clang-rust-target.patch
+Patch308:	https://sources.debian.org/data/main/c/chromium/133.0.6943.53-1/debian/patches/fixes/predictor-denial-of-service.patch
+Patch309:	https://sources.debian.org/data/main/c/chromium/133.0.6943.53-1/debian/patches/fixes/fix-assert-in-vnc-sessions.patch
+Patch310:	https://sources.debian.org/data/main/c/chromium/133.0.6943.53-1/debian/patches/fixes/armhf-timespec.patch
+Patch311:	https://sources.debian.org/data/main/c/chromium/133.0.6943.53-1/debian/patches/fixes/updater-test.patch
+Patch312:	https://sources.debian.org/data/main/c/chromium/133.0.6943.53-1/debian/patches/fixes/font-gc-asan.patch
+Patch313:	https://sources.debian.org/data/main/c/chromium/133.0.6943.53-1/debian/patches/fixes/lens-optional.patch
+Patch314:	https://sources.debian.org/data/main/c/chromium/133.0.6943.53-1/debian/patches/fixes/libsync-rk3588-panthor.patch
+Patch315:	https://sources.debian.org/data/main/c/chromium/133.0.6943.53-1/debian/patches/fixes/optional.patch
+#Patch318:	https://sources.debian.org/data/main/c/chromium/133.0.6943.53-1/debian/patches/upstream/ruy-include.patch
 # (Mostly) duplicates from ungoogled patchset
-###Patch320:	https://sources.debian.org/data/main/c/chromium/132.0.6834.83-1/debian/patches/disable/tests.patch
-Patch321:	https://sources.debian.org/data/main/c/chromium/132.0.6834.83-1/debian/patches/disable/tests-swiftshader.patch
+###Patch320:	https://sources.debian.org/data/main/c/chromium/133.0.6943.53-1/debian/patches/disable/tests.patch
+Patch316:	https://sources.debian.org/data/main/c/chromium/133.0.6943.53-1/debian/patches/disable/tests-swiftshader.patch
 # Already disabled by ungoogled patchset
-###Patch322:	https://sources.debian.org/data/main/c/chromium/132.0.6834.83-1/debian/patches/disable/signin.patch
-Patch323:	https://sources.debian.org/data/main/c/chromium/132.0.6834.83-1/debian/patches/disable/android.patch
-Patch324:	https://sources.debian.org/data/main/c/chromium/132.0.6834.83-1/debian/patches/disable/catapult.patch
-Patch325:	https://sources.debian.org/data/main/c/chromium/132.0.6834.83-1/debian/patches/disable/font-tests.patch
+###Patch322:	https://sources.debian.org/data/main/c/chromium/133.0.6943.53-1/debian/patches/disable/signin.patch
+Patch323:	https://sources.debian.org/data/main/c/chromium/133.0.6943.53-1/debian/patches/disable/android.patch
+Patch324:	https://sources.debian.org/data/main/c/chromium/133.0.6943.53-1/debian/patches/disable/catapult.patch
+Patch325:	https://sources.debian.org/data/main/c/chromium/133.0.6943.53-1/debian/patches/disable/font-tests.patch
 # Clashes with ungoogled patchset, probably not needed
-###Patch326:	https://sources.debian.org/data/main/c/chromium/132.0.6834.83-1/debian/patches/disable/google-api-warning.patch
+###Patch326:	https://sources.debian.org/data/main/c/chromium/133.0.6943.53-1/debian/patches/disable/google-api-warning.patch
 # Already disabled in ungoogled patchset
-###Patch327:	https://sources.debian.org/data/main/c/chromium/132.0.6834.83-1/debian/patches/disable/third-party-cookies.patch
-Patch328:	https://sources.debian.org/data/main/c/chromium/132.0.6834.83-1/debian/patches/disable/driver-chrome-path.patch
-Patch329:	https://sources.debian.org/data/main/c/chromium/132.0.6834.83-1/debian/patches/disable/widevine-cdm-cu.patch
-Patch330:	https://sources.debian.org/data/main/c/chromium/132.0.6834.83-1/debian/patches/disable/clang-version-check.patch
-Patch331:	https://sources.debian.org/data/main/c/chromium/132.0.6834.83-1/debian/patches/disable/screen-ai-blob.patch
-Patch332:	https://sources.debian.org/data/main/c/chromium/132.0.6834.83-1/debian/patches/system/icu-shim.patch
-Patch333:	https://sources.debian.org/data/main/c/chromium/132.0.6834.83-1/debian/patches/system/jpeg.patch
-%if %{system libevent}
-Patch334:	https://sources.debian.org/data/main/c/chromium/132.0.6834.83-1/debian/patches/system/event.patch
-%endif
-Patch335:	https://sources.debian.org/data/main/c/chromium/132.0.6834.83-1/debian/patches/system/openjpeg.patch
-Patch336:	https://sources.debian.org/data/main/c/chromium/132.0.6834.83-1/debian/patches/system/opus.patch
-Patch337:	https://sources.debian.org/data/main/c/chromium/132.0.6834.83-1/debian/patches/system/eu-strip.patch
+###Patch327:	https://sources.debian.org/data/main/c/chromium/133.0.6943.53-1/debian/patches/disable/third-party-cookies.patch
+Patch328:	https://sources.debian.org/data/main/c/chromium/133.0.6943.53-1/debian/patches/disable/driver-chrome-path.patch
+Patch329:	https://sources.debian.org/data/main/c/chromium/133.0.6943.53-1/debian/patches/disable/widevine-cdm-cu.patch
+Patch330:	https://sources.debian.org/data/main/c/chromium/133.0.6943.53-1/debian/patches/disable/clang-version-check.patch
+Patch331:	https://sources.debian.org/data/main/c/chromium/133.0.6943.53-1/debian/patches/disable/screen-ai-blob.patch
+Patch332:	https://sources.debian.org/data/main/c/chromium/133.0.6943.53-1/debian/patches/system/icu-shim.patch
+Patch333:	https://sources.debian.org/data/main/c/chromium/133.0.6943.53-1/debian/patches/system/jpeg.patch
+Patch335:	https://sources.debian.org/data/main/c/chromium/133.0.6943.53-1/debian/patches/system/openjpeg.patch
+Patch336:	https://sources.debian.org/data/main/c/chromium/133.0.6943.53-1/debian/patches/system/opus.patch
+Patch337:	https://sources.debian.org/data/main/c/chromium/133.0.6943.53-1/debian/patches/system/eu-strip.patch
 # Duplicate - but not sure where the other version comes from. Ungoogled?
-###Patch338:	https://sources.debian.org/data/main/c/chromium/132.0.6834.83-1/debian/patches/system/rapidjson.patch
-###Patch339:	https://sources.debian.org/data/main/c/chromium/132.0.6834.83-1/debian/patches/system/rollup.patch
+###Patch338:	https://sources.debian.org/data/main/c/chromium/133.0.6943.53-1/debian/patches/system/rapidjson.patch
+# Incompatible with OM for now, since we don't have the system package
+###Patch339:	https://sources.debian.org/data/main/c/chromium/133.0.6943.53-1/debian/patches/system/rollup.patch
 
 ### 400-999: Patches from 3rd party projects that aren't distro packages
-Patch400:	https://codeberg.org/selfisekai/copium/raw/branch/main/cr129-ffmpeg-no-noh264parse.patch
+#Patch400:	https://codeberg.org/selfisekai/copium/raw/branch/main/cr129-ffmpeg-no-noh264parse.patch
 Patch402:	https://codeberg.org/selfisekai/copium/raw/branch/main/cr127-stdcpp-emplace-multiplex_router.patch
 Patch403:	https://codeberg.org/selfisekai/copium/raw/branch/main/cr127-stdcpp-emplace-surface_aggregator.patch
 Patch406:	https://codeberg.org/selfisekai/copium/raw/branch/main/cr128-stdcpp-emplace-shared_image_backing.patch
@@ -226,7 +222,8 @@ Patch407:	chromium-129-system-absl.patch
 # https://gitlab.com/Matt.Jolly/chromium-patches
 # [nothing currently relevant; make sure to check release branches, master branch is abandoned]
 # https://github.com/ungoogled-software/ungoogled-chromium-fedora
-Patch411:	https://raw.githubusercontent.com/ungoogled-software/ungoogled-chromium-fedora/master/chromium-91.0.4472.77-java-only-allowed-in-android-builds.patch
+# Not useful with the -lite tarball
+#Patch411:	https://raw.githubusercontent.com/ungoogled-software/ungoogled-chromium-fedora/master/chromium-91.0.4472.77-java-only-allowed-in-android-builds.patch
 # From OBS CEF fork
 # https://github.com/obsproject/cef/commits/6261-shared-textures
 Patch420:	https://github.com/obsproject/cef/commit/27e977332df56c6251f4ee418d6bd51be073767d.patch
@@ -272,7 +269,8 @@ Patch1028:	cef-126-zlib-ng.patch
 %endif
 Patch1029:	chromium-127-minizip-ng.patch
 # https://issues.chromium.org/issues/381407882
-Patch1030:	chromium-131-compilefix-crbug-381407882.patch
+#Patch1030:	chromium-131-compilefix-crbug-381407882.patch
+Patch1031:	chromium-133-pipewire-compile.patch
 
 # ============================================================================
 # Patches 2000 to 2999 are applied inside the CEF tree.
@@ -315,7 +313,6 @@ BuildRequires:	alsa-oss-devel
 BuildRequires:	atomic-devel
 BuildRequires:	snappy-devel
 BuildRequires:	jsoncpp-devel
-BuildRequires:	pkgconfig(expat)
 BuildRequires:	pkgconfig(glib-2.0)
 BuildRequires:	pkgconfig(wayland-egl)
 BuildRequires:	pkgconfig(nss)
@@ -360,9 +357,6 @@ BuildRequires:	pkgconfig(libbrotlidec)
 BuildRequires:	pkgconfig(libbrotlienc)
 BuildRequires:	brotli
 %endif
-%if %{system dav1d}
-BuildRequires:	pkgconfig(dav1d)
-%endif
 %if %{system ffmpeg}
 BuildRequires:	pkgconfig(libavcodec)
 BuildRequires:	pkgconfig(libavfilter)
@@ -386,9 +380,6 @@ BuildRequires:	pkgconfig(aom)
 %endif
 %if %{system libdrm}
 BuildRequires:	pkgconfig(libdrm)
-%endif
-%if %{system libevent}
-BuildRequires:	pkgconfig(libevent)
 %endif
 %if %{system libjpeg}
 BuildRequires:	jpeg-devel
@@ -560,7 +551,7 @@ sed -i \
 	-e '/prefs-only-keep-cookies-until-exit/d' \
 	-e '/disable-webstore-urls.patch/d' \
 	$UGDIR/patches/series
-python $UGDIR/utils/prune_binaries.py ./ $UGDIR/pruning.list --verbose
+python $UGDIR/utils/prune_binaries.py ./ $UGDIR/pruning.list --verbose || :
 python $UGDIR/utils/patches.py apply ./ $UGDIR/patches
 python $UGDIR/utils/domain_substitution.py apply -r $UGDIR/domain_regex.list -f $UGDIR/domain_substitution.list -c domainsubcache.tar.gz ./
 %endif
@@ -631,8 +622,6 @@ ln -s /usr/bin/node third_party/node/linux/node-linux-x64/bin/
 for lib in %{system_libs}; do
 	# Fix mismatch between name and directory name
 	[ "$lib" = "libjpeg" ] && lib="libjpeg_turbo"
-	# libevent lives in base/third_party rather than third_party
-	[ "$lib" = "libevent" ] && continue
 	if echo $lib |grep -q ^absl_; then
 		continue
 	fi
@@ -730,7 +719,6 @@ for i in %{system_libs}; do
 		GN_DEFINES+=" use_system_$i=true "
 	fi
 done
-GN_DEFINES+=" use_system_expat=true "
 GN_DEFINES+=" use_system_lcms2=true "
 GN_DEFINES+=" use_system_libffi=true "
 GN_DEFINES+=" use_system_libopenjpeg2=true "
@@ -852,14 +840,6 @@ python third_party/libaddressinput/chromium/tools/update-strings.py
 
 %if %{with browser}
 out/Release/gn gen --script-executable=/usr/bin/python --args="${GN_DEFINES}" out/Release
-
-#if "%{_libdir}" != "/usr/lib"
-# FIXME This should really be fixed where it is created,
-# not in the generated files... (but it's hard to spot
-# where that is)
-# Actually found it: build/rust/rust_bindgen_generator.gni clang_resource_dir
-#sed -i -e 's,/usr/lib/clang,%{_libdir}/clang,g' out/Release/toolchain.ninja
-#endif
 
 %ifarch %{x86_64}
 ninja -C out/Release chrome chrome_sandbox chromedriver
