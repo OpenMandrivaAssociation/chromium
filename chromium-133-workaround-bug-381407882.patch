@@ -1,0 +1,12 @@
+diff -up chromium-133.0.6943.98/tools/v8_context_snapshot/v8_context_snapshot_generator.cc.omv~ chromium-133.0.6943.98/tools/v8_context_snapshot/v8_context_snapshot_generator.cc
+--- chromium-133.0.6943.98/tools/v8_context_snapshot/v8_context_snapshot_generator.cc.omv~	2025-02-15 05:16:19.645868388 +0100
++++ chromium-133.0.6943.98/tools/v8_context_snapshot/v8_context_snapshot_generator.cc	2025-02-15 05:16:24.315903955 +0100
+@@ -44,7 +44,7 @@ int main(int argc, char** argv) {
+   // Initialize an empty feature list for gin startup.
+   auto early_access_feature_list = std::make_unique<base::FeatureList>();
+   // This should be called after CommandLine::Init().
+-  base::FeatureList::SetInstance(std::move(early_access_feature_list));
++  //base::FeatureList::SetInstance(std::move(early_access_feature_list));
+ #ifdef V8_USE_EXTERNAL_STARTUP_DATA
+   static constexpr std::string_view kSnapshotBlobFlag("snapshot_blob");
+   if (base::CommandLine::ForCurrentProcess()->HasSwitch(kSnapshotBlobFlag)) {

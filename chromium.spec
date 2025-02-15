@@ -269,7 +269,7 @@ Patch1028:	cef-126-zlib-ng.patch
 %endif
 Patch1029:	chromium-127-minizip-ng.patch
 # https://issues.chromium.org/issues/381407882
-#Patch1030:	chromium-131-compilefix-crbug-381407882.patch
+Patch1030:	chromium-133-workaround-bug-381407882.patch
 Patch1031:	chromium-133-pipewire-compile.patch
 
 # ============================================================================
