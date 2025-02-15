@@ -83,6 +83,8 @@
 %define google_default_client_id 1089316189405-m0ropn3qa4p1phesfvi2urs7qps1d79o.apps.googleusercontent.com
 %define google_default_client_secret RDdr-pHq2gStY4uw0m-zxXeo
 
+%global __requires_exclude libffmpeg.so\\(\\)\\(64bit\\)
+
 %if "%{channel}" == "stable"
 Name:		chromium
 %else
@@ -92,7 +94,7 @@ Name:		chromium-browser-%{channel}
 # https://chromiumdash.appspot.com/releases?platform=Linux
 Version:	133.0.6943.98
 ### Don't be evil!!! ###
-%define ungoogled 133.0.6943.53-1
+%define ungoogled 133.0.6943.98-1
 %if %{with cef}
 # To find the CEF commit matching the Chromium version, look up the
 # right branch at
@@ -107,7 +109,7 @@ Version:	133.0.6943.98
 # system libxml with TLS disabled.
 %define cef 9a14dc9ff79d192b3ab810ad3736f235cd7c609a
 %endif
-Release:	2
+Release:	1
 Summary:	A fast webkit-based web browser
 Group:		Networking/WWW
 License:	BSD, LGPL
@@ -888,6 +890,8 @@ install -m 755 out/Release/libEGL.so %{buildroot}%{_libdir}/%{name}/
 # until we drop the custom libEGL/libGLESv2
 cp -a out/Release/angledata %{buildroot}%{_libdir}/%{name}/
 cp out/Release/vk_swiftshader_icd.json %{buildroot}%{_libdir}/%{name}/
+# FIXME why can't we just use system ffmpeg?
+install -m 755 out/Release/libffmpeg.so %{buildroot}%{_libdir}/%{name}/
 # FIXME is the custom vulkan needed, or is this just dupes from system vulkan
 # for prehistoric distros?
 install -m 755 out/Release/libvulkan.so.1 %{buildroot}%{_libdir}/%{name}/
