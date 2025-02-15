@@ -5,6 +5,11 @@
 %define namesuffix -%{channel}
 %endif
 
+%ifarch x86_64
+# Workaround for the _Float32 confusion when using -Os
+%global optflags %{optflags} -O3
+%endif
+
 %define _disable_ld_no_undefined 1
 # Chromium buildmess uses its own LTO
 %global _disable_lto 1
