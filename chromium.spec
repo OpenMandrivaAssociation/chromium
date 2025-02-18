@@ -7,7 +7,7 @@
 
 %ifarch x86_64
 # Workaround for the _Float32 confusion when using -Os
-%global optflags %{optflags} -O3
+%global optflags %{optflags} -O2
 %endif
 
 %define _disable_ld_no_undefined 1
