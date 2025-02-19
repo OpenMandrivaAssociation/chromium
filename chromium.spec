@@ -97,7 +97,7 @@ Name:		chromium-browser-%{channel}
 %endif
 # Working version numbers can be found at
 # https://chromiumdash.appspot.com/releases?platform=Linux
-Version:	133.0.6943.98
+Version:	133.0.6943.126
 ### Don't be evil!!! ###
 %define ungoogled 133.0.6943.98-1
 %if %{with cef}
@@ -779,11 +779,15 @@ GN_DEFINES+=" google_api_key=\"%{google_api_key}\""
 GN_DEFINES+=" google_default_client_id=\"%{google_default_client_id}\""
 GN_DEFINES+=" google_default_client_secret=\"%{google_default_client_secret}\""
 %endif
+%ifarch x86_64
+GN_DEFINES+=" thin_lto_enable_optimizations=false use_lld=true use_thin_lto=false"
+%else
 GN_DEFINES+=" thin_lto_enable_optimizations=true use_lld=true use_thin_lto=true"
+%endif
 GN_DEFINES+=" custom_toolchain=\"//build/toolchain/linux/unbundle:default\""
 GN_DEFINES+=" host_toolchain=\"//build/toolchain/linux/unbundle:default\""
 GN_DEFINES+=" v8_snapshot_toolchain=\"//build/toolchain/linux/unbundle:default\""
-GN_DEFINES+=" symbol_level=1"
+GN_DEFINES+=" symbol_level=0"
 
 GN_DEFINES+=" use_pulseaudio=true link_pulseaudio=true"
 GN_DEFINES+=" enable_nacl=false"
