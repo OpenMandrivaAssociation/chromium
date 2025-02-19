@@ -780,9 +780,9 @@ GN_DEFINES+=" google_default_client_id=\"%{google_default_client_id}\""
 GN_DEFINES+=" google_default_client_secret=\"%{google_default_client_secret}\""
 %endif
 %ifarch x86_64
-GN_DEFINES+=" thin_lto_enable_optimizations=false use_lld=true use_thin_lto=false"
+GN_DEFINES+=" thin_lto_enable_optimizations=false use_lld=true use_thin_lto=false is_cfi=false "
 %else
-GN_DEFINES+=" thin_lto_enable_optimizations=true use_lld=true use_thin_lto=true"
+GN_DEFINES+=" thin_lto_enable_optimizations=true use_lld=true use_thin_lto=true "
 %endif
 GN_DEFINES+=" custom_toolchain=\"//build/toolchain/linux/unbundle:default\""
 GN_DEFINES+=" host_toolchain=\"//build/toolchain/linux/unbundle:default\""
