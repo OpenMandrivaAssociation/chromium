@@ -1,0 +1,50 @@
+From 64b1fb7dd0f6e430f247907c51feafb97492b3d5 Mon Sep 17 00:00:00 2001
+From: Blaise <BlaiseD@GMail.com>
+Date: Tue, 25 Feb 2025 13:13:20 -0600
+Subject: [PATCH] Update to Chromium 133.0.6943.141
+
+---
+ chromium_version.txt                               |  2 +-
+ .../0001-fix-building-without-safebrowsing.patch   | 14 +++++++-------
+ .../ungoogled-chromium/remove-pac-size-limit.patch |  2 +-
+ 3 files changed, 9 insertions(+), 9 deletions(-)
+
+diff --git a/chromium_version.txt b/chromium_version.txt
+index 3af701304f..119f297b97 100644
+--- a/chromium_version.txt
++++ b/chromium_version.txt
+@@ -1 +1 @@
+-133.0.6943.126
++133.0.6943.141
+diff --git a/patches/core/inox-patchset/0001-fix-building-without-safebrowsing.patch b/patches/core/inox-patchset/0001-fix-building-without-safebrowsing.patch
+index b3dcdcdcc8..d69a20111c 100644
+--- a/patches/core/inox-patchset/0001-fix-building-without-safebrowsing.patch
++++ b/patches/core/inox-patchset/0001-fix-building-without-safebrowsing.patch
+@@ -326,6 +326,13 @@
+      PriorVisitsToReferrer visits) const {
+    DCHECK_CURRENTLY_ON(BrowserThread::UI);
+  
++-  // User-initiated extension downloads from pref-whitelisted sources are not
++-  // considered dangerous.
++-  if (download_->HasUserGesture() &&
++-      download_crx_util::IsTrustedExtensionDownload(GetProfile(), *download_)) {
++-    return DownloadFileType::NOT_DANGEROUS;
++-  }
++-
+ -  DownloadFileType::DangerLevel danger_level =
+ -      safe_browsing::FileTypePolicies::GetInstance()->GetFileDangerLevel(
+ -          virtual_path_.BaseName(), download_->GetURL(),
+@@ -357,13 +364,6 @@
+ -    return DownloadFileType::NOT_DANGEROUS;
+ -  }
+ -
+--  // User-initiated extension downloads from pref-whitelisted sources are not
+--  // considered dangerous.
+--  if (download_->HasUserGesture() &&
+--      download_crx_util::IsTrustedExtensionDownload(GetProfile(), *download_)) {
+--    return DownloadFileType::NOT_DANGEROUS;
+--  }
+--
+ -  // Anything the user has marked auto-open is OK if it's user-initiated.
+ -  if (download_prefs_->IsAutoOpenEnabled(download_->GetURL(), virtual_path_) &&
+ -      download_->HasUserGesture())

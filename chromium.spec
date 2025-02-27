@@ -97,9 +97,9 @@ Name:		chromium-browser-%{channel}
 %endif
 # Working version numbers can be found at
 # https://chromiumdash.appspot.com/releases?platform=Linux
-Version:	133.0.6943.126
+Version:	133.0.6943.141
 ### Don't be evil!!! ###
-%define ungoogled 133.0.6943.98-1
+%define ungoogled 133.0.6943.126-1
 %if %{with cef}
 # To find the CEF commit matching the Chromium version, look up the
 # right branch at
@@ -293,6 +293,7 @@ Patch1031:	chromium-133-pipewire-compile.patch
 # Patches 4000+ are applied inside the ungoogled-chromium tree before
 # the ungoogling scripts are run
 # ============================================================================
+Patch4000:	https://github.com/ungoogled-software/ungoogled-chromium/pull/3216.patch
 
 Provides:	%{crname}
 Obsoletes:	chromium-browser-unstable < %{EVRD}
@@ -780,6 +781,7 @@ GN_DEFINES+=" google_default_client_id=\"%{google_default_client_id}\""
 GN_DEFINES+=" google_default_client_secret=\"%{google_default_client_secret}\""
 %endif
 %ifarch x86_64
+# Workaround for OOMs
 GN_DEFINES+=" thin_lto_enable_optimizations=false use_lld=true use_thin_lto=false is_cfi=false "
 %else
 GN_DEFINES+=" thin_lto_enable_optimizations=true use_lld=true use_thin_lto=true "
