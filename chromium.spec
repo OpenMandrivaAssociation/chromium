@@ -7,7 +7,7 @@
 
 %ifarch x86_64
 # Workaround for the _Float32 confusion when using -Os
-%global optflags %{optflags} -O2
+%global optflags -fomit-frame-pointer -g3 -gdwarf-4 -Wstrict-aliasing=2 -pipe -Wformat -Werror=format-security -O3 -m64 -mmmx -msse -mfpmath=sse
 %endif
 
 %define _disable_ld_no_undefined 1
@@ -72,10 +72,11 @@
 # libaom (as of 118.x): Build error caused by GN insisting on in-tree version
 # libwebp (as of 124.x): //third_party/libavif:libavif_enc(//build/toolchain/linux/unbundle:default) needs //third_party/libwebp:libwebp_sharpyuv(//build/toolchain/linux/unbundle:default)
 # re2 (as of 124.x): //third_party/googletest:gtest_config(//build/toolchain/linux/unbundle:default) needs //third_party/re2:re2_config(//build/toolchain/linux/unbundle:default) (+ libc++/libstdc++ issue)
+# zlib: Breaks extracting extensions
 %if %{with libcxx}
-%global system_libs fontconfig harfbuzz-ng libjpeg libjxl libpng libdrm libxml libxslt opus libusb openh264 zlib freetype zstd libwebp
+%global system_libs fontconfig harfbuzz-ng libjpeg libjxl libpng libdrm libxml libxslt opus libusb openh264 freetype zstd libwebp
 %else
-%global system_libs fontconfig harfbuzz-ng libjpeg libjxl libpng libdrm libxml libxslt opus libusb openh264 zlib freetype zstd libwebp jsoncpp snappy
+%global system_libs fontconfig harfbuzz-ng libjpeg libjxl libpng libdrm libxml libxslt opus libusb openh264 freetype zstd libwebp jsoncpp snappy
 # System absl is not quite working yet
 # absl_algorithm absl_base absl_cleanup absl_container absl_crc absl_debugging absl_flags absl_functional absl_hash absl_log absl_log_internal absl_memory absl_meta absl_numeric absl_random absl_status absl_strings absl_synchronization absl_time absl_types absl_utility
 %endif
@@ -114,7 +115,7 @@ Version:	133.0.6943.141
 # system libxml with TLS disabled.
 %define cef 9a14dc9ff79d192b3ab810ad3736f235cd7c609a
 %endif
-Release:	1
+Release:	2
 Summary:	A fast webkit-based web browser
 Group:		Networking/WWW
 License:	BSD, LGPL
@@ -154,8 +155,10 @@ Patch1:		https://src.fedoraproject.org/rpms/chromium/raw/rawhide/f/chromium-68.0
 Patch2:		https://src.fedoraproject.org/rpms/chromium/raw/rawhide/f/chromium-67.0.3396.62-gn-system.patch
 Patch3:		https://src.fedoraproject.org/rpms/chromium/raw/rawhide/f/chromium-103.0.5060.53-update-rjsmin-to-1.2.0.patch
 # Use gn system files
+%if %{system zlib}
 # Do not mangle zlib
 Patch4:		https://src.fedoraproject.org/rpms/chromium/raw/rawhide/f/chromium-77.0.3865.75-no-zlib-mangle.patch
+%endif
 # Needs to be submitted..
 Patch6:		https://src.fedoraproject.org/rpms/chromium/raw/rawhide/f/chromium-107-proprietary-codecs.patch
 # Disable whitelist, allow everything
@@ -249,7 +252,9 @@ Patch1009:	gn-enable-freetype-workaround.patch
 #Patch1010:	chromium-131-libstdc++.patch
 Patch1010:	chromium-132-system-toolchain.patch
 Patch1011:	perfetto-system-gn.patch
+%if %{system zlib}
 Patch1012:	chromium-105-minizip-ng.patch
+%endif
 Patch1013:	chromium-132-compile.patch
 Patch1014:	chromium-126-fix-build-on-non-ChromeOS-linux.patch
 Patch1015:	chromium-113.0.5672.63-compile.patch
@@ -274,7 +279,9 @@ Patch1025:	cef-125-ungoogling.patch
 Patch1026:	cef-zlib-linkage.patch
 Patch1028:	cef-126-zlib-ng.patch
 %endif
+%if %{system zlib}
 Patch1029:	chromium-127-minizip-ng.patch
+%endif
 # https://issues.chromium.org/issues/381407882
 Patch1030:	chromium-133-workaround-bug-381407882.patch
 Patch1031:	chromium-133-pipewire-compile.patch
