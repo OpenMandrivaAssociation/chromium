@@ -1,0 +1,22 @@
+From 2f8b7ce55ff703334dc7b637fd6e26db1f69a050 Mon Sep 17 00:00:00 2001
+From: LN Liberda <lauren@selfisekai.rocks>
+Date: Fri, 21 Feb 2025 22:16:47 +0100
+Subject: [PATCH] MV2 still not dead
+
+---
+ extensions/common/extension_features.cc | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/extensions/common/extension_features.cc b/extensions/common/extension_features.cc
+index d2581bbcfea2f..c07877e906625 100644
+--- a/extensions/common/extension_features.cc
++++ b/extensions/common/extension_features.cc
+@@ -97,7 +97,7 @@ const base::FeatureParam<std::string> kExtensionManifestV2ExceptionListParam(
+ 
+ BASE_FEATURE(kAllowLegacyMV2Extensions,
+              "AllowLegacyMV2Extensions",
+-             base::FEATURE_DISABLED_BY_DEFAULT);
++             base::FEATURE_ENABLED_BY_DEFAULT);
+ 
+ BASE_FEATURE(kExtensionSourceUrlEnforcement,
+              "ExtensionSourceUrlEnforcement",

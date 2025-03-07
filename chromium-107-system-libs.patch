@@ -1,6 +1,6 @@
-diff -up chromium-114.0.5735.106/ui/ozone/platform/drm/gpu/crtc_controller.h.15~ chromium-114.0.5735.106/ui/ozone/platform/drm/gpu/crtc_controller.h
---- chromium-114.0.5735.106/ui/ozone/platform/drm/gpu/crtc_controller.h.15~	2023-06-06 01:44:40.677522230 +0200
-+++ chromium-114.0.5735.106/ui/ozone/platform/drm/gpu/crtc_controller.h	2023-06-06 01:53:42.076440417 +0200
+diff -up chromium-134.0.6998.35/ui/ozone/platform/drm/gpu/crtc_controller.h.49~ chromium-134.0.6998.35/ui/ozone/platform/drm/gpu/crtc_controller.h
+--- chromium-134.0.6998.35/ui/ozone/platform/drm/gpu/crtc_controller.h.49~	2025-02-25 20:55:16.000000000 +0100
++++ chromium-134.0.6998.35/ui/ozone/platform/drm/gpu/crtc_controller.h	2025-03-07 00:01:35.303681136 +0100
 @@ -11,7 +11,7 @@
  
  #include "base/memory/raw_ref.h"
@@ -10,12 +10,12 @@ diff -up chromium-114.0.5735.106/ui/ozone/platform/drm/gpu/crtc_controller.h.15~
  #include "third_party/perfetto/include/perfetto/tracing/traced_value_forward.h"
  #include "ui/gfx/swap_result.h"
  #include "ui/ozone/platform/drm/common/scoped_drm_types.h"
-diff -up chromium-114.0.5735.106/ui/ozone/platform/drm/gpu/hardware_display_controller.cc.15~ chromium-114.0.5735.106/ui/ozone/platform/drm/gpu/hardware_display_controller.cc
---- chromium-114.0.5735.106/ui/ozone/platform/drm/gpu/hardware_display_controller.cc.15~	2023-06-05 23:43:12.222175600 +0200
-+++ chromium-114.0.5735.106/ui/ozone/platform/drm/gpu/hardware_display_controller.cc	2023-06-06 01:44:40.677522230 +0200
+diff -up chromium-134.0.6998.35/ui/ozone/platform/drm/gpu/hardware_display_controller.cc.49~ chromium-134.0.6998.35/ui/ozone/platform/drm/gpu/hardware_display_controller.cc
+--- chromium-134.0.6998.35/ui/ozone/platform/drm/gpu/hardware_display_controller.cc.49~	2025-03-07 00:01:35.303723428 +0100
++++ chromium-134.0.6998.35/ui/ozone/platform/drm/gpu/hardware_display_controller.cc	2025-03-07 00:33:16.041610246 +0100
 @@ -18,7 +18,7 @@
+ #include "base/logging.h"
  #include "base/metrics/histogram_macros.h"
- #include "base/ranges/algorithm.h"
  #include "base/trace_event/typed_macros.h"
 -#include "third_party/libdrm/src/include/drm/drm_fourcc.h"
 +#include <drm/drm_fourcc.h>
