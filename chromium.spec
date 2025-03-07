@@ -759,7 +759,7 @@ GN_DEFINES+=" use_system_wayland_client=true "
 GN_DEFINES+=" use_system_wayland_scanner=true "
 GN_DEFINES+=" use_system_wayland_server=true "
 GN_DEFINES+=" use_xkbcommon=true "
-GN_DEFINES+=" use_gtk=true gtk_version=4 use_qt=true use_qt6=true moc_qt6_path=\"%{_qtdir}/libexec\""
+GN_DEFINES+=" use_gtk=true gtk_version=4 use_qt=true use_qt5=true use_qt6=true moc_qt6_path=\"%{_qtdir}/libexec\""
 if ! echo %{system_libs} |grep -q icu; then
 GN_DEFINES+=" icu_use_data_file=true"
 fi
