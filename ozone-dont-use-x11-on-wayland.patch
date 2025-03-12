@@ -1,0 +1,27 @@
+diff -up chromium-134.0.6998.35/chrome/browser/about_flags.cc.omv~ chromium-134.0.6998.35/chrome/browser/about_flags.cc
+diff -up chromium-134.0.6998.35/ui/base/ui_base_features.cc.omv~ chromium-134.0.6998.35/ui/base/ui_base_features.cc
+--- chromium-134.0.6998.35/ui/base/ui_base_features.cc.omv~	2025-03-09 00:35:21.153787911 +0100
++++ chromium-134.0.6998.35/ui/base/ui_base_features.cc	2025-03-09 00:35:37.852614541 +0100
+@@ -139,7 +139,7 @@ BASE_FEATURE(kWaylandUiScale,
+ COMPONENT_EXPORT(UI_BASE_FEATURES)
+ BASE_FEATURE(kOverrideDefaultOzonePlatformHintToAuto,
+              "OverrideDefaultOzonePlatformHintToAuto",
+-             base::FEATURE_DISABLED_BY_DEFAULT);
++             base::FEATURE_ENABLED_BY_DEFAULT);
+ #endif  // BUILDFLAG(IS_LINUX)
+ 
+ // Update of the virtual keyboard settings UI as described in
+diff -up chromium-134.0.6998.35/ui/linux/display_server_utils.cc.omv~ chromium-134.0.6998.35/ui/linux/display_server_utils.cc
+--- chromium-134.0.6998.35/ui/linux/display_server_utils.cc.omv~	2025-03-09 00:24:53.465750337 +0100
++++ chromium-134.0.6998.35/ui/linux/display_server_utils.cc	2025-03-09 00:38:29.413371588 +0100
+@@ -133,8 +133,8 @@ void MaybeOverrideDefaultAsAuto(base::Co
+     system_info.activeGPUIndex = 0;
+   }
+ 
+-  if (success && system_info.gpus[system_info.activeGPUIndex].vendorId !=
+-                     angle::kVendorID_NVIDIA) {
++  if (success /*&& system_info.gpus[system_info.activeGPUIndex].vendorId !=
++                     angle::kVendorID_NVIDIA*/) {
+     command_line.AppendSwitchASCII(switches::kOzonePlatformHint, "auto");
+   }
+ #endif  // BUILDFLAG(IS_OZONE_WAYLAND)

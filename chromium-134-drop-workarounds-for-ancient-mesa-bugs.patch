@@ -1,0 +1,120 @@
+diff -up chromium-134.0.6998.35/content/browser/gpu/compositor_util.cc.omv~ chromium-134.0.6998.35/content/browser/gpu/compositor_util.cc
+diff -up chromium-134.0.6998.35/gpu/config/gpu_driver_bug_list.json.omv~ chromium-134.0.6998.35/gpu/config/gpu_driver_bug_list.json
+--- chromium-134.0.6998.35/gpu/config/gpu_driver_bug_list.json.omv~	2025-03-09 00:07:29.643596095 +0100
++++ chromium-134.0.6998.35/gpu/config/gpu_driver_bug_list.json	2025-03-09 00:10:38.081567687 +0100
+@@ -654,18 +654,6 @@
+       ]
+     },
+     {
+-      "id": 128,
+-      "description": "Linux ATI drivers crash on binding incomplete cube map texture to FBO",
+-      "cr_bugs": [518889],
+-      "os": {
+-        "type": "linux"
+-      },
+-      "vendor_id": "0x1002",
+-      "features": [
+-        "force_cube_map_positive_x_allocation"
+-      ]
+-    },
+-    {
+       "id": 130,
+       "description": "NVIDIA fails glReadPixels from incomplete cube map texture",
+       "cr_bugs": [518889],
+@@ -1005,28 +993,6 @@
+       ]
+     },
+     {
+-      "id": 190,
+-      "description": "Disable partial swaps on Mesa drivers (detected with GL_VERSION)",
+-      "cr_bugs": [339493],
+-      "os": {
+-        "type": "linux"
+-      },
+-      "gl_type": "angle_gl",
+-      "gl_version_string": ".*Mesa.*",
+-      "features": [
+-        "disable_post_sub_buffers_for_onscreen_surfaces"
+-      ]
+-    },
+-    {
+-      "id": 206,
+-      "description": "Disable KHR_blend_equation_advanced until cc shaders are updated",
+-      "cr_bugs": [661715],
+-      "disabled_extensions": [
+-        "GL_KHR_blend_equation_advanced",
+-        "GL_KHR_blend_equation_advanced_coherent"
+-      ]
+-    },
+-    {
+       "id": 212,
+       "description": "Program binaries don't contain transform feedback varyings on Qualcomm GPUs",
+       "cr_bugs": [658074],
+@@ -1167,30 +1133,6 @@
+       ]
+     },
+     {
+-      "id": 222,
+-      "description": "Software to Accelerated canvas update breaks Linux AMD",
+-      "cr_bugs": [710029],
+-      "os": {
+-        "type": "linux"
+-      },
+-      "vendor_id": "0x1002",
+-      "features": [
+-        "disable_software_to_accelerated_canvas_upgrade"
+-      ]
+-    },
+-    {
+-      "id": 223,
+-      "description": "Force integer or srgb cube map texture complete on Linux AMD",
+-      "cr_bugs": [712117],
+-      "os": {
+-        "type": "linux"
+-      },
+-      "vendor_id": "0x1002",
+-      "features": [
+-        "force_int_or_srgb_cube_texture_complete"
+-      ]
+-    },
+-    {
+       "id": 224,
+       "description": "VPx decoding isn't supported well before Windows 10 creators update.",
+       "cr_bugs": [616318, 667532],
+@@ -1620,17 +1562,6 @@
+       ]
+     },
+     {
+-      "id": 283,
+-      "cr_bugs": [893177],
+-      "description": "Some drivers can't recover after OUT_OF_MEM and context lost",
+-      "os": {
+-        "type": "linux"
+-      },
+-      "features": [
+-        "exit_on_context_lost"
+-      ]
+-    },
+-    {
+       "id": 286,
+       "cr_bugs": [908069],
+       "description": "Video corruption on Intel HD 530 without hardware overlay support",
+@@ -1870,18 +1801,6 @@
+       ]
+     },
+     {
+-      "id": 315,
+-      "cr_bugs": [964010],
+-      "description": "Disable GL_MESA_framebuffer_flip_y for desktop GL",
+-      "os": {
+-        "type": "linux"
+-      },
+-      "gl_type": "angle_gl",
+-      "disabled_extensions": [
+-        "GL_MESA_framebuffer_flip_y"
+-      ]
+-    },
+-    {
+       "id": 316,
+       "cr_bugs": [1003860],
+       "description": "Limit MSAA to 4x on ChromeOS for Intel",

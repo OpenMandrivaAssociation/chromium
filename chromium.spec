@@ -98,9 +98,9 @@ Name:		chromium-browser-%{channel}
 %endif
 # Working version numbers can be found at
 # https://chromiumdash.appspot.com/releases?platform=Linux
-Version:	134.0.6998.35
+Version:	134.0.6998.88
 ### Don't be evil!!! ###
-%define ungoogled 133.0.6943.141-1
+%define ungoogled 134.0.6998.35-1
 %if %{with cef}
 # To find the CEF commit matching the Chromium version, look up the
 # right branch at
@@ -268,7 +268,6 @@ Patch1016:	chroimum-119-workaround-crash-on-startup.patch
 #Patch1017:	chromium-124-search-engine-choice.patch
 Patch1018:	chromium-81-unbundle-zlib.patch
 Patch1019:	chromium-121-rust-clang_lib.patch
-#Patch1020:	chromium-125-libstdc++.patch
 Patch1021:	chromium-127-system-bindgen.patch
 %if 0%{?cef:1}
 Patch1022:	chromium-115-fix-generate_fontconfig_caches.patch
@@ -280,6 +279,7 @@ Patch1024:	cef-126-rebase-to-ungoogled.patch
 Patch1025:	cef-125-ungoogling.patch
 %endif
 Patch1026:	cef-zlib-linkage.patch
+Patch1027:	ozone-dont-use-x11-on-wayland.patch
 Patch1028:	cef-126-zlib-ng.patch
 %endif
 %if %{system zlib}
@@ -288,6 +288,9 @@ Patch1029:	chromium-127-minizip-ng.patch
 # https://issues.chromium.org/issues/381407882
 Patch1030:	chromium-133-workaround-bug-381407882.patch
 Patch1031:	chromium-133-pipewire-compile.patch
+Patch1040:	chromium-134-drop-workarounds-for-ancient-mesa-bugs.patch
+Patch1041:	chromium-134-drop-workarounds-for-ancient-mesa-bugs-part2.patch
+Patch1042:	chromium-134-if-chromeos-can-do-it-so-can-linux.patch
 
 # ============================================================================
 # Patches 2000 to 2999 are applied inside the CEF tree.
@@ -303,7 +306,7 @@ Patch1031:	chromium-133-pipewire-compile.patch
 # Patches 4000+ are applied inside the ungoogled-chromium tree before
 # the ungoogling scripts are run
 # ============================================================================
-Patch4000:	https://github.com/ungoogled-software/ungoogled-chromium/pull/3221.patch
+Patch4000:	https://github.com/ungoogled-software/ungoogled-chromium/pull/3240.patch
 
 Provides:	%{crname}
 Obsoletes:	chromium-browser-unstable < %{EVRD}
@@ -759,6 +762,7 @@ GN_DEFINES+=" use_system_wayland_client=true "
 GN_DEFINES+=" use_system_wayland_scanner=true "
 GN_DEFINES+=" use_system_wayland_server=true "
 GN_DEFINES+=" use_xkbcommon=true "
+GN_DEFINES+=" enable_vulkan=true "
 GN_DEFINES+=" use_gtk=true gtk_version=4 use_qt=true use_qt5=true use_qt6=true moc_qt6_path=\"%{_qtdir}/libexec\""
 if ! echo %{system_libs} |grep -q icu; then
 GN_DEFINES+=" icu_use_data_file=true"
