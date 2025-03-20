@@ -98,9 +98,9 @@ Name:		chromium-browser-%{channel}
 %endif
 # Working version numbers can be found at
 # https://chromiumdash.appspot.com/releases?platform=Linux
-Version:	134.0.6998.88
+Version:	134.0.6998.117
 ### Don't be evil!!! ###
-%define ungoogled 134.0.6998.35-1
+%define ungoogled 134.0.6998.88-1
 %if %{with cef}
 # To find the CEF commit matching the Chromium version, look up the
 # right branch at
@@ -306,7 +306,8 @@ Patch1042:	chromium-134-if-chromeos-can-do-it-so-can-linux.patch
 # Patches 4000+ are applied inside the ungoogled-chromium tree before
 # the ungoogling scripts are run
 # ============================================================================
-Patch4000:	https://github.com/ungoogled-software/ungoogled-chromium/pull/3240.patch
+Patch4000:	https://github.com/ungoogled-software/ungoogled-chromium/pull/3250.patch
+Patch4001:	https://github.com/ungoogled-software/ungoogled-chromium/pull/3243.patch
 
 Provides:	%{crname}
 Obsoletes:	chromium-browser-unstable < %{EVRD}

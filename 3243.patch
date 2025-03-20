@@ -1,0 +1,81 @@
+From 428c59e9ddbd28f832c2e70341c7ba502521a77b Mon Sep 17 00:00:00 2001
+From: dot-gov <dot-gov@users.noreply.github.com>
+Date: Fri, 14 Mar 2025 22:26:22 +0000
+Subject: [PATCH 1/3] Create enable-certificate-transparency-and-add-flag.patch
+
+---
+ ...ertificate-transparency-and-add-flag.patch | 22 +++++++++++++++++++
+ 1 file changed, 22 insertions(+)
+ create mode 100644 patches/extra/ungoogled-chromium/enable-certificate-transparency-and-add-flag.patch
+
+diff --git a/patches/extra/ungoogled-chromium/enable-certificate-transparency-and-add-flag.patch b/patches/extra/ungoogled-chromium/enable-certificate-transparency-and-add-flag.patch
+new file mode 100644
+index 000000000..65bfe38f4
+--- /dev/null
++++ b/patches/extra/ungoogled-chromium/enable-certificate-transparency-and-add-flag.patch
+@@ -0,0 +1,22 @@
++--- a/chrome/browser/browser_features.cc
+++++ b/chrome/browser/browser_features.cc
++@@ -50,7 +50,7 @@ BASE_FEATURE(kBookmarkTriggerForPrerender2,
++ // switch.
++ BASE_FEATURE(kCertificateTransparencyAskBeforeEnabling,
++              "CertificateTransparencyAskBeforeEnabling",
++-#if BUILDFLAG(GOOGLE_CHROME_BRANDING)
+++#if true
++              base::FEATURE_ENABLED_BY_DEFAULT);
++ #else
++              base::FEATURE_DISABLED_BY_DEFAULT);
++--- a/chrome/browser/ungoogled_flag_entries.h
+++++ b/chrome/browser/ungoogled_flag_entries.h
++@@ -140,4 +140,8 @@
++      "Spoof WebGL Info",
++      "Return generic values for WebGLDebugRendererInfo to remove a potential data leak while preventing potential website breakage. ungoogled-chromium flag.",
++      kOsAll, FEATURE_WITH_PARAMS_VALUE_TYPE(blink::features::kSpoofWebGLInfo, kSpoofWebGLChoices, "SpoofWebGLInfo")},
+++    {"enforce-certificate-transparency",
+++     "Enforce Certificate Transparency",
+++     "Enforce Certificate Transparency for certificates that sites present. This is enabled by default. ungoogled-chromium flag.",
+++     kOsAll, FEATURE_VALUE_TYPE(features::kCertificateTransparencyAskBeforeEnabling)},
++ #endif  // CHROME_BROWSER_UNGOOGLED_FLAG_ENTRIES_H_
+
+From ddaeff5325de4a4f5e9347e919140c867bb35b4e Mon Sep 17 00:00:00 2001
+From: dot-gov <dot-gov@users.noreply.github.com>
+Date: Fri, 14 Mar 2025 22:27:12 +0000
+Subject: [PATCH 2/3] Update series
+
+---
+ patches/series | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/patches/series b/patches/series
+index b4ab9b236..dc0f4ec7a 100644
+--- a/patches/series
++++ b/patches/series
+@@ -110,3 +110,4 @@ extra/ungoogled-chromium/enable-extra-locales.patch
+ extra/ungoogled-chromium/disable-chromelabs.patch
+ extra/ungoogled-chromium/remove-pac-size-limit.patch
+ extra/ungoogled-chromium/add-flag-to-spoof-webgl-renderer-info.patch
++extra/ungoogled-chromium/enable-certificate-transparency-and-add-flag.patch
+
+From 46aa3ac725bf6496d0fab5bff7311ec7dbd71420 Mon Sep 17 00:00:00 2001
+From: dot-gov <dot-gov@users.noreply.github.com>
+Date: Fri, 14 Mar 2025 22:41:56 +0000
+Subject: [PATCH 3/3] Update enable-certificate-transparency-and-add-flag.patch
+
+fix patch
+---
+ .../enable-certificate-transparency-and-add-flag.patch          | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/patches/extra/ungoogled-chromium/enable-certificate-transparency-and-add-flag.patch b/patches/extra/ungoogled-chromium/enable-certificate-transparency-and-add-flag.patch
+index 65bfe38f4..26409ebdb 100644
+--- a/patches/extra/ungoogled-chromium/enable-certificate-transparency-and-add-flag.patch
++++ b/patches/extra/ungoogled-chromium/enable-certificate-transparency-and-add-flag.patch
+@@ -14,7 +14,7 @@
+ @@ -140,4 +140,8 @@
+       "Spoof WebGL Info",
+       "Return generic values for WebGLDebugRendererInfo to remove a potential data leak while preventing potential website breakage. ungoogled-chromium flag.",
+-      kOsAll, FEATURE_WITH_PARAMS_VALUE_TYPE(blink::features::kSpoofWebGLInfo, kSpoofWebGLChoices, "SpoofWebGLInfo")},
++      kOsAll, FEATURE_VALUE_TYPE(blink::features::kSpoofWebGLInfo)},
+ +    {"enforce-certificate-transparency",
+ +     "Enforce Certificate Transparency",
+ +     "Enforce Certificate Transparency for certificates that sites present. This is enabled by default. ungoogled-chromium flag.",
