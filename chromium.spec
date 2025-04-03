@@ -98,9 +98,9 @@ Name:		chromium-browser-%{channel}
 %endif
 # Working version numbers can be found at
 # https://chromiumdash.appspot.com/releases?platform=Linux
-Version:	134.0.6998.165
+Version:	135.0.7049.52
 ### Don't be evil!!! ###
-%define ungoogled 134.0.6998.165-1
+%define ungoogled 135.0.7049.52-1
 %if %{with cef}
 # To find the CEF commit matching the Chromium version, look up the
 # right branch at
@@ -193,13 +193,9 @@ Patch309:	https://sources.debian.org/data/main/c/chromium/134.0.6998.35-1/debian
 Patch310:	https://sources.debian.org/data/main/c/chromium/134.0.6998.35-1/debian/patches/fixes/font-gc-asan.patch
 Patch311:	https://sources.debian.org/data/main/c/chromium/134.0.6998.35-1/debian/patches/fixes/lens-optional.patch
 Patch312:	https://sources.debian.org/data/main/c/chromium/134.0.6998.35-1/debian/patches/fixes/libsync-rk3588-panthor.patch
-Patch313:	https://sources.debian.org/data/main/c/chromium/134.0.6998.35-1/debian/patches/fixes/optional.patch
 Patch314:	https://sources.debian.org/data/main/c/chromium/134.0.6998.35-1/debian/patches/fixes/headless-gn.patch
 Patch315:	https://sources.debian.org/data/main/c/chromium/134.0.6998.35-1/debian/patches/fixes/stdatomic.patch
-Patch316:	https://sources.debian.org/data/main/c/chromium/134.0.6998.35-1/debian/patches/fixes/variant.patch
-Patch317:	https://sources.debian.org/data/main/c/chromium/134.0.6998.35-1/debian/patches/fixes/swiftshader-llvm.patch
-Patch318:	https://sources.debian.org/data/main/c/chromium/134.0.6998.35-1/debian/patches/upstream/qualifications.patch
-Patch319:	https://sources.debian.org/data/main/c/chromium/134.0.6998.35-1/debian/patches/upstream/optional.patch#/upstream_optional.patch
+Patch316:	https://sources.debian.org/data/main/c/chromium/134.0.6998.117-1/debian/patches/debianization/swiftshader-use-llvm-16.patch
 # (Mostly) duplicates from ungoogled patchset
 ###		https://sources.debian.org/data/main/c/chromium/134.0.6998.35-1/debian/patches/disable/tests.patch
 Patch320:	https://sources.debian.org/data/main/c/chromium/134.0.6998.35-1/debian/patches/disable/tests-swiftshader.patch
@@ -268,6 +264,8 @@ Patch1016:	chroimum-119-workaround-crash-on-startup.patch
 #Patch1017:	chromium-124-search-engine-choice.patch
 Patch1018:	chromium-81-unbundle-zlib.patch
 Patch1019:	chromium-121-rust-clang_lib.patch
+# https://issues.chromium.org/issues/403871216
+Patch1020:	chromium-135-bug-403871216.patch
 Patch1021:	chromium-127-system-bindgen.patch
 %if 0%{?cef:1}
 Patch1022:	chromium-115-fix-generate_fontconfig_caches.patch
@@ -306,7 +304,6 @@ Patch1042:	chromium-134-if-chromeos-can-do-it-so-can-linux.patch
 # Patches 4000+ are applied inside the ungoogled-chromium tree before
 # the ungoogling scripts are run
 # ============================================================================
-Patch4000:	https://github.com/ungoogled-software/ungoogled-chromium/pull/3243.patch
 
 Provides:	%{crname}
 Obsoletes:	chromium-browser-unstable < %{EVRD}

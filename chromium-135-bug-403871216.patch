@@ -1,0 +1,16 @@
+diff -up chromium-135.0.7049.52/ui/gtk/gtk_util.cc.omv~ chromium-135.0.7049.52/ui/gtk/gtk_util.cc
+--- chromium-135.0.7049.52/ui/gtk/gtk_util.cc.omv~	2025-04-03 09:27:37.737875555 +0200
++++ chromium-135.0.7049.52/ui/gtk/gtk_util.cc	2025-04-03 09:28:21.875227765 +0200
+@@ -40,6 +40,12 @@
+ #include "ui/ozone/public/ozone_platform.h"
+ #include "ui/views/widget/desktop_aura/desktop_window_tree_host_linux.h"
+ 
++#ifndef GSK_RENDER_NODE_MAX_VALUE
++// F*** GTK
++// https://issues.chromium.org/issues/403871216
++#define GSK_RENDER_NODE_MAX_VALUE GSK_SUBSURFACE_NODE
++#endif
++
+ namespace gtk {
+ 
+ namespace {
