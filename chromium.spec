@@ -98,7 +98,7 @@ Name:		chromium-browser-%{channel}
 %endif
 # Working version numbers can be found at
 # https://chromiumdash.appspot.com/releases?platform=Linux
-Version:	135.0.7049.52
+Version:	135.0.7049.84
 ### Don't be evil!!! ###
 %define ungoogled 135.0.7049.52-1
 %if %{with cef}
@@ -289,6 +289,7 @@ Patch1031:	chromium-133-pipewire-compile.patch
 Patch1040:	chromium-134-drop-workarounds-for-ancient-mesa-bugs.patch
 Patch1041:	chromium-134-drop-workarounds-for-ancient-mesa-bugs-part2.patch
 Patch1042:	chromium-134-if-chromeos-can-do-it-so-can-linux.patch
+Patch1043:	chromium-135-gperf-3.2.patch
 
 # ============================================================================
 # Patches 2000 to 2999 are applied inside the CEF tree.
@@ -304,6 +305,7 @@ Patch1042:	chromium-134-if-chromeos-can-do-it-so-can-linux.patch
 # Patches 4000+ are applied inside the ungoogled-chromium tree before
 # the ungoogling scripts are run
 # ============================================================================
+Patch4000:	https://github.com/ungoogled-software/ungoogled-chromium/pull/3268.patch
 
 Provides:	%{crname}
 Obsoletes:	chromium-browser-unstable < %{EVRD}
