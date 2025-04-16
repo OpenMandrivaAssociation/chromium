@@ -1,0 +1,52 @@
+From d4bff63612f2e9b0ca11b2f03f9bc4d7b06fa426 Mon Sep 17 00:00:00 2001
+From: Blaise <BlaiseD@GMail.com>
+Date: Tue, 15 Apr 2025 15:47:24 -0500
+Subject: [PATCH] Update to Chromium 135.0.7049.95
+
+---
+ chromium_version.txt                                          | 2 +-
+ .../ungoogled-chromium/add-flag-to-show-avatar-button.patch   | 2 +-
+ .../add-flag-to-spoof-webgl-renderer-info.patch               | 4 ++--
+ 3 files changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/chromium_version.txt b/chromium_version.txt
+index 5e802377b..cdd9abf5c 100644
+--- a/chromium_version.txt
++++ b/chromium_version.txt
+@@ -1 +1 @@
+-135.0.7049.84
++135.0.7049.95
+diff --git a/patches/extra/ungoogled-chromium/add-flag-to-show-avatar-button.patch b/patches/extra/ungoogled-chromium/add-flag-to-show-avatar-button.patch
+index dbbe64cf7..69552531e 100644
+--- a/patches/extra/ungoogled-chromium/add-flag-to-show-avatar-button.patch
++++ b/patches/extra/ungoogled-chromium/add-flag-to-show-avatar-button.patch
+@@ -1,6 +1,6 @@
+ --- a/chrome/browser/ui/views/toolbar/toolbar_view.cc
+ +++ b/chrome/browser/ui/views/toolbar/toolbar_view.cc
+-@@ -484,6 +484,17 @@ void ToolbarView::Init() {
++@@ -489,6 +489,17 @@ void ToolbarView::Init() {
+                                 browser_->profile()->IsGuestSession() ||
+                                 browser_->profile()->IsRegularProfile();
+  #endif
+diff --git a/patches/extra/ungoogled-chromium/add-flag-to-spoof-webgl-renderer-info.patch b/patches/extra/ungoogled-chromium/add-flag-to-spoof-webgl-renderer-info.patch
+index 55ba23934..b6dc9d3f9 100644
+--- a/patches/extra/ungoogled-chromium/add-flag-to-spoof-webgl-renderer-info.patch
++++ b/patches/extra/ungoogled-chromium/add-flag-to-spoof-webgl-renderer-info.patch
+@@ -86,7 +86,7 @@
+  // Feature declarations and associated constants (feature params, et cetera)
+ --- a/third_party/blink/renderer/modules/webgl/webgl_rendering_context_base.cc
+ +++ b/third_party/blink/renderer/modules/webgl/webgl_rendering_context_base.cc
+-@@ -3860,6 +3860,8 @@ ScriptValue WebGLRenderingContextBase::g
++@@ -3861,6 +3861,8 @@ ScriptValue WebGLRenderingContextBase::g
+                pname, IdentifiabilityBenignStringToken(
+                           String(ContextGL()->GetString(GL_RENDERER))));
+          }
+@@ -95,7 +95,7 @@
+          return WebGLAny(script_state,
+                          String(ContextGL()->GetString(GL_RENDERER)));
+        }
+-@@ -3875,6 +3877,8 @@ ScriptValue WebGLRenderingContextBase::g
++@@ -3876,6 +3878,8 @@ ScriptValue WebGLRenderingContextBase::g
+                pname, IdentifiabilityBenignStringToken(
+                           String(ContextGL()->GetString(GL_VENDOR))));
+          }
