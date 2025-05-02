@@ -1,0 +1,32 @@
+diff -up chromium-136.0.7103.59/ui/ozone/platform/drm/gpu/page_flip_watchdog.cc.omv~ chromium-136.0.7103.59/ui/ozone/platform/drm/gpu/page_flip_watchdog.cc
+--- chromium-136.0.7103.59/ui/ozone/platform/drm/gpu/page_flip_watchdog.cc.omv~	2025-05-02 17:27:20.028368589 +0200
++++ chromium-136.0.7103.59/ui/ozone/platform/drm/gpu/page_flip_watchdog.cc	2025-05-02 17:31:29.989769856 +0200
+@@ -15,9 +15,13 @@
+ namespace ui {
+ 
+ PageFlipWatchdog::PageFlipWatchdog() {
++#if 0
+   plane_assignment_flake_threshold = ash::switches::IsRevenBranding()
+                                          ? kFlexPlaneAssignmentFlakeThreshold
+                                          : kPlaneAssignmentFlakeThreshold;
++#else
++  plane_assignment_flake_threshold = kPlaneAssignmentFlakeThreshold; // We aren't ChromeOS
++#endif
+ }
+ 
+ PageFlipWatchdog::~PageFlipWatchdog() = default;
+@@ -49,12 +53,14 @@ void PageFlipWatchdog::CrashOnFailedPlan
+   }
+ 
+   if (flakes >= plane_assignment_flake_threshold) {
++#if 0
+     // Experiment to find good threshold for Flex device.
+     // TODO(crbug.com/371609830): finalize this threshold
+     // upon experiment completion.
+     if (ash::switches::IsRevenBranding()) {
+       UMA_HISTOGRAM_EXACT_LINEAR("Platform.FlexPageFlipFlakes", flakes, 11);
+     }
++#endif
+     LOG(FATAL) << "Plane assignment has flaked " << flakes
+                << " times, but the threshold is "
+                << plane_assignment_flake_threshold

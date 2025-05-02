@@ -98,9 +98,9 @@ Name:		chromium-browser-%{channel}
 %endif
 # Working version numbers can be found at
 # https://chromiumdash.appspot.com/releases?platform=Linux
-Version:	135.0.7049.114
+Version:	136.0.7103.59
 ### Don't be evil!!! ###
-%define ungoogled 135.0.7049.114-1
+%define ungoogled 136.0.7103.59-1
 %if %{with cef}
 # To find the CEF commit matching the Chromium version, look up the
 # right branch at
@@ -176,56 +176,54 @@ Patch200:	https://gitweb.gentoo.org/repo/gentoo.git/plain/www-client/chromium/fi
 ### 300-399: Debian
 # https://sources.debian.org/patches/chromium/
 # Mostly fixes for libstdc++ related failures
-Patch300:	https://sources.debian.org/data/main/c/chromium/134.0.6998.35-1/debian/patches/fixes/ps-print.patch
-Patch301:	https://sources.debian.org/data/main/c/chromium/134.0.6998.35-1/debian/patches/fixes/widevine-locations.patch
+Patch300:	https://sources.debian.org/data/main/c/chromium/136.0.7103.59-2/debian/patches/fixes/ps-print.patch
+Patch301:	https://sources.debian.org/data/main/c/chromium/136.0.7103.59-2/debian/patches/fixes/widevine-locations.patch
 # Not needed for OM
-###		https://sources.debian.org/data/main/c/chromium/134.0.6998.35-1/debian/patches/fixes/rust-clanglib.patch
-Patch302:	https://sources.debian.org/data/main/c/chromium/134.0.6998.35-1/debian/patches/fixes/material-utils.patch
-Patch303:	https://sources.debian.org/data/main/c/chromium/134.0.6998.35-1/debian/patches/fixes/strlcpy.patch
+###		https://sources.debian.org/data/main/c/chromium/136.0.7103.59-2/debian/patches/fixes/rust-clanglib.patch
+Patch302:	https://sources.debian.org/data/main/c/chromium/136.0.7103.59-2/debian/patches/fixes/material-utils.patch
+Patch303:	https://sources.debian.org/data/main/c/chromium/136.0.7103.59-2/debian/patches/fixes/strlcpy.patch
 # Not needed for OM
-###		https://sources.debian.org/data/main/c/chromium/134.0.6998.35-1/debian/patches/fixes/bindgen.patch
-Patch304:	https://sources.debian.org/data/main/c/chromium/134.0.6998.35-1/debian/patches/fixes/memory-allocator-dcheck-assert-fix.patch
-Patch305:	https://sources.debian.org/data/main/c/chromium/134.0.6998.35-1/debian/patches/fixes/clang-rust-target.patch
-Patch306:	https://sources.debian.org/data/main/c/chromium/134.0.6998.35-1/debian/patches/fixes/predictor-denial-of-service.patch
-Patch307:	https://sources.debian.org/data/main/c/chromium/134.0.6998.35-1/debian/patches/fixes/fix-assert-in-vnc-sessions.patch
-Patch308:	https://sources.debian.org/data/main/c/chromium/134.0.6998.35-1/debian/patches/fixes/armhf-timespec.patch
-Patch309:	https://sources.debian.org/data/main/c/chromium/134.0.6998.35-1/debian/patches/fixes/updater-test.patch
-Patch310:	https://sources.debian.org/data/main/c/chromium/134.0.6998.35-1/debian/patches/fixes/font-gc-asan.patch
-Patch311:	https://sources.debian.org/data/main/c/chromium/134.0.6998.35-1/debian/patches/fixes/lens-optional.patch
-Patch312:	https://sources.debian.org/data/main/c/chromium/134.0.6998.35-1/debian/patches/fixes/libsync-rk3588-panthor.patch
-Patch314:	https://sources.debian.org/data/main/c/chromium/134.0.6998.35-1/debian/patches/fixes/headless-gn.patch
-Patch315:	https://sources.debian.org/data/main/c/chromium/134.0.6998.35-1/debian/patches/fixes/stdatomic.patch
-Patch316:	https://sources.debian.org/data/main/c/chromium/134.0.6998.117-1/debian/patches/debianization/swiftshader-use-llvm-16.patch
+###		https://sources.debian.org/data/main/c/chromium/136.0.7103.59-2/debian/patches/fixes/bindgen.patch
+Patch304:	https://sources.debian.org/data/main/c/chromium/136.0.7103.59-2/debian/patches/fixes/memory-allocator-dcheck-assert-fix.patch
+Patch305:	https://sources.debian.org/data/main/c/chromium/136.0.7103.59-2/debian/patches/fixes/clang-rust-target.patch
+Patch306:	https://sources.debian.org/data/main/c/chromium/136.0.7103.59-2/debian/patches/fixes/predictor-denial-of-service.patch
+Patch307:	https://sources.debian.org/data/main/c/chromium/136.0.7103.59-2/debian/patches/fixes/fix-assert-in-vnc-sessions.patch
+Patch308:	https://sources.debian.org/data/main/c/chromium/136.0.7103.59-2/debian/patches/fixes/armhf-timespec.patch
+Patch309:	https://sources.debian.org/data/main/c/chromium/136.0.7103.59-2/debian/patches/fixes/updater-test.patch
+Patch310:	https://sources.debian.org/data/main/c/chromium/136.0.7103.59-2/debian/patches/fixes/font-gc-asan.patch
+Patch312:	https://sources.debian.org/data/main/c/chromium/136.0.7103.59-2/debian/patches/fixes/libsync-rk3588-panthor.patch
+Patch314:	https://sources.debian.org/data/main/c/chromium/136.0.7103.59-2/debian/patches/fixes/headless-gn.patch
+Patch315:	https://sources.debian.org/data/main/c/chromium/136.0.7103.59-2/debian/patches/fixes/stdatomic.patch
+Patch316:	https://sources.debian.org/data/main/c/chromium/136.0.7103.59-2/debian/patches/debianization/swiftshader-use-llvm-16.patch
 # (Mostly) duplicates from ungoogled patchset
-###		https://sources.debian.org/data/main/c/chromium/134.0.6998.35-1/debian/patches/disable/tests.patch
-Patch320:	https://sources.debian.org/data/main/c/chromium/134.0.6998.35-1/debian/patches/disable/tests-swiftshader.patch
+###		https://sources.debian.org/data/main/c/chromium/136.0.7103.59-2/debian/patches/disable/tests.patch
+Patch320:	https://sources.debian.org/data/main/c/chromium/136.0.7103.59-2/debian/patches/disable/tests-swiftshader.patch
 # Already disabled by ungoogled patchset
-###		https://sources.debian.org/data/main/c/chromium/134.0.6998.35-1/debian/patches/disable/signin.patch
-Patch321:	https://sources.debian.org/data/main/c/chromium/134.0.6998.35-1/debian/patches/disable/android.patch
-Patch322:	https://sources.debian.org/data/main/c/chromium/134.0.6998.35-1/debian/patches/disable/catapult.patch
-Patch323:	https://sources.debian.org/data/main/c/chromium/134.0.6998.35-1/debian/patches/disable/font-tests.patch
+###		https://sources.debian.org/data/main/c/chromium/136.0.7103.59-2/debian/patches/disable/signin.patch
+Patch321:	https://sources.debian.org/data/main/c/chromium/136.0.7103.59-2/debian/patches/disable/android.patch
+Patch322:	https://sources.debian.org/data/main/c/chromium/136.0.7103.59-2/debian/patches/disable/catapult.patch
+Patch323:	https://sources.debian.org/data/main/c/chromium/136.0.7103.59-2/debian/patches/disable/font-tests.patch
 # Clashes with ungoogled patchset, probably not needed
-###		https://sources.debian.org/data/main/c/chromium/134.0.6998.35-1/debian/patches/disable/google-api-warning.patch
+###		https://sources.debian.org/data/main/c/chromium/136.0.7103.59-2/debian/patches/disable/google-api-warning.patch
 # Already disabled in ungoogled patchset
-###		https://sources.debian.org/data/main/c/chromium/134.0.6998.35-1/debian/patches/disable/third-party-cookies.patch
+###		https://sources.debian.org/data/main/c/chromium/136.0.7103.59-2/debian/patches/disable/third-party-cookies.patch
 # MODIFIED by OM to apply on top of ungoogled tree
-Patch324:	https://sources.debian.org/data/main/c/chromium/134.0.6998.35-1/debian/patches/disable/driver-chrome-path.patch
-Patch325:	https://sources.debian.org/data/main/c/chromium/134.0.6998.35-1/debian/patches/disable/widevine-cdm-cu.patch
-Patch326:	https://sources.debian.org/data/main/c/chromium/134.0.6998.35-1/debian/patches/disable/clang-version-check.patch
-Patch327:	https://sources.debian.org/data/main/c/chromium/134.0.6998.35-1/debian/patches/disable/screen-ai-blob.patch
-Patch328:	https://sources.debian.org/data/main/c/chromium/134.0.6998.35-1/debian/patches/system/icu-shim.patch
-Patch329:	https://sources.debian.org/data/main/c/chromium/134.0.6998.35-1/debian/patches/system/jpeg.patch
-Patch330:	https://sources.debian.org/data/main/c/chromium/134.0.6998.35-1/debian/patches/system/openjpeg.patch
-Patch331:	https://sources.debian.org/data/main/c/chromium/134.0.6998.35-1/debian/patches/system/opus.patch
-Patch332:	https://sources.debian.org/data/main/c/chromium/134.0.6998.35-1/debian/patches/system/eu-strip.patch
+Patch324:	https://sources.debian.org/data/main/c/chromium/136.0.7103.59-2/debian/patches/disable/driver-chrome-path.patch
+Patch325:	https://sources.debian.org/data/main/c/chromium/136.0.7103.59-2/debian/patches/disable/widevine-cdm-cu.patch
+Patch326:	https://sources.debian.org/data/main/c/chromium/136.0.7103.59-2/debian/patches/disable/clang-version-check.patch
+Patch327:	https://sources.debian.org/data/main/c/chromium/136.0.7103.59-2/debian/patches/disable/screen-ai-blob.patch
+Patch328:	https://sources.debian.org/data/main/c/chromium/136.0.7103.59-2/debian/patches/system/icu-shim.patch
+Patch329:	https://sources.debian.org/data/main/c/chromium/136.0.7103.59-2/debian/patches/system/jpeg.patch
+Patch330:	https://sources.debian.org/data/main/c/chromium/136.0.7103.59-2/debian/patches/system/openjpeg.patch
+Patch331:	https://sources.debian.org/data/main/c/chromium/136.0.7103.59-2/debian/patches/system/opus.patch
+Patch332:	https://sources.debian.org/data/main/c/chromium/136.0.7103.59-2/debian/patches/system/eu-strip.patch
 # Duplicate - but not sure where the other version comes from. Ungoogled?
-###		https://sources.debian.org/data/main/c/chromium/134.0.6998.35-1/debian/patches/system/rapidjson.patch
+###		https://sources.debian.org/data/main/c/chromium/136.0.7103.59-2/debian/patches/system/rapidjson.patch
 # Incompatible with OM for now, since we don't have the system package
-###		https://sources.debian.org/data/main/c/chromium/134.0.6998.35-1/debian/patches/system/rollup.patch
+###		https://sources.debian.org/data/main/c/chromium/136.0.7103.59-2/debian/patches/system/rollup.patch
 
 ### 400-999: Patches from 3rd party projects that aren't distro packages
 Patch400:	https://codeberg.org/selfisekai/copium/raw/branch/main/cr133-mv2-still-not-dead.patch
-Patch401:	https://codeberg.org/selfisekai/copium/raw/branch/main/cr134-unbundle-simdutf.patch
 Patch407:	chromium-129-system-absl.patch
 #Patch408:	chromium-129-libstdc++-buildfixes.patch
 # https://gitlab.com/Matt.Jolly/chromium-patches
@@ -285,11 +283,13 @@ Patch1029:	chromium-127-minizip-ng.patch
 %endif
 # https://issues.chromium.org/issues/381407882
 Patch1030:	chromium-133-workaround-bug-381407882.patch
-Patch1031:	chromium-133-pipewire-compile.patch
 Patch1040:	chromium-134-drop-workarounds-for-ancient-mesa-bugs.patch
 Patch1041:	chromium-134-drop-workarounds-for-ancient-mesa-bugs-part2.patch
 Patch1042:	chromium-134-if-chromeos-can-do-it-so-can-linux.patch
 Patch1043:	chromium-135-gperf-3.2.patch
+Patch1044:	chromium-136-no-unknown-clang-flag.patch
+Patch1045:	chromium-136-dont-force-ancient-nodejs.patch
+Patch1046:	chromium-136-fix-build-on-non-chromeos.patch
 
 # ============================================================================
 # Patches 2000 to 2999 are applied inside the CEF tree.
