@@ -1,0 +1,18 @@
+diff -up chromium-137.0.7151.55/build/config/compiler/BUILD.gn.omv~ chromium-137.0.7151.55/build/config/compiler/BUILD.gn
+--- chromium-137.0.7151.55/build/config/compiler/BUILD.gn.omv~	2025-05-29 17:50:53.790645818 +0200
++++ chromium-137.0.7151.55/build/config/compiler/BUILD.gn	2025-05-29 17:51:15.095473241 +0200
+@@ -626,10 +626,10 @@ config("compiler") {
+ 
+     # TODO(crbug.com/413427035): Remove once
+     # https://github.com/llvm/llvm-project/pull/136867/ is landed.
+-    if (!is_win && !llvm_android_mainline &&
+-        default_toolchain != "//build/toolchain/cros:target") {
+-      cflags += [ "-fextend-variable-liveness=none" ]
+-    }
++#    if (!is_win && !llvm_android_mainline &&
++#        default_toolchain != "//build/toolchain/cros:target") {
++#      cflags += [ "-fextend-variable-liveness=none" ]
++#    }
+   }
+ 
+   # C11/C++11 compiler flags setup.
