@@ -639,6 +639,7 @@ cmp $FILE $FILE.orig && exit 1
 # use the system nodejs
 mkdir -p third_party/node/linux/node-linux-x64/bin
 ln -s /usr/bin/node third_party/node/linux/node-linux-x64/bin/
+sed -i -e "s,^NODE_VERSION=.*,NODE_VERSION=\"v%(rpm -q --qf '%%{VERSION}' nodejs)\"," third_party/node/update_node_binaries
 
 # Chromium assumes we have rust 1.86.0+ even when it hasn't been released yet
 if [ "$(rustc --version |awk '{ print $2; }' |cut -d. -f1-2 |sed -e 's,\.,0,')" -lt 1086 ]; then
