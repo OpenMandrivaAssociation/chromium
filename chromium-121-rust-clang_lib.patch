@@ -11,7 +11,7 @@ diff -up chromium-135.0.7049.84/build/config/clang/BUILD.gn.58~ chromium-135.0.7
        if (is_win) {
          _dir = "windows"
          _prefix = ""
-@@ -197,7 +197,24 @@ template("clang_lib") {
+@@ -197,7 +197,30 @@ template("clang_lib") {
          } else {
            assert(false)  # Unhandled cpu type
          }
@@ -19,17 +19,23 @@ diff -up chromium-135.0.7049.84/build/config/clang/BUILD.gn.58~ chromium-135.0.7
 +      } else if (is_linux) {
 +        if (current_cpu == "x64") {
 +          _dir = "x86_64-pc-linux-gnu"
-+          _libprefix = "64"
++          if (_libname != "builtins") {
++            _libprefix = "64"
++          }
 +        } else if (current_cpu == "x86") {
 +          _dir = "i386-pc-linux-gnu"
 +        } else if (current_cpu == "arm") {
 +          _dir = "armv7-unknown-linux-gnueabihf"
 +        } else if (current_cpu == "arm64") {
 +          _dir = "aarch64-unknown-linux-gnu"
-+          _libprefix = "64"
++          if (_libname != "builtins") {
++            _libprefix = "64"
++          }
 +        } else if (current_cpu == "ppc64") {
 +          _dir = "powerpc64le-pc-linux-gnu"
-+          _libprefix = "64"
++          if (_libname != "builtins") {
++            _libprefix = "64"
++          }
 +        } else {
 +          assert(false)  # Unhandled cpu type
 +        }

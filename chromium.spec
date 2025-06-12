@@ -98,7 +98,7 @@ Name:		chromium-browser-%{channel}
 %endif
 # Working version numbers can be found at
 # https://chromiumdash.appspot.com/releases?platform=Linux
-Version:	137.0.7151.68
+Version:	137.0.7151.103
 ### Don't be evil!!! ###
 %define ungoogled %{version}-1
 %if %{with cef}
@@ -730,7 +730,7 @@ sed -i -e 's,lib/clang,%{_lib}/clang,g' build/rust/rust_bindgen.gni
 %endif
 
 # We use our version of clang, regardless of what upstream wants
-sed -i -E 's,(clang_version.*= *)".*,\1"19",' build/toolchain/toolchain.gni
+sed -i -E 's,(clang_version.*= *)".*,\1"20",' build/toolchain/toolchain.gni
 
 GN_DEFINES=""
 %if 0%{?ungoogled:1}
