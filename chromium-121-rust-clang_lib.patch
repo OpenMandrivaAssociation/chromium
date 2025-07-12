@@ -5,13 +5,13 @@ diff -up chromium-135.0.7049.84/build/config/clang/BUILD.gn.58~ chromium-135.0.7
        _prefix = "lib"
        _suffix = ""
        _ext = "a"
-+      _libprefix = ""
++      _libsuffix = ""
  
 -      _clang_lib_dir = "$clang_base_path/lib/clang/$clang_version/lib"
        if (is_win) {
          _dir = "windows"
          _prefix = ""
-@@ -197,7 +197,30 @@ template("clang_lib") {
+@@ -197,7 +197,24 @@ template("clang_lib") {
          } else {
            assert(false)  # Unhandled cpu type
          }
@@ -19,23 +19,17 @@ diff -up chromium-135.0.7049.84/build/config/clang/BUILD.gn.58~ chromium-135.0.7
 +      } else if (is_linux) {
 +        if (current_cpu == "x64") {
 +          _dir = "x86_64-pc-linux-gnu"
-+          if (_libname != "builtins") {
-+            _libprefix = "64"
-+          }
++          _libsuffix = "64"
 +        } else if (current_cpu == "x86") {
 +          _dir = "i386-pc-linux-gnu"
 +        } else if (current_cpu == "arm") {
 +          _dir = "armv7-unknown-linux-gnueabihf"
 +        } else if (current_cpu == "arm64") {
 +          _dir = "aarch64-unknown-linux-gnu"
-+          if (_libname != "builtins") {
-+            _libprefix = "64"
-+          }
++          _libsuffix = "64"
 +        } else if (current_cpu == "ppc64") {
 +          _dir = "powerpc64le-pc-linux-gnu"
-+          if (_libname != "builtins") {
-+            _libprefix = "64"
-+          }
++          _libsuffix = "64"
 +        } else {
 +          assert(false)  # Unhandled cpu type
 +        }
@@ -43,14 +37,11 @@ diff -up chromium-135.0.7049.84/build/config/clang/BUILD.gn.58~ chromium-135.0.7
          if (current_cpu == "x64") {
            _dir = "x86_64-unknown-linux-gnu"
          } else if (current_cpu == "x86") {
-@@ -235,6 +252,10 @@ template("clang_lib") {
+@@ -235,6 +246,7 @@ template("clang_lib") {
        } else {
          assert(false)  # Unhandled target platform
        }
-+      _clang_lib_dir = "$clang_base_path/lib${_libprefix}/clang/$clang_version/lib"
-+      if (_use_cros_sysroot_libs) {
-+        _clang_lib_dir = _cros_resource_dir
-+      }
++      _clang_lib_dir = "$clang_base_path/lib${_libsuffix}/clang/$clang_version/lib"
  
        _lib_file = "${_prefix}clang_rt.${_libname}${_suffix}.${_ext}"
        libs = [ "$_clang_lib_dir/$_dir/$_lib_file" ]
