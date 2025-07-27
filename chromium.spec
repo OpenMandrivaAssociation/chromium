@@ -98,9 +98,9 @@ Name:		chromium-browser-%{channel}
 %endif
 # Working version numbers can be found at
 # https://chromiumdash.appspot.com/releases?platform=Linux
-Version:	138.0.7204.100
+Version:	138.0.7204.168
 ### Don't be evil!!! ###
-%define ungoogled 138.0.7204.100-1
+%define ungoogled 138.0.7204.168-1
 %if %{with cef}
 # To find the CEF commit matching the Chromium version, look up the
 # right branch at
@@ -224,7 +224,6 @@ Patch337:	https://sources.debian.org/data/main/c/chromium/138.0.7204.92-1/debian
 
 ### 400-999: Patches from 3rd party projects that aren't distro packages
 Patch401:	https://codeberg.org/selfisekai/copium/raw/branch/main/cr137-no-exec_script_allowlist.patch
-Patch402:	https://codeberg.org/selfisekai/copium/raw/branch/main/cr138-musl-gtk-serinfo.patch
 Patch403:	https://codeberg.org/selfisekai/copium/raw/branch/main/cr138-node-version-check.patch
 Patch407:	chromium-129-system-absl.patch
 #Patch408:	chromium-129-libstdc++-buildfixes.patch
