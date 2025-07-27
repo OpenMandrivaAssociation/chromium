@@ -722,7 +722,7 @@ sed -i -e 's,lib/clang,%{_lib}/clang,g' build/rust/rust_bindgen.gni
 %endif
 
 # We use our version of clang, regardless of what upstream wants
-sed -i -E 's,(clang_version.*= *)".*,\1"20",' build/toolchain/toolchain.gni
+sed -i -E 's,(clang_version.*= *)".*,\1"21",' build/toolchain/toolchain.gni
 
 GN_DEFINES=""
 %if 0%{?ungoogled:1}
