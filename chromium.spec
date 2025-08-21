@@ -98,9 +98,9 @@ Name:		chromium-browser-%{channel}
 %endif
 # Working version numbers can be found at
 # https://chromiumdash.appspot.com/releases?platform=Linux
-Version:	138.0.7204.168
+Version:	139.0.7258.138
 ### Don't be evil!!! ###
-%define ungoogled 138.0.7204.168-1
+%define ungoogled 139.0.7258.127-1
 %if %{with cef}
 # To find the CEF commit matching the Chromium version, look up the
 # right branch at
@@ -174,53 +174,51 @@ Patch200:	https://gitweb.gentoo.org/repo/gentoo.git/plain/www-client/chromium/fi
 ### 300-399: Debian
 # https://sources.debian.org/patches/chromium/
 # Mostly fixes for libstdc++ related failures
-Patch300:	https://sources.debian.org/data/main/c/chromium/138.0.7204.92-1/debian/patches/fixes/ps-print.patch
-Patch301:	https://sources.debian.org/data/main/c/chromium/138.0.7204.92-1/debian/patches/fixes/widevine-locations.patch
+Patch300:	https://sources.debian.org/data/main/c/chromium/139.0.7258.66-1/debian/patches/fixes/ps-print.patch
+Patch301:	https://sources.debian.org/data/main/c/chromium/139.0.7258.66-1/debian/patches/fixes/widevine-locations.patch
 # Not needed for OM
-###		https://sources.debian.org/data/main/c/chromium/138.0.7204.92-1/debian/patches/fixes/rust-clanglib.patch
-Patch302:	https://sources.debian.org/data/main/c/chromium/138.0.7204.92-1/debian/patches/fixes/material-utils.patch
-Patch303:	https://sources.debian.org/data/main/c/chromium/138.0.7204.92-1/debian/patches/fixes/strlcpy.patch
+###		https://sources.debian.org/data/main/c/chromium/139.0.7258.66-1/debian/patches/fixes/rust-clanglib.patch
+Patch302:	https://sources.debian.org/data/main/c/chromium/139.0.7258.66-1/debian/patches/fixes/material-utils.patch
+Patch303:	https://sources.debian.org/data/main/c/chromium/139.0.7258.66-1/debian/patches/fixes/strlcpy.patch
 # Not needed for OM
-###		https://sources.debian.org/data/main/c/chromium/138.0.7204.92-1/debian/patches/fixes/bindgen.patch
-Patch304:	https://sources.debian.org/data/main/c/chromium/138.0.7204.92-1/debian/patches/fixes/memory-allocator-dcheck-assert-fix.patch
+###		https://sources.debian.org/data/main/c/chromium/139.0.7258.66-1/debian/patches/fixes/bindgen.patch
+Patch304:	https://sources.debian.org/data/main/c/chromium/139.0.7258.66-1/debian/patches/fixes/memory-allocator-dcheck-assert-fix.patch
 Patch305:	https://sources.debian.org/data/main/c/chromium/137.0.7151.55-3/debian/patches/fixes/clang-rust-target.patch
-Patch306:	https://sources.debian.org/data/main/c/chromium/138.0.7204.92-1/debian/patches/fixes/predictor-denial-of-service.patch
-Patch307:	https://sources.debian.org/data/main/c/chromium/138.0.7204.92-1/debian/patches/fixes/fix-assert-in-vnc-sessions.patch
-Patch308:	https://sources.debian.org/data/main/c/chromium/138.0.7204.92-1/debian/patches/fixes/armhf-timespec.patch
-Patch309:	https://sources.debian.org/data/main/c/chromium/138.0.7204.92-1/debian/patches/fixes/updater-test.patch
-Patch310:	https://sources.debian.org/data/main/c/chromium/138.0.7204.92-1/debian/patches/fixes/font-gc-asan.patch
-Patch312:	https://sources.debian.org/data/main/c/chromium/138.0.7204.92-1/debian/patches/fixes/libsync-rk3588-panthor.patch
-Patch314:	https://sources.debian.org/data/main/c/chromium/138.0.7204.92-1/debian/patches/fixes/headless-gn.patch
-Patch315:	https://sources.debian.org/data/main/c/chromium/138.0.7204.92-1/debian/patches/fixes/stdatomic.patch
-Patch316:	https://sources.debian.org/data/main/c/chromium/138.0.7204.92-1/debian/patches/fixes/make-pair.patch
-Patch317:	https://sources.debian.org/data/main/c/chromium/137.0.7151.55-3/debian/patches/fixes/media-cstdint.patch
-Patch324:	https://sources.debian.org/data/main/c/chromium/138.0.7204.92-1/debian/patches/debianization/swiftshader-use-llvm-16.patch
+Patch306:	https://sources.debian.org/data/main/c/chromium/139.0.7258.66-1/debian/patches/fixes/predictor-denial-of-service.patch
+Patch307:	https://sources.debian.org/data/main/c/chromium/139.0.7258.66-1/debian/patches/fixes/fix-assert-in-vnc-sessions.patch
+Patch308:	https://sources.debian.org/data/main/c/chromium/139.0.7258.66-1/debian/patches/fixes/armhf-timespec.patch
+Patch309:	https://sources.debian.org/data/main/c/chromium/139.0.7258.66-1/debian/patches/fixes/updater-test.patch
+Patch310:	https://sources.debian.org/data/main/c/chromium/139.0.7258.66-1/debian/patches/fixes/font-gc-asan.patch
+Patch312:	https://sources.debian.org/data/main/c/chromium/139.0.7258.66-1/debian/patches/fixes/libsync-rk3588-panthor.patch
+Patch314:	https://sources.debian.org/data/main/c/chromium/139.0.7258.66-1/debian/patches/fixes/headless-gn.patch
+#Patch315:	https://sources.debian.org/data/main/c/chromium/139.0.7258.66-1/debian/patches/fixes/stdatomic.patch
+Patch316:	https://sources.debian.org/data/main/c/chromium/139.0.7258.66-1/debian/patches/fixes/make-pair.patch
+Patch324:	https://sources.debian.org/data/main/c/chromium/139.0.7258.66-1/debian/patches/debianization/swiftshader-use-llvm-16.patch
 # (Mostly) duplicates from ungoogled patchset
-###		https://sources.debian.org/data/main/c/chromium/138.0.7204.92-1/debian/patches/disable/tests.patch
-Patch325:	https://sources.debian.org/data/main/c/chromium/138.0.7204.92-1/debian/patches/disable/tests-swiftshader.patch
+###		https://sources.debian.org/data/main/c/chromium/139.0.7258.66-1/debian/patches/disable/tests.patch
+Patch325:	https://sources.debian.org/data/main/c/chromium/139.0.7258.66-1/debian/patches/disable/tests-swiftshader.patch
 # Already disabled by ungoogled patchset
-###		https://sources.debian.org/data/main/c/chromium/138.0.7204.92-1/debian/patches/disable/signin.patch
-Patch326:	https://sources.debian.org/data/main/c/chromium/138.0.7204.92-1/debian/patches/disable/android.patch
-Patch327:	https://sources.debian.org/data/main/c/chromium/138.0.7204.92-1/debian/patches/disable/catapult.patch
-Patch328:	https://sources.debian.org/data/main/c/chromium/138.0.7204.92-1/debian/patches/disable/font-tests.patch
+###		https://sources.debian.org/data/main/c/chromium/139.0.7258.66-1/debian/patches/disable/signin.patch
+Patch326:	https://sources.debian.org/data/main/c/chromium/139.0.7258.66-1/debian/patches/disable/android.patch
+Patch327:	https://sources.debian.org/data/main/c/chromium/139.0.7258.66-1/debian/patches/disable/catapult.patch
+Patch328:	https://sources.debian.org/data/main/c/chromium/139.0.7258.66-1/debian/patches/disable/font-tests.patch
 # Clashes with ungoogled patchset, probably not needed
-###		https://sources.debian.org/data/main/c/chromium/138.0.7204.92-1/debian/patches/disable/google-api-warning.patch
+###		https://sources.debian.org/data/main/c/chromium/139.0.7258.66-1/debian/patches/disable/google-api-warning.patch
 # Already disabled in ungoogled patchset
-###		https://sources.debian.org/data/main/c/chromium/138.0.7204.92-1/debian/patches/disable/third-party-cookies.patch
+###		https://sources.debian.org/data/main/c/chromium/139.0.7258.66-1/debian/patches/disable/third-party-cookies.patch
 # MODIFIED by OM to apply on top of ungoogled tree
-Patch329:	https://sources.debian.org/data/main/c/chromium/138.0.7204.92-1/debian/patches/disable/driver-chrome-path.patch
-Patch330:	https://sources.debian.org/data/main/c/chromium/138.0.7204.92-1/debian/patches/disable/widevine-cdm-cu.patch
-Patch331:	https://sources.debian.org/data/main/c/chromium/138.0.7204.92-1/debian/patches/disable/clang-version-check.patch
-Patch332:	https://sources.debian.org/data/main/c/chromium/138.0.7204.92-1/debian/patches/disable/screen-ai-blob.patch
-Patch333:	https://sources.debian.org/data/main/c/chromium/138.0.7204.92-1/debian/patches/system/icu-shim.patch
-Patch334:	https://sources.debian.org/data/main/c/chromium/138.0.7204.92-1/debian/patches/system/jpeg.patch
-Patch335:	https://sources.debian.org/data/main/c/chromium/138.0.7204.92-1/debian/patches/system/openjpeg.patch
-Patch336:	https://sources.debian.org/data/main/c/chromium/138.0.7204.92-1/debian/patches/system/opus.patch
-Patch337:	https://sources.debian.org/data/main/c/chromium/138.0.7204.92-1/debian/patches/system/eu-strip.patch
+Patch329:	https://sources.debian.org/data/main/c/chromium/139.0.7258.66-1/debian/patches/disable/driver-chrome-path.patch
+Patch330:	https://sources.debian.org/data/main/c/chromium/139.0.7258.66-1/debian/patches/disable/widevine-cdm-cu.patch
+Patch331:	https://sources.debian.org/data/main/c/chromium/139.0.7258.66-1/debian/patches/disable/clang-version-check.patch
+Patch332:	https://sources.debian.org/data/main/c/chromium/139.0.7258.66-1/debian/patches/disable/screen-ai-blob.patch
+Patch333:	https://sources.debian.org/data/main/c/chromium/139.0.7258.66-1/debian/patches/system/icu-shim.patch
+Patch334:	https://sources.debian.org/data/main/c/chromium/139.0.7258.66-1/debian/patches/system/jpeg.patch
+Patch335:	https://sources.debian.org/data/main/c/chromium/139.0.7258.66-1/debian/patches/system/openjpeg.patch
+Patch336:	https://sources.debian.org/data/main/c/chromium/139.0.7258.66-1/debian/patches/system/opus.patch
 # Duplicate - but not sure where the other version comes from. Ungoogled?
-###		https://sources.debian.org/data/main/c/chromium/138.0.7204.92-1/debian/patches/system/rapidjson.patch
+###		https://sources.debian.org/data/main/c/chromium/139.0.7258.66-1/debian/patches/system/rapidjson.patch
 # Incompatible with OM for now, since we don't have the system package
-###		https://sources.debian.org/data/main/c/chromium/138.0.7204.92-1/debian/patches/system/rollup.patch
+###		https://sources.debian.org/data/main/c/chromium/139.0.7258.66-1/debian/patches/system/rollup.patch
 
 ### 400-999: Patches from 3rd party projects that aren't distro packages
 Patch401:	https://codeberg.org/selfisekai/copium/raw/branch/main/cr137-no-exec_script_allowlist.patch
@@ -287,6 +285,7 @@ Patch1030:	chromium-133-workaround-bug-381407882.patch
 Patch1040:	chromium-134-drop-workarounds-for-ancient-mesa-bugs.patch
 Patch1041:	chromium-134-drop-workarounds-for-ancient-mesa-bugs-part2.patch
 Patch1042:	chromium-134-if-chromeos-can-do-it-so-can-linux.patch
+Patch1043:	chromium-139-workaround-clang-21.patch
 #Patch1044:	chromium-136-no-unknown-clang-flag.patch
 Patch1046:	chromium-136-fix-build-on-non-chromeos.patch
 
@@ -341,11 +340,6 @@ BuildRequires:	pkgconfig(libva-drm)
 BuildRequires:	pkgconfig(libva-glx)
 BuildRequires:	pkgconfig(libva-x11)
 BuildRequires:	pkgconfig(dri)
-BuildRequires:	pkgconfig(Qt5Core)
-BuildRequires:	pkgconfig(Qt5DBus)
-BuildRequires:	pkgconfig(Qt5Gui)
-BuildRequires:	pkgconfig(Qt5Widgets)
-BuildRequires:	pkgconfig(Qt5OpenGL)
 BuildRequires:	pkgconfig(Qt6Core)
 BuildRequires:	pkgconfig(Qt6DBus)
 BuildRequires:	pkgconfig(Qt6Gui)
@@ -479,38 +473,23 @@ browser which is updated with features and fixes once they have been
 thoroughly tested. If you want the latest features, install the
 chromium-browser-dev package instead.
 
-%package qt5
-Summary: Qt 5.x integration for Chromium
-Group: System/Libraries
-Requires: %{name} = %{EVRD}
-Obsoletes: chromium-browser-stable-qt5
-
-%description qt5
-Qt 5.x integration for Chromium
-
 %package qt6
 Summary: Qt 6.x integration for Chromium
 Group: System/Libraries
 Requires: %{name} = %{EVRD}
 Supplements: %{name} = %{EVRD}
 Obsoletes: chromium-browser-stable-qt6
+Obsoletes: %{name}-qt5 < %{EVRD}
 
 %description qt6
 Qt 6.x integration for Chromium
-
-%package -n cef-qt5
-Summary: Qt 5.x integration for CEF
-Group: System/Libraries
-Requires: cef = %{EVRD}
-
-%description -n cef-qt5
-Qt 5.x integration for CEF
 
 %package -n cef-qt6
 Summary: Qt 6.x integration for CEF
 Group: System/Libraries
 Requires: cef = %{EVRD}
 Supplements: cef = %{EVRD}
+Obsoletes: cef-qt5 < %{EVRD}
 
 %description -n cef-qt6
 Qt 6.x integration for CEF
@@ -762,7 +741,7 @@ GN_DEFINES+=" use_system_wayland_scanner=true "
 GN_DEFINES+=" use_system_wayland_server=true "
 GN_DEFINES+=" use_xkbcommon=true "
 GN_DEFINES+=" enable_vulkan=true "
-GN_DEFINES+=" use_gtk=true gtk_version=4 use_qt=true use_qt5=true use_qt6=true moc_qt6_path=\"%{_qtdir}/libexec\""
+GN_DEFINES+=" use_gtk=true gtk_version=4 use_qt=true use_qt5=false use_qt6=true moc_qt6_path=\"%{_qtdir}/libexec\""
 if ! echo %{system_libs} |grep -q icu; then
 GN_DEFINES+=" icu_use_data_file=true"
 fi
@@ -904,7 +883,6 @@ install -m 4755 out/Release/chrome_sandbox %{buildroot}%{_libdir}/%{name}/chrome
 install -m 644 out/Release/locales/*.pak %{buildroot}%{_libdir}/%{name}/locales/
 install -m 644 out/Release/chrome_100_percent.pak %{buildroot}%{_libdir}/%{name}/
 install -m 644 out/Release/resources.pak %{buildroot}%{_libdir}/%{name}/
-install -m 755 out/Release/libqt5_shim.so %{buildroot}%{_libdir}/%{name}/
 install -m 755 out/Release/libqt6_shim.so %{buildroot}%{_libdir}/%{name}/
 # libGLESv2.so/libEGL.so look like dupes from the system, but aren't:
 # Loading happens in ui/ozone/common/egl_util.cc -- indicating libGLESv2.so
@@ -970,7 +948,7 @@ cp %{S:4} %{buildroot}%{_datadir}/drirc.d/10-%{name}.conf
 cd out/Release-CEF
 mkdir -p %{buildroot}%{_libdir}/cef/Release \
 	%{buildroot}%{_libdir}/cef/Resources
-cp -a chrome_sandbox libcef.so libEGL.so libGLESv2.so libvk_swiftshader.so libvulkan.so.1 snapshot_blob.bin v8_context_snapshot.bin vk_swiftshader_icd.json libqt5_shim.so libqt6_shim.so %{buildroot}%{_libdir}/cef/Release
+cp -a chrome_sandbox libcef.so libEGL.so libGLESv2.so libvk_swiftshader.so libvulkan.so.1 snapshot_blob.bin v8_context_snapshot.bin vk_swiftshader_icd.json libqt6_shim.so %{buildroot}%{_libdir}/cef/Release
 # The build process generates chrome_sandbox, but cef binary builds ship chrome-sandbox
 # It's the same thing, so let's provide both names to be on the safe side
 ln -s chrome_sandbox %{buildroot}%{_libdir}/cef/Release/chrome-sandbox
@@ -998,12 +976,8 @@ cp -a cef/libcef_dll cef/tests %{buildroot}%{_libdir}/cef
 %files -n cef
 %dir %{_libdir}/cef
 %{_libdir}/cef/Release
-%exclude %{_libdir}/cef/Release/libqt5_shim.so
 %exclude %{_libdir}/cef/Release/libqt6_shim.so
 %{_libdir}/cef/Resources
-
-%files -n cef-qt5
-%{_libdir}/cef/Release/libqt5_shim.so
 
 %files -n cef-qt6
 %{_libdir}/cef/Release/libqt6_shim.so
@@ -1023,7 +997,6 @@ cp -a cef/libcef_dll cef/tests %{buildroot}%{_libdir}/cef
 %{_bindir}/%{name}
 %{_libdir}/%{name}/*.bin
 %{_libdir}/%{name}/*.so*
-%exclude %{_libdir}/%{name}/libqt5_shim.so
 %exclude %{_libdir}/%{name}/libqt6_shim.so
 %{_libdir}/%{name}/*.json
 %{_libdir}/%{name}/angledata
@@ -1039,9 +1012,6 @@ cp -a cef/libcef_dll cef/tests %{buildroot}%{_libdir}/cef
 %{_libdir}/%{name}/default_apps
 %{_datadir}/applications/*.desktop
 %{_datadir}/icons/hicolor/*/apps/%{name}.png
-
-%files qt5
-%{_libdir}/%{name}/libqt5_shim.so
 
 %files qt6
 %{_libdir}/%{name}/libqt6_shim.so

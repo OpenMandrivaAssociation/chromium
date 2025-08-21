@@ -1,0 +1,64 @@
+diff -up chromium-139.0.7258.127/ui/ozone/platform/drm/gpu/drm_overlay_manager.cc.omv~ chromium-139.0.7258.127/ui/ozone/platform/drm/gpu/drm_overlay_manager.cc
+--- chromium-139.0.7258.127/ui/ozone/platform/drm/gpu/drm_overlay_manager.cc.omv~	2025-08-18 13:16:21.641618606 +0200
++++ chromium-139.0.7258.127/ui/ozone/platform/drm/gpu/drm_overlay_manager.cc	2025-08-18 13:17:31.365787895 +0200
+@@ -269,9 +269,9 @@ void DrmOverlayManager::OnSwapBuffersCom
+   const bool allow_skip_fullscreen_overlay_drm_test_prev =
+       allow_skip_fullscreen_overlay_drm_test_;
+   if (swap_result == gfx::SwapResult::SWAP_NON_SIMPLE_OVERLAYS_FAILED) {
+-    LOG_IF(FATAL, !handle_overlays_swap_failure_)
++    /*LOG_IF(FATAL, !handle_overlays_swap_failure_)
+         << "Handling non-simple overlays' swap failure requires the "
+-           "kHandleOverlaysSwapFailure feature to be enabled.";
++           "kHandleOverlaysSwapFailure feature to be enabled.";*/
+ 
+     if (is_fullscreen_overlay) {
+       if (allow_skip_fullscreen_overlay_drm_test_) {
+@@ -317,15 +317,15 @@ bool DrmOverlayManager::CanHandleCandida
+     const OverlaySurfaceCandidate& candidate,
+     gfx::AcceleratedWidget widget) const {
+   if (candidate.buffer_size.IsEmpty()) {
+-    VLOG(3) << "Overlay Rejected: buffer_size="
+-            << candidate.buffer_size.ToString();
++    /*VLOG(3) << "Overlay Rejected: buffer_size="
++            << candidate.buffer_size.ToString();*/
+     return false;
+   }
+ 
+   if (!std::holds_alternative<gfx::OverlayTransform>(candidate.transform) ||
+       std::get<gfx::OverlayTransform>(candidate.transform) ==
+           gfx::OVERLAY_TRANSFORM_INVALID) {
+-    VLOG(3) << "Overlay Rejected: invalid transform";
++    /*VLOG(3) << "Overlay Rejected: invalid transform";*/
+     return false;
+   }
+ 
+@@ -336,8 +336,8 @@ bool DrmOverlayManager::CanHandleCandida
+ 
+   // Reject candidates that don't fall on a pixel boundary.
+   if (!gfx::IsNearestRectWithinDistance(candidate.display_rect, 0.01f)) {
+-    VLOG(3) << "Overlay Rejected: display_rect="
+-            << candidate.display_rect.ToString();
++    /*VLOG(3) << "Overlay Rejected: display_rect="
++            << candidate.display_rect.ToString();*/
+     return false;
+   }
+ 
+@@ -348,15 +348,15 @@ bool DrmOverlayManager::CanHandleCandida
+   gfx::RectF crop(candidate.crop_rect);
+   crop.Scale(candidate.buffer_size.width(), candidate.buffer_size.height());
+   if (!gfx::IsNearestRectWithinDistance(crop, 0.01f)) {
+-    VLOG(3) << "Overlay Rejected: crop=" << crop.ToString();
++    /*VLOG(3) << "Overlay Rejected: crop=" << crop.ToString();*/
+     return false;
+   }
+ 
+   if (candidate.plane_z_order >= 0 && candidate.clip_rect &&
+       !candidate.clip_rect->Contains(
+           gfx::ToNearestRect(candidate.display_rect))) {
+-    VLOG(3) << "Overlay Rejected: clip_rect=" << candidate.clip_rect->ToString()
+-            << ", display_rect=" << candidate.display_rect.ToString();
++    /*VLOG(3) << "Overlay Rejected: clip_rect=" << candidate.clip_rect->ToString()
++            << ", display_rect=" << candidate.display_rect.ToString();*/
+     return false;
+   }
+ 

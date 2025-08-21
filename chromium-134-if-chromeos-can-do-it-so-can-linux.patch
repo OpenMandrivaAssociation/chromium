@@ -1,7 +1,7 @@
-diff -up chromium-134.0.6998.88/chrome/browser/about_flags.cc.omv~ chromium-134.0.6998.88/chrome/browser/about_flags.cc
---- chromium-134.0.6998.88/chrome/browser/about_flags.cc.omv~	2025-03-12 11:35:41.786874482 +0100
-+++ chromium-134.0.6998.88/chrome/browser/about_flags.cc	2025-03-12 11:39:18.475756266 +0100
-@@ -4451,10 +4451,10 @@ const FeatureEntry kFeatureEntries[] = {
+diff -up chromium-139.0.7258.127/chrome/browser/about_flags.cc.60~ chromium-139.0.7258.127/chrome/browser/about_flags.cc
+--- chromium-139.0.7258.127/chrome/browser/about_flags.cc.60~	2025-08-18 03:39:47.589997633 +0200
++++ chromium-139.0.7258.127/chrome/browser/about_flags.cc	2025-08-18 03:43:41.703193286 +0200
+@@ -4907,10 +4907,10 @@ const FeatureEntry kFeatureEntries[] = {
       flag_descriptions::kUiPartialSwapDescription, kOsAll,
       SINGLE_DISABLE_VALUE_TYPE(switches::kUIDisablePartialSwap)},
      {"webrtc-hw-decoding", flag_descriptions::kWebrtcHwDecodingName,
@@ -12,9 +12,9 @@ diff -up chromium-134.0.6998.88/chrome/browser/about_flags.cc.omv~ chromium-134.
 -     flag_descriptions::kWebrtcHwEncodingDescription, kOsAndroid | kOsCrOS,
 +     flag_descriptions::kWebrtcHwEncodingDescription, kOsAndroid | kOsCrOS | kOsLinux,
       FEATURE_VALUE_TYPE(features::kWebRtcHWEncoding)},
-     {"enable-webrtc-allow-input-volume-adjustment",
-      flag_descriptions::kWebRtcAllowInputVolumeAdjustmentName,
-@@ -4927,7 +4927,7 @@ const FeatureEntry kFeatureEntries[] = {
+     {"webrtc-pqc-for-dtls", flag_descriptions::kWebRtcPqcForDtlsName,
+      flag_descriptions::kWebRtcPqcForDtlsDescription, kOsAll,
+@@ -5357,7 +5357,7 @@ const FeatureEntry kFeatureEntries[] = {
          "disable-accelerated-video-encode",
          flag_descriptions::kAcceleratedVideoEncodeName,
          flag_descriptions::kAcceleratedVideoEncodeDescription,
