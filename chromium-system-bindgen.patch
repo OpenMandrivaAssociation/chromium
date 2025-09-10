@@ -1,0 +1,24 @@
+diff -up chromium-140.0.7339.80/build/config/rust.gni.omv~ chromium-140.0.7339.80/build/config/rust.gni
+--- chromium-140.0.7339.80/build/config/rust.gni.omv~	2025-09-06 21:11:42.878674481 +0200
++++ chromium-140.0.7339.80/build/config/rust.gni	2025-09-06 21:11:53.465418019 +0200
+@@ -56,7 +56,7 @@ declare_args() {
+ 
+   # Directory under which to find `bin/bindgen` (a `bin` directory containing
+   # the bindgen exectuable).
+-  rust_bindgen_root = "//third_party/rust-toolchain"
++  rust_bindgen_root = "/usr"
+ 
+   # If you're using a Rust toolchain as specified by rust_sysroot_absolute,
+   # set this to the output of `rustc -V`. Changing this string will cause all
+diff -up chromium-140.0.7339.80/build/rust/rust_bindgen_generator.gni.omv~ chromium-140.0.7339.80/build/rust/rust_bindgen_generator.gni
+--- chromium-140.0.7339.80/build/rust/rust_bindgen_generator.gni.omv~	2025-09-06 21:11:56.971212450 +0200
++++ chromium-140.0.7339.80/build/rust/rust_bindgen_generator.gni	2025-09-06 21:12:01.958790910 +0200
+@@ -22,7 +22,7 @@ _libclang_path = rust_bindgen_root
+ if (host_os == "win") {
+   _libclang_path += "/bin"
+ } else {
+-  _libclang_path += "/lib"
++  _libclang_path += "/lib64"
+ }
+ 
+ # Template to build Rust/C bindings with bindgen.

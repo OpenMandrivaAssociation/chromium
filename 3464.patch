@@ -1,0 +1,179 @@
+From 82e76623df3462894de0d76c2a3172186aae1adc Mon Sep 17 00:00:00 2001
+From: networkException <git@nwex.de>
+Date: Wed, 10 Sep 2025 01:37:35 +0200
+Subject: [PATCH 1/2] Update to Chromium 140.0.7339.127
+
+---
+ chromium_version.txt                                        | 2 +-
+ domain_substitution.list                                    | 1 +
+ .../fix-building-with-prunned-binaries.patch                | 6 +++---
+ .../fix-building-without-safebrowsing.patch                 | 2 +-
+ .../remove-unused-preferences-fields.patch                  | 2 +-
+ .../ungoogled-chromium/toggle-translation-via-switch.patch  | 2 +-
+ .../add-flag-for-omnibox-autocomplete-filtering.patch       | 2 +-
+ .../ungoogled-chromium/add-suggestions-url-field.patch      | 4 ++--
+ .../ungoogled-chromium/disable-ai-search-shortcuts.patch    | 3 ++-
+ 9 files changed, 13 insertions(+), 11 deletions(-)
+
+diff --git a/chromium_version.txt b/chromium_version.txt
+index 8cf022dce..dc1f0a927 100644
+--- a/chromium_version.txt
++++ b/chromium_version.txt
+@@ -1 +1 @@
+-140.0.7339.80
++140.0.7339.127
+diff --git a/domain_substitution.list b/domain_substitution.list
+index bb29f4a27..e83571272 100644
+--- a/domain_substitution.list
++++ b/domain_substitution.list
+@@ -850,6 +850,7 @@ chrome/browser/ash/wallpaper_handlers/google_photos_wallpaper_handlers_unittest.
+ chrome/browser/ash/wallpaper_handlers/sea_pen_fetcher.cc
+ chrome/browser/ash/wallpaper_handlers/wallpaper_handlers.cc
+ chrome/browser/autocomplete/autocomplete_browsertest.cc
++chrome/browser/autocomplete/chrome_aim_eligibility_service_browsertest.cc
+ chrome/browser/autocomplete/chrome_autocomplete_provider_client_browsertest.cc
+ chrome/browser/autocomplete/chrome_autocomplete_scheme_classifier_unittest.cc
+ chrome/browser/autocomplete/search_provider_unittest.cc
+diff --git a/patches/core/ungoogled-chromium/fix-building-with-prunned-binaries.patch b/patches/core/ungoogled-chromium/fix-building-with-prunned-binaries.patch
+index d14aabc21..57f3e7ecf 100644
+--- a/patches/core/ungoogled-chromium/fix-building-with-prunned-binaries.patch
++++ b/patches/core/ungoogled-chromium/fix-building-with-prunned-binaries.patch
+@@ -237,7 +237,7 @@
+  #if BUILDFLAG(IS_WIN)
+ --- a/chrome/browser/chrome_browser_interface_binders_webui.cc
+ +++ b/chrome/browser/chrome_browser_interface_binders_webui.cc
+-@@ -802,8 +802,6 @@ void PopulateChromeWebUIFrameBinders(
++@@ -803,8 +803,6 @@ void PopulateChromeWebUIFrameBinders(
+        ::mojom::app_service_internals::AppServiceInternalsPageHandler,
+        AppServiceInternalsUI>(map);
+  
+@@ -952,7 +952,7 @@
+        "//services/service_manager/public/cpp",
+        "//services/strings",
+        "//services/test/echo/public/mojom",
+-@@ -8441,7 +8436,6 @@ test("unit_tests") {
++@@ -8444,7 +8439,6 @@ test("unit_tests") {
+      #
+      # TODO(crbug.com/417513088): Maybe merge with the non-android `deps` declaration above?
+      deps += [
+@@ -960,7 +960,7 @@
+        "//chrome:packed_resources_integrity_header",
+        "//chrome/browser/apps:icon_standardizer",
+        "//chrome/browser/apps/app_service",
+-@@ -8474,7 +8468,6 @@ test("unit_tests") {
++@@ -8477,7 +8471,6 @@ test("unit_tests") {
+        "//chrome/browser/profile_resetter:fake_profile_resetter",
+        "//chrome/browser/resource_coordinator:tab_manager_features",
+        "//chrome/browser/resources/new_tab_page_instant:resources_grit",
+diff --git a/patches/core/ungoogled-chromium/fix-building-without-safebrowsing.patch b/patches/core/ungoogled-chromium/fix-building-without-safebrowsing.patch
+index 4b33731ff..71b498cd1 100644
+--- a/patches/core/ungoogled-chromium/fix-building-without-safebrowsing.patch
++++ b/patches/core/ungoogled-chromium/fix-building-without-safebrowsing.patch
+@@ -1830,7 +1830,7 @@
+        "//components/safe_browsing/content/browser:safe_browsing_service",
+        "//components/safe_browsing/content/browser/password_protection",
+        "//components/safe_browsing/content/browser/password_protection:test_support",
+-@@ -7112,7 +7111,6 @@ test("unit_tests") {
++@@ -7114,7 +7113,6 @@ test("unit_tests") {
+      "//components/resources",
+      "//components/safe_browsing:buildflags",
+      "//components/safe_browsing/content/browser",
+diff --git a/patches/core/ungoogled-chromium/remove-unused-preferences-fields.patch b/patches/core/ungoogled-chromium/remove-unused-preferences-fields.patch
+index 88e652548..288314e03 100644
+--- a/patches/core/ungoogled-chromium/remove-unused-preferences-fields.patch
++++ b/patches/core/ungoogled-chromium/remove-unused-preferences-fields.patch
+@@ -3934,7 +3934,7 @@
+  #include "components/signin/public/base/signin_switches.h"
+  #include "components/signin/public/identity_manager/identity_manager.h"
+  #include "components/signin/public/identity_manager/tribool.h"
+-@@ -350,8 +349,7 @@ void ManagedUserProfileNoticeUI::Initial
++@@ -351,8 +350,7 @@ void ManagedUserProfileNoticeUI::Initial
+    // Change the text so that the "(Recommended)" label is not shown when the
+    // admin has set merging data as the default option.
+    bool profile_separation_data_migration_settings_optout =
+diff --git a/patches/core/ungoogled-chromium/toggle-translation-via-switch.patch b/patches/core/ungoogled-chromium/toggle-translation-via-switch.patch
+index 4c9be4c47..fc6a2beff 100644
+--- a/patches/core/ungoogled-chromium/toggle-translation-via-switch.patch
++++ b/patches/core/ungoogled-chromium/toggle-translation-via-switch.patch
+@@ -9,7 +9,7 @@
+  #include "components/translate/core/browser/translate_download_manager.h"
+  #include "components/translate/core/browser/translate_manager.h"
+  #include "components/translate/core/browser/translate_prefs.h"
+-@@ -2179,6 +2180,7 @@ void RenderViewContextMenu::AppendPageIt
++@@ -2183,6 +2184,7 @@ void RenderViewContextMenu::AppendPageIt
+    }
+  
+    if (CanTranslate(/*menu_logging=*/true)) {
+diff --git a/patches/extra/ungoogled-chromium/add-flag-for-omnibox-autocomplete-filtering.patch b/patches/extra/ungoogled-chromium/add-flag-for-omnibox-autocomplete-filtering.patch
+index 2e1a7e62a..9503a7e27 100644
+--- a/patches/extra/ungoogled-chromium/add-flag-for-omnibox-autocomplete-filtering.patch
++++ b/patches/extra/ungoogled-chromium/add-flag-for-omnibox-autocomplete-filtering.patch
+@@ -41,7 +41,7 @@
+  #include "base/feature_list.h"
+  #include "base/format_macros.h"
+  #include "base/functional/bind.h"
+-@@ -568,6 +569,15 @@ AutocompleteController::AutocompleteCont
++@@ -570,6 +571,15 @@ AutocompleteController::AutocompleteCont
+        steady_state_omnibox_position_(
+            metrics::OmniboxEventProto::UNKNOWN_POSITION) {
+    provider_types &= ~OmniboxFieldTrial::GetDisabledProviderTypes();
+diff --git a/patches/extra/ungoogled-chromium/add-suggestions-url-field.patch b/patches/extra/ungoogled-chromium/add-suggestions-url-field.patch
+index 702e09a6b..12f3f5102 100644
+--- a/patches/extra/ungoogled-chromium/add-suggestions-url-field.patch
++++ b/patches/extra/ungoogled-chromium/add-suggestions-url-field.patch
+@@ -196,7 +196,7 @@
+    // already owned by the TemplateURLService.
+ --- a/chrome/browser/ui/search_engines/keyword_editor_controller.cc
+ +++ b/chrome/browser/ui/search_engines/keyword_editor_controller.cc
+-@@ -27,23 +27,27 @@ KeywordEditorController::KeywordEditorCo
++@@ -28,23 +28,27 @@ KeywordEditorController::KeywordEditorCo
+  
+  KeywordEditorController::~KeywordEditorController() = default;
+  
+@@ -232,7 +232,7 @@
+    DCHECK(!url.empty());
+    const std::optional<size_t> index =
+        table_model_->IndexOfTemplateURL(template_url);
+-@@ -55,11 +59,13 @@ void KeywordEditorController::ModifyTemp
++@@ -56,11 +60,13 @@ void KeywordEditorController::ModifyTemp
+  
+    // Don't do anything if the entry didn't change.
+    if ((template_url->short_name() == title) &&
+diff --git a/patches/extra/ungoogled-chromium/disable-ai-search-shortcuts.patch b/patches/extra/ungoogled-chromium/disable-ai-search-shortcuts.patch
+index adf108e08..2801302ea 100644
+--- a/patches/extra/ungoogled-chromium/disable-ai-search-shortcuts.patch
++++ b/patches/extra/ungoogled-chromium/disable-ai-search-shortcuts.patch
+@@ -30,7 +30,7 @@
+  
+ --- a/components/omnibox/browser/featured_search_provider.cc
+ +++ b/components/omnibox/browser/featured_search_provider.cc
+-@@ -290,20 +290,10 @@ void FeaturedSearchProvider::AddFeatured
++@@ -290,21 +290,10 @@ void FeaturedSearchProvider::AddFeatured
+    for (TemplateURL* turl : turls) {
+      if (turl->starter_pack_id() > 0 &&
+          turl->is_active() == TemplateURLData::ActiveStatus::kTrue) {
+@@ -47,6 +47,7 @@
+ -      // Skip @aimode if feature disabled.
+ -      if (turl->starter_pack_id() == template_url_starter_pack_data::kAiMode &&
+ -          (!omnibox_feature_configs::Toolbelt::Get().enabled ||
++-           !client_->GetAimEligibilityService() ||
+ -           !client_->GetAimEligibilityService()->IsAimEligible())) {
+ +      // Disable all Google AI starter pack options
+ +      if (turl->starter_pack_id() == template_url_starter_pack_data::kGemini ||
+
+From 3cf2a3b65c47e41ff50daacca301f4e036c25469 Mon Sep 17 00:00:00 2001
+From: networkException <git@nwex.de>
+Date: Wed, 10 Sep 2025 01:45:26 +0200
+Subject: [PATCH 2/2] Update to Chromium 140.0.7339.132
+
+---
+ chromium_version.txt | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/chromium_version.txt b/chromium_version.txt
+index dc1f0a927..8456e8167 100644
+--- a/chromium_version.txt
++++ b/chromium_version.txt
+@@ -1 +1 @@
+-140.0.7339.127
++140.0.7339.132
