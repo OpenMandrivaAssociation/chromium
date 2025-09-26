@@ -98,9 +98,9 @@ Name:		chromium-browser-%{channel}
 %endif
 # Working version numbers can be found at
 # https://chromiumdash.appspot.com/releases?platform=Linux
-Version:	140.0.7339.185
+Version:	140.0.7339.207
 ### Don't be evil!!! ###
-%define ungoogled 140.0.7339.185-1
+%define ungoogled 140.0.7339.207-1
 %if %{with cef}
 # To find the CEF commit matching the Chromium version, look up the
 # right branch at
