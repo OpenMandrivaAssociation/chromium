@@ -703,124 +703,141 @@ sed -i -e 's,lib/clang,%{_lib}/clang,g' build/rust/rust_bindgen.gni
 # We use our version of clang, regardless of what upstream wants
 sed -i -E 's,(clang_version.*= *)".*,\1"21",' build/toolchain/toolchain.gni
 
-GN_DEFINES=""
-%if 0%{?ungoogled:1}
-GN_DEFINES+=" $(cat $UGDIR/flags.gn |tr '\n' ' ')"
-%endif
-GN_DEFINES+="use_sysroot=false is_debug=false "
-GN_DEFINES+=" is_clang=true clang_base_path=\"%{_prefix}\" clang_use_chrome_plugins=false "
-GN_DEFINES+=" node_version_check=false "
-GN_DEFINES+=" treat_warnings_as_errors=false "
+cat >openmandriva.gn_args <<EOF
+use_sysroot=false
+is_debug=false
+is_clang=true
+clang_base_path="%{_prefix}"
+clang_use_chrome_plugins=false
+node_version_check=false
+treat_warnings_as_errors=false
 %if %{with libcxx}
-GN_DEFINES+=" use_custom_libcxx=true "
+use_custom_libcxx=true
 %else
-GN_DEFINES+=" use_custom_libcxx=false "
+use_custom_libcxx=false
 %endif
+EOF
 for i in %{system_libs}; do
 	if [ "$i" = "harfbuzz-ng" ]; then
-		GN_DEFINES+=" use_system_harfbuzz=true "
+		echo use_system_harfbuzz=true >>openmandriva.gn_args
 	else
-		GN_DEFINES+=" use_system_$i=true "
+		echo use_system_$i=true >>openmandriva.gn_args
 	fi
 done
-GN_DEFINES+=" use_system_lcms2=true "
-GN_DEFINES+=" use_system_libffi=true "
-GN_DEFINES+=" use_system_libopenjpeg2=true "
-# We don't currently ship libsync
-#GN_DEFINES+=" use_system_libsync=true "
-GN_DEFINES+=" use_system_libwayland=true "
-GN_DEFINES+=" use_system_libwayland_client=true "
-GN_DEFINES+=" use_system_libwayland_server=true "
-GN_DEFINES+=" use_system_lua=true "
-GN_DEFINES+=" use_system_minigbm=true "
-GN_DEFINES+=" use_system_openjpeg2=true "
-GN_DEFINES+=" use_system_protobuf=true "
-GN_DEFINES+=" use_system_wayland=true "
-GN_DEFINES+=" use_system_wayland_client=true "
-GN_DEFINES+=" use_system_wayland_scanner=true "
-GN_DEFINES+=" use_system_wayland_server=true "
-GN_DEFINES+=" use_xkbcommon=true "
-GN_DEFINES+=" enable_vulkan=true "
-GN_DEFINES+=" use_gtk=true gtk_version=4 use_qt=true use_qt5=false use_qt6=true moc_qt6_path=\"%{_qtdir}/libexec\""
 if ! echo %{system_libs} |grep -q icu; then
-GN_DEFINES+=" icu_use_data_file=true"
+	echo icu_use_data_file=true >>openmandriva.gn_args
 fi
-GN_DEFINES+=" fatal_linker_warnings=false "
-GN_DEFINES+=" system_libdir=\"%{_libdir}\""
-#GN_DEFINES+=" use_aura=true "
-#GN_DEFINES+=" use_gio=true"
-GN_DEFINES+=" enable_nacl=false "
-GN_DEFINES+=" proprietary_codecs=true "
-GN_DEFINES+=" ffmpeg_branding=\"ChromeOS\" "
-GN_DEFINES+=" enable_mse_mpeg2ts_stream_parser=true "
+cat >>openmandriva.gn_args <<EOF
+use_system_lcms2=true
+use_system_libffi=true
+use_system_libopenjpeg2=true
+# We don't currently ship libsync
+#use_system_libsync=true
+use_system_libwayland=true
+use_system_libwayland_client=true
+use_system_libwayland_server=true
+use_system_lua=true
+use_system_minigbm=true
+use_system_openjpeg2=true
+use_system_protobuf=true
+use_system_wayland=true
+use_system_wayland_client=true
+use_system_wayland_scanner=true
+use_system_wayland_server=true
+use_xkbcommon=true
+enable_vulkan=true
+use_gtk=true
+gtk_version=4
+use_qt=true
+use_qt5=false
+use_qt6=true
+moc_qt6_path="%{_qtdir}/libexec"
+fatal_linker_warnings=false
+system_libdir="%{_libdir}"
+# use_aura=true
+# use_gio=true
+proprietary_codecs=true
+ffmpeg_branding="ChromeOS"
+enable_mse_mpeg2ts_stream_parser=true
 %ifarch %{ix86}
-GN_DEFINES+=" target_cpu=\"x86\""
+target_cpu="x86"
 %endif
 %ifarch %{x86_64}
-GN_DEFINES+=" target_cpu=\"x64\""
+target_cpu="x64"
 %endif
 %ifarch %{arm}
-GN_DEFINES+=" target_cpu=\"arm\""
-GN_DEFINES+=" remove_webcore_debug_symbols=true"
+target_cpu="arm"
+remove_webcore_debug_symbols=true
 %endif
 %ifarch %{armx}
-GN_DEFINES+=" rtc_build_with_neon=true"
+rtc_build_with_neon=true
 %endif
 %ifarch %{aarch64}
-GN_DEFINES+=" target_cpu=\"arm64\""
+target_cpu="arm64"
 # if this is true (default for non official builds) it tries to use
 # a prebuilt x86 binary in the source tree
-GN_DEFINES+=" devtools_skip_typecheck=false"
+devtools_skip_typecheck=false
 %endif
 %if ! 0%{?ungoogled:1}
-GN_DEFINES+=" google_api_key=\"%{google_api_key}\""
-GN_DEFINES+=" google_default_client_id=\"%{google_default_client_id}\""
-GN_DEFINES+=" google_default_client_secret=\"%{google_default_client_secret}\""
+google_api_key="%{google_api_key}"
+google_default_client_id="%{google_default_client_id}"
+google_default_client_secret="%{google_default_client_secret}"
 %endif
+use_lld=true
 %ifarch %{x86_64}
 # Workaround for OOMs
-GN_DEFINES+=" thin_lto_enable_optimizations=false use_lld=true use_thin_lto=false is_cfi=false "
+thin_lto_enable_optimizations=false
+use_lld=true
+use_thin_lto=false
+is_cfi=false
 %else
-GN_DEFINES+=" thin_lto_enable_optimizations=true use_lld=true use_thin_lto=true "
+thin_lto_enable_optimizations=true
+use_thin_lto=true
 %endif
-GN_DEFINES+=" custom_toolchain=\"//build/toolchain/linux/unbundle:default\""
-GN_DEFINES+=" host_toolchain=\"//build/toolchain/linux/unbundle:default\""
-GN_DEFINES+=" v8_snapshot_toolchain=\"//build/toolchain/linux/unbundle:default\""
-GN_DEFINES+=" symbol_level=0"
+custom_toolchain="//build/toolchain/linux/unbundle:default"
+host_toolchain="//build/toolchain/linux/unbundle:default"
+v8_snapshot_toolchain="//build/toolchain/linux/unbundle:default"
+symbol_level=0
 
-GN_DEFINES+=" use_pulseaudio=true link_pulseaudio=true"
-GN_DEFINES+=" enable_nacl=false"
-GN_DEFINES+=" is_component_ffmpeg=true"
-GN_DEFINES+=" enable_hangout_services_extension=true"
-GN_DEFINES+=" enable_widevine=true"
-GN_DEFINES+=" use_vaapi=true"
-GN_DEFINES+=" angle_link_glx=true angle_test_enable_system_egl=true "
-GN_DEFINES+=" enable_hevc_parser_and_hw_decoder=true enable_av1_decoder=true enable_jxl_decoder=true"
-GN_DEFINES+=" enable_media_drm_storage=true"
+use_pulseaudio=true
+link_pulseaudio=true
+is_component_ffmpeg=true
+enable_hangout_services_extension=true
+enable_widevine=true
+use_vaapi=true
+angle_link_glx=true
+angle_test_enable_system_egl=true
+enable_hevc_parser_and_hw_decoder=true
+enable_av1_decoder=true
+enable_jxl_decoder=true
+enable_media_drm_storage=true
 %ifarch znver1
 # This really is znver1 only, as it enables SSE4.2, BMI2 and AVX2
-GN_DEFINES+=" enable_perfetto_x64_cpu_opt=true"
+enable_perfetto_x64_cpu_opt=true
 %endif
-GN_DEFINES+=" enable_precompiled_headers=true"
-GN_DEFINES+=" is_official_build=true"
-GN_DEFINES+=" ozone_platform_drm=true"
-GN_DEFINES+=" perfetto_use_system_zlib=true"
-GN_DEFINES+=" rtc_link_pipewire=true rtc_use_pipewire=true"
-GN_DEFINES+=" use_libinput=true use_real_dbus_clients=true"
-GN_DEFINES+=" use_vaapi_image_codecs=true"
-GN_DEFINES+=' rust_sysroot_absolute="%{_prefix}"'
-GN_DEFINES+=" rustc_version=\"$(rustc --version | awk '{ print $2; }')\""
+enable_precompiled_headers=true
+is_official_build=true
+ozone_platform_drm=true
+perfetto_use_system_zlib=true
+rtc_link_pipewire=true
+rtc_use_pipewire=true
+use_libinput=true
+use_real_dbus_clients=true
+use_vaapi_image_codecs=true
+rust_sysroot_absolute="%{_prefix}"
 # 107: Build failure: GN_DEFINES+=" enable_wayland_server=true"
 # 124: Fails with 
 # ld.lld: error: undefined symbol: google::protobuf::compiler::CodeGenerator::GenerateAll(std::__Cr::vector<google::protobuf::FileDescriptor const*, std::__Cr::allocator<google::protobuf::FileDescriptor const*>> const&, std::__Cr::basic_string<char, std::__Cr::char_traits<char>, std::__Cr::allocator<char>> const&, google::protobuf::compiler::GeneratorContext*, std::__Cr::basic_string<char, std::__Cr::char_traits<char>, std::__Cr::allocator<char>>*) const
 # >>> referenced by ld-temp.o
 # (probably hardcoded use of bundled headers somewhere...)
-#GN_DEFINES+=" perfetto_use_system_protobuf=true"
-GN_DEFINES+=" use_v4lplugin=true"
+# perfetto_use_system_protobuf=true
+use_v4lplugin=true
 # Can't use vaapi and v4l2_codec at the same time, there is no
 # selection at runtime
-# GN_DEFINES+=" use_v4l2_codec=true"
-GN_DEFINES+=" use_webaudio_ffmpeg=true"
+#use_v4l2_codec=true
+use_webaudio_ffmpeg=true
+EOF
+echo rustc_version=\"$(rustc --version | awk '{ print $2; }')\" >>openmandriva.gn_args #" (the trailing #" is a workaround for a neovim syntax highlighting bug)
 
 # -gdwarf-4 is for the sake of debugedit
 # https://sourceware.org/bugzilla/show_bug.cgi?id=29773
@@ -849,7 +866,11 @@ python tools/gn/bootstrap/bootstrap.py --skip-generate-buildfiles
 python third_party/libaddressinput/chromium/tools/update-strings.py
 
 %if %{with browser}
-out/Release/gn gen --script-executable=/usr/bin/python --args="${GN_DEFINES}" out/Release
+%if 0%{?ungoogled:1}
+out/Release/gn gen --script-executable=/usr/bin/python --args="$(cat $UGDIR/flags.gn ; echo ; cat openmandriva.gn_args)" out/Release
+%else
+out/Release/gn gen --script-executable=/usr/bin/python --args="$(cat openmandriva.gn_args)" out/Release
+%endif
 %ifarch %{x86_64}
 ninja -C out/Release chrome chrome_sandbox chromedriver
 %else
@@ -866,7 +887,11 @@ cd ..
 # Lastly, try to build it...
 # We have to use use_thin_lto=false because LTO in CEF causes
 # an OOM while linking libcef.so even on boxes with 64 GB RAM + 64 GB swap
-out/Release/gn gen --script-executable=/usr/bin/python --args="${GN_DEFINES} is_cfi=false use_thin_lto=false chrome_pgo_phase=0" out/Release-CEF
+%if 0%{?ungoogled:1}
+out/Release/gn gen --script-executable=/usr/bin/python --args="$(cat $UGDIR/flags.gn ; echo ; cat openmandriva.gn_args) is_cfi=false use_thin_lto=false chrome_pgo_phase=0" out/Release-CEF
+%else
+out/Release/gn gen --script-executable=/usr/bin/python --args="$(cat openmandriva.gn_args) is_cfi=false use_thin_lto=false chrome_pgo_phase=0" out/Release-CEF
+%endif
 ninja -C out/Release-CEF cef chrome_sandbox
 %endif
 
