@@ -1,20 +1,18 @@
-diff -up chromium-135.0.7049.84/build/config/clang/BUILD.gn.58~ chromium-135.0.7049.84/build/config/clang/BUILD.gn
---- chromium-135.0.7049.84/build/config/clang/BUILD.gn.58~	2025-04-07 23:40:33.000000000 +0200
-+++ chromium-135.0.7049.84/build/config/clang/BUILD.gn	2025-04-09 21:25:20.344525887 +0200
-@@ -166,8 +166,8 @@ template("clang_lib") {
+diff -up chromium-141.0.7390.54/build/config/clang/BUILD.gn.48~ chromium-141.0.7390.54/build/config/clang/BUILD.gn
+--- chromium-141.0.7390.54/build/config/clang/BUILD.gn.48~	2025-09-29 19:05:47.000000000 +0200
++++ chromium-141.0.7390.54/build/config/clang/BUILD.gn	2025-10-04 04:18:12.263920237 +0200
+@@ -152,6 +152,7 @@ template("clang_lib") {
        _prefix = "lib"
        _suffix = ""
        _ext = "a"
 +      _libsuffix = ""
  
--      _clang_lib_dir = "$clang_base_path/lib/clang/$clang_version/lib"
        if (is_win) {
          _dir = "windows"
-         _prefix = ""
-@@ -197,7 +197,24 @@ template("clang_lib") {
-         } else {
-           assert(false)  # Unhandled cpu type
+@@ -168,7 +169,24 @@ template("clang_lib") {
          }
+       } else if (is_apple) {
+         _dir = "darwin"
 -      } else if (is_linux || is_chromeos) {
 +      } else if (is_linux) {
 +        if (current_cpu == "x64") {
@@ -37,11 +35,12 @@ diff -up chromium-135.0.7049.84/build/config/clang/BUILD.gn.58~ chromium-135.0.7
          if (current_cpu == "x64") {
            _dir = "x86_64-unknown-linux-gnu"
          } else if (current_cpu == "x86") {
-@@ -235,6 +246,7 @@ template("clang_lib") {
-       } else {
+@@ -215,7 +233,7 @@ template("clang_lib") {
          assert(false)  # Unhandled target platform
        }
-+      _clang_lib_dir = "$clang_base_path/lib${_libsuffix}/clang/$clang_version/lib"
  
+-      _clang_lib_dir = "$clang_base_path/lib/clang/$clang_version/lib"
++      _clang_lib_dir = "$clang_base_path/lib${_libsuffix}/clang/$clang_version/lib"
        _lib_file = "${_prefix}clang_rt.${_libname}${_suffix}.${_ext}"
        libs = [ "$_clang_lib_dir/$_dir/$_lib_file" ]
+     }

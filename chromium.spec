@@ -74,9 +74,9 @@
 # re2 (as of 124.x): //third_party/googletest:gtest_config(//build/toolchain/linux/unbundle:default) needs //third_party/re2:re2_config(//build/toolchain/linux/unbundle:default) (+ libc++/libstdc++ issue)
 # zlib: Breaks extracting extensions
 %if %{with libcxx}
-%global system_libs fontconfig harfbuzz-ng libjpeg libjxl libpng libdrm libxml libxslt opus libusb openh264 freetype zstd libwebp
+%global system_libs fontconfig harfbuzz-ng libjpeg libpng libdrm libxml libxslt opus libusb openh264 freetype zstd libwebp
 %else
-%global system_libs fontconfig harfbuzz-ng libjpeg libjxl libpng libdrm libxml libxslt opus libusb openh264 freetype zstd libwebp jsoncpp snappy
+%global system_libs fontconfig harfbuzz-ng libjpeg libpng libdrm libxml libxslt opus libusb openh264 freetype zstd libwebp jsoncpp snappy
 # System absl is not quite working yet
 # absl_algorithm absl_base absl_cleanup absl_container absl_crc absl_debugging absl_flags absl_functional absl_hash absl_log absl_log_internal absl_memory absl_meta absl_numeric absl_random absl_status absl_strings absl_synchronization absl_time absl_types absl_utility
 %endif
@@ -98,9 +98,9 @@ Name:		chromium-browser-%{channel}
 %endif
 # Working version numbers can be found at
 # https://chromiumdash.appspot.com/releases?platform=Linux
-Version:	140.0.7339.207
+Version:	141.0.7390.122
 ### Don't be evil!!! ###
-%define ungoogled 140.0.7339.207-1
+%define ungoogled 141.0.7390.122-1
 %if %{with cef}
 # To find the CEF commit matching the Chromium version, look up the
 # right branch at
@@ -146,10 +146,6 @@ Source1000:	https://github.com/ungoogled-software/ungoogled-chromium/archive/ref
 # workarounds for prehistoric libraries and compilers):
 ### 0-99: Fedora
 # https://src.fedoraproject.org/rpms/chromium/tree/rawhide
-%if ! 0%{?ungoogled:1}
-# Ungoogled Chromium already builds a PIE sandbox
-Patch0:		https://src.fedoraproject.org/rpms/chromium/raw/rawhide/f/chromium-70.0.3538.67-sandbox-pie.patch
-%endif
 # Use /etc/chromium for master_prefs
 Patch1:		https://src.fedoraproject.org/rpms/chromium/raw/rawhide/f/chromium-68.0.3440.106-master-prefs-path.patch
 Patch2:		https://src.fedoraproject.org/rpms/chromium/raw/rawhide/f/chromium-67.0.3396.62-gn-system.patch
@@ -188,7 +184,7 @@ Patch306:	https://sources.debian.org/data/main/c/chromium/140.0.7339.80-1/debian
 Patch307:	https://sources.debian.org/data/main/c/chromium/140.0.7339.80-1/debian/patches/fixes/fix-assert-in-vnc-sessions.patch
 Patch308:	https://sources.debian.org/data/main/c/chromium/140.0.7339.80-1/debian/patches/fixes/armhf-timespec.patch
 Patch309:	https://sources.debian.org/data/main/c/chromium/140.0.7339.80-1/debian/patches/fixes/updater-test.patch
-Patch310:	https://sources.debian.org/data/main/c/chromium/140.0.7339.80-1/debian/patches/fixes/font-gc-asan.patch
+Patch310:	https://sources.debian.org/data/main/c/chromium/141.0.7390.122-1/debian/patches/fixes/font-gc-asan.patch
 Patch312:	https://sources.debian.org/data/main/c/chromium/140.0.7339.80-1/debian/patches/fixes/libsync-rk3588-panthor.patch
 Patch314:	https://sources.debian.org/data/main/c/chromium/140.0.7339.80-1/debian/patches/fixes/headless-gn.patch
 #Patch315:	https://sources.debian.org/data/main/c/chromium/140.0.7339.80-1/debian/patches/fixes/stdatomic.patch
@@ -240,7 +236,8 @@ Patch1001:	chromium-64-system-curl.patch
 Patch1002:	chromium-69-no-static-libstdc++.patch
 Patch1003:	chromium-system-zlib.patch
 Patch1004:	chromium-107-system-libs.patch
-Patch1005:	chromium-restore-jpeg-xl-support.patch
+# FIXME needs porting
+#Patch1005:	chromium-restore-jpeg-xl-support.patch
 Patch1006:	chromium-extra-widevine-search-paths.patch
 Patch1007:	chromium-116-dont-override-thinlto-cache-policy.patch
 Patch1008:	chromium-116-system-brotli.patch
@@ -286,7 +283,6 @@ Patch1041:	chromium-134-drop-workarounds-for-ancient-mesa-bugs-part2.patch
 Patch1042:	chromium-134-if-chromeos-can-do-it-so-can-linux.patch
 Patch1043:	chromium-139-workaround-clang-21.patch
 #Patch1044:	chromium-136-no-unknown-clang-flag.patch
-Patch1046:	chromium-136-fix-build-on-non-chromeos.patch
 Patch1047:	chromium-system-bindgen.patch
 
 # ============================================================================
@@ -677,8 +673,8 @@ export PATH=$PWD/bfd:$PATH
 %global optflags %{optflags} -I%{_includedir}/libunwind
 
 # Chromium builds tend to barf if not told precisely what to use
-export CC="%{__cc}"
-export CXX="%{__cxx}"
+export CC="%{_cc}"
+export CXX="%{_cxx}"
 export AR="%{__ar}"
 export NM="llvm-nm"
 
@@ -697,7 +693,8 @@ export RUSTC_BOOTSTRAP=1
 # Something hardcodes ../../[...]/usr/lib as LIBCLANG_PATH
 # which of course doesn't catch lib64 and friends...
 #sed -i -e "s,args.libclang_path,'%{_libdir}',g" build/rust/run_bindgen.py
-sed -i -e 's,lib/clang,%{_lib}/clang,g' build/rust/rust_bindgen.gni
+sed -i -e 's,/lib,/%{_lib},g' build/rust/rust_bindgen.gni
+sed -i -e 's,/lib/clang/,/lib64/clang/,g' buildtools/third_party/libc++/modules.gni third_party/openscreen/src/buildtools/third_party/libc++/BUILD.gn
 %endif
 
 # We use our version of clang, regardless of what upstream wants
@@ -707,6 +704,12 @@ cat >openmandriva.gn_args <<EOF
 use_sysroot=false
 is_debug=false
 is_clang=true
+# FIXME at some point, instead of disabling modules, fix them.
+# The problem is that the C++ modules (see build/modules/linux-x64/module.modulemap)
+# hardcode references to Chromium's Debian sysroot instead of system headers.
+# see build/modules/modularize/README.md for instructions on rebuilding
+use_clang_modules=false
+#use_autogenerated_modules=true
 clang_base_path="%{_prefix}"
 clang_use_chrome_plugins=false
 node_version_check=false
@@ -778,7 +781,7 @@ target_cpu="arm64"
 # a prebuilt x86 binary in the source tree
 devtools_skip_typecheck=false
 %endif
-%if ! 0%{?ungoogled:1}
+%if 0
 google_api_key="%{google_api_key}"
 google_default_client_id="%{google_default_client_id}"
 google_default_client_secret="%{google_default_client_secret}"
@@ -809,7 +812,8 @@ angle_link_glx=true
 angle_test_enable_system_egl=true
 enable_hevc_parser_and_hw_decoder=true
 enable_av1_decoder=true
-enable_jxl_decoder=true
+# FIXME bring back the jxl patch
+#enable_jxl_decoder=true
 enable_media_drm_storage=true
 %ifarch znver1
 # This really is znver1 only, as it enables SSE4.2, BMI2 and AVX2
@@ -817,7 +821,9 @@ enable_perfetto_x64_cpu_opt=true
 %endif
 enable_precompiled_headers=true
 is_official_build=true
-ozone_platform_drm=true
+# Errors out because it pretends to be ChromeOS only, but should actually work...
+# FIXME try removing the assert in ui/ozone/platform/drm/BUILD.gn
+#ozone_platform_drm=true
 perfetto_use_system_zlib=true
 rtc_link_pipewire=true
 rtc_use_pipewire=true
@@ -866,11 +872,7 @@ python tools/gn/bootstrap/bootstrap.py --skip-generate-buildfiles
 python third_party/libaddressinput/chromium/tools/update-strings.py
 
 %if %{with browser}
-%if 0%{?ungoogled:1}
 out/Release/gn gen --script-executable=/usr/bin/python --args="$(cat $UGDIR/flags.gn ; echo ; cat openmandriva.gn_args)" out/Release
-%else
-out/Release/gn gen --script-executable=/usr/bin/python --args="$(cat openmandriva.gn_args)" out/Release
-%endif
 %ifarch %{x86_64}
 ninja -C out/Release chrome chrome_sandbox chromedriver
 %else

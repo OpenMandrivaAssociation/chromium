@@ -1,7 +1,7 @@
-diff -up chromium-138.0.7204.92/gpu/config/gpu_finch_features.cc.63~ chromium-138.0.7204.92/gpu/config/gpu_finch_features.cc
---- chromium-138.0.7204.92/gpu/config/gpu_finch_features.cc.63~	2025-06-27 23:22:02.000000000 +0200
-+++ chromium-138.0.7204.92/gpu/config/gpu_finch_features.cc	2025-07-03 03:12:08.442922756 +0200
-@@ -229,7 +229,7 @@ BASE_FEATURE(kEnableDrDc,
+diff -up chromium-141.0.7390.54/gpu/config/gpu_finch_features.cc.53~ chromium-141.0.7390.54/gpu/config/gpu_finch_features.cc
+--- chromium-141.0.7390.54/gpu/config/gpu_finch_features.cc.53~	2025-09-29 19:05:47.000000000 +0200
++++ chromium-141.0.7390.54/gpu/config/gpu_finch_features.cc	2025-10-04 04:19:21.751099802 +0200
+@@ -198,7 +198,7 @@ BASE_FEATURE(EnableDrDc,
  // Enable WebGPU on gpu service side only. This is used with origin trial and
  // enabled by default on supported platforms.
  #if BUILDFLAG(IS_APPLE) || BUILDFLAG(IS_WIN) || BUILDFLAG(IS_CHROMEOS) || \
@@ -10,10 +10,10 @@ diff -up chromium-138.0.7204.92/gpu/config/gpu_finch_features.cc.63~ chromium-13
  #define WEBGPU_ENABLED base::FEATURE_ENABLED_BY_DEFAULT
  #else
  #define WEBGPU_ENABLED base::FEATURE_DISABLED_BY_DEFAULT
-diff -up chromium-138.0.7204.92/media/base/media_switches.cc.63~ chromium-138.0.7204.92/media/base/media_switches.cc
---- chromium-138.0.7204.92/media/base/media_switches.cc.63~	2025-07-03 03:11:03.333339486 +0200
-+++ chromium-138.0.7204.92/media/base/media_switches.cc	2025-07-03 03:11:21.234731363 +0200
-@@ -727,7 +727,7 @@ BASE_FEATURE(kUnifiedAutoplay,
+diff -up chromium-141.0.7390.54/media/base/media_switches.cc.53~ chromium-141.0.7390.54/media/base/media_switches.cc
+--- chromium-141.0.7390.54/media/base/media_switches.cc.53~	2025-10-04 04:19:03.010840798 +0200
++++ chromium-141.0.7390.54/media/base/media_switches.cc	2025-10-04 04:20:18.873902635 +0200
+@@ -672,17 +672,17 @@ BASE_FEATURE(UnifiedAutoplay, base::FEAT
  // on chromeos, but needs an experiment on linux.
  BASE_FEATURE(kAcceleratedVideoDecodeLinux,
               "AcceleratedVideoDecoder",
@@ -22,12 +22,10 @@ diff -up chromium-138.0.7204.92/media/base/media_switches.cc.63~ chromium-138.0.
               base::FEATURE_ENABLED_BY_DEFAULT);
  #else
               base::FEATURE_DISABLED_BY_DEFAULT);
-@@ -735,11 +735,11 @@ BASE_FEATURE(kAcceleratedVideoDecodeLinu
+ #endif
  
- BASE_FEATURE(kAcceleratedVideoDecodeLinuxGL,
-              "AcceleratedVideoDecodeLinuxGL",
--             base::FEATURE_DISABLED_BY_DEFAULT);
-+             base::FEATURE_ENABLED_BY_DEFAULT);
+-BASE_FEATURE(AcceleratedVideoDecodeLinuxGL, base::FEATURE_DISABLED_BY_DEFAULT);
++BASE_FEATURE(AcceleratedVideoDecodeLinuxGL, base::FEATURE_ENABLED_BY_DEFAULT);
  
  BASE_FEATURE(kAcceleratedVideoEncodeLinux,
               "AcceleratedVideoEncoder",
